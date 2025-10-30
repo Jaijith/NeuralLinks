@@ -118,6 +118,14 @@ function App() {
             path="/profile"
             element={user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/" />}
           />
+          <Route
+            path="/profile/:userId"
+            element={user ? <ProfilePageFull user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/myprofile"
+            element={user ? <ProfilePageFull user={user} /> : <Navigate to="/" />}
+          />
         </Routes>
       </BrowserRouter>
     </div>
