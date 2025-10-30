@@ -227,15 +227,18 @@ backend:
 
   - task: "Auto Graph Building on User Registration"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Updated /auth/session-data endpoint to automatically build initial knowledge graph for new users during registration"
+      - working: true
+        agent: "testing"
+        comment: "Auto graph building on user registration working correctly. When new users are created through /auth/session-data, initial knowledge graph is automatically built from their profile data. Verified through test user creation which resulted in immediate graph node creation."
 
 frontend:
   - task: "Update Integrations Page"
