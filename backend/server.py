@@ -810,6 +810,124 @@ app.include_router(api_router)
 
 app.add_middleware(
     CORSMiddleware,
+
+
+# ============ AVATAR ACTIVITY ROUTES ============
+
+@api_router.get("/avatar/activity/{user_id}")
+async def get_avatar_activity(user_id: str, request: Request):
+    """Get avatar's activity feed"""
+    user = await require_auth(request)
+    
+    # Get avatar's conversations
+    conversations = await db.agent_conversations.find({
+        "$or": [
+            {"agent1_user_id": user_id},
+            {"agent2_user_id": user_id}
+        ]
+    }, {"_id": 0}).sort("created_at", -1).limit(20).to_list(20)
+    
+    # Enrich with user data
+    activities = []
+    for conv in conversations:
+        other_user_id = conv['agent2_user_id'] if conv['agent1_user_id'] == user_id else conv['agent1_user_id']
+        other_user = await db.users.find_one({"id": other_user_id}, {"_id": 0})
+        
+        if other_user:
+            activities.append({
+                "type": "conversation",
+                "timestamp": conv.get('created_at'),
+                "other_user": {
+                    "id": other_user['id'],
+                    "name": other_user['name'],
+                    "picture": other_user.get('picture')
+                },
+                "score": conv.get('overall_score', conv.get('compatibility_score', 0)),
+                "status": conv.get('status'),
+                "message_count": len(conv.get('messages', []))
+            })
+    
+    return activities
+
+@api_router.get("/avatar/conversations")
+async def get_avatar_conversations(request: Request):
+    """Get all avatar conversations for current user"""
+    user = await require_auth(request)
+    
+    conversations = await db.agent_conversations.find({
+        "$or": [
+            {"agent1_user_id": user.id},
+            {"agent2_user_id": user.id}
+        ]
+    }, {"_id": 0}).sort("updated_at", -1).to_list(100)
+    
+    # Enrich with user data
+    for conv in conversations:
+        other_user_id = conv['agent2_user_id'] if conv['agent1_user_id'] == user.id else conv['agent1_user_id']
+        other_user = await db.users.find_one({"id": other_user_id}, {"_id": 0})
+        
+        if other_user:
+            conv['other_user'] = {
+                "id": other_user['id'],
+                "name": other_user['name'],
+                "picture": other_user.get('picture'),
+                "bio": other_user.get('bio')
+            }
+    
+    return conversations
+
+@api_router.post("/avatar/start-batch-conversations")
+async def start_batch_conversations(data: Dict[str, int], request: Request):
+    """Start multiple avatar conversations at once"""
+    user = await require_auth(request)
+    count = data.get('count', 5)
+    
+    if not azure_client:
+        raise HTTPException(status_code=500, detail="Azure OpenAI not configured")
+    
+    # Find potential matches
+    potential_matches = await db.users.find({
+        "id": {"$ne": user.id},
+        "profile_completed": True
+    }, {"_id": 0}).limit(count * 2).to_list(count * 2)
+    
+    started = []
+    
+    for match in potential_matches[:count]:
+        # Check if conversation exists
+        existing = await db.agent_conversations.find_one({
+            "$or": [
+                {"agent1_user_id": user.id, "agent2_user_id": match['id']},
+                {"agent1_user_id": match['id'], "agent2_user_id": user.id}
+            ]
+        })
+        
+        if existing:
+            continue
+        
+        try:
+            # Start conversation (simplified version)
+            shared_interests = list(set(user.interests) & set(match.get('interests', [])))
+            
+            conversation = {
+                "id": str(uuid.uuid4()),
+                "agent1_user_id": user.id,
+                "agent2_user_id": match['id'],
+                "messages": [],
+                "compatibility_score": min(len(shared_interests) * 20, 100),
+                "conversation_summary": f"Exploring compatibility through shared interests: {', '.join(shared_interests[:3])}",
+                "status": "active",
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }
+            
+            await db.agent_conversations.insert_one(conversation)
+            started.append(conversation['id'])
+        except Exception as e:
+            logger.error(f"Error starting conversation: {str(e)}")
+    
+    return {"started": len(started), "conversation_ids": started}
+
     allow_credentials=True,
     allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
     allow_methods=["*"],
