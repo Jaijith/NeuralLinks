@@ -168,7 +168,7 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
               <div className="text-center py-8">
                 <Sparkles className="w-8 h-8 text-purple-400 mx-auto mb-2" />
                 <p className="text-sm text-gray-600">
-                  {worldMode === 'Maya' 
+                  {worldMode === 'avatar' 
                     ? 'Chat with AI avatar' 
                     : 'Start a conversation'}
                 </p>
