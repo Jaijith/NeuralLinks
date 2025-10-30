@@ -469,39 +469,47 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
 
             {/* Right Sidebar */}
             <div className="col-span-3 space-y-4">
-              <Card className="p-4">
-                <h3 className="font-semibold text-gray-700 mb-3">Friends</h3>
+              <Card className={worldMode === 'avatar' ? 'card-avatar p-4' : 'p-4'}>
+                <h3 className={`font-semibold mb-3 ${worldMode === 'avatar' ? 'text-blue-200' : 'text-gray-700'}`}>
+                  {labels.friends}
+                </h3>
                 <div className="space-y-2">
                   {friends.slice(0, 6).map((friend, idx) => (
                     <div 
                       key={idx} 
-                      className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded"
+                      className={`flex items-center space-x-2 cursor-pointer p-1 rounded ${
+                        worldMode === 'avatar' ? 'hover:bg-slate-800/50' : 'hover:bg-gray-50'
+                      }`}
                       onClick={() => navigate(`/profile/${friend.id}`)}
                     >
-                      <Avatar className="w-8 h-8">
+                      <Avatar className={`w-8 h-8 ${worldMode === 'avatar' ? 'avatar-glow' : ''}`}>
                         <AvatarImage src={friend.picture} />
                         <AvatarFallback>{friend.name?.charAt(0)}</AvatarFallback>
                       </Avatar>
-                      <span className="text-sm font-medium">{friend.name}</span>
+                      <span className={`text-sm font-medium ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
+                        {friend.name}
+                      </span>
                     </div>
                   ))}
                 </div>
               </Card>
 
               {mode === 'avatar' && (
-                <Card className="p-4">
-                  <h3 className="font-semibold text-gray-700 mb-3 flex items-center">
-                    <TrendingUp className="w-4 h-4 mr-2 text-purple-600" />
-                    Avatar Stats
+                <Card className={worldMode === 'avatar' ? 'card-avatar p-4' : 'p-4'}>
+                  <h3 className={`font-semibold mb-3 flex items-center ${worldMode === 'avatar' ? 'text-blue-200' : 'text-gray-700'}`}>
+                    <TrendingUp className={`w-4 h-4 mr-2 ${worldMode === 'avatar' ? 'text-purple-400' : 'text-purple-600'}`} />
+                    {worldMode === 'avatar' ? 'Neural Stats' : 'Avatar Stats'}
                   </h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Conversations</span>
-                      <span className="font-semibold">{avatarConversations.length}</span>
+                      <span className={worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}>Conversations</span>
+                      <span className={`font-semibold ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
+                        {avatarConversations.length}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Avg Score</span>
-                      <span className="font-semibold">
+                      <span className={worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}>Avg Score</span>
+                      <span className={`font-semibold ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
                         {avatarConversations.length > 0
                           ? Math.round(
                               avatarConversations.reduce((acc, c) => acc + (c.compatibility_score || 0), 0) /
