@@ -74,14 +74,19 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
           { withCredentials: true }
         );
 
-        const aiMessage = {
-          sender_id: otherUserId,
-          content: response.data.content,
-          timestamp: new Date().toISOString(),
-          is_ai: true
-        };
+        // Check if we got a valid response
+        if (response.data && response.data.content) {
+          const aiMessage = {
+            sender_id: otherUserId,
+            content: response.data.content,
+            timestamp: new Date().toISOString(),
+            is_ai: true
+          };
 
-        setMessages((prev) => [...prev, aiMessage]);
+          setMessages((prev) => [...prev, aiMessage]);
+        } else {
+          throw new Error("No content in AI response");
+        }
       } else {
         // Real mode: Real person-to-person (placeholder for now)
         // In production, this would send actual message to the other user
