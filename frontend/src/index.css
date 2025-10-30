@@ -398,7 +398,7 @@ body.avatar-world::before {
     background: rgba(20, 20, 40, 0.98) !important;
 }
 
-/* Text - PURE WHITE with heavy shadow */
+/* High Contrast Text for Readability - AGGRESSIVE */
 .avatar-world h1,
 .avatar-world h2,
 .avatar-world h3,
@@ -421,25 +421,42 @@ body.avatar-world::before {
     font-weight: 700 !important;
 }
 
-/* Specific overrides for light text */
+/* Force override ALL text color classes */
+.avatar-world .text-gray-100,
+.avatar-world .text-gray-200,
+.avatar-world .text-gray-300,
+.avatar-world .text-gray-400,
 .avatar-world .text-gray-500,
 .avatar-world .text-gray-600,
 .avatar-world .text-gray-700,
-.avatar-world .text-gray-800 {
+.avatar-world .text-gray-800,
+.avatar-world .text-gray-900,
+.avatar-world .text-black {
     color: rgb(255, 255, 255) !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1) !important;
+}
+
+/* Force all nested text elements */
+.avatar-world * {
+    color: rgb(255, 255, 255) !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
 }
 
 /* Button text in avatar world */
 .avatar-world button,
-.avatar-world button * {
+.avatar-world button *,
+.avatar-world button span,
+.avatar-world button div {
     color: rgb(255, 255, 255) !important;
     font-weight: 800 !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important;
 }
 
 /* Input text */
 .avatar-world input,
-.avatar-world textarea {
+.avatar-world textarea,
+.avatar-world input::placeholder,
+.avatar-world textarea::placeholder {
     font-weight: 700 !important;
     color: rgb(255, 255, 255) !important;
     background: rgba(40, 40, 60, 0.95) !important;
@@ -447,19 +464,28 @@ body.avatar-world::before {
 
 /* Avatar Link Styling */
 .avatar-world a,
-.avatar-world a * {
+.avatar-world a *,
+.avatar-world a span,
+.avatar-world a div {
     color: rgb(255, 255, 255) !important;
-    text-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.8) !important;
     transition: all 0.3s ease;
     font-weight: 800 !important;
 }
 
-/* Badge text */
+/* Badge text - INVERSE for visibility */
 .avatar-world .badge,
-.avatar-world [class*="badge"] {
-    background: rgba(255, 193, 7, 0.9) !important;
+.avatar-world [class*="badge"],
+.avatar-world .bg-purple-100 {
+    background: rgba(255, 193, 7, 0.95) !important;
     color: rgb(0, 0, 0) !important;
     font-weight: 900 !important;
+    text-shadow: none !important;
+}
+
+.avatar-world .badge *,
+.avatar-world [class*="badge"] * {
+    color: rgb(0, 0, 0) !important;
     text-shadow: none !important;
 }
 
