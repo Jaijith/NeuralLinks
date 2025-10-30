@@ -500,18 +500,34 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                     return (
                       <div 
                         key={idx} 
-                        className={`flex items-center space-x-2 cursor-pointer p-1 rounded ${
+                        className={`flex items-center justify-between p-2 rounded group ${
                           worldMode === 'avatar' ? 'hover:bg-slate-800/50' : 'hover:bg-gray-50'
                         }`}
-                        onClick={() => navigate(`/profile/${friend.id}`)}
                       >
-                        <Avatar className={`w-8 h-8 ${worldMode === 'avatar' ? 'avatar-glow' : ''}`}>
-                          <AvatarImage src={displayPicture} />
-                          <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <span className={`text-sm font-medium ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
-                          {displayName}
-                        </span>
+                        <div 
+                          className="flex items-center space-x-2 cursor-pointer flex-1"
+                          onClick={() => navigate(`/profile/${friend.id}`)}
+                        >
+                          <Avatar className={`w-8 h-8 ${worldMode === 'avatar' ? 'avatar-glow' : ''}`}>
+                            <AvatarImage src={displayPicture} />
+                            <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <span className={`text-sm font-medium ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
+                            {displayName}
+                          </span>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-auto"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedFriend(friend);
+                            setShowMessenger(true);
+                          }}
+                        >
+                          <MessageCircle className="w-4 h-4 text-blue-500" />
+                        </Button>
                       </div>
                     );
                   })}
