@@ -24,14 +24,14 @@ const WorldModeToggle = ({ className = "" }) => {
             <>
               <Sparkles className="w-5 h-5 animate-pulse" />
               <span className="relative">
-                Avatar World
+                Maya
                 <span className="absolute -top-1 -right-8 text-xs">🌌</span>
               </span>
             </>
           ) : (
             <>
               <Globe className="w-5 h-5" />
-              <span>Real World</span>
+              <span>Sense</span>
             </>
           )}
         </div>
