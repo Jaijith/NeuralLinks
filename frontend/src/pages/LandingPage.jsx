@@ -6,8 +6,6 @@ const API = `${BACKEND_URL}/api`;
 const REDIRECT_URL = window.location.origin + "/dashboard";
 
 const LandingPage = ({ setUser }) => {
-  const navigate = useNavigate();
-
   const handleLogin = () => {
     window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(
       REDIRECT_URL
