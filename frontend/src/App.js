@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import OnboardingChat from "./pages/OnboardingChat";
 import Matches from "./pages/Matches";
 import Chat from "./pages/Chat";
+import AvatarChat from "./pages/AvatarChat";
 import Profile from "./pages/Profile";
 import ProfilePageFull from "./pages/ProfilePageFull";
 import SearchPage from "./pages/SearchPage";
