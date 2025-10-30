@@ -267,7 +267,10 @@ async def get_session_data(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.get("/auth/me")
-
+async def get_me(request: Request):
+    """Get current user"""
+    user = await require_auth(request)
+    return user
 
 @api_router.get("/users/{user_id}")
 async def get_user_profile(user_id: str, request: Request):
