@@ -27,6 +27,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   const [loading, setLoading] = useState(true);
   const [postText, setPostText] = useState('');
   const [selectedTab, setSelectedTab] = useState('timeline');
+  const [friendPosts, setFriendPosts] = useState([]);
 
   useEffect(() => {
     fetchData();
