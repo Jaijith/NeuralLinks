@@ -62,14 +62,14 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
     setMessages((prev) => [...prev, userMessage]);
 
     try {
-      if (worldMode === 'Maya') {
-        // Maya mode: AI avatar response
+      if (worldMode === 'avatar') {
+        // Avatar mode: AI avatar response
         const response = await axios.post(
           `${API}/avatar/chat-response`,
           {
             other_user_id: otherUserId,
             conversation_history: messages,
-            last_message: messageText,
+            last_message: textToSend,
           },
           { withCredentials: true }
         );
@@ -83,7 +83,7 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
 
         setMessages((prev) => [...prev, aiMessage]);
       } else {
-        // Sense mode: Real person-to-person (placeholder for now)
+        // Real mode: Real person-to-person (placeholder for now)
         // In production, this would send actual message to the other user
         const autoReply = {
           sender_id: otherUserId,
