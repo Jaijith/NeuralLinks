@@ -330,18 +330,45 @@ async def logout(request: Request, response: Response):
 
 # ============ PROFILE ROUTES ============
 
-@api_router.put("/profile")
-async def update_profile(profile_data: Dict[str, Any], request: Request):
-    """Update user profile"""
+@api_router.put("/profile/avatar")
+async def update_avatar_profile(avatar_data: Dict[str, Any], request: Request):
+    """Update user's avatar profile (separate from real profile)"""
     user = await require_auth(request)
     
-    # Update user
+    # Prefix all avatar fields
+    avatar_update = {}
+    for key, value in avatar_data.items():
+        if not key.startswith('avatar_'):
+            avatar_update[f'avatar_{key}'] = value
+        else:
+            avatar_update[key] = value
+    
+    # Update user's avatar data
     await db.users.update_one(
         {"id": user.id},
-        {"$set": profile_data}
+        {"$set": avatar_update}
     )
     
-    return {"message": "Profile updated"}
+    return {"message": "Avatar profile updated"}
+
+@api_router.get("/profile/avatar")
+async def get_avatar_profile(request: Request):
+    """Get current user's avatar profile"""
+    user = await require_auth(request)
+    
+    user_doc = await db.users.find_one({"id": user.id}, {"_id": 0})
+    
+    # Extract avatar-specific fields
+    avatar_profile = {
+        "avatar_name": user_doc.get("avatar_name", ""),
+        "avatar_bio": user_doc.get("avatar_bio", ""),
+        "avatar_picture": user_doc.get("avatar_picture", ""),
+        "avatar_interests": user_doc.get("avatar_interests", []),
+        "avatar_job_title": user_doc.get("avatar_job_title", ""),
+        "avatar_location": user_doc.get("avatar_location", "")
+    }
+    
+    return avatar_profile
 
 @api_router.post("/profile/posts")
 async def create_post(post_data: Dict[str, str], request: Request):
