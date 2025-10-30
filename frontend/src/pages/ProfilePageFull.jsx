@@ -632,13 +632,13 @@ const ProfilePageFull = ({ user: currentUser }) => {
                 <div className="flex items-center space-x-3 mb-3">
                   <Bot className="w-6 h-6 text-purple-600" />
                   <h3 className="text-lg font-bold text-gray-900">
-                    {isOwnProfile ? '🎮 Avatar Mode - Your Digital Identity' : '🎮 Avatar Mode'}
+                    {isOwnProfile ? '🎮 Maya Mode - Your Digital Identity' : '🎮 Maya Mode'}
                   </h3>
                 </div>
                 <p className="text-gray-700">
                   {isOwnProfile 
-                    ? `You're viewing your avatar profile as ${displayName}. Create avatar-specific posts here that are different from your real-world posts! Your avatar identity is automatically tied to your real profile.`
-                    : `You're viewing ${displayName}'s avatar profile. This is their digital persona with unique content and identity.`
+                    ? `You're viewing your Maya profile as ${displayName}. Create Maya-specific posts here that are different from your Sense posts! Your Maya identity is automatically tied to your Sense profile.`
+                    : `You're viewing ${displayName}'s Maya profile. This is their digital persona with unique content and identity.`
                   }
                 </p>
               </Card>
