@@ -302,19 +302,71 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
 
               {/* Posts Feed */}
               {mode === 'real' ? (
-                <Card className="p-6">
-                  <div className="text-center py-12">
-                    <Home className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Welcome to your feed!</h3>
-                    <p className="text-gray-600 mb-4">Start by adding friends or creating your first post</p>
-                    <Button 
-                      className="bg-blue-500 hover:bg-blue-600 text-white"
-                      onClick={() => navigate('/search')}
-                    >
-                      Find Friends
-                    </Button>
+                friendPosts.length > 0 ? (
+                  <div className="space-y-4">
+                    {friendPosts.map((post, idx) => (
+                      <Card key={idx} className="p-4">
+                        <div className="flex items-start space-x-3">
+                          <Avatar 
+                            className="w-10 h-10 cursor-pointer"
+                            onClick={() => navigate(`/profile/${post.user.id}`)}
+                          >
+                            <AvatarImage src={post.user.picture} />
+                            <AvatarFallback>{post.user.name?.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-2 mb-1">
+                              <span 
+                                className="font-semibold cursor-pointer hover:underline"
+                                onClick={() => navigate(`/profile/${post.user.id}`)}
+                              >
+                                {post.user.name}
+                              </span>
+                              {post.user.is_bot && (
+                                <Badge className="bg-purple-100 text-purple-700 text-xs">
+                                  <Bot className="w-3 h-3 mr-1" />
+                                  Bot
+                                </Badge>
+                              )}
+                              <span className="text-xs text-gray-500">
+                                {new Date(post.created_at).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <p className="text-gray-800 mb-3">{post.text}</p>
+                            <div className="flex items-center space-x-6 text-sm text-gray-500 border-t pt-2">
+                              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600">
+                                <ThumbsUp className="w-4 h-4 mr-1" />
+                                {post.likes || 0}
+                              </Button>
+                              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600">
+                                <MessageCircle className="w-4 h-4 mr-1" />
+                                {post.comments || 0}
+                              </Button>
+                              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600">
+                                <Share2 className="w-4 h-4 mr-1" />
+                                Share
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
                   </div>
-                </Card>
+                ) : (
+                  <Card className="p-6">
+                    <div className="text-center py-12">
+                      <Home className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-gray-800 mb-2">Welcome to your feed!</h3>
+                      <p className="text-gray-600 mb-4">Start by adding friends or creating your first post</p>
+                      <Button 
+                        className="bg-blue-500 hover:bg-blue-600 text-white"
+                        onClick={() => navigate('/search')}
+                      >
+                        Find Friends
+                      </Button>
+                    </div>
+                  </Card>
+                )
               ) : (
                 // Avatar Activity Feed
                 <div className="space-y-4">
