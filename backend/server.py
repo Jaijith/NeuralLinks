@@ -277,6 +277,14 @@ async def get_session_data(request: Request):
                 user_dict['created_at'] = user_dict['created_at'].isoformat()
                 await db.users.insert_one(user_dict)
                 user_id = user.id
+                
+                # Build initial knowledge graph for new user
+                try:
+                    user_doc = await db.users.find_one({"id": user_id})
+                    if user_doc:
+                        await graph_builder.build_graph_from_profile(user_doc)
+                except Exception as e:
+                    logger.error(f"Initial graph build error: {str(e)}")
             else:
                 user_id = existing_user['id']
             
