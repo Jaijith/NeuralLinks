@@ -462,15 +462,21 @@ body.avatar-world::before {
     background: rgba(255, 248, 220, 0.95) !important; /* Light beige background */
 }
 
-/* Avatar Link Styling */
+/* Avatar Link Styling - WHITE for visibility */
 .avatar-world a,
 .avatar-world a *,
 .avatar-world a span,
 .avatar-world a div {
-    color: rgb(139, 69, 19) !important;
-    text-shadow: 0 0 10px rgba(255, 193, 7, 0.8) !important;
+    color: rgb(255, 255, 255) !important; /* White */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important;
     transition: all 0.3s ease;
     font-weight: 800 !important;
+}
+
+.avatar-world a:hover {
+    color: rgb(255, 193, 7) !important; /* Yellow on hover */
+    text-shadow: 0 0 15px rgba(255, 193, 7, 0.9) !important;
+    transform: scale(1.05);
 }
 
 /* Badge text - Yellow background with brown text */
