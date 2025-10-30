@@ -398,17 +398,17 @@ body.avatar-world::before {
     background: rgba(20, 20, 40, 0.98) !important;
 }
 
-/* High Contrast Text for Readability - AGGRESSIVE */
+/* High Contrast Text for Readability - BROWN TEXT */
 .avatar-world h1,
 .avatar-world h2,
 .avatar-world h3,
 .avatar-world h4,
 .avatar-world h5,
 .avatar-world h6 {
-    color: rgb(255, 255, 255) !important;
+    color: rgb(139, 69, 19) !important; /* Saddle Brown */
     text-shadow: 
-        0 2px 10px rgba(0, 0, 0, 1),
-        0 0 30px rgba(255, 193, 7, 0.8);
+        0 2px 10px rgba(255, 255, 255, 0.8),
+        0 0 30px rgba(255, 193, 7, 0.6);
     font-weight: 900 !important;
 }
 
@@ -416,8 +416,8 @@ body.avatar-world::before {
 .avatar-world span,
 .avatar-world div,
 .avatar-world label {
-    color: rgb(255, 255, 255) !important;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+    color: rgb(101, 67, 33) !important; /* Dark Brown */
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
     font-weight: 700 !important;
 }
 
@@ -432,14 +432,14 @@ body.avatar-world::before {
 .avatar-world .text-gray-800,
 .avatar-world .text-gray-900,
 .avatar-world .text-black {
-    color: rgb(255, 255, 255) !important;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1) !important;
+    color: rgb(101, 67, 33) !important;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5) !important;
 }
 
 /* Force all nested text elements */
 .avatar-world * {
-    color: rgb(255, 255, 255) !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+    color: rgb(101, 67, 33) !important; /* Dark Brown */
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4) !important;
 }
 
 /* Button text in avatar world */
@@ -447,9 +447,9 @@ body.avatar-world::before {
 .avatar-world button *,
 .avatar-world button span,
 .avatar-world button div {
-    color: rgb(255, 255, 255) !important;
+    color: rgb(139, 69, 19) !important; /* Saddle Brown */
     font-weight: 800 !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.6) !important;
 }
 
 /* Input text */
@@ -458,8 +458,8 @@ body.avatar-world::before {
 .avatar-world input::placeholder,
 .avatar-world textarea::placeholder {
     font-weight: 700 !important;
-    color: rgb(255, 255, 255) !important;
-    background: rgba(40, 40, 60, 0.95) !important;
+    color: rgb(101, 67, 33) !important;
+    background: rgba(255, 248, 220, 0.95) !important; /* Light beige background */
 }
 
 /* Avatar Link Styling */
@@ -467,26 +467,26 @@ body.avatar-world::before {
 .avatar-world a *,
 .avatar-world a span,
 .avatar-world a div {
-    color: rgb(255, 255, 255) !important;
+    color: rgb(139, 69, 19) !important;
     text-shadow: 0 0 10px rgba(255, 193, 7, 0.8) !important;
     transition: all 0.3s ease;
     font-weight: 800 !important;
 }
 
-/* Badge text - INVERSE for visibility */
+/* Badge text - Yellow background with brown text */
 .avatar-world .badge,
 .avatar-world [class*="badge"],
 .avatar-world .bg-purple-100 {
     background: rgba(255, 193, 7, 0.95) !important;
-    color: rgb(0, 0, 0) !important;
+    color: rgb(101, 67, 33) !important;
     font-weight: 900 !important;
-    text-shadow: none !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5) !important;
 }
 
 .avatar-world .badge *,
 .avatar-world [class*="badge"] * {
-    color: rgb(0, 0, 0) !important;
-    text-shadow: none !important;
+    color: rgb(101, 67, 33) !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5) !important;
 }
 
 .avatar-world a:hover {
