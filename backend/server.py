@@ -855,7 +855,7 @@ async def send_message(data: Dict[str, Any], request: Request):
 @api_router.get("/chat/{match_id}/messages")
 async def get_messages(match_id: str, request: Request):
     """Get messages for a match"""
-    user = await require_auth(request)
+    _ = await require_auth(request)
     
     conversation = await db.human_conversations.find_one({"match_id": match_id}, {"_id": 0})
     if not conversation:
