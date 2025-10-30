@@ -384,18 +384,18 @@ body.avatar-world::before {
     font-weight: 600 !important;
 }
 
-/* Card backgrounds - MUCH DARKER for readability */
+/* Card backgrounds - LIGHT for brown text readability */
 .avatar-world .card,
 .card-avatar {
-    background: rgba(20, 20, 40, 0.98) !important;
+    background: rgba(255, 248, 220, 0.95) !important; /* Light beige */
     backdrop-filter: blur(20px);
     border: 2px solid rgba(255, 193, 7, 0.6) !important;
 }
 
-/* Override all white backgrounds in avatar world */
+/* Override all white backgrounds in avatar world to light beige */
 .avatar-world .bg-white,
 .avatar-world [class*="bg-white"] {
-    background: rgba(20, 20, 40, 0.98) !important;
+    background: rgba(255, 248, 220, 0.95) !important;
 }
 
 /* High Contrast Text for Readability - BROWN TEXT */
