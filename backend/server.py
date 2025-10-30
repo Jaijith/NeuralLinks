@@ -231,11 +231,28 @@ async def get_session_data(request: Request):
             existing_user = await db.users.find_one({"email": data['email']})
             
             if not existing_user:
-                # Create new user
+                # Create new user with BOTH real and avatar profiles
+                # Generate avatar nickname
+                avatar_prefixes = ['Cyber', 'Neon', 'Digital', 'Quantum', 'Stellar', 'Phoenix', 'Dragon', 'Storm']
+                avatar_suffixes = ['Walker', 'Rider', 'Hunter', 'Seeker', 'Warrior', 'Spirit', 'Dream', 'Star']
+                avatar_nickname = f"{random.choice(avatar_prefixes)}{random.choice(avatar_suffixes)}"
+                
+                # Generate avatar image
+                avatar_seed = f"{data['name']}{random.randint(100, 999)}"
+                avatar_picture = f"https://api.dicebear.com/7.x/adventurer/svg?seed={avatar_seed}"
+                
                 user = User(
                     email=data['email'],
                     name=data['name'],
-                    picture=data.get('picture')
+                    picture=data.get('picture'),
+                    # Avatar profile (auto-created)
+                    avatar_name=avatar_nickname,
+                    avatar_picture=avatar_picture,
+                    avatar_bio="Digital warrior in the virtual realm",
+                    avatar_job_title="Virtual Explorer",
+                    avatar_location="Cyberspace",
+                    avatar_interests=[],
+                    avatar_posts=[]
                 )
                 user_dict = user.model_dump()
                 user_dict['created_at'] = user_dict['created_at'].isoformat()
