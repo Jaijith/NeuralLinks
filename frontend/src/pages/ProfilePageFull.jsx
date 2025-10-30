@@ -470,7 +470,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                 />
                               </div>
                               <Button onClick={updateAvatarProfile} className="w-full bg-gradient-to-r from-pink-500 to-purple-600">
-                                Save Avatar Profile
+                                Save Maya Profile
                               </Button>
                             </div>
                           </DialogContent>
