@@ -25,9 +25,9 @@ class GraphRAG:
             {"_id": 0}
         ).to_list(1000)
         
-        # Get all edges
+        # Get all edges for future use
         node_ids = [n["id"] for n in nodes]
-        edges = await self.db.graph_edges.find(
+        _ = await self.db.graph_edges.find(
             {"$or": [
                 {"from_node_id": {"$in": node_ids}},
                 {"to_node_id": {"$in": node_ids}}
