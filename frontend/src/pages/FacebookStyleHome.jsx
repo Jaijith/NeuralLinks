@@ -17,6 +17,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import WorldModeToggle from "@/components/WorldModeToggle";
+import SideMessenger from "@/components/SideMessenger";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -31,6 +32,8 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   const [postText, setPostText] = useState('');
   const [selectedTab, setSelectedTab] = useState('timeline');
   const [friendPosts, setFriendPosts] = useState([]);
+  const [showMessenger, setShowMessenger] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState(null);
 
   // Dynamic labels based on world mode
   const labels = {
