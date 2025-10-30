@@ -260,15 +260,10 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Graph Builder Module"
-    - "Graph RAG Module"
-    - "Intelligent Avatar Module"
-    - "Avatar Intelligence Routes"
-    - "External Platform Integration Routes"
+  current_focus: []
   stuck_tasks: []
-  test_all: false
-  test_priority: "high_first"
+  test_all: true
+  test_priority: "completed"
 
 agent_communication:
   - agent: "main"
