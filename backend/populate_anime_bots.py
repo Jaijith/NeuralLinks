@@ -327,7 +327,7 @@ async def auto_friend_bots_to_users():
         print(f"  ✅ Added {num_friends} bot friends to {real_user['name']}")
 
 async def main():
-    print("🎌 Creating Anime-Style Bot Profiles...\n")
+    print("🎌 Creating Dual-World Bot Profiles (Real + Avatar)...\n")
     
     # Clear existing
     await clear_existing_bots()
@@ -337,10 +337,14 @@ async def main():
     bot_data = {}
     
     for i in range(50):
-        user_id, name, interests = await generate_anime_bot()
+        user_id, real_name, avatar_name, interests = await generate_anime_bot()
         bot_ids.append(user_id)
-        bot_data[user_id] = {'name': name, 'interests': interests}
-        print(f"✅ Bot {i+1}/50: {name}")
+        bot_data[user_id] = {
+            'real_name': real_name, 
+            'avatar_name': avatar_name, 
+            'interests': interests
+        }
+        print(f"✅ Bot {i+1}/50: {real_name} / {avatar_name}")
         await asyncio.sleep(0.05)
     
     # Create avatar conversations
@@ -356,11 +360,13 @@ async def main():
     friend_count = await db.friendships.count_documents({})
     node_count = await db.graph_nodes.count_documents({})
     
-    print(f"  Anime Bots: {user_count}")
+    print(f"  Dual-World Bots: {user_count}")
     print(f"  Avatar Conversations: {conv_count}")
     print(f"  Friendships: {friend_count}")
     print(f"  Graph Nodes: {node_count}")
-    print("\n🎉 Complete! Your social media is now populated with anime bots!")
+    print("\n🎉 Complete! Your social media is now populated with dual-world bots!")
+    print("   - Real World: Realistic names & photos")
+    print("   - Avatar World: Anime-style avatars")
 
 if __name__ == '__main__':
     asyncio.run(main())
