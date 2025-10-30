@@ -101,7 +101,83 @@ const IntegrationsPage = ({ user }) => {
     }
   };
 
+  const connectPlatform = async (platformName) => {
+    try {
+      await axios.post(`${API}/integrations/connect`, 
+        { platform_name: platformName },
+        { withCredentials: true }
+      );
+      toast.success(`${platformName} connected!`);
+      fetchIntegrations();
+    } catch (error) {
+      console.error("Error connecting platform:", error);
+      toast.error("Failed to connect platform");
+    }
+  };
+
+  const syncPlatform = async (platformName) => {
+    try {
+      const response = await axios.post(`${API}/integrations/sync`, 
+        { platform_name: platformName },
+        { withCredentials: true }
+      );
+      toast.success(response.data.message);
+      fetchIntegrations();
+    } catch (error) {
+      console.error("Error syncing platform:", error);
+      toast.error("Failed to sync platform");
+    }
+  };
+
   const PlatformCard = ({ platform }) => {
+    const Icon = platformIcons[platform.name] || ShoppingCart;
+    const gradient = platformColors[platform.name] || 'from-gray-500 to-gray-600';
+    
+    return (
+      <Card className="glass-morphism p-6 card-hover" data-testid={`platform-${platform.platform_name}`}>
+        <div className="flex items-start justify-between mb-4">
+          <div className={`w-12 h-12 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center`}>
+            <span className="text-2xl">{platform.icon}</span>
+          </div>
+          {platform.connected ? (
+            <Badge className="bg-green-100 text-green-700">
+              <CheckCircle className="w-3 h-3 mr-1" />
+              Connected
+            </Badge>
+          ) : (
+            <Badge className="bg-gray-100 text-gray-700">
+              <XCircle className="w-3 h-3 mr-1" />
+              Available
+            </Badge>
+          )}
+        </div>
+        <h3 className="text-lg font-bold text-gray-800 mb-2">{platform.name}</h3>
+        <p className="text-sm text-gray-600 mb-4">{platform.description}</p>
+        
+        {platform.connected ? (
+          <div className="space-y-2">
+            <Button
+              onClick={() => syncPlatform(platform.platform_name)}
+              variant="outline"
+              className="w-full border-2 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-full"
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Sync Data
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={() => connectPlatform(platform.platform_name)}
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:shadow-lg"
+          >
+            Connect {platform.name}
+          </Button>
+        )}
+      </Card>
+    );
+  };
+
+  const PlatformCard_old = ({ platform }) => {
     const Icon = platformIcons[platform.platform_name] || ShoppingCart;
     const gradient = platformColors[platform.platform_name] || 'from-gray-500 to-gray-600';
     
