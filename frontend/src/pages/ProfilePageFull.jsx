@@ -787,8 +787,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
                     </div>
                   </Card>
                   
-                  {/* Avatar Posts */}
-                  <h4 className="font-semibold text-gray-700">Avatar Posts</h4>
+                  {/* Maya Posts */}
+                  <h4 className="font-semibold text-gray-700">Maya Posts</h4>
                   {profileUser.avatar_posts && profileUser.avatar_posts.length > 0 ? (
                     profileUser.avatar_posts.slice(0, 3).map((post) => (
                       <Card key={post.id} className="p-3">
@@ -798,7 +798,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                     ))
                   ) : (
                     <Card className="p-4 text-center">
-                      <p className="text-sm text-gray-500">No avatar posts yet</p>
+                      <p className="text-sm text-gray-500">No maya posts yet</p>
                     </Card>
                   )}
                 </div>
