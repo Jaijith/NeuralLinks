@@ -1,9 +1,5 @@
-import { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Heart, Sparkles, Users, MessageCircle, Brain, Zap } from "lucide-react";
-import axios from "axios";
-import { toast } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
