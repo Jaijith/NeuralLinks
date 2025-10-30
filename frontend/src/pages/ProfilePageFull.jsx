@@ -62,7 +62,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
     if (targetUserId === currentUser.id) {
       fetchPosts();
     }
-  }, [userId, currentUser, worldMode]);
+  }, [userId, currentUser, worldMode]); // Re-fetch when worldMode changes
 
   const fetchProfile = async (id) => {
     try {
