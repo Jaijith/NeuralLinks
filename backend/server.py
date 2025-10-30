@@ -394,30 +394,43 @@ async def create_post(post_data: Dict[str, str], request: Request):
     """Create a new post on user's profile"""
     user = await require_auth(request)
     
+    # Determine post type (real or avatar)
+    post_type = post_data.get('post_type', 'real')  # 'real' or 'avatar'
+    
     new_post = {
         'id': str(uuid.uuid4()),
         'text': post_data.get('text', ''),
+        'post_type': post_type,
         'created_at': datetime.now(timezone.utc).isoformat(),
         'likes': 0,
         'comments': 0
     }
     
-    # Add post to user's posts array
-    await db.users.update_one(
-        {"id": user.id},
-        {"$push": {"posts": new_post}}
-    )
+    # Add post to appropriate array based on type
+    if post_type == 'avatar':
+        await db.users.update_one(
+            {"id": user.id},
+            {"$push": {"avatar_posts": new_post}}
+        )
+    else:
+        await db.users.update_one(
+            {"id": user.id},
+            {"$push": {"posts": new_post}}
+        )
     
     return new_post
 
 @api_router.get("/profile/posts")
-async def get_user_posts(request: Request):
+async def get_user_posts(post_type: str = "real", request: Request = None):
     """Get current user's posts"""
     user = await require_auth(request)
     
-    user_doc = await db.users.find_one({"id": user.id}, {"_id": 0, "posts": 1})
+    user_doc = await db.users.find_one({"id": user.id}, {"_id": 0, "posts": 1, "avatar_posts": 1})
     
-    posts = user_doc.get('posts', []) if user_doc else []
+    if post_type == 'avatar':
+        posts = user_doc.get('avatar_posts', []) if user_doc else []
+    else:
+        posts = user_doc.get('posts', []) if user_doc else []
     
     # Sort by created_at descending
     posts.sort(key=lambda x: x.get('created_at', ''), reverse=True)
@@ -425,14 +438,20 @@ async def get_user_posts(request: Request):
     return posts
 
 @api_router.delete("/profile/posts/{post_id}")
-async def delete_post(post_id: str, request: Request):
+async def delete_post(post_id: str, post_type: str = "real", request: Request = None):
     """Delete a user's post"""
     user = await require_auth(request)
     
-    await db.users.update_one(
-        {"id": user.id},
-        {"$pull": {"posts": {"id": post_id}}}
-    )
+    if post_type == 'avatar':
+        await db.users.update_one(
+            {"id": user.id},
+            {"$pull": {"avatar_posts": {"id": post_id}}}
+        )
+    else:
+        await db.users.update_one(
+            {"id": user.id},
+            {"$pull": {"posts": {"id": post_id}}}
+        )
     
     return {"message": "Post deleted"}
 
@@ -441,11 +460,19 @@ async def edit_post(post_id: str, post_data: Dict[str, str], request: Request):
     """Edit a user's post"""
     user = await require_auth(request)
     
+    post_type = post_data.get('post_type', 'real')
+    
     # Update the specific post in the array
-    await db.users.update_one(
-        {"id": user.id, "posts.id": post_id},
-        {"$set": {"posts.$.text": post_data.get('text', '')}}
-    )
+    if post_type == 'avatar':
+        await db.users.update_one(
+            {"id": user.id, "avatar_posts.id": post_id},
+            {"$set": {"avatar_posts.$.text": post_data.get('text', '')}}
+        )
+    else:
+        await db.users.update_one(
+            {"id": user.id, "posts.id": post_id},
+            {"$set": {"posts.$.text": post_data.get('text', '')}}
+        )
     
     return {"message": "Post updated"}
 
