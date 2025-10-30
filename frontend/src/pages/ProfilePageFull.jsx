@@ -713,7 +713,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                     ))
                   ) : (
                     <Card className="p-4 text-center">
-                      <p className="text-sm text-gray-500">No real posts yet</p>
+                      <p className="text-sm text-gray-500">No sense posts yet</p>
                     </Card>
                   )}
                 </div>
