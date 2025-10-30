@@ -190,7 +190,7 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
                       <Avatar className="w-6 h-6 flex-shrink-0">
                         <AvatarImage
                           src={msg.sender_id === user.id 
-                            ? (worldMode === 'Maya' ? user.avatar_picture || user.picture : user.picture)
+                            ? (worldMode === 'avatar' ? user.avatar_picture || user.picture : user.picture)
                             : displayPicture
                           }
                         />
