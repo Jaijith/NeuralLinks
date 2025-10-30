@@ -1045,7 +1045,7 @@ async def get_integrations(request: Request):
 @api_router.get("/avatar/activity/{user_id}")
 async def get_avatar_activity(user_id: str, request: Request):
     """Get avatar's activity feed"""
-    user = await require_auth(request)
+    _ = await require_auth(request)
     
     # Get avatar's conversations
     conversations = await db.agent_conversations.find({
