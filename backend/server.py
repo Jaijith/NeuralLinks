@@ -1216,7 +1216,7 @@ async def enrich_graph_from_interaction(request: Request, data: Dict[str, Any]):
     if not target_user_id:
         raise HTTPException(status_code=400, detail="Target user ID required")
     
-    result = await graph_builder.enrich_graph_from_interaction(
+    _ = await graph_builder.enrich_graph_from_interaction(
         user.id, target_user_id, interaction_type
     )
     
