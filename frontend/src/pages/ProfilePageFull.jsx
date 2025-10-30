@@ -817,7 +817,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   </Avatar>
                   <div className="flex-1">
                     <Textarea
-                      placeholder={worldMode === 'real' ? "What's on your mind?" : "What's your avatar thinking?"}
+                      placeholder={worldMode === 'real' ? "What's on your mind?" : "What's your maya thinking?"}
                       value={newPostText}
                       onChange={(e) => setNewPostText(e.target.value)}
                       className="mb-2"
