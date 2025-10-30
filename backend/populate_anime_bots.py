@@ -184,10 +184,10 @@ async def generate_anime_bot():
             'data_collected': random.randint(50, 500)
         })
     
-    # Generate posts
-    num_posts = random.randint(3, 8)
-    posts = []
-    for i in range(num_posts):
+    # Generate REAL posts
+    num_real_posts = random.randint(2, 5)
+    real_posts = []
+    for i in range(num_real_posts):
         template = random.choice(posts_templates)
         post_text = template.format(
             anime=random.choice(animes),
@@ -198,18 +198,58 @@ async def generate_anime_bot():
             game=random.choice(games),
             skill=random.choice(skills)
         )
-        posts.append({
+        real_posts.append({
             'id': str(uuid.uuid4()),
             'text': post_text,
+            'post_type': 'real',
             'created_at': (datetime.now(timezone.utc) - timedelta(days=random.randint(0, 30))).isoformat(),
             'likes': random.randint(5, 150),
             'comments': random.randint(0, 25)
         })
     
-    # Store posts
+    # Generate AVATAR posts (different content)
+    avatar_posts_templates = [
+        "Just unlocked a new ability in the virtual realm! {skill} is amazing! ⚡",
+        "Training in {location}... My power level is increasing! 💪",
+        "Met {friend} in the digital world today. Epic adventure! 🌟",
+        "Exploring the {realm} dimension. The visuals are breathtaking! 🎨",
+        "My avatar just learned {skill}! Time to level up! 🔥",
+        "Connecting with other digital souls in {location}. Unity! 🌐",
+        "Virtual {event} was legendary! Who else was there? 👾",
+        "Mastering {interest} in the cyberverse! Join me! 🚀",
+        "My neural link is stronger than ever! {emotion} 💫",
+        "Digital dreams and virtual reality... This is my world! ✨"
+    ]
+    
+    num_avatar_posts = random.randint(2, 5)
+    avatar_posts = []
+    for i in range(num_avatar_posts):
+        template = random.choice(avatar_posts_templates)
+        post_text = template.format(
+            skill=random.choice(['Telepathy', 'Energy Manipulation', 'Time Bending', 'Digital Mastery']),
+            location=random.choice(['Cyberspace', 'Virtual Realm', 'Digital Haven', 'Neon City']),
+            friend=random.choice(anime_first_names),
+            realm=random.choice(['Quantum', 'Ethereal', 'Neon', 'Crystal']),
+            event=random.choice(['virtual concert', 'digital tournament', 'cyber gathering']),
+            interest=random.choice(user_interests),
+            emotion=random.choice(['Feeling powerful', 'Vibing high', 'Energy surging'])
+        )
+        avatar_posts.append({
+            'id': str(uuid.uuid4()),
+            'text': post_text,
+            'post_type': 'avatar',
+            'created_at': (datetime.now(timezone.utc) - timedelta(days=random.randint(0, 30))).isoformat(),
+            'likes': random.randint(10, 200),
+            'comments': random.randint(0, 30)
+        })
+    
+    # Store both types of posts
     await db.users.update_one(
         {'id': user_id},
-        {'$set': {'posts': posts}}
+        {'$set': {
+            'posts': real_posts,
+            'avatar_posts': avatar_posts
+        }}
     )
     
     return user_id, real_name, avatar_name, user_interests
