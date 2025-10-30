@@ -622,7 +622,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   <h3 className="text-lg font-bold text-gray-900">👤 Viewing Both Profiles</h3>
                 </div>
                 <p className="text-gray-700">
-                  You're viewing both your Real and Avatar profiles side-by-side. Edit either profile independently!
+                  You're viewing both your Sense and Maya profiles side-by-side. Edit either profile independently!
                 </p>
               </Card>
             )}
