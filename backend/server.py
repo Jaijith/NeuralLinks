@@ -371,7 +371,7 @@ async def create_agent(request: Request):
     # Check if agent exists
     existing = await db.ai_agents.find_one({"user_id": user.id})
     if existing:
-        return GraphAgent(**existing)
+        return AIAgent(**existing)
     
     # Create agent
     agent = AIAgent(
