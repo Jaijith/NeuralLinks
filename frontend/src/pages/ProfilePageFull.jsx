@@ -192,7 +192,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
       // Refresh
       window.location.reload();
     } catch (error) {
-      toast.error("Failed to update avatar profile");
+      toast.error("Failed to update maya profile");
     }
   };
 
