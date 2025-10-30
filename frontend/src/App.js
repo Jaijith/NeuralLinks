@@ -31,8 +31,38 @@ function App() {
     }
   };
 
+  const handleAuthCallback = async () => {
+    const hash = window.location.hash;
+    if (hash && hash.includes("session_id=")) {
+      const sessionId = hash.split("session_id=")[1].split("&")[0];
+      
+      try {
+        const response = await axios.get(`${API}/auth/session-data`, {
+          headers: { "X-Session-ID": sessionId },
+          withCredentials: true,
+        });
+
+        document.cookie = `session_token=${response.data.session_token}; path=/; secure; samesite=none; max-age=604800`;
+
+        // Clear the hash from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Fetch user data
+        await checkAuth();
+        
+        toast.success("Welcome to AI Dating Match!");
+      } catch (error) {
+        console.error("Auth error:", error);
+        toast.error("Authentication failed. Please try again.");
+        setLoading(false);
+      }
+    } else {
+      checkAuth();
+    }
+  };
+
   useEffect(() => {
-    checkAuth();
+    handleAuthCallback();
   }, []);
 
   if (loading) {
