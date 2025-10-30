@@ -34,17 +34,15 @@ const ProfilePageFull = ({ user: currentUser }) => {
       if (id === currentUser.id) {
         setProfileUser(currentUser);
       } else {
-        const response = await axios.get(`${API}/search/users?q=${id}`, {
+        const response = await axios.get(`${API}/users/${id}`, {
           withCredentials: true,
         });
-        const found = response.data.find(u => u.id === id);
-        if (found) {
-          setProfileUser(found);
-          setFriendshipStatus(found.friendship_status || 'none');
-        }
+        setProfileUser(response.data);
+        setFriendshipStatus(response.data.friendship_status || 'none');
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
+      toast.error("Profile not found");
     } finally {
       setLoading(false);
     }
