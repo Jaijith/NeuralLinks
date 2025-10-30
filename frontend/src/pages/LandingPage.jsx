@@ -3,7 +3,7 @@ import { Heart, Sparkles, Users, MessageCircle, Brain, Zap } from "lucide-react"
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
-const REDIRECT_URL = window.location.origin + "/dashboard";
+const REDIRECT_URL = window.location.origin + "/home";
 
 const LandingPage = ({ setUser }) => {
   const handleLogin = () => {
