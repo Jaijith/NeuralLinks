@@ -128,7 +128,7 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
           <div className="flex-1">
             <h3 className="font-semibold text-white text-sm">{displayName}</h3>
             <div className="flex items-center space-x-1">
-              {worldMode === 'Maya' && (
+              {worldMode === 'avatar' && (
                 <>
                   <Bot className="w-3 h-3 text-white" />
                   <span className="text-xs text-white/90">AI Avatar</span>
