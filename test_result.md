@@ -167,15 +167,18 @@ backend:
 
   - task: "Add Graph Building Routes"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added routes: /graph/build-from-profile, /graph/enrich-from-post, /graph/enrich-from-interaction, /graph/context, /graph/compatibility, /graph/similar-users"
+      - working: true
+        agent: "testing"
+        comment: "All graph building routes functional. POST /graph/build-from-profile creates nodes/edges, POST /graph/enrich-from-post adds entities from content, POST /graph/enrich-from-interaction updates based on user interactions, GET /graph/context returns organized node data, GET /graph/compatibility calculates user similarity, GET /graph/similar-users finds matching profiles."
 
   - task: "Add External Platform Integration Routes"
     implemented: true
