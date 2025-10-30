@@ -1085,6 +1085,308 @@ async def get_avatar_conversations(request: Request):
     
     return conversations
 
+# ============ INTELLIGENT AVATAR ROUTES ============
+
+@api_router.post("/avatar/generate-post")
+async def generate_avatar_post(request: Request, post_type: str = "general"):
+    """Generate intelligent avatar post using Graph RAG"""
+    user = await require_auth(request)
+    
+    result = await intelligent_avatar.generate_avatar_post(user.id, post_type)
+    
+    if "error" in result:
+        raise HTTPException(status_code=500, detail=result["error"])
+    
+    return result
+
+@api_router.post("/avatar/chat-response")
+async def generate_avatar_chat_response(request: Request, data: Dict[str, Any]):
+    """Generate intelligent avatar chat response"""
+    user = await require_auth(request)
+    
+    other_user_id = data.get("other_user_id")
+    conversation_history = data.get("conversation_history", [])
+    last_message = data.get("last_message", "")
+    
+    if not other_user_id or not last_message:
+        raise HTTPException(status_code=400, detail="Missing required fields")
+    
+    result = await intelligent_avatar.generate_chat_response(
+        user.id, other_user_id, conversation_history, last_message
+    )
+    
+    if "error" in result:
+        raise HTTPException(status_code=500, detail=result["error"])
+    
+    return result
+
+@api_router.post("/avatar/generate-bio")
+async def generate_avatar_bio(request: Request):
+    """Generate avatar bio from graph data"""
+    user = await require_auth(request)
+    
+    result = await intelligent_avatar.generate_avatar_profile_bio(user.id)
+    
+    if "error" in result:
+        raise HTTPException(status_code=500, detail=result["error"])
+    
+    return result
+
+@api_router.get("/avatar/conversation-starters/{other_user_id}")
+async def get_conversation_starters(other_user_id: str, request: Request):
+    """Get AI-generated conversation starters"""
+    user = await require_auth(request)
+    
+    starters = await intelligent_avatar.suggest_conversation_starters(user.id, other_user_id, count=3)
+    
+    return {"starters": starters}
+
+@api_router.get("/avatar/match-explanation/{match_user_id}")
+async def get_match_explanation(match_user_id: str, request: Request):
+    """Get explanation for match compatibility"""
+    user = await require_auth(request)
+    
+    explanation = await intelligent_avatar.generate_match_explanation(user.id, match_user_id)
+    
+    return {"explanation": explanation}
+
+# ============ GRAPH BUILDING ROUTES ============
+
+@api_router.post("/graph/build-from-profile")
+async def build_graph_from_profile(request: Request):
+    """Build knowledge graph from user profile"""
+    user = await require_auth(request)
+    
+    user_doc = await db.users.find_one({"id": user.id})
+    if not user_doc:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    result = await graph_builder.build_graph_from_profile(user_doc)
+    
+    return {
+        "message": "Graph built successfully",
+        "nodes_created": result["nodes_created"],
+        "edges_created": result["edges_created"]
+    }
+
+@api_router.post("/graph/enrich-from-post")
+async def enrich_graph_from_post(request: Request, data: Dict[str, Any]):
+    """Enrich graph from post content"""
+    user = await require_auth(request)
+    
+    post_content = data.get("content", "")
+    if not post_content:
+        raise HTTPException(status_code=400, detail="Post content required")
+    
+    result = await graph_builder.enrich_graph_from_post(post_content, user.id)
+    
+    return {
+        "message": "Graph enriched from post",
+        "nodes_created": result["nodes_created"],
+        "edges_created": result["edges_created"]
+    }
+
+@api_router.post("/graph/enrich-from-interaction")
+async def enrich_graph_from_interaction(request: Request, data: Dict[str, Any]):
+    """Enrich graph from user interaction"""
+    user = await require_auth(request)
+    
+    target_user_id = data.get("target_user_id")
+    interaction_type = data.get("interaction_type", "view")  # view, like, match, message
+    
+    if not target_user_id:
+        raise HTTPException(status_code=400, detail="Target user ID required")
+    
+    result = await graph_builder.enrich_graph_from_interaction(
+        user.id, target_user_id, interaction_type
+    )
+    
+    return {"message": "Graph enriched from interaction"}
+
+@api_router.get("/graph/context")
+async def get_graph_context(request: Request):
+    """Get user's graph context"""
+    user = await require_auth(request)
+    
+    context = await graph_rag.get_user_context(user.id)
+    
+    return context
+
+@api_router.get("/graph/compatibility/{other_user_id}")
+async def get_compatibility(other_user_id: str, request: Request):
+    """Calculate compatibility with another user"""
+    user = await require_auth(request)
+    
+    compatibility = await graph_rag.calculate_compatibility(user.id, other_user_id)
+    
+    return compatibility
+
+@api_router.get("/graph/similar-users")
+async def find_similar_users(request: Request, limit: int = 10):
+    """Find users with similar graphs"""
+    user = await require_auth(request)
+    
+    similar = await graph_rag.find_similar_users(user.id, limit)
+    
+    return {"similar_users": similar}
+
+# ============ EXTERNAL PLATFORM INTEGRATION ROUTES ============
+
+@api_router.get("/integrations")
+async def get_user_integrations(request: Request):
+    """Get user's connected platform integrations"""
+    user = await require_auth(request)
+    
+    integrations = await db.user_integrations.find(
+        {"user_id": user.id},
+        {"_id": 0}
+    ).to_list(100)
+    
+    # Return with placeholder data
+    platform_templates = {
+        "spotify": {"icon": "🎵", "name": "Spotify", "description": "Music preferences and listening history"},
+        "youtube": {"icon": "📺", "name": "YouTube", "description": "Video interests and subscriptions"},
+        "instagram": {"icon": "📷", "name": "Instagram", "description": "Photos and interests"},
+        "facebook": {"icon": "👥", "name": "Facebook", "description": "Social connections and interests"},
+        "amazon": {"icon": "🛒", "name": "Amazon", "description": "Shopping preferences"},
+        "netflix": {"icon": "🎬", "name": "Netflix", "description": "Movie and TV preferences"},
+        "goodreads": {"icon": "📚", "name": "Goodreads", "description": "Reading preferences"},
+        "strava": {"icon": "🏃", "name": "Strava", "description": "Fitness activities"}
+    }
+    
+    # Create placeholder integrations
+    available_platforms = []
+    for platform_id, template in platform_templates.items():
+        existing = next((i for i in integrations if i.get("platform_name") == platform_id), None)
+        available_platforms.append({
+            "platform_name": platform_id,
+            "connected": bool(existing),
+            "status": "connected" if existing else "available",
+            **template
+        })
+    
+    return {"integrations": available_platforms}
+
+@api_router.post("/integrations/connect")
+async def connect_platform(request: Request, data: Dict[str, Any]):
+    """Connect external platform (placeholder)"""
+    user = await require_auth(request)
+    
+    platform_name = data.get("platform_name")
+    if not platform_name:
+        raise HTTPException(status_code=400, detail="Platform name required")
+    
+    # Check if already connected
+    existing = await db.user_integrations.find_one({
+        "user_id": user.id,
+        "platform_name": platform_name
+    })
+    
+    if existing:
+        return {"message": "Platform already connected", "status": "connected"}
+    
+    # Create placeholder integration
+    integration = {
+        "id": str(uuid.uuid4()),
+        "user_id": user.id,
+        "platform_name": platform_name,
+        "platform_type": "social_media",  # placeholder
+        "connected": True,
+        "connected_at": datetime.now(timezone.utc).isoformat(),
+        "last_sync": datetime.now(timezone.utc).isoformat(),
+        "data_collected": 0
+    }
+    
+    await db.user_integrations.insert_one(integration)
+    
+    # Placeholder: In real implementation, this would trigger OAuth flow
+    # For now, we just mark it as connected
+    
+    return {
+        "message": f"{platform_name} connected successfully (placeholder)",
+        "status": "connected",
+        "note": "This is a placeholder. Real OAuth integration will be implemented when needed."
+    }
+
+@api_router.post("/integrations/disconnect")
+async def disconnect_platform(request: Request, data: Dict[str, Any]):
+    """Disconnect external platform"""
+    user = await require_auth(request)
+    
+    platform_name = data.get("platform_name")
+    if not platform_name:
+        raise HTTPException(status_code=400, detail="Platform name required")
+    
+    result = await db.user_integrations.delete_one({
+        "user_id": user.id,
+        "platform_name": platform_name
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Integration not found")
+    
+    return {"message": f"{platform_name} disconnected successfully"}
+
+@api_router.post("/integrations/sync")
+async def sync_platform_data(request: Request, data: Dict[str, Any]):
+    """Sync data from connected platform (placeholder)"""
+    user = await require_auth(request)
+    
+    platform_name = data.get("platform_name")
+    if not platform_name:
+        raise HTTPException(status_code=400, detail="Platform name required")
+    
+    # Check if connected
+    integration = await db.user_integrations.find_one({
+        "user_id": user.id,
+        "platform_name": platform_name
+    })
+    
+    if not integration:
+        raise HTTPException(status_code=404, detail="Platform not connected")
+    
+    # Placeholder sync - in real implementation, this would fetch actual data
+    placeholder_data = {}
+    
+    if platform_name == "spotify":
+        placeholder_data = {
+            "top_artists": ["Artist 1", "Artist 2", "Artist 3"],
+            "top_genres": ["pop", "rock", "indie"]
+        }
+    elif platform_name == "youtube":
+        placeholder_data = {
+            "favorite_topics": ["technology", "travel", "cooking"]
+        }
+    elif platform_name in ["instagram", "facebook"]:
+        placeholder_data = {
+            "interests": ["photography", "travel", "food"]
+        }
+    
+    # Enrich graph with placeholder data
+    if placeholder_data:
+        result = await graph_builder.add_external_platform_data(
+            user.id, platform_name, placeholder_data
+        )
+        
+        # Update integration sync time
+        await db.user_integrations.update_one(
+            {"id": integration["id"]},
+            {
+                "$set": {
+                    "last_sync": datetime.now(timezone.utc).isoformat(),
+                    "data_collected": result["nodes_created"]
+                }
+            }
+        )
+        
+        return {
+            "message": f"Synced data from {platform_name} (placeholder)",
+            "nodes_added": result["nodes_created"],
+            "note": "This is placeholder data. Real API integration will be implemented when needed."
+        }
+    
+    return {"message": "Sync completed", "note": "Placeholder implementation"}
+
 app.include_router(api_router)
 
 app.add_middleware(
