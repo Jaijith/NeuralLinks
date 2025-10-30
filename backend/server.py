@@ -357,11 +357,6 @@ async def get_user_profile(user_id: str, world_mode: str = "real", request: Requ
     
     return target_user
 
-async def get_me(request: Request):
-    """Get current user"""
-    user = await require_auth(request)
-    return user
-
 @api_router.post("/auth/logout")
 async def logout(request: Request, response: Response):
     """Logout user"""
