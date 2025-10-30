@@ -165,7 +165,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                       <Button
                         onClick={() => navigate("/profile")}
                         data-testid="edit-profile-btn"
-                        className="bg-gray-200 hover:bg-gray-300 text-gray-800"
+                        className="bg-blue-500 hover:bg-blue-600 text-white"
                       >
                         <SettingsIcon className="w-4 h-4 mr-2" />
                         Edit Profile
