@@ -86,10 +86,14 @@ function App() {
       <BrowserRouter>
         <Toaster position="top-right" />
         <Routes>
-          <Route path="/" element={user ? <Navigate to="/dashboard" /> : <LandingPage setUser={setUser} />} />
+          <Route path="/" element={user ? <Navigate to="/home" /> : <LandingPage setUser={setUser} />} />
           <Route
             path="/onboarding"
             element={user ? <OnboardingChat user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/home"
+            element={user ? <FacebookStyleHome user={user} setUser={setUser} /> : <Navigate to="/" />}
           />
           <Route
             path="/dashboard"
