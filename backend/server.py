@@ -141,6 +141,28 @@ class HumanConversation(BaseModel):
     messages: List[Dict[str, Any]] = Field(default_factory=list)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class UserIntegration(BaseModel):
+    """User's connected platform integration"""
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    platform_name: str
+    platform_type: str  # social_media, ecommerce, email, messaging, dating
+    connected: bool = True
+    connected_at: str
+    last_sync: str
+    data_collected: int = 0
+
+class Friendship(BaseModel):
+    """Friendship/connection between users"""
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    friend_id: str
+    status: str  # pending, accepted, blocked
+    requested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    accepted_at: Optional[datetime] = None
+
 # ============ AUTH HELPERS ============
 
 async def get_current_user(request: Request) -> Optional[User]:
