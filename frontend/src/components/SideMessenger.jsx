@@ -98,7 +98,14 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
       }
     } catch (error) {
       console.error("Error sending message:", error);
-      toast.error("Failed to send message");
+      console.error("Error details:", error.response?.data || error.message);
+      
+      // Show more specific error message
+      const errorMsg = error.response?.data?.detail || error.message || "Failed to send message";
+      toast.error(errorMsg);
+      
+      // Remove the user's message if the request failed
+      setMessages((prev) => prev.slice(0, -1));
     } finally {
       setSending(false);
     }
