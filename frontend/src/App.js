@@ -94,6 +94,18 @@ function App() {
             element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/" />}
           />
           <Route
+            path="/search"
+            element={user ? <SearchPage user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/friends"
+            element={user ? <FriendsPage user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/integrations"
+            element={user ? <IntegrationsPage user={user} /> : <Navigate to="/" />}
+          />
+          <Route
             path="/matches"
             element={user ? <Matches user={user} /> : <Navigate to="/" />}
           />
