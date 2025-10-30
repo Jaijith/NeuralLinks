@@ -417,12 +417,12 @@ const ProfilePageFull = ({ user: currentUser }) => {
                           <DialogTrigger asChild>
                             <Button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700">
                               <Bot className="w-4 h-4 mr-2" />
-                              Edit Avatar
+                              Edit Maya
                             </Button>
                           </DialogTrigger>
                           <DialogContent className="max-w-2xl">
                             <DialogHeader>
-                              <DialogTitle>Edit Avatar Profile</DialogTitle>
+                              <DialogTitle>Edit Maya Profile</DialogTitle>
                             </DialogHeader>
                             <div className="space-y-4 py-4">
                               <div>
