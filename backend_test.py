@@ -40,41 +40,22 @@ class GraphRAGTester:
         """Setup test user with authentication"""
         print("\n=== Setting up test user ===")
         
-        # Create a mock session for testing
-        # In real scenario, this would go through OAuth flow
-        mock_session_data = {
-            "email": TEST_USER_EMAIL,
-            "name": TEST_USER_NAME,
-            "picture": "https://api.dicebear.com/7.x/avataaars/svg?seed=graphrag",
-            "session_token": f"test_token_{datetime.now().timestamp()}"
-        }
-        
         try:
-            # Simulate session creation by directly calling auth endpoint
-            headers = {"X-Session-ID": "mock_session_for_testing"}
-            
-            # Mock the session data endpoint response
-            # For testing, we'll create user directly via profile update
-            
-            # First, let's try to authenticate with a test token
-            test_token = f"test_graph_rag_{datetime.now().timestamp()}"
-            
-            # Try to get current user to see if we need to create one
+            # Test authentication with pre-created session token
             response = await self.client.get(
                 f"{BACKEND_URL}/auth/me",
-                headers={"Authorization": f"Bearer {test_token}"}
+                headers={"Authorization": f"Bearer {self.session_token}"}
             )
             
-            if response.status_code == 401:
-                # Need to create user - let's use a different approach
-                # We'll create a user by calling the profile endpoint with mock data
+            if response.status_code == 200:
+                user_data = response.json()
+                await self.log_result("User Authentication", True, 
+                                    f"Authenticated as {user_data.get('name', 'Unknown')}")
+                return True
+            else:
                 await self.log_result("User Authentication", False, 
-                                    "Need to implement proper test user creation")
+                                    f"Authentication failed: HTTP {response.status_code}")
                 return False
-            
-            await self.log_result("User Authentication", True, "Test user setup completed")
-            self.session_token = test_token
-            return True
             
         except Exception as e:
             await self.log_result("User Authentication", False, f"Setup failed: {str(e)}")
