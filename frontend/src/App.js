@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 import LandingPage from "./pages/LandingPage";
 import FacebookStyleHome from "./pages/FacebookStyleHome";
@@ -15,6 +15,7 @@ import FriendsPage from "./pages/FriendsPage";
 import IntegrationsPage from "./pages/IntegrationsPage";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
+import { WorldModeProvider } from "./contexts/WorldModeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -82,58 +83,60 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Toaster position="top-right" />
-        <Routes>
-          <Route path="/" element={user ? <Navigate to="/home" /> : <LandingPage setUser={setUser} />} />
-          <Route
-            path="/onboarding"
-            element={user ? <OnboardingChat user={user} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/home"
-            element={user ? <FacebookStyleHome user={user} setUser={setUser} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/dashboard"
-            element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/search"
-            element={user ? <SearchPage user={user} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/friends"
-            element={user ? <FriendsPage user={user} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/integrations"
-            element={user ? <IntegrationsPage user={user} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/matches"
-            element={user ? <Matches user={user} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/chat/:matchId"
-            element={user ? <Chat user={user} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/profile"
-            element={user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/profile/:userId"
-            element={user ? <ProfilePageFull user={user} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/myprofile"
-            element={user ? <ProfilePageFull user={user} /> : <Navigate to="/" />}
-          />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <WorldModeProvider>
+      <div className="App">
+        <BrowserRouter>
+          <Toaster position="top-right" />
+          <Routes>
+            <Route path="/" element={user ? <Navigate to="/home" /> : <LandingPage setUser={setUser} />} />
+            <Route
+              path="/onboarding"
+              element={user ? <OnboardingChat user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/home"
+              element={user ? <FacebookStyleHome user={user} setUser={setUser} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/dashboard"
+              element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/search"
+              element={user ? <SearchPage user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/friends"
+              element={user ? <FriendsPage user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/integrations"
+              element={user ? <IntegrationsPage user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/matches"
+              element={user ? <Matches user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/chat/:matchId"
+              element={user ? <Chat user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/profile"
+              element={user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/profile/:userId"
+              element={user ? <ProfilePageFull user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/myprofile"
+              element={user ? <ProfilePageFull user={user} /> : <Navigate to="/" />}
+            />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </WorldModeProvider>
   );
 }
 
