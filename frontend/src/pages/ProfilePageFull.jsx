@@ -174,7 +174,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
       });
       setProfileUser({ ...profileUser, ...editRealProfileData });
       setShowEditRealProfile(false);
-      toast.success("Real profile updated!");
+      toast.success("Sense profile updated!");
       // Refresh
       window.location.reload();
     } catch (error) {
