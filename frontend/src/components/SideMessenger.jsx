@@ -110,7 +110,7 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
     ? (otherUser.avatar_name || otherUser.name) 
     : otherUser.name;
   
-  const displayPicture = worldMode === 'Maya' 
+  const displayPicture = worldMode === 'avatar' 
     ? (otherUser.avatar_picture || otherUser.picture) 
     : otherUser.picture;
 
