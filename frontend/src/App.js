@@ -3,6 +3,7 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import LandingPage from "./pages/LandingPage";
+import FacebookStyleHome from "./pages/FacebookStyleHome";
 import Dashboard from "./pages/Dashboard";
 import OnboardingChat from "./pages/OnboardingChat";
 import Matches from "./pages/Matches";
