@@ -485,7 +485,10 @@ const ProfilePageFull = ({ user: currentUser }) => {
                             <Users className="w-4 h-4 mr-2" />
                             Friends
                           </Button>
-                          <Button className="bg-blue-500 hover:bg-blue-600 text-white">
+                          <Button 
+                            onClick={() => navigate(`/avatar-chat/${profileUser.id}`)}
+                            className="bg-blue-500 hover:bg-blue-600 text-white"
+                          >
                             <MessageCircle className="w-4 h-4 mr-2" />
                             Message
                           </Button>
