@@ -17,6 +17,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import AppHeader from "@/components/AppHeader";
+import SideMessenger from "@/components/SideMessenger";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -28,6 +29,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
   const [profileUser, setProfileUser] = useState(null);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
   const [friendshipStatus, setFriendshipStatus] = useState('none');
+  const [showMessenger, setShowMessenger] = useState(false);
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
