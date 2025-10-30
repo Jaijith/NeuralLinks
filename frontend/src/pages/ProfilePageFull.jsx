@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { 
   Camera, MapPin, Briefcase, Heart, Users, MessageCircle, 
   Settings as SettingsIcon, Bot, User as UserIcon, Edit2, 
-  X, Plus, Send, ThumbsUp, Trash2, MoreHorizontal 
+  X, Plus, Send, ThumbsUp, Trash2, MoreHorizontal, Palette 
 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
@@ -29,18 +29,29 @@ const ProfilePageFull = ({ user: currentUser }) => {
   const [friendshipStatus, setFriendshipStatus] = useState('none');
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [mode, setMode] = useState('real'); // Personal mode (separate from global)
   const [posts, setPosts] = useState([]);
   const [newPostText, setNewPostText] = useState('');
-  const [editingBio, setEditingBio] = useState(false);
-  const [editedBio, setEditedBio] = useState('');
   const [editingPost, setEditingPost] = useState(null);
   const [editedPostText, setEditedPostText] = useState('');
-  const [showEditProfile, setShowEditProfile] = useState(false);
-  const [editProfileData, setEditProfileData] = useState({
+  
+  // Real Profile Edit
+  const [showEditRealProfile, setShowEditRealProfile] = useState(false);
+  const [editRealProfileData, setEditRealProfileData] = useState({
     location: '',
     job_title: '',
-    bio: ''
+    bio: '',
+    interests: []
+  });
+  
+  // Avatar Profile Edit
+  const [showEditAvatarProfile, setShowEditAvatarProfile] = useState(false);
+  const [editAvatarProfileData, setEditAvatarProfileData] = useState({
+    name: '',
+    bio: '',
+    picture: '',
+    interests: [],
+    job_title: '',
+    location: ''
   });
 
   useEffect(() => {
@@ -51,17 +62,25 @@ const ProfilePageFull = ({ user: currentUser }) => {
     if (targetUserId === currentUser.id) {
       fetchPosts();
     }
-  }, [userId, currentUser]);
+  }, [userId, currentUser, worldMode]);
 
   const fetchProfile = async (id) => {
     try {
       if (id === currentUser.id) {
         setProfileUser(currentUser);
-        setEditedBio(currentUser.bio || '');
-        setEditProfileData({
+        setEditRealProfileData({
           location: currentUser.location || '',
           job_title: currentUser.job_title || '',
-          bio: currentUser.bio || ''
+          bio: currentUser.bio || '',
+          interests: currentUser.interests || []
+        });
+        setEditAvatarProfileData({
+          name: currentUser.avatar_name || '',
+          bio: currentUser.avatar_bio || '',
+          picture: currentUser.avatar_picture || '',
+          interests: currentUser.avatar_interests || [],
+          job_title: currentUser.avatar_job_title || '',
+          location: currentUser.avatar_location || ''
         });
       } else {
         const response = await axios.get(`${API}/users/${id}?world_mode=${worldMode}`, {
@@ -142,16 +161,32 @@ const ProfilePageFull = ({ user: currentUser }) => {
     }
   };
 
-  const updateProfile = async () => {
+  const updateRealProfile = async () => {
     try {
-      await axios.put(`${API}/profile`, editProfileData, {
+      await axios.put(`${API}/profile`, editRealProfileData, {
         withCredentials: true,
       });
-      setProfileUser({ ...profileUser, ...editProfileData });
-      setShowEditProfile(false);
-      toast.success("Profile updated!");
+      setProfileUser({ ...profileUser, ...editRealProfileData });
+      setShowEditRealProfile(false);
+      toast.success("Real profile updated!");
+      // Refresh
+      window.location.reload();
     } catch (error) {
       toast.error("Failed to update profile");
+    }
+  };
+
+  const updateAvatarProfile = async () => {
+    try {
+      await axios.put(`${API}/profile/avatar`, editAvatarProfileData, {
+        withCredentials: true,
+      });
+      setShowEditAvatarProfile(false);
+      toast.success("Avatar profile updated!");
+      // Refresh
+      window.location.reload();
+    } catch (error) {
+      toast.error("Failed to update avatar profile");
     }
   };
 
@@ -183,10 +218,35 @@ const ProfilePageFull = ({ user: currentUser }) => {
     );
   }
 
-  // Use display fields for bots in avatar mode
-  const displayName = profileUser.display_name || profileUser.name;
-  const displayPicture = profileUser.display_picture || profileUser.picture;
-  const displayBio = profileUser.display_bio || profileUser.bio;
+  // Determine what to display based on world mode
+  let displayName, displayPicture, displayBio, displayInterests, displayJobTitle, displayLocation;
+  
+  if (isOwnProfile) {
+    // For own profile, show based on global world mode
+    if (worldMode === 'avatar') {
+      displayName = profileUser.avatar_name || profileUser.name;
+      displayPicture = profileUser.avatar_picture || profileUser.picture;
+      displayBio = profileUser.avatar_bio || profileUser.bio;
+      displayInterests = profileUser.avatar_interests || profileUser.interests || [];
+      displayJobTitle = profileUser.avatar_job_title || profileUser.job_title;
+      displayLocation = profileUser.avatar_location || profileUser.location;
+    } else {
+      displayName = profileUser.name;
+      displayPicture = profileUser.picture;
+      displayBio = profileUser.bio;
+      displayInterests = profileUser.interests || [];
+      displayJobTitle = profileUser.job_title;
+      displayLocation = profileUser.location;
+    }
+  } else {
+    // For other profiles, API already handled world mode
+    displayName = profileUser.display_name || profileUser.name;
+    displayPicture = profileUser.display_picture || profileUser.picture;
+    displayBio = profileUser.display_bio || profileUser.bio;
+    displayInterests = profileUser.interests || [];
+    displayJobTitle = profileUser.job_title;
+    displayLocation = profileUser.location;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -197,7 +257,6 @@ const ProfilePageFull = ({ user: currentUser }) => {
           <Button
             variant="secondary"
             className="absolute bottom-4 right-4 bg-white/90 hover:bg-white"
-            data-testid="edit-cover-btn"
             onClick={() => toast.info("Cover photo edit coming soon!")}
           >
             <Camera className="w-4 h-4 mr-2" />
@@ -211,7 +270,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
         <div className="relative">
           <div className="absolute -top-32 left-8">
             <Avatar className="w-44 h-44 border-8 border-white shadow-xl">
-              <AvatarImage src={displayPicture} />
+              <AvatarImage src={displayPicture} className="object-cover" />
               <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-600 text-white text-4xl">
                 {displayName?.charAt(0)}
               </AvatarFallback>
@@ -220,8 +279,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
               <Button
                 size="sm"
                 className="absolute bottom-2 right-2 rounded-full w-10 h-10 p-0 bg-white hover:bg-gray-100"
-                data-testid="edit-photo-btn"
-                onClick={() => toast.info("Profile photo edit coming soon!")}
+                onClick={() => toast.info("Profile photo upload coming soon!")}
               >
                 <Camera className="w-5 h-5 text-gray-700" />
               </Button>
@@ -240,54 +298,27 @@ const ProfilePageFull = ({ user: currentUser }) => {
                         AI Agent
                       </Badge>
                     )}
+                    {worldMode === 'avatar' && (
+                      <Badge className="bg-gradient-to-r from-pink-500 to-purple-600 text-white">
+                        <Palette className="w-3 h-3 mr-1" />
+                        Avatar Mode
+                      </Badge>
+                    )}
                   </div>
                   
-                  {/* Bio with Edit */}
-                  {isOwnProfile && editingBio ? (
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Input
-                        value={editedBio}
-                        onChange={(e) => setEditedBio(e.target.value)}
-                        className="flex-1"
-                        placeholder="Write your bio..."
-                      />
-                      <Button size="sm" onClick={async () => {
-                        await updateProfile();
-                        setEditingBio(false);
-                      }}>
-                        Save
-                      </Button>
-                      <Button size="sm" variant="ghost" onClick={() => setEditingBio(false)}>
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center space-x-2 mb-2">
-                      <p className="text-gray-600 text-lg">{displayBio}</p>
-                      {isOwnProfile && (
-                        <Button 
-                          size="sm" 
-                          variant="ghost" 
-                          onClick={() => setEditingBio(true)}
-                          className="p-1 h-auto"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </Button>
-                      )}
-                    </div>
-                  )}
+                  <p className="text-gray-600 text-lg mb-2">{displayBio}</p>
                   
                   <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    {profileUser.job_title && (
+                    {displayJobTitle && (
                       <span className="flex items-center">
                         <Briefcase className="w-4 h-4 mr-1" />
-                        {profileUser.job_title}
+                        {displayJobTitle}
                       </span>
                     )}
-                    {profileUser.location && (
+                    {displayLocation && (
                       <span className="flex items-center">
                         <MapPin className="w-4 h-4 mr-1" />
-                        {profileUser.location}
+                        {displayLocation}
                       </span>
                     )}
                     <span className="flex items-center">
@@ -300,98 +331,124 @@ const ProfilePageFull = ({ user: currentUser }) => {
                 <div className="flex space-x-2">
                   {isOwnProfile ? (
                     <>
-                      <Dialog open={showEditProfile} onOpenChange={setShowEditProfile}>
-                        <DialogTrigger asChild>
-                          <Button
-                            data-testid="edit-profile-btn"
-                            className="bg-blue-500 hover:bg-blue-600 text-white"
-                          >
-                            <SettingsIcon className="w-4 h-4 mr-2" />
-                            Edit Profile
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Edit Profile</DialogTitle>
-                          </DialogHeader>
-                          <div className="space-y-4 py-4">
-                            <div>
-                              <label className="block text-sm font-medium mb-2">Bio</label>
-                              <Textarea
-                                value={editProfileData.bio}
-                                onChange={(e) => setEditProfileData({...editProfileData, bio: e.target.value})}
-                                placeholder="Tell us about yourself..."
-                                rows={3}
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-2">Job Title</label>
-                              <Input
-                                value={editProfileData.job_title}
-                                onChange={(e) => setEditProfileData({...editProfileData, job_title: e.target.value})}
-                                placeholder="Your job title"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-2">Location</label>
-                              <Input
-                                value={editProfileData.location}
-                                onChange={(e) => setEditProfileData({...editProfileData, location: e.target.value})}
-                                placeholder="Your location"
-                              />
-                            </div>
-                            <Button onClick={updateProfile} className="w-full">
-                              Save Changes
+                      {worldMode === 'real' ? (
+                        <Dialog open={showEditRealProfile} onOpenChange={setShowEditRealProfile}>
+                          <DialogTrigger asChild>
+                            <Button className="bg-blue-500 hover:bg-blue-600 text-white">
+                              <SettingsIcon className="w-4 h-4 mr-2" />
+                              Edit Real Profile
                             </Button>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                      
-                      {/* Personal Mode Switcher */}
-                      <div className="flex bg-white border-2 border-purple-300 rounded-full p-1">
-                        <Button
-                          onClick={() => setMode('real')}
-                          data-testid="real-mode-btn"
-                          size="sm"
-                          className={`rounded-full px-4 py-2 ${
-                            mode === 'real'
-                              ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white'
-                              : 'bg-transparent text-gray-600 hover:bg-gray-100'
-                          }`}
-                        >
-                          <UserIcon className="w-4 h-4 mr-2" />
-                          Real
-                        </Button>
-                        <Button
-                          onClick={() => setMode('avatar')}
-                          data-testid="avatar-mode-btn"
-                          size="sm"
-                          className={`rounded-full px-4 py-2 ${
-                            mode === 'avatar'
-                              ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white'
-                              : 'bg-transparent text-gray-600 hover:bg-gray-100'
-                          }`}
-                        >
-                          <Bot className="w-4 h-4 mr-2" />
-                          Avatar
-                        </Button>
-                      </div>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-2xl">
+                            <DialogHeader>
+                              <DialogTitle>Edit Real Profile</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                              <div>
+                                <label className="block text-sm font-medium mb-2">Bio</label>
+                                <Textarea
+                                  value={editRealProfileData.bio}
+                                  onChange={(e) => setEditRealProfileData({...editRealProfileData, bio: e.target.value})}
+                                  placeholder="Tell us about yourself..."
+                                  rows={3}
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">Job Title</label>
+                                <Input
+                                  value={editRealProfileData.job_title}
+                                  onChange={(e) => setEditRealProfileData({...editRealProfileData, job_title: e.target.value})}
+                                  placeholder="Your job title"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">Location</label>
+                                <Input
+                                  value={editRealProfileData.location}
+                                  onChange={(e) => setEditRealProfileData({...editRealProfileData, location: e.target.value})}
+                                  placeholder="Your location"
+                                />
+                              </div>
+                              <Button onClick={updateRealProfile} className="w-full">
+                                Save Real Profile
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      ) : (
+                        <Dialog open={showEditAvatarProfile} onOpenChange={setShowEditAvatarProfile}>
+                          <DialogTrigger asChild>
+                            <Button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700">
+                              <Bot className="w-4 h-4 mr-2" />
+                              Edit Avatar Profile
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-2xl">
+                            <DialogHeader>
+                              <DialogTitle>Edit Avatar Profile</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                              <div>
+                                <label className="block text-sm font-medium mb-2">Avatar Nickname</label>
+                                <Input
+                                  value={editAvatarProfileData.name}
+                                  onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, name: e.target.value})}
+                                  placeholder="Your avatar's nickname (e.g., 'Phoenix', 'Shadow')"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">Avatar Bio</label>
+                                <Textarea
+                                  value={editAvatarProfileData.bio}
+                                  onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, bio: e.target.value})}
+                                  placeholder="Your avatar's story..."
+                                  rows={3}
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">Avatar Image URL</label>
+                                <Input
+                                  value={editAvatarProfileData.picture}
+                                  onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, picture: e.target.value})}
+                                  placeholder="https://api.dicebear.com/7.x/adventurer/svg?seed=YourName"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                  Try: https://api.dicebear.com/7.x/adventurer/svg?seed=YourName (replace YourName)
+                                </p>
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">Avatar Job Title</label>
+                                <Input
+                                  value={editAvatarProfileData.job_title}
+                                  onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, job_title: e.target.value})}
+                                  placeholder="Digital Warrior, Dream Architect, etc."
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">Avatar Location</label>
+                                <Input
+                                  value={editAvatarProfileData.location}
+                                  onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, location: e.target.value})}
+                                  placeholder="Virtual Realm, Cyberspace, etc."
+                                />
+                              </div>
+                              <Button onClick={updateAvatarProfile} className="w-full bg-gradient-to-r from-pink-500 to-purple-600">
+                                Save Avatar Profile
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      )}
                     </>
                   ) : (
                     <>
                       {friendshipStatus === 'accepted' ? (
                         <>
-                          <Button
-                            className="bg-gray-200 hover:bg-gray-300 text-gray-800"
-                            data-testid="friends-btn"
-                          >
+                          <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800">
                             <Users className="w-4 h-4 mr-2" />
                             Friends
                           </Button>
-                          <Button
-                            className="bg-blue-500 hover:bg-blue-600 text-white"
-                            data-testid="message-btn"
-                          >
+                          <Button className="bg-blue-500 hover:bg-blue-600 text-white">
                             <MessageCircle className="w-4 h-4 mr-2" />
                             Message
                           </Button>
@@ -403,7 +460,6 @@ const ProfilePageFull = ({ user: currentUser }) => {
                       ) : (
                         <Button
                           onClick={sendFriendRequest}
-                          data-testid="add-friend-btn"
                           className="bg-blue-500 hover:bg-blue-600 text-white"
                         >
                           <Users className="w-4 h-4 mr-2" />
@@ -423,33 +479,21 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   <TabsTrigger
                     value="posts"
                     className="data-[state=active]:border-b-4 data-[state=active]:border-purple-600 rounded-none pb-3 pt-3"
-                    data-testid="posts-tab"
                   >
                     Posts
                   </TabsTrigger>
                   <TabsTrigger
                     value="about"
                     className="data-[state=active]:border-b-4 data-[state=active]:border-purple-600 rounded-none pb-3 pt-3"
-                    data-testid="about-tab"
                   >
                     About
                   </TabsTrigger>
                   <TabsTrigger
                     value="friends"
                     className="data-[state=active]:border-b-4 data-[state=active]:border-purple-600 rounded-none pb-3 pt-3"
-                    data-testid="friends-tab"
                   >
                     Friends
                   </TabsTrigger>
-                  {mode === 'avatar' && (
-                    <TabsTrigger
-                      value="activity"
-                      className="data-[state=active]:border-b-4 data-[state=active]:border-purple-600 rounded-none pb-3 pt-3"
-                      data-testid="activity-tab"
-                    >
-                      Avatar Activity
-                    </TabsTrigger>
-                  )}
                 </TabsList>
               </Tabs>
             </div>
@@ -464,27 +508,27 @@ const ProfilePageFull = ({ user: currentUser }) => {
             <Card className="p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">About</h2>
               <div className="space-y-3">
-                {profileUser.job_title && (
+                {displayJobTitle && (
                   <div className="flex items-center text-gray-700">
                     <Briefcase className="w-5 h-5 mr-3 text-gray-500" />
-                    <span>{profileUser.job_title}</span>
+                    <span>{displayJobTitle}</span>
                   </div>
                 )}
-                {profileUser.location && (
+                {displayLocation && (
                   <div className="flex items-center text-gray-700">
                     <MapPin className="w-5 h-5 mr-3 text-gray-500" />
-                    <span>Lives in {profileUser.location}</span>
+                    <span>Lives in {displayLocation}</span>
                   </div>
                 )}
               </div>
             </Card>
 
             {/* Interests */}
-            {profileUser.interests && profileUser.interests.length > 0 && (
+            {displayInterests && displayInterests.length > 0 && (
               <Card className="p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Interests</h2>
                 <div className="flex flex-wrap gap-2">
-                  {profileUser.interests.map((interest, idx) => (
+                  {displayInterests.map((interest, idx) => (
                     <Badge key={idx} className="bg-purple-100 text-purple-700 px-3 py-1">
                       {interest}
                     </Badge>
@@ -508,12 +552,13 @@ const ProfilePageFull = ({ user: currentUser }) => {
               <div className="grid grid-cols-3 gap-3">
                 {friends.slice(0, 9).map((friend, idx) => (
                   <div key={idx} className="cursor-pointer" onClick={() => navigate(`/profile/${friend.id}`)}>
-                    <Avatar className="w-full aspect-square mb-1">
-                      <AvatarImage src={friend.picture} />
-                      <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-600 text-white">
-                        {friend.name?.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
+                    <div className="w-full aspect-square mb-1 rounded-lg overflow-hidden">
+                      <img 
+                        src={friend.picture} 
+                        alt={friend.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                     <p className="text-xs font-medium text-gray-900 truncate">{friend.name}</p>
                   </div>
                 ))}
@@ -523,14 +568,14 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
           {/* Main Content */}
           <div className="col-span-3 space-y-4">
-            {mode === 'avatar' && (
-              <Card className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200">
+            {worldMode === 'avatar' && (
+              <Card className="p-6 bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-purple-300">
                 <div className="flex items-center space-x-3 mb-3">
                   <Bot className="w-6 h-6 text-purple-600" />
-                  <h3 className="text-lg font-bold text-gray-900">Avatar Mode</h3>
+                  <h3 className="text-lg font-bold text-gray-900">Avatar Mode Active</h3>
                 </div>
                 <p className="text-gray-700">
-                  You're viewing {displayName}'s AI avatar profile. The avatar learns from connected platforms and represents them in conversations.
+                  You're viewing {displayName}'s avatar profile. {isOwnProfile ? 'Click "Edit Avatar Profile" to customize your avatar identity!' : 'This is their digital persona.'}
                 </p>
               </Card>
             )}
@@ -540,12 +585,12 @@ const ProfilePageFull = ({ user: currentUser }) => {
               <Card className="p-4">
                 <div className="flex items-start space-x-3">
                   <Avatar className="w-10 h-10">
-                    <AvatarImage src={currentUser.picture} />
-                    <AvatarFallback>{currentUser.name?.charAt(0)}</AvatarFallback>
+                    <AvatarImage src={displayPicture} className="object-cover" />
+                    <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     <Textarea
-                      placeholder={mode === 'real' ? "What's on your mind?" : "What's your avatar thinking?"}
+                      placeholder={worldMode === 'real' ? "What's on your mind?" : "What's your avatar thinking?"}
                       value={newPostText}
                       onChange={(e) => setNewPostText(e.target.value)}
                       className="mb-2"
@@ -571,12 +616,12 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   <Card key={post.id} className="p-4">
                     <div className="flex items-start space-x-3">
                       <Avatar className="w-10 h-10">
-                        <AvatarImage src={currentUser.picture} />
-                        <AvatarFallback>{currentUser.name?.charAt(0)}</AvatarFallback>
+                        <AvatarImage src={displayPicture} className="object-cover" />
+                        <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-semibold">{currentUser.name}</span>
+                          <span className="font-semibold">{displayName}</span>
                           <div className="flex items-center space-x-2">
                             <span className="text-xs text-gray-500">
                               {new Date(post.created_at).toLocaleDateString()}
