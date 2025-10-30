@@ -80,57 +80,72 @@ const FriendsPage = ({ user }) => {
           </Card>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {friends.map((friend, idx) => (
-              <Card
-                key={friend.id}
-                className="glass-morphism p-6 card-hover"
-                data-testid={`friend-card-${idx}`}
-              >
-                <div className="flex flex-col items-center text-center">
-                  <Avatar className="w-24 h-24 border-4 border-white shadow-lg mb-4">
-                    <AvatarImage src={friend.picture} />
-                    <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-600 text-white text-2xl">
-                      {friend.name?.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <h3 className="text-xl font-bold text-gray-800 mb-1">{friend.name}</h3>
-                  <p className="text-sm text-gray-600 mb-3">
-                    {friend.age} • {friend.location}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">{friend.bio}</p>
-                  {friend.interests && friend.interests.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4 justify-center">
-                      {friend.interests.slice(0, 3).map((interest, i) => (
-                        <span
-                          key={i}
-                          className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full"
-                        >
-                          {interest}
-                        </span>
-                      ))}
+            {friends.map((friend, idx) => {
+              const displayName = worldMode === 'avatar' 
+                ? (friend.avatar_name || friend.name)
+                : friend.name;
+              const displayPicture = worldMode === 'avatar'
+                ? (friend.avatar_picture || friend.picture)
+                : friend.picture;
+              const displayBio = worldMode === 'avatar'
+                ? (friend.avatar_bio || friend.bio)
+                : friend.bio;
+              const displayInterests = worldMode === 'avatar'
+                ? (friend.avatar_interests || friend.interests || [])
+                : (friend.interests || []);
+              
+              return (
+                <Card
+                  key={friend.id}
+                  className="glass-morphism p-6 card-hover"
+                  data-testid={`friend-card-${idx}`}
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <Avatar className="w-24 h-24 border-4 border-white shadow-lg mb-4">
+                      <AvatarImage src={displayPicture} />
+                      <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-600 text-white text-2xl">
+                        {displayName?.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <h3 className="text-xl font-bold text-gray-800 mb-1">{displayName}</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      {friend.age} • {worldMode === 'avatar' ? (friend.avatar_location || friend.location) : friend.location}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">{displayBio}</p>
+                    {displayInterests && displayInterests.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-4 justify-center">
+                        {displayInterests.slice(0, 3).map((interest, i) => (
+                          <span
+                            key={i}
+                            className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full"
+                          >
+                            {interest}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <div className="flex space-x-2 w-full">
+                      <Button
+                        onClick={() => navigate(`/profile/${friend.id}`)}
+                        data-testid={`view-profile-${idx}`}
+                        variant="outline"
+                        className="flex-1 border-2 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-full"
+                      >
+                        View Profile
+                      </Button>
+                      <Button
+                        onClick={() => removeFriend(friend.id)}
+                        data-testid={`remove-friend-${idx}`}
+                        variant="outline"
+                        className="border-2 border-red-300 text-red-600 hover:bg-red-50 rounded-full px-3"
+                      >
+                        <UserMinus className="w-4 h-4" />
+                      </Button>
                     </div>
-                  )}
-                  <div className="flex space-x-2 w-full">
-                    <Button
-                      onClick={() => navigate(`/profile/${friend.id}`)}
-                      data-testid={`view-profile-${idx}`}
-                      variant="outline"
-                      className="flex-1 border-2 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-full"
-                    >
-                      View Profile
-                    </Button>
-                    <Button
-                      onClick={() => removeFriend(friend.id)}
-                      data-testid={`remove-friend-${idx}`}
-                      variant="outline"
-                      className="border-2 border-red-300 text-red-600 hover:bg-red-50 rounded-full px-3"
-                    >
-                      <UserMinus className="w-4 h-4" />
-                    </Button>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              );
+            })}
           </div>
         )}
       </div>
