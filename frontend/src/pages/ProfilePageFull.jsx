@@ -561,18 +561,27 @@ const ProfilePageFull = ({ user: currentUser }) => {
                 </Button>
               </div>
               <div className="grid grid-cols-3 gap-3">
-                {friends.slice(0, 9).map((friend, idx) => (
-                  <div key={idx} className="cursor-pointer" onClick={() => navigate(`/profile/${friend.id}`)}>
-                    <div className="w-full aspect-square mb-1 rounded-lg overflow-hidden">
-                      <img 
-                        src={friend.picture} 
-                        alt={friend.name}
-                        className="w-full h-full object-cover"
-                      />
+                {friends.slice(0, 9).map((friend, idx) => {
+                  const friendDisplayName = worldMode === 'avatar'
+                    ? (friend.avatar_name || friend.name)
+                    : friend.name;
+                  const friendDisplayPicture = worldMode === 'avatar'
+                    ? (friend.avatar_picture || friend.picture)
+                    : friend.picture;
+                  
+                  return (
+                    <div key={idx} className="cursor-pointer" onClick={() => navigate(`/profile/${friend.id}`)}>
+                      <div className="w-full aspect-square mb-1 rounded-lg overflow-hidden">
+                        <img 
+                          src={friendDisplayPicture} 
+                          alt={friendDisplayName}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <p className="text-xs font-medium text-gray-900 truncate">{friendDisplayName}</p>
                     </div>
-                    <p className="text-xs font-medium text-gray-900 truncate">{friend.name}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </Card>
           </div>
