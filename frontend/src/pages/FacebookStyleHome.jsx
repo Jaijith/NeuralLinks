@@ -23,13 +23,22 @@ const API = `${BACKEND_URL}/api`;
 
 const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   const navigate = useNavigate();
-  const [mode, setMode] = useState('real'); // 'real' or 'avatar'
+  const { worldMode } = useWorldMode();
+  const [mode, setMode] = useState('real'); // 'real' or 'avatar' - personal view
   const [friends, setFriends] = useState([]);
   const [avatarConversations, setAvatarConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [postText, setPostText] = useState('');
   const [selectedTab, setSelectedTab] = useState('timeline');
   const [friendPosts, setFriendPosts] = useState([]);
+
+  // Dynamic labels based on world mode
+  const labels = {
+    matches: worldMode === 'avatar' ? 'Neural Links' : 'Matches',
+    friends: worldMode === 'avatar' ? 'Connections' : 'Friends',
+    messages: worldMode === 'avatar' ? 'Neural Sync' : 'Messages',
+    profile: worldMode === 'avatar' ? 'Identity Matrix' : 'Profile'
+  };
 
   useEffect(() => {
     fetchData();
