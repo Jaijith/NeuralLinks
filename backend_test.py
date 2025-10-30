@@ -18,8 +18,8 @@ TEST_USER_NAME = "GraphRAG Tester"
 
 class GraphRAGTester:
     def __init__(self):
-        self.session_token = None
-        self.user_id = None
+        self.session_token = "test_session_1761825596222"  # From MongoDB setup
+        self.user_id = "test-graphrag-user-1761825596222"  # From MongoDB setup
         self.client = httpx.AsyncClient(timeout=30.0)
         self.test_results = []
         
