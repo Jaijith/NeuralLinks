@@ -11,45 +11,6 @@ const REDIRECT_URL = window.location.origin + "/dashboard";
 
 const LandingPage = ({ setUser }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash && hash.includes("session_id=")) {
-      const sessionId = hash.split("session_id=")[1];
-      handleAuth(sessionId);
-    }
-  }, [location]);
-
-  const handleAuth = async (sessionId) => {
-    try {
-      const response = await axios.get(`${API}/auth/session-data`, {
-        headers: { "X-Session-ID": sessionId },
-        withCredentials: true,
-      });
-
-      document.cookie = `session_token=${response.data.session_token}; path=/; secure; samesite=none; max-age=604800`;
-
-      const userResponse = await axios.get(`${API}/auth/me`, {
-        withCredentials: true,
-      });
-
-      setUser(userResponse.data);
-
-      window.history.replaceState({}, document.title, "/dashboard");
-
-      if (!userResponse.data.profile_completed) {
-        navigate("/onboarding");
-      } else {
-        navigate("/dashboard");
-      }
-
-      toast.success("Welcome to AI Dating Match!");
-    } catch (error) {
-      console.error("Auth error:", error);
-      toast.error("Authentication failed. Please try again.");
-    }
-  };
 
   const handleLogin = () => {
     window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(
