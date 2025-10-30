@@ -110,7 +110,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${API}/profile/posts`, {
+      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
+      const response = await axios.get(`${API}/profile/posts?post_type=${postType}`, {
         withCredentials: true,
       });
       setPosts(response.data);
@@ -123,13 +124,14 @@ const ProfilePageFull = ({ user: currentUser }) => {
     if (!newPostText.trim()) return;
     
     try {
+      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
       const response = await axios.post(`${API}/profile/posts`, 
-        { text: newPostText },
+        { text: newPostText, post_type: postType },
         { withCredentials: true }
       );
       setPosts([response.data, ...posts]);
       setNewPostText('');
-      toast.success("Post created!");
+      toast.success(worldMode === 'avatar' ? "Avatar post created!" : "Post created!");
     } catch (error) {
       toast.error("Failed to create post");
     }
@@ -137,7 +139,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
   const deletePost = async (postId) => {
     try {
-      await axios.delete(`${API}/profile/posts/${postId}`, {
+      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
+      await axios.delete(`${API}/profile/posts/${postId}?post_type=${postType}`, {
         withCredentials: true,
       });
       setPosts(posts.filter(p => p.id !== postId));
@@ -149,8 +152,9 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
   const updatePost = async (postId) => {
     try {
+      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
       await axios.put(`${API}/profile/posts/${postId}`, 
-        { text: editedPostText },
+        { text: editedPostText, post_type: postType },
         { withCredentials: true }
       );
       setPosts(posts.map(p => p.id === postId ? { ...p, text: editedPostText } : p));
