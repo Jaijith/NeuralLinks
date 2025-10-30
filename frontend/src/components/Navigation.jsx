@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Home, Users, Search, Heart, User } from "lucide-react";
-import { WorldModeToggle } from "./WorldModeToggle";
+import WorldModeToggle from "./WorldModeToggle";
 
 const Navigation = ({ user }) => {
   const navigate = useNavigate();
