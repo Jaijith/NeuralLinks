@@ -115,18 +115,18 @@ code {
 }
 
 /* ========================================
-   AVATAR WORLD STYLING - Avatar Movie Inspired
-   Bioluminescent, Nature-Inspired, Blue/Purple
+   AVATAR WORLD STYLING - Vibrant Anime/Cartoon Style
+   Colorful, Playful, Energetic
    ======================================== */
 
 /* Global Avatar World Background */
 body.avatar-world {
     background: linear-gradient(135deg, 
-        #0a1929 0%, 
-        #0d47a1 25%, 
-        #1a237e 50%, 
-        #311b92 75%, 
-        #1a237e 100%
+        #FF6B9D 0%,
+        #C44569 25%,
+        #9C27B0 50%,
+        #673AB7 75%,
+        #3F51B5 100%
     );
     background-attachment: fixed;
     position: relative;
