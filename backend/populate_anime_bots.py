@@ -288,7 +288,7 @@ async def create_avatar_conversations(bot_ids, bot_data):
         }
         
         await db.agent_conversations.insert_one(conversation)
-        print(f"  💬 {bot1['name']} ↔ {bot2['name']} ({compatibility}% compatible)")
+        print(f"  💬 {bot1['real_name']} ({bot1['avatar_name']}) ↔ {bot2['real_name']} ({bot2['avatar_name']}) - {compatibility}% compatible")
 
 async def auto_friend_bots_to_users():
     """Auto-friend some bots to real users"""
