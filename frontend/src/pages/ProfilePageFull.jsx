@@ -611,7 +611,20 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
           {/* Main Content */}
           <div className="col-span-3 space-y-4">
-            {worldMode === 'avatar' && (
+            {/* View Mode Selector Banner for Own Profile */}
+            {isOwnProfile && viewMode === 'both' && (
+              <Card className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Users className="w-6 h-6 text-blue-600" />
+                  <h3 className="text-lg font-bold text-gray-900">👤 Viewing Both Profiles</h3>
+                </div>
+                <p className="text-gray-700">
+                  You're viewing both your Real and Avatar profiles side-by-side. Edit either profile independently!
+                </p>
+              </Card>
+            )}
+            
+            {worldMode === 'avatar' && viewMode === 'single' && (
               <Card className="p-6 bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-purple-300">
                 <div className="flex items-center space-x-3 mb-3">
                   <Bot className="w-6 h-6 text-purple-600" />
@@ -627,6 +640,169 @@ const ProfilePageFull = ({ user: currentUser }) => {
                 </p>
               </Card>
             )}
+
+            {/* Dual Profile View (Side by Side) */}
+            {isOwnProfile && viewMode === 'both' ? (
+              <div className="grid grid-cols-2 gap-4">
+                {/* REAL PROFILE COLUMN */}
+                <div className="space-y-4">
+                  <Card className="p-4 bg-blue-50 border-2 border-blue-400">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-xl font-bold text-blue-900">👤 Real Profile</h3>
+                      <Dialog open={showEditRealProfile} onOpenChange={setShowEditRealProfile}>
+                        <DialogTrigger asChild>
+                          <Button size="sm" className="bg-blue-500 hover:bg-blue-600 text-white">
+                            <Edit2 className="w-3 h-3 mr-1" />
+                            Edit
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl">
+                          <DialogHeader>
+                            <DialogTitle>Edit Real Profile</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4 py-4">
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Bio</label>
+                              <Textarea
+                                value={editRealProfileData.bio}
+                                onChange={(e) => setEditRealProfileData({...editRealProfileData, bio: e.target.value})}
+                                rows={3}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Job Title</label>
+                              <Input
+                                value={editRealProfileData.job_title}
+                                onChange={(e) => setEditRealProfileData({...editRealProfileData, job_title: e.target.value})}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Location</label>
+                              <Input
+                                value={editRealProfileData.location}
+                                onChange={(e) => setEditRealProfileData({...editRealProfileData, location: e.target.value})}
+                              />
+                            </div>
+                            <Button onClick={updateRealProfile} className="w-full">Save</Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                    <div className="flex flex-col items-center mb-4">
+                      <Avatar className="w-20 h-20 mb-2">
+                        <AvatarImage src={profileUser.picture} className="object-cover" />
+                        <AvatarFallback>{profileUser.name?.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <h4 className="font-bold text-lg">{profileUser.name}</h4>
+                      <p className="text-sm text-gray-600">{profileUser.bio}</p>
+                      <p className="text-xs text-gray-500 mt-2">{profileUser.job_title} • {profileUser.location}</p>
+                    </div>
+                  </Card>
+                  
+                  {/* Real Posts */}
+                  <h4 className="font-semibold text-gray-700">Real Posts</h4>
+                  {profileUser.posts && profileUser.posts.length > 0 ? (
+                    profileUser.posts.slice(0, 3).map((post) => (
+                      <Card key={post.id} className="p-3">
+                        <p className="text-sm text-gray-800">{post.text}</p>
+                        <p className="text-xs text-gray-500 mt-2">{new Date(post.created_at).toLocaleDateString()}</p>
+                      </Card>
+                    ))
+                  ) : (
+                    <Card className="p-4 text-center">
+                      <p className="text-sm text-gray-500">No real posts yet</p>
+                    </Card>
+                  )}
+                </div>
+
+                {/* AVATAR PROFILE COLUMN */}
+                <div className="space-y-4">
+                  <Card className="p-4 bg-purple-50 border-2 border-purple-400">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-xl font-bold text-purple-900">🎮 Avatar Profile</h3>
+                      <Dialog open={showEditAvatarProfile} onOpenChange={setShowEditAvatarProfile}>
+                        <DialogTrigger asChild>
+                          <Button size="sm" className="bg-gradient-to-r from-pink-500 to-purple-600 text-white">
+                            <Edit2 className="w-3 h-3 mr-1" />
+                            Edit
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl">
+                          <DialogHeader>
+                            <DialogTitle>Edit Avatar Profile</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4 py-4">
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Avatar Nickname</label>
+                              <Input
+                                value={editAvatarProfileData.name}
+                                onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, name: e.target.value})}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Avatar Bio</label>
+                              <Textarea
+                                value={editAvatarProfileData.bio}
+                                onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, bio: e.target.value})}
+                                rows={3}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Avatar Image URL</label>
+                              <Input
+                                value={editAvatarProfileData.picture}
+                                onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, picture: e.target.value})}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Avatar Job</label>
+                              <Input
+                                value={editAvatarProfileData.job_title}
+                                onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, job_title: e.target.value})}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Avatar Location</label>
+                              <Input
+                                value={editAvatarProfileData.location}
+                                onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, location: e.target.value})}
+                              />
+                            </div>
+                            <Button onClick={updateAvatarProfile} className="w-full bg-gradient-to-r from-pink-500 to-purple-600">Save</Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                    <div className="flex flex-col items-center mb-4">
+                      <Avatar className="w-20 h-20 mb-2 border-2 border-purple-400">
+                        <AvatarImage src={profileUser.avatar_picture} className="object-cover" />
+                        <AvatarFallback>{profileUser.avatar_name?.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <h4 className="font-bold text-lg">{profileUser.avatar_name}</h4>
+                      <p className="text-sm text-gray-600">{profileUser.avatar_bio}</p>
+                      <p className="text-xs text-gray-500 mt-2">{profileUser.avatar_job_title} • {profileUser.avatar_location}</p>
+                    </div>
+                  </Card>
+                  
+                  {/* Avatar Posts */}
+                  <h4 className="font-semibold text-gray-700">Avatar Posts</h4>
+                  {profileUser.avatar_posts && profileUser.avatar_posts.length > 0 ? (
+                    profileUser.avatar_posts.slice(0, 3).map((post) => (
+                      <Card key={post.id} className="p-3">
+                        <p className="text-sm text-gray-800">{post.text}</p>
+                        <p className="text-xs text-gray-500 mt-2">{new Date(post.created_at).toLocaleDateString()}</p>
+                      </Card>
+                    ))
+                  ) : (
+                    <Card className="p-4 text-center">
+                      <p className="text-sm text-gray-500">No avatar posts yet</p>
+                    </Card>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Single View - Original Layout */}
 
             {/* Create Post (Own Profile Only) */}
             {isOwnProfile && (
