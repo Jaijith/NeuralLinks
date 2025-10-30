@@ -371,12 +371,12 @@ const ProfilePageFull = ({ user: currentUser }) => {
                           <DialogTrigger asChild>
                             <Button className="bg-blue-500 hover:bg-blue-600 text-white">
                               <SettingsIcon className="w-4 h-4 mr-2" />
-                              Edit Real
+                              Edit Sense
                             </Button>
                           </DialogTrigger>
                           <DialogContent className="max-w-2xl">
                             <DialogHeader>
-                              <DialogTitle>Edit Real Profile</DialogTitle>
+                              <DialogTitle>Edit Sense Profile</DialogTitle>
                             </DialogHeader>
                             <div className="space-y-4 py-4">
                               <div>
