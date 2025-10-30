@@ -922,6 +922,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
                 </div>
               </Card>
             )}
+              </>
+            )}
           </div>
         </div>
       </div>
