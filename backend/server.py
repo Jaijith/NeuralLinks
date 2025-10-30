@@ -16,6 +16,11 @@ import json
 import asyncio
 import random
 
+# Import Graph RAG modules
+from graph_builder import GraphBuilder
+from graph_rag import GraphRAG
+from intelligent_avatar import IntelligentAvatar
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
@@ -38,6 +43,11 @@ if AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT:
         api_version=AZURE_OPENAI_API_VERSION,
         azure_endpoint=AZURE_OPENAI_ENDPOINT
     )
+
+# Initialize Graph RAG modules
+graph_rag = GraphRAG(db)
+graph_builder = GraphBuilder(db, azure_client, AZURE_OPENAI_DEPLOYMENT)
+intelligent_avatar = IntelligentAvatar(db, azure_client, AZURE_OPENAI_DEPLOYMENT, graph_rag)
 
 # Create the main app
 app = FastAPI(title="AI Dating Match App")
