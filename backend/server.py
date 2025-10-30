@@ -630,6 +630,182 @@ async def get_messages(match_id: str, request: Request):
     return conversation
 
 # Include router
+
+# ============ SEARCH & FRIENDS ROUTES ============
+
+@api_router.get("/search/users")
+async def search_users(q: str, request: Request):
+    """Search for users by name, bio, interests, location"""
+    user = await require_auth(request)
+    
+    if len(q) < 1:
+        return []
+    
+    search_query = {
+        "$and": [
+            {"id": {"$ne": user.id}},
+            {"profile_completed": True},
+            {"$or": [
+                {"name": {"$regex": q, "$options": "i"}},
+                {"bio": {"$regex": q, "$options": "i"}},
+                {"location": {"$regex": q, "$options": "i"}},
+                {"interests": {"$regex": q, "$options": "i"}},
+                {"job_title": {"$regex": q, "$options": "i"}}
+            ]}
+        ]
+    }
+    
+    users = await db.users.find(search_query, {"_id": 0}).limit(20).to_list(20)
+    
+    # Check friendship status
+    for u in users:
+        friendship = await db.friendships.find_one({
+            "$or": [
+                {"user_id": user.id, "friend_id": u['id']},
+                {"user_id": u['id'], "friend_id": user.id}
+            ]
+        })
+        u['friendship_status'] = friendship['status'] if friendship else 'none'
+        u['is_friend'] = friendship['status'] == 'accepted' if friendship else False
+    
+    return users
+
+@api_router.post("/friends/request/{friend_id}")
+async def send_friend_request(friend_id: str, request: Request):
+    """Send a friend request"""
+    user = await require_auth(request)
+    
+    if user.id == friend_id:
+        raise HTTPException(status_code=400, detail="Cannot add yourself")
+    
+    existing = await db.friendships.find_one({
+        "$or": [
+            {"user_id": user.id, "friend_id": friend_id},
+            {"user_id": friend_id, "friend_id": user.id}
+        ]
+    })
+    
+    if existing:
+        raise HTTPException(status_code=400, detail="Friend request already exists")
+    
+    friendship = Friendship(
+        user_id=user.id,
+        friend_id=friend_id,
+        status="pending"
+    )
+    
+    friend_dict = friendship.model_dump()
+    friend_dict['requested_at'] = friend_dict['requested_at'].isoformat()
+    await db.friendships.insert_one(friend_dict)
+    
+    return {"message": "Friend request sent", "friendship_id": friendship.id}
+
+@api_router.post("/friends/accept/{friendship_id}")
+async def accept_friend_request(friendship_id: str, request: Request):
+    """Accept a friend request"""
+    user = await require_auth(request)
+    
+    friendship = await db.friendships.find_one({"id": friendship_id, "friend_id": user.id})
+    if not friendship:
+        raise HTTPException(status_code=404, detail="Request not found")
+    
+    await db.friendships.update_one(
+        {"id": friendship_id},
+        {"$set": {
+            "status": "accepted",
+            "accepted_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Friend request accepted"}
+
+@api_router.delete("/friends/{friend_id}")
+async def remove_friend(friend_id: str, request: Request):
+    """Remove a friend"""
+    user = await require_auth(request)
+    
+    result = await db.friendships.delete_one({
+        "$or": [
+            {"user_id": user.id, "friend_id": friend_id},
+            {"user_id": friend_id, "friend_id": user.id}
+        ]
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Friendship not found")
+    
+    return {"message": "Friend removed"}
+
+@api_router.get("/friends")
+async def get_friends(request: Request):
+    """Get user's friends list"""
+    user = await require_auth(request)
+    
+    friendships = await db.friendships.find({
+        "$or": [
+            {"user_id": user.id, "status": "accepted"},
+            {"friend_id": user.id, "status": "accepted"}
+        ]
+    }, {"_id": 0}).to_list(1000)
+    
+    friend_ids = []
+    for f in friendships:
+        friend_id = f['friend_id'] if f['user_id'] == user.id else f['user_id']
+        friend_ids.append(friend_id)
+    
+    friends = await db.users.find({"id": {"$in": friend_ids}}, {"_id": 0}).to_list(1000)
+    
+    return friends
+
+@api_router.get("/friends/requests")
+async def get_friend_requests(request: Request):
+    """Get pending friend requests"""
+    user = await require_auth(request)
+    
+    requests = await db.friendships.find({
+        "friend_id": user.id,
+        "status": "pending"
+    }, {"_id": 0}).to_list(100)
+    
+    for req in requests:
+        requester = await db.users.find_one({
+
+"id": req['user_id']}, {"_id": 0})
+        if requester:
+            req['user'] = {
+                "id": requester['id'],
+                "name": requester['name'],
+                "picture": requester.get('picture'),
+                "bio": requester.get('bio')
+            }
+    
+    return requests
+
+# ============ INTEGRATIONS ROUTES ============
+
+@api_router.get("/integrations")
+async def get_integrations(request: Request):
+    """Get user's connected platform integrations"""
+    user = await require_auth(request)
+    
+    integrations = await db.user_integrations.find({"user_id": user.id}, {"_id": 0}).to_list(100)
+    
+    # Group by type
+    grouped = {
+        "social_media": [],
+        "ecommerce": [],
+        "email": [],
+        "messaging": [],
+        "dating": []
+    }
+    
+    for integration in integrations:
+        platform_type = integration.get('platform_type', 'other')
+        if platform_type in grouped:
+            grouped[platform_type].append(integration)
+    
+    return grouped
+
 app.include_router(api_router)
 
 app.add_middleware(
