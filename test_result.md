@@ -197,15 +197,18 @@ backend:
 
   - task: "Auto Graph Building on Profile Update"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Updated /profile (PUT) endpoint to automatically rebuild knowledge graph when user updates their Sense profile"
+      - working: true
+        agent: "testing"
+        comment: "Automatic graph building on profile update working correctly. When profile is updated with new interests (meditation, rock_climbing), graph is automatically rebuilt and new nodes appear in graph context. Verified by testing profile update and checking graph context before/after."
 
   - task: "Graph Enrichment on Post Creation"
     implemented: true
