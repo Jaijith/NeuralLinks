@@ -339,8 +339,8 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                             className="w-10 h-10 cursor-pointer"
                             onClick={() => navigate(`/profile/${post.user.id}`)}
                           >
-                            <AvatarImage src={post.user.picture} />
-                            <AvatarFallback>{post.user.name?.charAt(0)}</AvatarFallback>
+                            <AvatarImage src={post.displayPicture} />
+                            <AvatarFallback>{post.displayName?.charAt(0)}</AvatarFallback>
                           </Avatar>
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-1">
@@ -348,7 +348,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                                 className="font-semibold cursor-pointer hover:underline"
                                 onClick={() => navigate(`/profile/${post.user.id}`)}
                               >
-                                {post.user.name}
+                                {post.displayName}
                               </span>
                               {post.user.is_bot && (
                                 <Badge className="bg-purple-100 text-purple-700 text-xs">
