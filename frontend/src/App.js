@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import LandingPage from "./pages/LandingPage";
 import FacebookStyleHome from "./pages/FacebookStyleHome";
@@ -13,12 +13,26 @@ import ProfilePageFull from "./pages/ProfilePageFull";
 import SearchPage from "./pages/SearchPage";
 import FriendsPage from "./pages/FriendsPage";
 import IntegrationsPage from "./pages/IntegrationsPage";
+import Navigation from "./components/Navigation";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
 import { WorldModeProvider } from "./contexts/WorldModeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+
+// Layout wrapper to conditionally show navigation
+function AppLayout({ user, children }) {
+  const location = useLocation();
+  const showNav = user && location.pathname !== '/';
+  
+  return (
+    <>
+      {showNav && <Navigation user={user} />}
+      {children}
+    </>
+  );
+}
 
 function App() {
   const [user, setUser] = useState(null);
