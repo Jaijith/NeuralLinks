@@ -42,6 +42,10 @@ async def debug_graph_context():
         properties = node.get("properties", {})
         strength = properties.get("strength", 1.0)
         
+        print(f"Processing node: type='{node_type}' (len={len(node_type)}), label='{label}'")
+        print(f"Available keys: {list(context.keys())}")
+        print(f"Type check: '{node_type}' in context = {node_type in context}")
+        
         item = {
             "label": label,
             "strength": strength,
@@ -50,10 +54,14 @@ async def debug_graph_context():
         
         if node_type in context:
             context[node_type].append(item)
+            print(f"Added to {node_type}")
         else:
             # Handle unknown node types by adding to interests as fallback
             context["interests"].append(item)
             print(f"Unknown node type '{node_type}' added to interests")
+        
+        if len(context["interests"]) > 3:  # Stop after a few for debugging
+            break
     
     # Sort by strength
     for key in context:
