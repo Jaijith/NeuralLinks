@@ -123,6 +123,10 @@ function App() {
               element={user ? <Chat user={user} /> : <Navigate to="/" />}
             />
             <Route
+              path="/avatar-chat/:userId"
+              element={user ? <AvatarChat user={user} /> : <Navigate to="/" />}
+            />
+            <Route
               path="/profile"
               element={user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/" />}
             />
