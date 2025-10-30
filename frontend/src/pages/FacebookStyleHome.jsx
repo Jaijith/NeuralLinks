@@ -110,15 +110,23 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className={`min-h-screen ${worldMode === 'avatar' ? 'bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900' : 'bg-gray-100'}`}>
       {/* Facebook Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-200">
+      <header className={`shadow-sm sticky top-0 z-50 border-b ${
+        worldMode === 'avatar' 
+          ? 'bg-slate-900/90 backdrop-blur-md border-blue-500/30' 
+          : 'bg-white border-gray-200'
+      }`}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-14">
             {/* Left - Logo & Search */}
             <div className="flex items-center space-x-2 flex-1">
               <div 
-                className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center cursor-pointer"
+                className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer ${
+                  worldMode === 'avatar' 
+                    ? 'bg-gradient-to-br from-blue-500 to-purple-600 avatar-glow' 
+                    : 'bg-blue-500'
+                }`}
                 onClick={() => setSelectedTab('timeline')}
               >
                 <Heart className="w-6 h-6 text-white fill-white" />
@@ -129,7 +137,11 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   placeholder="Search"
                   onClick={() => navigate('/search')}
                   readOnly
-                  className="pl-10 bg-gray-100 border-none rounded-full w-60 cursor-pointer"
+                  className={`pl-10 rounded-full w-60 cursor-pointer border-none ${
+                    worldMode === 'avatar'
+                      ? 'bg-slate-800 text-blue-100 placeholder:text-blue-300/50'
+                      : 'bg-gray-100'
+                  }`}
                 />
               </div>
             </div>
@@ -139,55 +151,36 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
               <Button
                 variant="ghost"
                 onClick={() => setSelectedTab('timeline')}
-                className={`px-8 py-2 rounded-lg ${selectedTab === 'timeline' ? 'border-b-4 border-blue-500' : ''}`}
+                className={`px-8 py-2 rounded-lg ${
+                  selectedTab === 'timeline' 
+                    ? worldMode === 'avatar'
+                      ? 'border-b-4 border-blue-400'
+                      : 'border-b-4 border-blue-500'
+                    : ''
+                }`}
               >
-                <Home className="w-6 h-6 text-gray-600" />
+                <Home className={`w-6 h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
               </Button>
               <Button
                 variant="ghost"
                 onClick={() => navigate('/friends')}
                 className="px-8 py-2 rounded-lg"
               >
-                <Users className="w-6 h-6 text-gray-600" />
+                <Users className={`w-6 h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
               </Button>
               <Button
                 variant="ghost"
                 onClick={() => navigate('/matches')}
                 className="px-8 py-2 rounded-lg"
               >
-                <Heart className="w-6 h-6 text-gray-600" />
+                <Heart className={`w-6 h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
               </Button>
             </div>
 
-            {/* Right - Mode Switch & Profile */}
-            <div className="flex items-center space-x-2 flex-1 justify-end">
-              {/* Mode Switcher */}
-              <div className="flex bg-gray-100 rounded-full p-1">
-                <Button
-                  onClick={() => setMode('real')}
-                  size="sm"
-                  className={`rounded-full px-3 py-1 text-xs ${
-                    mode === 'real'
-                      ? 'bg-blue-500 text-white hover:bg-blue-600'
-                      : 'bg-transparent text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  <UserIcon className="w-3 h-3 mr-1" />
-                  Real
-                </Button>
-                <Button
-                  onClick={() => setMode('avatar')}
-                  size="sm"
-                  className={`rounded-full px-3 py-1 text-xs ${
-                    mode === 'avatar'
-                      ? 'bg-purple-500 text-white hover:bg-purple-600'
-                      : 'bg-transparent text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  <Bot className="w-3 h-3 mr-1" />
-                  Avatar
-                </Button>
-              </div>
+            {/* Right - World Toggle & Profile */}
+            <div className="flex items-center space-x-3 flex-1 justify-end">
+              {/* Global World Mode Toggle */}
+              <WorldModeToggle />
 
               <Button
                 variant="ghost"
@@ -195,7 +188,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                 onClick={() => navigate('/integrations')}
                 className="rounded-full p-2"
               >
-                <SettingsIcon className="w-5 h-5" />
+                <SettingsIcon className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : ''}`} />
               </Button>
 
               <Button
@@ -204,15 +197,19 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                 onClick={handleLogout}
                 className="rounded-full p-2"
               >
-                <MoreHorizontal className="w-5 h-5" />
+                <MoreHorizontal className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : ''}`} />
               </Button>
 
               <Avatar 
-                className="w-8 h-8 cursor-pointer border-2 border-blue-500"
-                onClick={() => setSelectedTab('profile')}
+                className={`w-8 h-8 cursor-pointer ${
+                  worldMode === 'avatar' 
+                    ? 'border-2 border-blue-400 avatar-glow' 
+                    : 'border-2 border-blue-500'
+                }`}
+                onClick={() => navigate('/myprofile')}
               >
                 <AvatarImage src={currentUser.picture} />
-                <AvatarFallback className="bg-blue-500 text-white text-sm">
+                <AvatarFallback className={worldMode === 'avatar' ? 'bg-blue-600 text-white text-sm' : 'bg-blue-500 text-white text-sm'}>
                   {currentUser.name?.charAt(0)}
                 </AvatarFallback>
               </Avatar>
