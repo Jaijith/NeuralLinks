@@ -442,14 +442,14 @@ body.avatar-world::before {
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4) !important;
 }
 
-/* Button text in avatar world */
+/* Button text in avatar world - WHITE for readability */
 .avatar-world button,
 .avatar-world button *,
 .avatar-world button span,
 .avatar-world button div {
-    color: rgb(139, 69, 19) !important; /* Saddle Brown */
+    color: rgb(255, 255, 255) !important; /* White */
     font-weight: 800 !important;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.6) !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important;
 }
 
 /* Input text */
