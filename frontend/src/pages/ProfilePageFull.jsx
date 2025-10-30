@@ -579,45 +579,19 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
           {/* Main Content */}
           <div className="col-span-3 space-y-4">
-            {worldMode === 'avatar' && isOwnProfile && !profileUser.avatar_name && (
-              <Card className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-400">
-                <div className="flex items-center space-x-3 mb-3">
-                  <Bot className="w-6 h-6 text-yellow-600" />
-                  <h3 className="text-lg font-bold text-gray-900">⚠️ Avatar Profile Not Configured</h3>
-                </div>
-                <p className="text-gray-700 mb-3">
-                  You haven't set up your avatar profile yet! Click "Edit Avatar Profile" to create your digital persona with a unique nickname and anime image.
-                </p>
-                <Button 
-                  onClick={() => setShowEditAvatarProfile(true)}
-                  className="bg-gradient-to-r from-pink-500 to-purple-600 text-white"
-                >
-                  <Bot className="w-4 h-4 mr-2" />
-                  Setup Avatar Now
-                </Button>
-              </Card>
-            )}
-            
-            {worldMode === 'avatar' && isOwnProfile && profileUser.avatar_name && (
+            {worldMode === 'avatar' && (
               <Card className="p-6 bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-purple-300">
                 <div className="flex items-center space-x-3 mb-3">
                   <Bot className="w-6 h-6 text-purple-600" />
-                  <h3 className="text-lg font-bold text-gray-900">Avatar Mode Active</h3>
+                  <h3 className="text-lg font-bold text-gray-900">
+                    {isOwnProfile ? '🎮 Avatar Mode - Your Digital Identity' : '🎮 Avatar Mode'}
+                  </h3>
                 </div>
                 <p className="text-gray-700">
-                  You're viewing your avatar profile as <strong>{displayName}</strong>. Create avatar-specific posts here that are different from your real-world posts!
-                </p>
-              </Card>
-            )}
-
-            {worldMode === 'avatar' && !isOwnProfile && (
-              <Card className="p-6 bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-purple-300">
-                <div className="flex items-center space-x-3 mb-3">
-                  <Bot className="w-6 h-6 text-purple-600" />
-                  <h3 className="text-lg font-bold text-gray-900">Avatar Mode Active</h3>
-                </div>
-                <p className="text-gray-700">
-                  You're viewing {displayName}'s avatar profile. This is their digital persona with unique content and identity.
+                  {isOwnProfile 
+                    ? `You're viewing your avatar profile as ${displayName}. Create avatar-specific posts here that are different from your real-world posts! Your avatar identity is automatically tied to your real profile.`
+                    : `You're viewing ${displayName}'s avatar profile. This is their digital persona with unique content and identity.`
+                  }
                 </p>
               </Card>
             )}
