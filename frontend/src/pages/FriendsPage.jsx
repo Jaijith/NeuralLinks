@@ -1,0 +1,139 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Users, MessageCircle, UserMinus } from "lucide-react";
+import axios from "axios";
+import { toast } from "sonner";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+const FriendsPage = ({ user }) => {
+  const navigate = useNavigate();
+  const [friends, setFriends] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFriends();
+  }, []);
+
+  const fetchFriends = async () => {
+    try {
+      const response = await axios.get(`${API}/friends`, {
+        withCredentials: true,
+      });
+      setFriends(response.data);
+    } catch (error) {
+      console.error("Error fetching friends:", error);
+      toast.error("Failed to load friends");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeFriend = async (friendId) => {
+    if (!window.confirm("Are you sure you want to remove this friend?")) return;
+    
+    try {
+      await axios.delete(`${API}/friends/${friendId}`, {
+        withCredentials: true,
+      });
+      toast.success("Friend removed");
+      fetchFriends();
+    } catch (error) {
+      console.error("Error removing friend:", error);
+      toast.error("Failed to remove friend");
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold gradient-text mb-2">Friends</h1>
+          <p className="text-gray-600">Manage your connections</p>
+        </div>
+
+        {loading ? (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading friends...</p>
+          </div>
+        ) : friends.length === 0 ? (
+          <Card className="glass-morphism p-12 text-center" data-testid="no-friends">
+            <div className="w-24 h-24 bg-gradient-to-br from-purple-200 to-purple-300 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Users className="w-12 h-12 text-purple-600" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">No friends yet</h3>
+            <p className="text-gray-600 mb-6">Start connecting with people to grow your network</p>
+            <Button
+              onClick={() => navigate("/search")}
+              data-testid="find-friends-btn"
+              className="btn-primary text-white px-8 py-3 rounded-full"
+            >
+              Find Friends
+            </Button>
+          </Card>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {friends.map((friend, idx) => (
+              <Card
+                key={friend.id}
+                className="glass-morphism p-6 card-hover"
+                data-testid={`friend-card-${idx}`}
+              >
+                <div className="flex flex-col items-center text-center">
+                  <Avatar className="w-24 h-24 border-4 border-white shadow-lg mb-4">
+                    <AvatarImage src={friend.picture} />
+                    <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-600 text-white text-2xl">
+                      {friend.name?.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <h3 className="text-xl font-bold text-gray-800 mb-1">{friend.name}</h3>
+                  <p className="text-sm text-gray-600 mb-3">
+                    {friend.age} • {friend.location}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">{friend.bio}</p>
+                  {friend.interests && friend.interests.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4 justify-center">
+                      {friend.interests.slice(0, 3).map((interest, i) => (
+                        <span
+                          key={i}
+                          className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full"
+                        >
+                          {interest}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex space-x-2 w-full">
+                    <Button
+                      onClick={() => navigate(`/profile/${friend.id}`)}
+                      data-testid={`view-profile-${idx}`}
+                      variant="outline"
+                      className="flex-1 border-2 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-full"
+                    >
+                      View Profile
+                    </Button>
+                    <Button
+                      onClick={() => removeFriend(friend.id)}
+                      data-testid={`remove-friend-${idx}`}
+                      variant="outline"
+                      className="border-2 border-red-300 text-red-600 hover:bg-red-50 rounded-full px-3"
+                    >
+                      <UserMinus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default FriendsPage;
