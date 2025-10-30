@@ -6,18 +6,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Users, MessageCircle, UserMinus } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
+import { useWorldMode } from "@/contexts/WorldModeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const FriendsPage = ({ user }) => {
   const navigate = useNavigate();
+  const { worldMode } = useWorldMode();
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchFriends();
-  }, []);
+  }, [worldMode]); // Re-fetch when worldMode changes
 
   const fetchFriends = async () => {
     try {
