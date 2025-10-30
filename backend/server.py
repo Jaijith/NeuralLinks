@@ -330,6 +330,25 @@ async def logout(request: Request, response: Response):
 
 # ============ PROFILE ROUTES ============
 
+@api_router.put("/profile")
+async def update_profile(profile_data: Dict[str, Any], request: Request):
+    """Update user's real profile"""
+    user = await require_auth(request)
+    
+    # Only update real profile fields (not avatar fields)
+    real_fields = {}
+    for key, value in profile_data.items():
+        if not key.startswith('avatar_'):
+            real_fields[key] = value
+    
+    # Update user
+    await db.users.update_one(
+        {"id": user.id},
+        {"$set": real_fields}
+    )
+    
+    return {"message": "Profile updated"}
+
 @api_router.put("/profile/avatar")
 async def update_avatar_profile(avatar_data: Dict[str, Any], request: Request):
     """Update user's avatar profile (separate from real profile)"""
