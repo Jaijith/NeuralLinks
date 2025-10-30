@@ -221,28 +221,35 @@ const ProfilePageFull = ({ user: currentUser }) => {
   // Determine what to display based on world mode
   let displayName, displayPicture, displayBio, displayInterests, displayJobTitle, displayLocation;
   
-  if (isOwnProfile) {
-    // For own profile, show based on global world mode
-    if (worldMode === 'avatar') {
-      displayName = profileUser.avatar_name || profileUser.name;
-      displayPicture = profileUser.avatar_picture || profileUser.picture;
-      displayBio = profileUser.avatar_bio || profileUser.bio;
+  if (worldMode === 'avatar') {
+    // Avatar World - Show avatar identity
+    if (isOwnProfile) {
+      displayName = profileUser.avatar_name || 'Set Avatar Nickname';
+      displayPicture = profileUser.avatar_picture || 'https://api.dicebear.com/7.x/adventurer/svg?seed=default';
+      displayBio = profileUser.avatar_bio || 'Configure your avatar profile!';
+      displayInterests = profileUser.avatar_interests || [];
+      displayJobTitle = profileUser.avatar_job_title || '';
+      displayLocation = profileUser.avatar_location || '';
+    } else {
+      // For bots/other users
+      if (profileUser.is_bot) {
+        displayName = profileUser.avatar_name || profileUser.name;
+        displayPicture = profileUser.avatar_picture || profileUser.picture;
+        displayBio = profileUser.avatar_bio || profileUser.bio;
+      } else {
+        displayName = profileUser.avatar_name || profileUser.name;
+        displayPicture = profileUser.avatar_picture || profileUser.picture;
+        displayBio = profileUser.avatar_bio || profileUser.bio;
+      }
       displayInterests = profileUser.avatar_interests || profileUser.interests || [];
       displayJobTitle = profileUser.avatar_job_title || profileUser.job_title;
       displayLocation = profileUser.avatar_location || profileUser.location;
-    } else {
-      displayName = profileUser.name;
-      displayPicture = profileUser.picture;
-      displayBio = profileUser.bio;
-      displayInterests = profileUser.interests || [];
-      displayJobTitle = profileUser.job_title;
-      displayLocation = profileUser.location;
     }
   } else {
-    // For other profiles, API already handled world mode
-    displayName = profileUser.display_name || profileUser.name;
-    displayPicture = profileUser.display_picture || profileUser.picture;
-    displayBio = profileUser.display_bio || profileUser.bio;
+    // Real World - Show real identity
+    displayName = profileUser.name;
+    displayPicture = profileUser.picture;
+    displayBio = profileUser.bio;
     displayInterests = profileUser.interests || [];
     displayJobTitle = profileUser.job_title;
     displayLocation = profileUser.location;
