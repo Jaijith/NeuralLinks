@@ -33,6 +33,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
   const [newPostText, setNewPostText] = useState('');
   const [editingPost, setEditingPost] = useState(null);
   const [editedPostText, setEditedPostText] = useState('');
+  const [viewMode, setViewMode] = useState('single'); // 'single' or 'both'
   
   // Real Profile Edit
   const [showEditRealProfile, setShowEditRealProfile] = useState(false);
