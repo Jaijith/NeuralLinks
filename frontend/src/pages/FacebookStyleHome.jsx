@@ -42,7 +42,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [worldMode]); // Re-fetch when worldMode changes
 
   useEffect(() => {
     if (mode === 'avatar') {
