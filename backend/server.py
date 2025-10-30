@@ -273,8 +273,8 @@ async def get_me(request: Request):
     return user
 
 @api_router.get("/users/{user_id}")
-async def get_user_profile(user_id: str, request: Request):
-    """Get user profile by ID"""
+async def get_user_profile(user_id: str, world_mode: str = "real", request: Request = None):
+    """Get user profile by ID with world mode support"""
     user = await require_auth(request)
     
     # Get the target user
@@ -282,6 +282,23 @@ async def get_user_profile(user_id: str, request: Request):
     
     if not target_user:
         raise HTTPException(status_code=404, detail="User not found")
+    
+    # Apply world mode transformations for bots
+    if target_user.get('is_bot') and world_mode == 'avatar':
+        # Use avatar identity
+        if 'avatar_name' in target_user:
+            target_user['display_name'] = target_user['avatar_name']
+            target_user['display_picture'] = target_user.get('avatar_picture', target_user['picture'])
+            target_user['display_bio'] = target_user.get('avatar_bio', target_user['bio'])
+        else:
+            target_user['display_name'] = target_user['name']
+            target_user['display_picture'] = target_user['picture']
+            target_user['display_bio'] = target_user['bio']
+    else:
+        # Use real identity
+        target_user['display_name'] = target_user['name']
+        target_user['display_picture'] = target_user['picture']
+        target_user['display_bio'] = target_user['bio']
     
     # Check friendship status
     friendship = await db.friendships.find_one({
