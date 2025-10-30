@@ -440,10 +440,11 @@ async def create_post(post_data: Dict[str, str], request: Request):
     
     # Determine post type (real or avatar)
     post_type = post_data.get('post_type', 'real')  # 'real' or 'avatar'
+    post_text = post_data.get('text', '')
     
     new_post = {
         'id': str(uuid.uuid4()),
-        'text': post_data.get('text', ''),
+        'text': post_text,
         'post_type': post_type,
         'created_at': datetime.now(timezone.utc).isoformat(),
         'likes': 0,
@@ -461,6 +462,13 @@ async def create_post(post_data: Dict[str, str], request: Request):
             {"id": user.id},
             {"$push": {"posts": new_post}}
         )
+    
+    # Enrich knowledge graph from post content (for real posts only)
+    if post_type == 'real' and post_text:
+        try:
+            await graph_builder.enrich_graph_from_post(post_text, user.id)
+        except Exception as e:
+            logger.error(f"Graph enrichment error: {str(e)}")
     
     return new_post
 
