@@ -758,14 +758,14 @@ const ProfilePageFull = ({ user: currentUser }) => {
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium mb-2">Avatar Job</label>
+                              <label className="block text-sm font-medium mb-2">Maya Job Title</label>
                               <Input
                                 value={editAvatarProfileData.job_title}
                                 onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, job_title: e.target.value})}
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium mb-2">Avatar Location</label>
+                              <label className="block text-sm font-medium mb-2">Maya Location</label>
                               <Input
                                 value={editAvatarProfileData.location}
                                 onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, location: e.target.value})}
