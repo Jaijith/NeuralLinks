@@ -263,6 +263,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
   return (
     <div className="min-h-screen bg-gray-100">
+      <AppHeader user={currentUser} currentPage="profile" />
+      
       {/* Cover Photo */}
       <div className="relative h-96 bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-600 profile-cover">
         <div className="absolute inset-0 bg-black/20"></div>
