@@ -57,14 +57,26 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       ]);
       setFriends(friendsRes.data.slice(0, 9));
       
-      // Fetch friend posts
+      // Fetch friend posts based on world mode
       const posts = [];
       for (const friend of friendsRes.data.slice(0, 10)) {
-        if (friend.posts && friend.posts.length > 0) {
-          friend.posts.forEach(post => {
+        // Choose posts based on world mode
+        const postsToShow = worldMode === 'avatar' 
+          ? (friend.avatar_posts || [])
+          : (friend.posts || []);
+        
+        if (postsToShow && postsToShow.length > 0) {
+          postsToShow.forEach(post => {
             posts.push({
               ...post,
-              user: friend
+              user: friend,
+              // Add display fields based on world mode
+              displayName: worldMode === 'avatar' 
+                ? (friend.avatar_name || friend.name)
+                : friend.name,
+              displayPicture: worldMode === 'avatar'
+                ? (friend.avatar_picture || friend.picture)
+                : friend.picture
             });
           });
         }
