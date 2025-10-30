@@ -45,6 +45,22 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
         axios.get(`${API}/friends`, { withCredentials: true })
       ]);
       setFriends(friendsRes.data.slice(0, 9));
+      
+      // Fetch friend posts
+      const posts = [];
+      for (const friend of friendsRes.data.slice(0, 10)) {
+        if (friend.posts && friend.posts.length > 0) {
+          friend.posts.forEach(post => {
+            posts.push({
+              ...post,
+              user: friend
+            });
+          });
+        }
+      }
+      // Sort by date
+      posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      setFriendPosts(posts.slice(0, 20));
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
