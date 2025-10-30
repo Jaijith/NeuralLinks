@@ -405,7 +405,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                 />
                               </div>
                               <Button onClick={updateRealProfile} className="w-full">
-                                Save Real Profile
+                                Save Sense Profile
                               </Button>
                             </div>
                           </DialogContent>
