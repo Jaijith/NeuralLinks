@@ -342,24 +342,24 @@ body.avatar-world::before {
     50% { opacity: 1; }
 }
 
-/* Scrollbar Styling for Avatar World */
+/* Scrollbar Styling for Avatar World - Colorful */
 .avatar-world ::-webkit-scrollbar {
     width: 10px;
 }
 
 .avatar-world ::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.5);
+    background: rgba(196, 69, 105, 0.3);
 }
 
 .avatar-world ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(180deg, #FF6B9D, #FFC107);
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
 }
 
 .avatar-world ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #60a5fa, #a78bfa);
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+    background: linear-gradient(180deg, #FFC107, #FF6B9D);
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.9);
 }
 
 /* High Contrast Text for Readability */
@@ -369,38 +369,60 @@ body.avatar-world::before {
 .avatar-world h4,
 .avatar-world h5,
 .avatar-world h6 {
-    color: rgb(224, 242, 254) !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    color: rgb(255, 255, 255) !important;
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(255, 193, 7, 0.3);
+    font-weight: 700;
 }
 
 .avatar-world p,
 .avatar-world span,
 .avatar-world div {
-    color: rgb(191, 219, 254);
+    color: rgb(255, 255, 255);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Avatar Link Styling */
 .avatar-world a {
-    color: rgb(147, 197, 253);
-    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    color: rgb(255, 255, 255);
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
     transition: all 0.3s ease;
+    font-weight: 600;
 }
 
 .avatar-world a:hover {
-    color: rgb(191, 219, 254);
-    text-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+    color: rgb(255, 193, 7);
+    text-shadow: 0 0 15px rgba(255, 193, 7, 0.9);
+    transform: scale(1.05);
 }
 
 /* Energy Ripple Effect */
 @keyframes energyRipple {
     0% {
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
     }
     100% {
-        box-shadow: 0 0 0 20px rgba(59, 130, 246, 0);
+        box-shadow: 0 0 0 20px rgba(255, 193, 7, 0);
     }
 }
 
 .avatar-world .energy-ripple {
     animation: energyRipple 1.5s infinite;
+}
+
+/* Proper Image Sizing */
+.avatar-world img,
+.avatar-world .avatar,
+.avatar-world .avatar > img {
+    object-fit: cover !important;
+    aspect-ratio: 1 / 1;
+}
+
+/* Card Hover Effects */
+.avatar-world .card-avatar:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 10px 40px rgba(255, 107, 157, 0.5),
+        inset 0 0 30px rgba(255, 193, 7, 0.2);
 }
