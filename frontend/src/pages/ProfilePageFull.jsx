@@ -702,8 +702,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
                     </div>
                   </Card>
                   
-                  {/* Real Posts */}
-                  <h4 className="font-semibold text-gray-700">Real Posts</h4>
+                  {/* Sense Posts */}
+                  <h4 className="font-semibold text-gray-700">Sense Posts</h4>
                   {profileUser.posts && profileUser.posts.length > 0 ? (
                     profileUser.posts.slice(0, 3).map((post) => (
                       <Card key={post.id} className="p-3">
