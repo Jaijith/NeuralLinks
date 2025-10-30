@@ -488,7 +488,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                             Friends
                           </Button>
                           <Button 
-                            onClick={() => navigate(`/avatar-chat/${profileUser.id}`)}
+                            onClick={() => setShowMessenger(true)}
                             className="bg-blue-500 hover:bg-blue-600 text-white"
                           >
                             <MessageCircle className="w-4 h-4 mr-2" />
