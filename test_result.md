@@ -182,15 +182,18 @@ backend:
 
   - task: "Add External Platform Integration Routes"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added placeholder integration routes: /integrations (GET), /integrations/connect (POST), /integrations/disconnect (POST), /integrations/sync (POST) for Spotify, YouTube, Instagram, Facebook, Amazon, Netflix, Goodreads, Strava"
+      - working: true
+        agent: "testing"
+        comment: "External platform integration routes working correctly. GET /integrations returns connected platforms by category, POST /integrations/connect successfully connects platforms, POST /integrations/sync adds placeholder data to graph (3 nodes per platform), POST /integrations/disconnect removes connections. Tested with Spotify, YouTube, Instagram, Goodreads."
 
   - task: "Auto Graph Building on Profile Update"
     implemented: true
