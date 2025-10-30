@@ -371,24 +371,50 @@ body.avatar-world::before {
 .avatar-world h6 {
     color: rgb(255, 255, 255) !important;
     text-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.5),
-        0 0 10px rgba(255, 193, 7, 0.3);
-    font-weight: 700;
+        0 2px 8px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(255, 193, 7, 0.5);
+    font-weight: 800 !important;
 }
 
 .avatar-world p,
 .avatar-world span,
 .avatar-world div {
-    color: rgb(255, 255, 255);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color: rgb(255, 255, 255) !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    font-weight: 600 !important;
+}
+
+/* Card backgrounds darker for better contrast */
+.avatar-world .card,
+.card-avatar {
+    background: rgba(30, 30, 50, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 193, 7, 0.6) !important;
+}
+
+/* White cards in avatar world for readability */
+.avatar-world .bg-white {
+    background: rgba(30, 30, 50, 0.95) !important;
+}
+
+/* Button text in avatar world */
+.avatar-world button {
+    font-weight: 700 !important;
+}
+
+/* Input text */
+.avatar-world input,
+.avatar-world textarea {
+    font-weight: 600 !important;
+    color: rgb(255, 255, 255) !important;
 }
 
 /* Avatar Link Styling */
 .avatar-world a {
-    color: rgb(255, 255, 255);
+    color: rgb(255, 255, 255) !important;
     text-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
     transition: all 0.3s ease;
-    font-weight: 600;
+    font-weight: 700 !important;
 }
 
 .avatar-world a:hover {
