@@ -251,7 +251,7 @@ Return ONLY the conversation starters, one per line, no numbering or quotes."""
             
             return starters if starters else ["Hey! What are you up to?"]
             
-        except Exception as e:
+        except Exception:
             return ["Hey! How's it going?"]
     
     async def generate_match_explanation(self, user_id: str, match_user_id: str) -> str:
@@ -265,7 +265,7 @@ Return ONLY the conversation starters, one per line, no numbering or quotes."""
         score = compatibility.get("compatibility_score", 0)
         
         if score < 30:
-            explanation = f"You both have unique perspectives that could lead to interesting conversations. "
+            explanation = "You both have unique perspectives that could lead to interesting conversations. "
         elif score < 60:
             explanation = f"You share some common ground: {', '.join(shared_interests[:3])}. "
         else:
