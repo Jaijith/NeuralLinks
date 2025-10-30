@@ -664,6 +664,19 @@ const AvatarMessenger = ({ conversations, currentUser, onBack }) => {
           </div>
         )}
       </Card>
+
+      {/* Side Messenger */}
+      {showMessenger && selectedFriend && (
+        <SideMessenger
+          user={currentUser}
+          otherUserId={selectedFriend.id}
+          otherUserData={selectedFriend}
+          onClose={() => {
+            setShowMessenger(false);
+            setSelectedFriend(null);
+          }}
+        />
+      )}
     </div>
   );
 };
