@@ -51,7 +51,9 @@ async def debug_graph_context():
         if node_type in context:
             context[node_type].append(item)
         else:
-            print(f"Unknown node type: {node_type}")
+            # Handle unknown node types by adding to interests as fallback
+            context["interests"].append(item)
+            print(f"Unknown node type '{node_type}' added to interests")
     
     # Sort by strength
     for key in context:
