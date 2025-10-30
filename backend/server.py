@@ -383,6 +383,14 @@ async def update_profile(profile_data: Dict[str, Any], request: Request):
         {"$set": real_fields}
     )
     
+    # Rebuild/update knowledge graph from updated profile
+    try:
+        user_doc = await db.users.find_one({"id": user.id})
+        if user_doc:
+            await graph_builder.build_graph_from_profile(user_doc)
+    except Exception as e:
+        logger.error(f"Graph update error: {str(e)}")
+    
     return {"message": "Profile updated"}
 
 @api_router.put("/profile/avatar")
