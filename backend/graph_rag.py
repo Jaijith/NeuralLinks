@@ -57,8 +57,18 @@ class GraphRAG:
                 "properties": properties
             }
             
-            if node_type in context:
-                context[node_type].append(item)
+            # Map singular node types to plural context keys
+            type_mapping = {
+                "interest": "interests",
+                "trait": "traits", 
+                "value": "values",
+                "experience": "experiences",
+                "preference": "preferences",
+                "demographic": "demographics"
+            }
+            
+            context_key = type_mapping.get(node_type, "interests")  # Default to interests
+            context[context_key].append(item)
         
         # Sort by strength
         for key in context:
