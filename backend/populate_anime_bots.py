@@ -13,8 +13,23 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Anime-style data
-first_names = [
+# Realistic Western names for Real World
+real_first_names = [
+    'Emma', 'Liam', 'Olivia', 'Noah', 'Ava', 'Ethan', 'Sophia', 'Mason', 'Isabella', 'Lucas',
+    'Mia', 'James', 'Charlotte', 'Benjamin', 'Amelia', 'Alexander', 'Harper', 'Michael', 'Evelyn', 'Daniel',
+    'Abigail', 'Matthew', 'Emily', 'Jackson', 'Elizabeth', 'Sebastian', 'Sofia', 'Jack', 'Avery', 'Aiden',
+    'Ella', 'Samuel', 'Scarlett', 'David', 'Grace', 'Joseph', 'Chloe', 'Carter', 'Victoria', 'Owen',
+    'Riley', 'Wyatt', 'Aria', 'John', 'Lily', 'Dylan', 'Aubrey', 'Luke', 'Zoey', 'Gabriel'
+]
+
+real_last_names = [
+    'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez',
+    'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin',
+    'Lee', 'Perez', 'Thompson', 'White', 'Harris', 'Sanchez', 'Clark', 'Ramirez', 'Lewis', 'Robinson'
+]
+
+# Anime-style names for Avatar World
+anime_first_names = [
     'Sakura', 'Yuki', 'Hana', 'Kaito', 'Ryu', 'Akira', 'Haruki', 'Sora', 'Mei', 'Ren',
     'Aiko', 'Daiki', 'Emi', 'Hinata', 'Ichigo', 'Jun', 'Kira', 'Luna', 'Miku', 'Nao',
     'Rei', 'Shinji', 'Taro', 'Yui', 'Zen', 'Asuna', 'Kirito', 'Mikasa', 'Eren', 'Levi',
