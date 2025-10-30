@@ -217,7 +217,7 @@ async def generate_all_bots():
     node_count = await db.graph_nodes.count_documents({})
     integration_count = await db.user_integrations.count_documents({})
     
-    print(f"\n📊 Statistics:")
+    print("\n📊 Statistics:")
     print(f"   Total bot users: {user_count}")
     print(f"   AI agents created: {agent_count}")
     print(f"   Graph nodes: {node_count}")
