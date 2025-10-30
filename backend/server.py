@@ -63,6 +63,14 @@ class User(BaseModel):
     bio: Optional[str] = None
     interests: List[str] = Field(default_factory=list)
     
+    # Avatar profile fields (parallel to real profile)
+    avatar_name: Optional[str] = None
+    avatar_picture: Optional[str] = None
+    avatar_bio: Optional[str] = None
+    avatar_job_title: Optional[str] = None
+    avatar_location: Optional[str] = None
+    avatar_interests: List[str] = Field(default_factory=list)
+    
     # Profile completion status
     profile_completed: bool = False
     onboarding_stage: str = "start"  # start, basic_info, personality, interests, complete
