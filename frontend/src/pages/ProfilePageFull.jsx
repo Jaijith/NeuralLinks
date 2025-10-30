@@ -718,11 +718,11 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   )}
                 </div>
 
-                {/* AVATAR PROFILE COLUMN */}
+                {/* MAYA PROFILE COLUMN */}
                 <div className="space-y-4">
                   <Card className="p-4 bg-purple-50 border-2 border-purple-400">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-bold text-purple-900">🎮 Avatar Profile</h3>
+                      <h3 className="text-xl font-bold text-purple-900">🎮 Maya Profile</h3>
                       <Dialog open={showEditAvatarProfile} onOpenChange={setShowEditAvatarProfile}>
                         <DialogTrigger asChild>
                           <Button size="sm" className="bg-gradient-to-r from-pink-500 to-purple-600 text-white">
