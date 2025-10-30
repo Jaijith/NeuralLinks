@@ -180,39 +180,39 @@ body.avatar-world::before {
     }
 }
 
-/* Bioluminescent Text Effect */
+/* Colorful Text Effect */
 .bioluminescent {
     text-shadow: 
-        0 0 10px currentColor,
-        0 0 20px currentColor,
-        0 0 30px currentColor;
-    animation: textGlow 2s ease-in-out infinite alternate;
+        0 0 10px rgba(255, 193, 7, 0.8),
+        0 0 20px rgba(255, 193, 7, 0.6),
+        0 0 30px rgba(255, 193, 7, 0.4);
+    animation: colorTextGlow 2s ease-in-out infinite alternate;
 }
 
-@keyframes textGlow {
+@keyframes colorTextGlow {
     from { 
-        filter: brightness(1);
+        filter: brightness(1.2);
         text-shadow: 
-            0 0 10px currentColor,
-            0 0 20px currentColor;
+            0 0 10px rgba(255, 193, 7, 0.8),
+            0 0 20px rgba(255, 193, 7, 0.6);
     }
     to { 
-        filter: brightness(1.3);
+        filter: brightness(1.5);
         text-shadow: 
-            0 0 15px currentColor,
-            0 0 30px currentColor,
-            0 0 45px currentColor;
+            0 0 15px rgba(255, 107, 157, 0.9),
+            0 0 30px rgba(255, 107, 157, 0.7),
+            0 0 45px rgba(255, 107, 157, 0.5);
     }
 }
 
-/* Avatar Card Styling */
+/* Avatar Card Styling - Colorful */
 .card-avatar {
-    background: rgba(15, 23, 42, 0.85) !important;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(156, 39, 176, 0.15)) !important;
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    border: 2px solid rgba(255, 193, 7, 0.5) !important;
     box-shadow: 
-        0 0 30px rgba(59, 130, 246, 0.2),
-        inset 0 0 30px rgba(59, 130, 246, 0.05);
+        0 0 30px rgba(255, 107, 157, 0.3),
+        inset 0 0 30px rgba(255, 193, 7, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -227,7 +227,7 @@ body.avatar-world::before {
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(59, 130, 246, 0.1),
+        rgba(255, 193, 7, 0.2),
         transparent
     );
     animation: cardShimmer 3s infinite;
