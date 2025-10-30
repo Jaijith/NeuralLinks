@@ -530,3 +530,33 @@ body.avatar-world::before {
         0 10px 40px rgba(255, 107, 157, 0.5),
         inset 0 0 30px rgba(255, 193, 7, 0.2);
 }
+
+/* Friend Cards - Light background with dark text for readability */
+.avatar-world .friend-card {
+    background: rgba(255, 253, 245, 0.98) !important; /* Very light cream */
+    border: 2px solid rgba(255, 193, 7, 0.6) !important;
+}
+
+.avatar-world .friend-card h3,
+.avatar-world .friend-card p,
+.avatar-world .friend-card span {
+    color: rgb(60, 60, 60) !important; /* Dark gray for readability */
+    text-shadow: none !important;
+}
+
+.avatar-world .friend-card .text-gray-600 {
+    color: rgb(80, 80, 80) !important;
+}
+
+.avatar-world .friend-card .text-purple-700 {
+    color: rgb(109, 40, 217) !important; /* Vibrant purple */
+}
+
+.avatar-world .friend-card button {
+    color: rgb(109, 40, 217) !important; /* Purple for View Profile button */
+    font-weight: 700 !important;
+}
+
+.avatar-world .friend-card .text-red-600 {
+    color: rgb(220, 38, 38) !important; /* Red for remove button */
+}
