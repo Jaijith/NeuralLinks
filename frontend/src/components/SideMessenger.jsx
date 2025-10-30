@@ -106,7 +106,7 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
 
   if (!otherUser) return null;
 
-  const displayName = worldMode === 'Maya' 
+  const displayName = worldMode === 'avatar' 
     ? (otherUser.avatar_name || otherUser.name) 
     : otherUser.name;
   
