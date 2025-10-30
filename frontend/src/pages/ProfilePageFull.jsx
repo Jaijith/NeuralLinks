@@ -935,6 +935,16 @@ const ProfilePageFull = ({ user: currentUser }) => {
           </div>
         </div>
       </div>
+
+      {/* Side Messenger */}
+      {showMessenger && profileUser && !isOwnProfile && (
+        <SideMessenger
+          user={currentUser}
+          otherUserId={profileUser.id}
+          otherUserData={profileUser}
+          onClose={() => setShowMessenger(false)}
+        />
+      )}
     </div>
   );
 };
