@@ -12,7 +12,6 @@ import uuid
 from datetime import datetime, timezone, timedelta
 from openai import AsyncAzureOpenAI
 import httpx
-from emergentintegrations import emergent_auth
 import json
 import asyncio
 
