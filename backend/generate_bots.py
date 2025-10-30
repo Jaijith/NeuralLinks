@@ -88,7 +88,7 @@ async def generate_bot_profile():
         i3=interests[2] if len(interests) > 2 else 'exploring'
     )
     
-    user_id = f'bot-{uuid.uuid4()}
+    user_id = f'bot-{uuid.uuid4()}'
     
     # Create user
     user = {
