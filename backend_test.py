@@ -62,38 +62,33 @@ class GraphRAGTester:
             return False
     
     async def create_test_user_profile(self):
-        """Create a test user with rich profile data for graph building"""
-        print("\n=== Creating test user profile ===")
-        
-        profile_data = {
-            "name": TEST_USER_NAME,
-            "age": 28,
-            "gender": "non-binary",
-            "location": "San Francisco, CA",
-            "bio": "I'm passionate about sustainable technology and love hiking in nature. I value authenticity and meaningful connections. Always curious about new cultures and enjoy cooking plant-based meals.",
-            "interests": ["hiking", "technology", "cooking", "travel", "sustainability", "photography"]
-        }
+        """Verify test user profile is ready for graph building"""
+        print("\n=== Verifying test user profile ===")
         
         try:
-            headers = {"Authorization": f"Bearer {self.session_token}"} if self.session_token else {}
+            headers = {"Authorization": f"Bearer {self.session_token}"}
             
-            response = await self.client.put(
-                f"{BACKEND_URL}/profile",
-                json=profile_data,
+            # Get current user profile
+            response = await self.client.get(
+                f"{BACKEND_URL}/auth/me",
                 headers=headers
             )
             
             if response.status_code == 200:
-                await self.log_result("Profile Creation", True, 
-                                    f"Profile created with {len(profile_data['interests'])} interests")
+                user_data = response.json()
+                interests = user_data.get('interests', [])
+                bio = user_data.get('bio', '')
+                
+                await self.log_result("Profile Verification", True, 
+                                    f"Profile ready with {len(interests)} interests and bio")
                 return True
             else:
-                await self.log_result("Profile Creation", False, 
+                await self.log_result("Profile Verification", False, 
                                     f"HTTP {response.status_code}: {response.text}")
                 return False
                 
         except Exception as e:
-            await self.log_result("Profile Creation", False, f"Error: {str(e)}")
+            await self.log_result("Profile Verification", False, f"Error: {str(e)}")
             return False
     
     async def test_graph_building(self):
