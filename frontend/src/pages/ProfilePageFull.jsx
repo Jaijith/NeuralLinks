@@ -188,7 +188,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
         withCredentials: true,
       });
       setShowEditAvatarProfile(false);
-      toast.success("Avatar profile updated!");
+      toast.success("Maya profile updated!");
       // Refresh
       window.location.reload();
     } catch (error) {
