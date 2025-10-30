@@ -343,12 +343,32 @@ const ProfilePageFull = ({ user: currentUser }) => {
                 <div className="flex space-x-2">
                   {isOwnProfile ? (
                     <>
-                      {worldMode === 'real' ? (
+                      {/* Toggle View Mode Button */}
+                      <Button
+                        onClick={() => setViewMode(viewMode === 'single' ? 'both' : 'single')}
+                        variant="outline"
+                        className="border-2 border-purple-500 text-purple-700 hover:bg-purple-50"
+                      >
+                        {viewMode === 'single' ? (
+                          <>
+                            <Users className="w-4 h-4 mr-2" />
+                            View Both Profiles
+                          </>
+                        ) : (
+                          <>
+                            <UserIcon className="w-4 h-4 mr-2" />
+                            Single View
+                          </>
+                        )}
+                      </Button>
+                      
+                      {/* Edit Buttons - Show both if in 'both' mode */}
+                      {viewMode === 'both' || worldMode === 'real' ? (
                         <Dialog open={showEditRealProfile} onOpenChange={setShowEditRealProfile}>
                           <DialogTrigger asChild>
                             <Button className="bg-blue-500 hover:bg-blue-600 text-white">
                               <SettingsIcon className="w-4 h-4 mr-2" />
-                              Edit Real Profile
+                              Edit Real
                             </Button>
                           </DialogTrigger>
                           <DialogContent className="max-w-2xl">
@@ -387,12 +407,14 @@ const ProfilePageFull = ({ user: currentUser }) => {
                             </div>
                           </DialogContent>
                         </Dialog>
-                      ) : (
+                      ) : null}
+                      
+                      {viewMode === 'both' || worldMode === 'avatar' ? (
                         <Dialog open={showEditAvatarProfile} onOpenChange={setShowEditAvatarProfile}>
                           <DialogTrigger asChild>
                             <Button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700">
                               <Bot className="w-4 h-4 mr-2" />
-                              Edit Avatar Profile
+                              Edit Avatar
                             </Button>
                           </DialogTrigger>
                           <DialogContent className="max-w-2xl">
@@ -450,7 +472,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                             </div>
                           </DialogContent>
                         </Dialog>
-                      )}
+                      ) : null}
                     </>
                   ) : (
                     <>
