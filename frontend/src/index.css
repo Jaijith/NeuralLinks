@@ -245,51 +245,52 @@ body.avatar-world::before {
 }
 
 .avatar-world button:hover {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.6);
+    transform: translateY(-2px) scale(1.05);
 }
 
 /* Avatar Input Fields */
 .avatar-world input,
 .avatar-world textarea {
-    background: rgba(30, 41, 59, 0.7) !important;
-    border: 1px solid rgba(59, 130, 246, 0.3) !important;
-    color: rgb(191, 219, 254) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: 2px solid rgba(255, 193, 7, 0.5) !important;
+    color: rgb(255, 255, 255) !important;
     transition: all 0.3s ease;
 }
 
 .avatar-world input::placeholder,
 .avatar-world textarea::placeholder {
-    color: rgba(147, 197, 253, 0.5) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .avatar-world input:focus,
 .avatar-world textarea:focus {
-    border-color: rgba(59, 130, 246, 0.6) !important;
+    border-color: rgba(255, 193, 7, 0.9) !important;
     box-shadow: 
-        0 0 0 3px rgba(59, 130, 246, 0.1),
-        0 0 20px rgba(59, 130, 246, 0.3);
+        0 0 0 3px rgba(255, 193, 7, 0.2),
+        0 0 20px rgba(255, 193, 7, 0.4);
     outline: none;
+    background: rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Avatar Badge with Glow */
 .avatar-world .badge-glow {
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
-    animation: badgePulse 2s ease-in-out infinite;
+    background: linear-gradient(135deg, #FF6B9D, #FFC107) !important;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.8);
+    animation: badgeColorPulse 2s ease-in-out infinite;
 }
 
-@keyframes badgePulse {
-    0%, 100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
-    50% { box-shadow: 0 0 25px rgba(59, 130, 246, 0.9); }
+@keyframes badgeColorPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(255, 193, 7, 0.8); }
+    50% { box-shadow: 0 0 25px rgba(255, 107, 157, 0.9); }
 }
 
 /* Avatar Cover Photo Effect */
 .avatar-world .profile-cover {
     background: linear-gradient(
         135deg,
-        rgba(13, 71, 161, 0.9),
-        rgba(49, 27, 146, 0.9)
+        rgba(255, 107, 157, 0.9),
+        rgba(156, 39, 176, 0.9)
     ) !important;
     position: relative;
     overflow: hidden;
@@ -304,13 +305,13 @@ body.avatar-world::before {
     height: 200%;
     background: radial-gradient(
         circle,
-        rgba(0, 200, 255, 0.2) 0%,
+        rgba(255, 193, 7, 0.3) 0%,
         transparent 50%
     );
-    animation: coverGlow 6s linear infinite;
+    animation: coverColorGlow 6s linear infinite;
 }
 
-@keyframes coverGlow {
+@keyframes coverColorGlow {
     0% { transform: translate(0, 0) rotate(0deg); }
     100% { transform: translate(10%, 10%) rotate(360deg); }
 }
