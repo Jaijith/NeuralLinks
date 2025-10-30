@@ -133,7 +133,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
       );
       setPosts([response.data, ...posts]);
       setNewPostText('');
-      toast.success(worldMode === 'avatar' ? "Avatar post created!" : "Post created!");
+      toast.success(worldMode === 'avatar' ? "Maya post created!" : "Post created!");
     } catch (error) {
       toast.error("Failed to create post");
     }
