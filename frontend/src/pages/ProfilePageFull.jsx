@@ -732,11 +732,11 @@ const ProfilePageFull = ({ user: currentUser }) => {
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl">
                           <DialogHeader>
-                            <DialogTitle>Edit Avatar Profile</DialogTitle>
+                            <DialogTitle>Edit Maya Profile</DialogTitle>
                           </DialogHeader>
                           <div className="space-y-4 py-4">
                             <div>
-                              <label className="block text-sm font-medium mb-2">Avatar Nickname</label>
+                              <label className="block text-sm font-medium mb-2">Maya Nickname</label>
                               <Input
                                 value={editAvatarProfileData.name}
                                 onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, name: e.target.value})}
