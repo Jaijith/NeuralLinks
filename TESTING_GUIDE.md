@@ -2,14 +2,14 @@
 
 ## 🚀 Quick Start
 
-**Live App URL:** https://ai-dating-match-1.preview.emergentagent.com/
+**Live App URL:** https://avatar-dating-1.preview.emergentagent.com/
 
 ---
 
 ## 📋 Testing Steps
 
 ### 1. **Sign Up / Sign In**
-- Go to https://ai-dating-match-1.preview.emergentagent.com/
+- Go to https://avatar-dating-1.preview.emergentagent.com/
 - Click "Get Started Free" or "Sign In" button
 - You'll be redirected to Google OAuth
 - Sign in with your Google account
@@ -99,7 +99,7 @@ SESSION_TOKEN="your_session_token_here"
 TARGET_USER_ID="test-sarah-1761802435434"  # Sarah's ID
 
 # 2. Start AI agent conversation
-curl -X POST "https://ai-dating-match-1.preview.emergentagent.com/api/agent/start-conversation/$TARGET_USER_ID" \
+curl -X POST "https://avatar-dating-1.preview.emergentagent.com/api/agent/start-conversation/$TARGET_USER_ID" \
   -H "Authorization: Bearer $SESSION_TOKEN" \
   -H "Content-Type: application/json"
 ```
@@ -187,7 +187,7 @@ mongosh test_database --eval "db.matches.find().pretty()"
 
 ### Test API Endpoint
 ```bash
-curl https://ai-dating-match-1.preview.emergentagent.com/api/auth/me
+curl https://avatar-dating-1.preview.emergentagent.com/api/auth/me
 ```
 
 ---
