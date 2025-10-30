@@ -486,23 +486,32 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   {labels.friends}
                 </h3>
                 <div className="space-y-2">
-                  {friends.slice(0, 6).map((friend, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`flex items-center space-x-2 cursor-pointer p-1 rounded ${
-                        worldMode === 'avatar' ? 'hover:bg-slate-800/50' : 'hover:bg-gray-50'
-                      }`}
-                      onClick={() => navigate(`/profile/${friend.id}`)}
-                    >
-                      <Avatar className={`w-8 h-8 ${worldMode === 'avatar' ? 'avatar-glow' : ''}`}>
-                        <AvatarImage src={friend.picture} />
-                        <AvatarFallback>{friend.name?.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <span className={`text-sm font-medium ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
-                        {friend.name}
-                      </span>
-                    </div>
-                  ))}
+                  {friends.slice(0, 6).map((friend, idx) => {
+                    const displayName = worldMode === 'avatar' 
+                      ? (friend.avatar_name || friend.name)
+                      : friend.name;
+                    const displayPicture = worldMode === 'avatar'
+                      ? (friend.avatar_picture || friend.picture)
+                      : friend.picture;
+                    
+                    return (
+                      <div 
+                        key={idx} 
+                        className={`flex items-center space-x-2 cursor-pointer p-1 rounded ${
+                          worldMode === 'avatar' ? 'hover:bg-slate-800/50' : 'hover:bg-gray-50'
+                        }`}
+                        onClick={() => navigate(`/profile/${friend.id}`)}
+                      >
+                        <Avatar className={`w-8 h-8 ${worldMode === 'avatar' ? 'avatar-glow' : ''}`}>
+                          <AvatarImage src={displayPicture} />
+                          <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <span className={`text-sm font-medium ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
+                          {displayName}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </Card>
 
