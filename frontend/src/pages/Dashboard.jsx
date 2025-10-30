@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, Users, MessageCircle, LogOut, User, Sparkles, TrendingUp } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Heart, Users, MessageCircle, LogOut, User, Sparkles, TrendingUp, Search, Settings } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 
