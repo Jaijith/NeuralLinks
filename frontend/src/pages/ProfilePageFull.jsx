@@ -743,7 +743,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium mb-2">Avatar Bio</label>
+                              <label className="block text-sm font-medium mb-2">Maya Bio</label>
                               <Textarea
                                 value={editAvatarProfileData.bio}
                                 onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, bio: e.target.value})}
@@ -751,7 +751,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium mb-2">Avatar Image URL</label>
+                              <label className="block text-sm font-medium mb-2">Maya Image URL</label>
                               <Input
                                 value={editAvatarProfileData.picture}
                                 onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, picture: e.target.value})}
