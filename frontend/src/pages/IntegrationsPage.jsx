@@ -80,7 +80,19 @@ const IntegrationsPage = ({ user }) => {
       const response = await axios.get(`${API}/integrations`, {
         withCredentials: true,
       });
-      setIntegrations(response.data);
+      
+      // Transform backend response to match UI structure
+      const platformData = response.data.integrations || [];
+      
+      const categorized = {
+        social_media: platformData.filter(p => ['spotify', 'youtube', 'instagram', 'facebook'].includes(p.platform_name)),
+        ecommerce: platformData.filter(p => ['amazon'].includes(p.platform_name)),
+        email: [],
+        messaging: [],
+        dating: platformData.filter(p => ['strava', 'netflix', 'goodreads'].includes(p.platform_name))
+      };
+      
+      setIntegrations(categorized);
     } catch (error) {
       console.error("Error fetching integrations:", error);
       toast.error("Failed to load integrations");
