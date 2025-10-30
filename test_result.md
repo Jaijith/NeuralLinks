@@ -212,15 +212,18 @@ backend:
 
   - task: "Graph Enrichment on Post Creation"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Updated /profile/posts (POST) endpoint to enrich knowledge graph from real post content using LLM entity extraction"
+      - working: true
+        agent: "testing"
+        comment: "Graph enrichment on post creation working correctly. When posts are created, LLM extracts entities and adds them to knowledge graph. Tested with posts about rock climbing, fermentation, and mindfulness - successfully added 1-5 nodes per post with appropriate entity types (interests, traits, values, experiences)."
 
   - task: "Auto Graph Building on User Registration"
     implemented: true
