@@ -99,30 +99,48 @@ async def clear_existing_bots():
     print("✅ Cleared existing bot data")
 
 async def generate_anime_bot():
-    """Generate a single bot with anime aesthetics"""
-    name = random.choice(first_names)
-    user_id = f'anime-bot-{uuid.uuid4()}'
+    """Generate a single bot with dual personalities (Real + Avatar)"""
+    # Real World identity
+    real_first = random.choice(real_first_names)
+    real_last = random.choice(real_last_names)
+    real_name = f"{real_first} {real_last}"
+    
+    # Avatar World identity
+    avatar_name = random.choice(anime_first_names)
+    
+    user_id = f'bot-{uuid.uuid4()}'
     age = random.randint(18, 35)
     gender = random.choice(['Male', 'Female', 'Non-binary'])
     location = random.choice(cities)
     job = random.choice(jobs)
     user_interests = random.sample(interests, random.randint(4, 7))
     
-    # Use anime-style avatar API
-    avatar_seed = name + str(random.randint(1, 1000))
-    picture = f'https://api.dicebear.com/7.x/adventurer/svg?seed={avatar_seed}'
+    # Real World: Use AI-generated realistic human face
+    # Using thispersondoesnotexist-like API or random seed-based realistic avatars
+    real_picture = f'https://i.pravatar.cc/400?img={random.randint(1, 70)}'
     
-    bio = f"{age} | {job} | {' & '.join(user_interests[:3])} enthusiast 🌸"
+    # Avatar World: Use anime-style avatar
+    avatar_seed = avatar_name + str(random.randint(1, 1000))
+    avatar_picture = f'https://api.dicebear.com/7.x/adventurer/svg?seed={avatar_seed}'
+    
+    bio = f"{age} | {job} | {' & '.join(user_interests[:3])} enthusiast"
+    avatar_bio = f"{age} | {job} | {' & '.join(user_interests[:3])} enthusiast 🌸"
     
     user = {
         'id': user_id,
-        'email': f'{name.lower()}.{random.randint(100, 999)}@anime.social',
-        'name': name,
-        'picture': picture,
+        'email': f'{real_first.lower()}.{real_last.lower()}.{random.randint(100, 999)}@social.app',
+        # Real World Data
+        'name': real_name,
+        'picture': real_picture,
+        'bio': bio,
+        # Avatar World Data
+        'avatar_name': avatar_name,
+        'avatar_picture': avatar_picture,
+        'avatar_bio': avatar_bio,
+        # Common Data
         'age': age,
         'gender': gender,
         'location': location,
-        'bio': bio,
         'job_title': job,
         'interests': user_interests,
         'profile_completed': True,
@@ -194,7 +212,7 @@ async def generate_anime_bot():
         {'$set': {'posts': posts}}
     )
     
-    return user_id, name, user_interests
+    return user_id, real_name, avatar_name, user_interests
 
 async def create_avatar_conversations(bot_ids, bot_data):
     """Create conversations between avatars"""
