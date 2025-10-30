@@ -661,7 +661,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl">
                           <DialogHeader>
-                            <DialogTitle>Edit Real Profile</DialogTitle>
+                            <DialogTitle>Edit Sense Profile</DialogTitle>
                           </DialogHeader>
                           <div className="space-y-4 py-4">
                             <div>
