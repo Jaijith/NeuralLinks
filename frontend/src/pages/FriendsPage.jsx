@@ -97,7 +97,7 @@ const FriendsPage = ({ user }) => {
               return (
                 <Card
                   key={friend.id}
-                  className="glass-morphism p-6 card-hover"
+                  className="glass-morphism p-6 card-hover friend-card"
                   data-testid={`friend-card-${idx}`}
                 >
                   <div className="flex flex-col items-center text-center">
@@ -107,7 +107,7 @@ const FriendsPage = ({ user }) => {
                         {displayName?.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
-                    <h3 className="text-xl font-bold text-gray-800 mb-1">{displayName}</h3>
+                    <h3 className="text-xl font-bold mb-1">{displayName}</h3>
                     <p className="text-sm text-gray-600 mb-3">
                       {friend.age} • {worldMode === 'avatar' ? (friend.avatar_location || friend.location) : friend.location}
                     </p>
@@ -117,7 +117,7 @@ const FriendsPage = ({ user }) => {
                         {displayInterests.slice(0, 3).map((interest, i) => (
                           <span
                             key={i}
-                            className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full"
+                            className="bg-yellow-100 text-purple-700 text-xs px-2 py-1 rounded-full font-semibold"
                           >
                             {interest}
                           </span>
@@ -129,7 +129,7 @@ const FriendsPage = ({ user }) => {
                         onClick={() => navigate(`/profile/${friend.id}`)}
                         data-testid={`view-profile-${idx}`}
                         variant="outline"
-                        className="flex-1 border-2 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-full"
+                        className="flex-1 border-2 border-purple-400 text-purple-700 hover:bg-purple-50 rounded-full font-bold"
                       >
                         View Profile
                       </Button>
@@ -137,7 +137,7 @@ const FriendsPage = ({ user }) => {
                         onClick={() => removeFriend(friend.id)}
                         data-testid={`remove-friend-${idx}`}
                         variant="outline"
-                        className="border-2 border-red-300 text-red-600 hover:bg-red-50 rounded-full px-3"
+                        className="border-2 border-red-400 text-red-600 hover:bg-red-50 rounded-full px-3 font-bold"
                       >
                         <UserMinus className="w-4 h-4" />
                       </Button>
