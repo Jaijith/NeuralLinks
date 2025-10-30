@@ -267,6 +267,32 @@ async def get_session_data(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.get("/auth/me")
+
+
+@api_router.get("/users/{user_id}")
+async def get_user_profile(user_id: str, request: Request):
+    """Get user profile by ID"""
+    user = await require_auth(request)
+    
+    # Get the target user
+    target_user = await db.users.find_one({"id": user_id}, {"_id": 0})
+    
+    if not target_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Check friendship status
+    friendship = await db.friendships.find_one({
+        "$or": [
+            {"user_id": user.id, "friend_id": user_id},
+            {"user_id": user_id, "friend_id": user.id}
+        ]
+    })
+    
+    target_user['friendship_status'] = friendship['status'] if friendship else 'none'
+    target_user['is_friend'] = friendship['status'] == 'accepted' if friendship else False
+    
+    return target_user
+
 async def get_me(request: Request):
     """Get current user"""
     user = await require_auth(request)
