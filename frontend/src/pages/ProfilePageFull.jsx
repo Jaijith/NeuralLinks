@@ -232,7 +232,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
     if (isOwnProfile) {
       displayName = profileUser.avatar_name || 'Set Avatar Nickname';
       displayPicture = profileUser.avatar_picture || 'https://api.dicebear.com/7.x/adventurer/svg?seed=default';
-      displayBio = profileUser.avatar_bio || 'Configure your avatar profile!';
+      displayBio = profileUser.avatar_bio || 'Configure your maya profile!';
       displayInterests = profileUser.avatar_interests || [];
       displayJobTitle = profileUser.avatar_job_title || '';
       displayLocation = profileUser.avatar_location || '';
