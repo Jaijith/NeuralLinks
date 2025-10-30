@@ -647,11 +647,11 @@ const ProfilePageFull = ({ user: currentUser }) => {
             {/* Dual Profile View (Side by Side) */}
             {isOwnProfile && viewMode === 'both' ? (
               <div className="grid grid-cols-2 gap-4">
-                {/* REAL PROFILE COLUMN */}
+                {/* SENSE PROFILE COLUMN */}
                 <div className="space-y-4">
                   <Card className="p-4 bg-blue-50 border-2 border-blue-400">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-bold text-blue-900">👤 Real Profile</h3>
+                      <h3 className="text-xl font-bold text-blue-900">👤 Sense Profile</h3>
                       <Dialog open={showEditRealProfile} onOpenChange={setShowEditRealProfile}>
                         <DialogTrigger asChild>
                           <Button size="sm" className="bg-blue-500 hover:bg-blue-600 text-white">
