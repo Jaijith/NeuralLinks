@@ -205,9 +205,9 @@ body.avatar-world::before {
     }
 }
 
-/* Avatar Card Styling - Colorful with dark backgrounds */
+/* Avatar Card Styling - Colorful with LIGHT backgrounds */
 .card-avatar {
-    background: rgba(20, 20, 40, 0.98) !important;
+    background: rgba(255, 248, 220, 0.95) !important; /* Light beige */
     backdrop-filter: blur(20px);
     border: 2px solid rgba(255, 193, 7, 0.5) !important;
     box-shadow: 
