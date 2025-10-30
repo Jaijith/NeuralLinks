@@ -304,12 +304,13 @@ class GraphRAGTester:
             
             if response.status_code == 200:
                 data = response.json()
-                integrations = data.get("integrations", [])
+                # Count total integrations across all categories
+                total_integrations = sum(len(platforms) for platforms in data.values())
                 
-                if integrations and len(integrations) > 0:
+                if total_integrations > 0:
                     integration_results.append({"test": "list", "success": True})
                     await self.log_result("Integration List", True, 
-                                        f"Found {len(integrations)} available platforms")
+                                        f"Found {total_integrations} connected integrations")
                 else:
                     integration_results.append({"test": "list", "success": False})
                     await self.log_result("Integration List", False, "No integrations found")
