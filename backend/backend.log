@@ -1,0 +1,151 @@
+INFO:     Will watch for changes in these directories: ['/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [72948] using WatchFiles
+INFO:     Started server process [72996]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57637 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:57637 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:57689 - "OPTIONS /api/auth/session-data HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "OPTIONS /api/auth/session-data HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:57639 - "GET /api/auth/session-data HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57696 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57696 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57699 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57702 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57699 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:57639 - "GET /api/auth/session-data HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57639 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57639 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57702 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57704 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57713 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'test_avatar_actions.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72996]
+INFO:     Started server process [76508]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'test_avatar_actions.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [76508]
+INFO:     Started server process [76700]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57979 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57980 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57987 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57993 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57989 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'avatar_mcp_server.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [76700]
+INFO:     Started server process [89855]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'avatar_mcp_client.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [89855]
+WARNING:  WatchFiles detected changes in 'avatar_mcp_client.py'. Reloading...
+INFO:     Started server process [90095]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'server.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [90095]
+INFO:     Started server process [90283]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'server.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [90283]
+INFO:     Started server process [91553]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'server.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [91553]
+INFO:     Started server process [91614]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'server.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [91614]
+INFO:     Started server process [91693]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'test_mcp_server.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [91693]
+WARNING:  WatchFiles detected changes in 'test_mcp_server.py'. Reloading...
+INFO:     Started server process [92099]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'test_mcp_server.py', 'avatar_mcp_server.py', 'avatar_mcp_client.py', 'server.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [92099]
+INFO:     Started server process [92345]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:58348 - "GET /api/mcp/tools HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58350 - "GET /api/mcp/tools/available?avatar_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58355 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58357 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: POST https://openai-airesearch-poc-eastus2-002.openai.azure.com/openai/deployments/deployopenai-airesearch-eastus2-gpt4o/chat/completions?api-version=2025-02-01-preview "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:58359 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58379 - "GET /api/mcp/tools HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58402 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58402 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58407 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58402 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58409 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58402 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58407 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58402 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'test_mcp_actions_comprehensive.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [92345]
+INFO:     Started server process [93505]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:58428 - "GET /api/mcp/tools/available?avatar_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58437 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: POST https://openai-airesearch-poc-eastus2-002.openai.azure.com/openai/deployments/deployopenai-airesearch-eastus2-gpt4o/chat/completions?api-version=2025-02-01-preview "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:58439 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: POST https://openai-airesearch-poc-eastus2-002.openai.azure.com/openai/deployments/deployopenai-airesearch-eastus2-gpt4o/chat/completions?api-version=2025-02-01-preview "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:58448 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: POST https://openai-airesearch-poc-eastus2-002.openai.azure.com/openai/deployments/deployopenai-airesearch-eastus2-gpt4o/chat/completions?api-version=2025-02-01-preview "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:58453 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'test_mcp_actions_comprehensive.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [93505]
+INFO:     Started server process [93763]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

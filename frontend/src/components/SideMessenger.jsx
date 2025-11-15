@@ -27,6 +27,12 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
   }, [otherUserId]);
 
   useEffect(() => {
+    if (otherUserId) {
+      fetchMessages();
+    }
+  }, [otherUserId, worldMode]);
+
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
@@ -42,6 +48,29 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
       setOtherUser(response.data);
     } catch (error) {
       console.error("Error fetching user:", error);
+    }
+  };
+
+  const fetchMessages = async () => {
+    try {
+      const response = await axios.get(
+        `${API}/messages/${otherUserId}?world_mode=${worldMode === 'avatar' ? 'avatar' : 'real'}`,
+        { withCredentials: true }
+      );
+      
+      // Convert messages to format expected by component
+      const formattedMessages = response.data.messages.map(msg => ({
+        sender_id: msg.sender_id,
+        content: msg.content || msg.message || "",
+        timestamp: msg.timestamp,
+        is_ai: msg.is_ai || false
+      }));
+      
+      setMessages(formattedMessages);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      // If conversation doesn't exist yet, start with empty messages
+      setMessages([]);
     }
   };
 
@@ -62,43 +91,43 @@ const SideMessenger = ({ user, otherUserId, otherUserData, onClose }) => {
     setMessages((prev) => [...prev, userMessage]);
 
     try {
-      if (worldMode === 'avatar') {
-        // Avatar mode: AI avatar response
-        const response = await axios.post(
-          `${API}/avatar/chat-response`,
-          {
-            other_user_id: otherUserId,
-            conversation_history: messages,
-            last_message: textToSend,
-          },
-          { withCredentials: true }
-        );
+      // Send message using new unified endpoint
+      const response = await axios.post(
+        `${API}/messages/send`,
+        {
+          recipient_id: otherUserId,
+          message: messageText,
+          world_mode: worldMode === 'avatar' ? 'avatar' : 'real'
+        },
+        { withCredentials: true }
+      );
 
-        // Check if we got a valid response
-        if (response.data && response.data.content) {
-          const aiMessage = {
-            sender_id: otherUserId,
-            content: response.data.content,
-            timestamp: new Date().toISOString(),
-            is_ai: true
+      // Update message with server timestamp if provided
+      if (response.data.message && response.data.message.timestamp) {
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            ...updated[updated.length - 1],
+            timestamp: response.data.message.timestamp
           };
+          return updated;
+        });
+      }
 
-          setMessages((prev) => [...prev, aiMessage]);
-        } else {
-          throw new Error("No content in AI response");
-        }
-      } else {
-        // Real mode: Real person-to-person (placeholder for now)
-        // In production, this would send actual message to the other user
-        const autoReply = {
+      // If AI response is included (for avatar mode with bots)
+      if (response.data.ai_response) {
+        const aiMessage = {
           sender_id: otherUserId,
-          content: "Thanks for your message! (This is a demo auto-reply in Sense mode)",
-          timestamp: new Date().toISOString(),
+          content: response.data.ai_response.content,
+          timestamp: response.data.ai_response.timestamp,
+          is_ai: true
         };
-        
-        // Simulate delay
+        setMessages((prev) => [...prev, aiMessage]);
+      } else if (worldMode === 'avatar' && otherUser?.is_bot) {
+        // For avatar mode with bots, try to get AI response
+        // The backend should have already generated it, so fetch latest messages
         setTimeout(() => {
-          setMessages((prev) => [...prev, autoReply]);
+          fetchMessages();
         }, 1000);
       }
     } catch (error) {

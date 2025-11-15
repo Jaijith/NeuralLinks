@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Home, Users, Search, Heart, User } from "lucide-react";
+import { Home, Users, Search, Heart, User, Bot } from "lucide-react";
 import WorldModeToggle from "./WorldModeToggle";
 
 const Navigation = ({ user }) => {
@@ -59,6 +59,15 @@ const Navigation = ({ user }) => {
             >
               <Heart className="w-5 h-5" />
               <span className="hidden md:inline">Matches</span>
+            </Button>
+            
+            <Button
+              onClick={() => navigate('/avatar-control')}
+              variant="ghost"
+              className="flex items-center space-x-2 text-gray-700 hover:bg-purple-50"
+            >
+              <Bot className="w-5 h-5" />
+              <span className="hidden md:inline">Avatar</span>
             </Button>
           </div>
 

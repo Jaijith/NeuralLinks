@@ -8,10 +8,13 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Camera, MapPin, Briefcase, Heart, Users, MessageCircle, 
   Settings as SettingsIcon, Bot, User as UserIcon, Edit2, 
-  X, Plus, Send, ThumbsUp, Trash2, MoreHorizontal, Palette 
+  X, Plus, Send, ThumbsUp, Trash2, MoreHorizontal, Palette,
+  FileText, Hand, Eye, Share2
 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
@@ -21,6 +24,135 @@ import SideMessenger from "@/components/SideMessenger";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+
+// Avatar Activity Log Component
+const AvatarActivityLog = () => {
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const response = await axios.get(`${API}/avatar/activity?limit=20`, {
+          withCredentials: true,
+        });
+        setActivities(response.data.activities || []);
+      } catch (error) {
+        console.error('Failed to fetch activities:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchActivities();
+  }, []);
+
+  if (loading) return <p className="text-gray-500">Loading activities...</p>;
+  if (activities.length === 0) return <p className="text-gray-500">No activities yet. Enable autonomy to see your avatar in action!</p>;
+
+  return (
+    <div className="space-y-3 max-h-96 overflow-y-auto">
+      {activities.map((activity, idx) => {
+        // Get icon based on action type
+        let IconComponent;
+        let iconColor;
+        if (activity.action_type === 'post') {
+          IconComponent = FileText;
+          iconColor = 'text-blue-600';
+        } else if (activity.action_type === 'comment') {
+          IconComponent = MessageCircle;
+          iconColor = 'text-green-600';
+        } else if (activity.action_type === 'like') {
+          IconComponent = Heart;
+          iconColor = 'text-red-600';
+        } else {
+          IconComponent = Hand;
+          iconColor = 'text-yellow-600';
+        }
+
+        return (
+          <Card key={idx} className="p-3 hover:bg-gray-50 transition-colors">
+            <div className="flex items-start space-x-4">
+              <div className={`p-2 rounded-lg bg-gray-100 ${iconColor}`}>
+                <IconComponent className="w-6 h-6" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-800">{activity.description}</p>
+                <p className="text-xs text-gray-500 mt-1">{new Date(activity.timestamp).toLocaleString()}</p>
+              </div>
+            </div>
+          </Card>
+        );
+      })}
+    </div>
+  );
+};
+
+// Avatar Status Component
+const AvatarStatus = () => {
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const response = await axios.get(`${API}/avatar/status`, {
+          withCredentials: true,
+        });
+        setStatus(response.data);
+      } catch (error) {
+        console.error('Failed to fetch status:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStatus();
+  }, []);
+
+  if (loading) return <p className="text-gray-500">Loading status...</p>;
+  if (!status) return <p className="text-gray-500">Status unavailable</p>;
+
+  return (
+    <div className="space-y-4">
+      <Card className="p-4">
+        <h4 className="font-semibold mb-2">Avatar Configuration</h4>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Status:</span>
+            <span className="font-medium">{status.is_autonomous ? '✅ Active' : '⏸️ Inactive'}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Personality:</span>
+            <span className="font-medium">{status.archetype}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Activity Level:</span>
+            <span className="font-medium">{status.activity_level}</span>
+          </div>
+        </div>
+      </Card>
+      
+      <Card className="p-4">
+        <h4 className="font-semibold mb-2">Recent Performance</h4>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Last Activity:</span>
+            <span className="font-medium">{status.last_activity ? new Date(status.last_activity).toLocaleString() : 'Never'}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Actions (Last Hour):</span>
+            <span className="font-medium">{status.actions_last_hour || 0}</span>
+          </div>
+        </div>
+      </Card>
+      
+      {!status.has_avatar && (
+        <Card className="p-4 bg-yellow-50 border-yellow-200">
+          <p className="text-sm text-yellow-800">⚠️ Avatar profile not yet configured</p>
+        </Card>
+      )}
+    </div>
+  );
+};
 
 const ProfilePageFull = ({ user: currentUser }) => {
   const navigate = useNavigate();
@@ -37,6 +169,15 @@ const ProfilePageFull = ({ user: currentUser }) => {
   const [editingPost, setEditingPost] = useState(null);
   const [editedPostText, setEditedPostText] = useState('');
   const [viewMode, setViewMode] = useState('single'); // 'single' or 'both'
+  
+  // Like & Comment state
+  const [likedPosts, setLikedPosts] = useState(new Set()); // Track which posts user liked
+  const [showingLikesFor, setShowingLikesFor] = useState(null); // Post ID for showing likes dialog
+  const [likesData, setLikesData] = useState([]); // Users who liked
+  const [likesCount, setLikesCount] = useState(0); // Total likes count (for posts with likes but no user details)
+  const [showingCommentsFor, setShowingCommentsFor] = useState(null); // Post ID for showing comments
+  const [commentsData, setCommentsData] = useState({}); // Comments by post ID
+  const [commentText, setCommentText] = useState({}); // Comment input by post ID
   
   // Real Profile Edit
   const [showEditRealProfile, setShowEditRealProfile] = useState(false);
@@ -55,17 +196,29 @@ const ProfilePageFull = ({ user: currentUser }) => {
     picture: '',
     interests: [],
     job_title: '',
-    location: ''
+    location: '',
+    avatar_autonomous: false,
+    avatar_activity_level: 'medium',
+    archetype: 'casual_observer',
+    avatar_actions_enabled: {
+      like_posts: true,
+      comment_posts: true,
+      create_posts: true,
+      send_friend_requests: true,
+      accept_friend_requests: true,
+      message_friends: true,
+      discover_profiles: true,
+      share_posts: false
+    }
   });
 
   useEffect(() => {
     const targetUserId = userId || currentUser.id;
     setIsOwnProfile(targetUserId === currentUser.id);
+    setPosts([]); // Clear posts immediately when navigating to a new profile
     fetchProfile(targetUserId);
     fetchFriends(targetUserId);
-    if (targetUserId === currentUser.id) {
-      fetchPosts();
-    }
+    fetchPosts(targetUserId); // Pass the targetUserId to fetch correct posts
   }, [userId, currentUser, worldMode]); // Re-fetch when worldMode changes
 
   const fetchProfile = async (id) => {
@@ -84,7 +237,20 @@ const ProfilePageFull = ({ user: currentUser }) => {
           picture: currentUser.avatar_picture || '',
           interests: currentUser.avatar_interests || [],
           job_title: currentUser.avatar_job_title || '',
-          location: currentUser.avatar_location || ''
+          location: currentUser.avatar_location || '',
+          avatar_autonomous: currentUser.avatar_autonomous || false,
+          avatar_activity_level: currentUser.avatar_activity_level || 'medium',
+          archetype: currentUser.archetype || 'casual_observer',
+          avatar_actions_enabled: currentUser.avatar_actions_enabled || {
+            like_posts: true,
+            comment_posts: true,
+            create_posts: true,
+            send_friend_requests: true,
+            accept_friend_requests: true,
+            message_friends: true,
+            discover_profiles: true,
+            share_posts: false
+          }
         });
       } else {
         const response = await axios.get(`${API}/users/${id}?world_mode=${worldMode}`, {
@@ -103,7 +269,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
   const fetchFriends = async (id) => {
     try {
-      const response = await axios.get(`${API}/friends`, {
+      // Pass user_id to get that user's friends (not current user's friends)
+      const response = await axios.get(`${API}/friends?user_id=${id}`, {
         withCredentials: true,
       });
       setFriends(response.data.slice(0, 9));
@@ -112,13 +279,38 @@ const ProfilePageFull = ({ user: currentUser }) => {
     }
   };
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (targetUserId) => {
     try {
       const postType = worldMode === 'avatar' ? 'avatar' : 'real';
-      const response = await axios.get(`${API}/profile/posts?post_type=${postType}`, {
+      // Use the passed targetUserId to get the correct user's posts
+      const queryParams = `post_type=${postType}&user_id=${targetUserId}`;
+      console.log(`[DEBUG] Fetching posts for user: ${targetUserId}, postType: ${postType}`);
+      const response = await axios.get(`${API}/profile/posts?${queryParams}`, {
         withCredentials: true,
       });
-      setPosts(response.data);
+      console.log(`[DEBUG] Received ${response.data.length} posts:`, response.data.map(p => ({id: p.id, text: p.text?.substring(0, 30)})));
+      
+      // Sanitize posts - ensure comments array is not included (we fetch comments separately)
+      // Only keep comment_count, not the full comments array
+      const sanitizedPosts = response.data.map(post => {
+        const { comments, ...postWithoutComments } = post;
+        // Only keep comment_count, not the full comments array to avoid rendering issues
+        return {
+          ...postWithoutComments,
+          comment_count: post.comment_count || (Array.isArray(comments) ? comments.length : 0)
+        };
+      });
+      
+      setPosts(sanitizedPosts);
+      
+      // Initialize liked posts (check if current user liked any posts)
+      const likedSet = new Set();
+      sanitizedPosts.forEach(post => {
+        if (post.liked_by && post.liked_by.includes(currentUser.id)) {
+          likedSet.add(post.id);
+        }
+      });
+      setLikedPosts(likedSet);
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
@@ -151,6 +343,112 @@ const ProfilePageFull = ({ user: currentUser }) => {
       toast.success("Post deleted");
     } catch (error) {
       toast.error("Failed to delete post");
+    }
+  };
+
+  // Like/Unlike post
+  const handleLikePost = async (postId) => {
+    try {
+      const response = await axios.post(`${API}/posts/${postId}/like`, {}, {
+        withCredentials: true,
+      });
+      
+      // Update local state
+      const newLikedPosts = new Set(likedPosts);
+      if (response.data.liked) {
+        newLikedPosts.add(postId);
+      } else {
+        newLikedPosts.delete(postId);
+      }
+      setLikedPosts(newLikedPosts);
+      
+      // Update post in state
+      setPosts(posts.map(p => 
+        p.id === postId ? {...p, likes: response.data.likes} : p
+      ));
+      
+      toast.success(response.data.liked ? "Post liked!" : "Post unliked");
+    } catch (error) {
+      console.error("Error liking post:", error);
+      toast.error("Failed to like post");
+    }
+  };
+
+  // Show who liked a post
+  const showLikes = async (postId) => {
+    try {
+      const response = await axios.get(`${API}/posts/${postId}/likes`, {
+        withCredentials: true,
+      });
+      setLikesData(response.data.users || []);
+      setLikesCount(response.data.count || 0);
+      setShowingLikesFor(postId);
+    } catch (error) {
+      console.error("Error fetching likes:", error);
+      toast.error("Failed to load likes");
+    }
+  };
+
+  // Show comments for a post
+  const showComments = async (postId) => {
+    if (showingCommentsFor === postId) {
+      setShowingCommentsFor(null);
+      return;
+    }
+    
+    try {
+      const response = await axios.get(`${API}/posts/${postId}/comments`, {
+        withCredentials: true,
+      });
+      // Ensure comments is always an array
+      const comments = Array.isArray(response.data?.comments) 
+        ? response.data.comments 
+        : [];
+      setCommentsData({...commentsData, [postId]: comments});
+      setShowingCommentsFor(postId);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      toast.error("Failed to load comments");
+    }
+  };
+
+  // Add comment to a post
+  const handleAddComment = async (postId) => {
+    const text = commentText[postId]?.trim();
+    if (!text) return;
+    
+    try {
+      const response = await axios.post(
+        `${API}/posts/${postId}/comment`,
+        { text },
+        { withCredentials: true }
+      );
+      
+      // Update comments - ensure we always have an array
+      const existingComments = Array.isArray(commentsData[postId]) 
+        ? commentsData[postId] 
+        : [];
+      const newComment = response.data?.comment;
+      
+      if (newComment) {
+        setCommentsData({
+          ...commentsData,
+          [postId]: [newComment, ...existingComments]
+        });
+      }
+      
+      // Clear input
+      setCommentText({...commentText, [postId]: ''});
+      
+      // Update post comment count
+      setPosts(posts.map(p => 
+        p.id === postId ? {...p, comment_count: (p.comment_count || 0) + 1} : p
+      ));
+      
+      toast.success("Comment added!");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      toast.error("Failed to add comment");
     }
   };
 
@@ -415,18 +713,27 @@ const ProfilePageFull = ({ user: currentUser }) => {
                       ) : null}
                       
                       {viewMode === 'both' || worldMode === 'avatar' ? (
-                        <Dialog open={showEditAvatarProfile} onOpenChange={setShowEditAvatarProfile}>
-                          <DialogTrigger asChild>
-                            <Button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700">
-                              <Bot className="w-4 h-4 mr-2" />
-                              Edit Maya
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-2xl">
+                        <>
+                          <Dialog open={showEditAvatarProfile} onOpenChange={setShowEditAvatarProfile}>
+                            <DialogTrigger asChild>
+                              <Button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700">
+                                <Bot className="w-4 h-4 mr-2" />
+                                Edit Maya
+                              </Button>
+                            </DialogTrigger>
+                          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
                             <DialogHeader>
                               <DialogTitle>Edit Maya Profile</DialogTitle>
                             </DialogHeader>
-                            <div className="space-y-4 py-4">
+                            <Tabs defaultValue="profile" className="w-full">
+                              <TabsList className="grid w-full grid-cols-4">
+                                <TabsTrigger value="profile">Profile</TabsTrigger>
+                                <TabsTrigger value="autonomy">Autonomy</TabsTrigger>
+                                <TabsTrigger value="activity">Activity</TabsTrigger>
+                                <TabsTrigger value="status">Status</TabsTrigger>
+                              </TabsList>
+                              
+                              <TabsContent value="profile" className="space-y-4 py-4">
                               <div>
                                 <label className="block text-sm font-medium mb-2">Avatar Nickname</label>
                                 <Input
@@ -472,11 +779,130 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                 />
                               </div>
                               <Button onClick={updateAvatarProfile} className="w-full bg-gradient-to-r from-pink-500 to-purple-600">
-                                Save Maya Profile
+                                Save Profile
                               </Button>
-                            </div>
+                              </TabsContent>
+                              
+                              <TabsContent value="autonomy" className="space-y-4 py-4">
+                                <h3 className="text-lg font-semibold mb-4">🤖 Avatar Autonomy Settings</h3>
+                                
+                                <div className="flex items-center justify-between mb-4">
+                                  <div>
+                                    <label className="block text-sm font-medium">Enable Autonomy</label>
+                                    <p className="text-xs text-gray-500">Let your avatar act automatically</p>
+                                  </div>
+                                  <Switch
+                                    checked={editAvatarProfileData.avatar_autonomous || false}
+                                    onCheckedChange={(checked) => setEditAvatarProfileData({...editAvatarProfileData, avatar_autonomous: checked})}
+                                  />
+                                </div>
+
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-2">Activity Level</label>
+                                  <Select
+                                    value={editAvatarProfileData.avatar_activity_level || 'medium'}
+                                    onValueChange={(value) => setEditAvatarProfileData({...editAvatarProfileData, avatar_activity_level: value})}
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="hypo">Hypo (1 action/2 mins - Testing)</SelectItem>
+                                      <SelectItem value="low">Low (1-2 actions/day)</SelectItem>
+                                      <SelectItem value="medium">Medium (5-10 actions/day)</SelectItem>
+                                      <SelectItem value="high">High (15-20 actions/day)</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-2">Personality Archetype</label>
+                                  <Select
+                                    value={editAvatarProfileData.archetype || 'casual_observer'}
+                                    onValueChange={(value) => setEditAvatarProfileData({...editAvatarProfileData, archetype: value})}
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="social_butterfly">Social Butterfly - Highly active, loves conversations</SelectItem>
+                                      <SelectItem value="thoughtful_contributor">Thoughtful Contributor - Quality over quantity</SelectItem>
+                                      <SelectItem value="casual_observer">Casual Observer - Occasional contributions</SelectItem>
+                                      <SelectItem value="niche_expert">Niche Expert - Focused deep knowledge</SelectItem>
+                                      <SelectItem value="enthusiastic_newcomer">Enthusiastic Newcomer - Excited and learning</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+
+                                {/* Avatar Action Controls */}
+                                <div className="border-t pt-4 mt-4">
+                                  <h4 className="text-md font-semibold mb-3">🎮 Allowed Actions</h4>
+                                  <p className="text-xs text-gray-500 mb-4">Control what your avatar can do autonomously</p>
+                                  
+                                  <div className="space-y-3">
+                                    {[
+                                      { key: 'like_posts', label: 'Like Posts', icon: '👍', desc: 'Like posts from friends' },
+                                      { key: 'comment_posts', label: 'Comment on Posts', icon: '💬', desc: 'Comment on posts from friends' },
+                                      { key: 'create_posts', label: 'Create Posts', icon: '📝', desc: 'Create and publish new posts' },
+                                      { key: 'send_friend_requests', label: 'Send Friend Requests', icon: '👥', desc: 'Send friend requests to other avatars' },
+                                      { key: 'accept_friend_requests', label: 'Accept Friend Requests', icon: '✅', desc: 'Accept incoming friend requests' },
+                                      { key: 'message_friends', label: 'Message Friends', icon: '💌', desc: 'Send messages to friends' },
+                                      { key: 'discover_profiles', label: 'Discover Profiles', icon: '🔍', desc: 'Browse and view other profiles' },
+                                      { key: 'share_posts', label: 'Share Posts', icon: '📤', desc: 'Share posts (coming soon)' }
+                                    ].map((action) => (
+                                      <div key={action.key} className="flex items-center justify-between p-3 rounded-lg border bg-gray-50 hover:bg-gray-100 transition-colors">
+                                        <div className="flex items-center space-x-3 flex-1">
+                                          <span className="text-xl">{action.icon}</span>
+                                          <div className="flex-1">
+                                            <label className="text-sm font-medium cursor-pointer" htmlFor={`action-${action.key}`}>
+                                              {action.label}
+                                            </label>
+                                            <p className="text-xs text-gray-500">{action.desc}</p>
+                                          </div>
+                                        </div>
+                                        <Switch
+                                          id={`action-${action.key}`}
+                                          checked={editAvatarProfileData.avatar_actions_enabled?.[action.key] ?? true}
+                                          onCheckedChange={(checked) => {
+                                            setEditAvatarProfileData({
+                                              ...editAvatarProfileData,
+                                              avatar_actions_enabled: {
+                                                ...editAvatarProfileData.avatar_actions_enabled,
+                                                [action.key]: checked
+                                              }
+                                            });
+                                          }}
+                                          disabled={!editAvatarProfileData.avatar_autonomous}
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                  
+                                  {!editAvatarProfileData.avatar_autonomous && (
+                                    <p className="text-xs text-gray-400 mt-3 text-center">
+                                      Enable autonomy above to configure actions
+                                    </p>
+                                  )}
+                                </div>
+
+                              <Button onClick={updateAvatarProfile} className="w-full bg-gradient-to-r from-pink-500 to-purple-600 mt-4">
+                                Save Autonomy Settings
+                              </Button>
+                              </TabsContent>
+                              
+                              <TabsContent value="activity" className="space-y-4 py-4">
+                                <h3 className="text-lg font-semibold mb-4">📊 Recent Activity</h3>
+                                <AvatarActivityLog />
+                              </TabsContent>
+                              
+                              <TabsContent value="status" className="space-y-4 py-4">
+                                <h3 className="text-lg font-semibold mb-4">⚡ Avatar Status</h3>
+                                <AvatarStatus />
+                              </TabsContent>
+                            </Tabs>
                           </DialogContent>
                         </Dialog>
+                      </>
                       ) : null}
                     </>
                   ) : (
@@ -709,13 +1135,20 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   
                   {/* Sense Posts */}
                   <h4 className="font-semibold text-gray-700">Sense Posts</h4>
-                  {profileUser.posts && profileUser.posts.length > 0 ? (
-                    profileUser.posts.slice(0, 3).map((post) => (
-                      <Card key={post.id} className="p-3">
-                        <p className="text-sm text-gray-800">{post.text}</p>
-                        <p className="text-xs text-gray-500 mt-2">{new Date(post.created_at).toLocaleDateString()}</p>
-                      </Card>
-                    ))
+                  {profileUser.posts && Array.isArray(profileUser.posts) && profileUser.posts.length > 0 ? (
+                    profileUser.posts.slice(0, 3).map((post) => {
+                      // Ensure post is a valid object and extract only safe fields
+                      if (!post || typeof post !== 'object') return null;
+                      const { comments, ...safePost } = post;
+                      return (
+                        <Card key={safePost.id || Math.random()} className="p-3">
+                          <p className="text-sm text-gray-800">{safePost.text || ''}</p>
+                          <p className="text-xs text-gray-500 mt-2">
+                            {safePost.created_at ? new Date(safePost.created_at).toLocaleDateString() : ''}
+                          </p>
+                        </Card>
+                      );
+                    })
                   ) : (
                     <Card className="p-4 text-center">
                       <p className="text-sm text-gray-500">No sense posts yet</p>
@@ -735,11 +1168,19 @@ const ProfilePageFull = ({ user: currentUser }) => {
                             Edit
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-2xl">
+                        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
                           <DialogHeader>
                             <DialogTitle>Edit Maya Profile</DialogTitle>
                           </DialogHeader>
-                          <div className="space-y-4 py-4">
+                          <Tabs defaultValue="profile" className="w-full">
+                            <TabsList className="grid w-full grid-cols-4">
+                              <TabsTrigger value="profile">Profile</TabsTrigger>
+                              <TabsTrigger value="autonomy">Autonomy</TabsTrigger>
+                              <TabsTrigger value="activity">Activity</TabsTrigger>
+                              <TabsTrigger value="status">Status</TabsTrigger>
+                            </TabsList>
+                            
+                            <TabsContent value="profile" className="space-y-4 py-4">
                             <div>
                               <label className="block text-sm font-medium mb-2">Maya Nickname</label>
                               <Input
@@ -776,8 +1217,124 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                 onChange={(e) => setEditAvatarProfileData({...editAvatarProfileData, location: e.target.value})}
                               />
                             </div>
-                            <Button onClick={updateAvatarProfile} className="w-full bg-gradient-to-r from-pink-500 to-purple-600">Save</Button>
-                          </div>
+                            <Button onClick={updateAvatarProfile} className="w-full bg-gradient-to-r from-pink-500 to-purple-600">Save Profile</Button>
+                            </TabsContent>
+                            
+                            <TabsContent value="autonomy" className="space-y-4 py-4">
+                              <h3 className="text-lg font-semibold mb-4">🤖 Avatar Autonomy Settings</h3>
+                              
+                              <div className="flex items-center justify-between mb-4">
+                                <div>
+                                  <label className="block text-sm font-medium">Enable Autonomy</label>
+                                  <p className="text-xs text-gray-500">Let your avatar act automatically</p>
+                                </div>
+                                <Switch
+                                  checked={editAvatarProfileData.avatar_autonomous || false}
+                                  onCheckedChange={(checked) => setEditAvatarProfileData({...editAvatarProfileData, avatar_autonomous: checked})}
+                                />
+                              </div>
+
+                              <div className="mb-4">
+                                <label className="block text-sm font-medium mb-2">Activity Level</label>
+                                <Select
+                                  value={editAvatarProfileData.avatar_activity_level || 'medium'}
+                                  onValueChange={(value) => setEditAvatarProfileData({...editAvatarProfileData, avatar_activity_level: value})}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="hypo">Hypo (1 action/2 mins - Testing)</SelectItem>
+                                    <SelectItem value="low">Low (1-2 actions/day)</SelectItem>
+                                    <SelectItem value="medium">Medium (5-10 actions/day)</SelectItem>
+                                    <SelectItem value="high">High (15-20 actions/day)</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+                              <div className="mb-4">
+                                <label className="block text-sm font-medium mb-2">Personality Archetype</label>
+                                <Select
+                                  value={editAvatarProfileData.archetype || 'casual_observer'}
+                                  onValueChange={(value) => setEditAvatarProfileData({...editAvatarProfileData, archetype: value})}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="social_butterfly">Social Butterfly - Highly active, loves conversations</SelectItem>
+                                    <SelectItem value="thoughtful_contributor">Thoughtful Contributor - Quality over quantity</SelectItem>
+                                    <SelectItem value="casual_observer">Casual Observer - Occasional contributions</SelectItem>
+                                    <SelectItem value="niche_expert">Niche Expert - Focused deep knowledge</SelectItem>
+                                    <SelectItem value="enthusiastic_newcomer">Enthusiastic Newcomer - Excited and learning</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+                              {/* Avatar Action Controls */}
+                              <div className="border-t pt-4 mt-4">
+                                <h4 className="text-md font-semibold mb-3">🎮 Allowed Actions</h4>
+                                <p className="text-xs text-gray-500 mb-4">Control what your avatar can do autonomously</p>
+                                
+                                <div className="space-y-3">
+                                  {[
+                                    { key: 'like_posts', label: 'Like Posts', icon: '👍', desc: 'Like posts from friends' },
+                                    { key: 'comment_posts', label: 'Comment on Posts', icon: '💬', desc: 'Comment on posts from friends' },
+                                    { key: 'create_posts', label: 'Create Posts', icon: '📝', desc: 'Create and publish new posts' },
+                                    { key: 'send_friend_requests', label: 'Send Friend Requests', icon: '👥', desc: 'Send friend requests to other avatars' },
+                                    { key: 'accept_friend_requests', label: 'Accept Friend Requests', icon: '✅', desc: 'Accept incoming friend requests' },
+                                    { key: 'message_friends', label: 'Message Friends', icon: '💌', desc: 'Send messages to friends' },
+                                    { key: 'discover_profiles', label: 'Discover Profiles', icon: '🔍', desc: 'Browse and view other profiles' },
+                                    { key: 'share_posts', label: 'Share Posts', icon: '📤', desc: 'Share posts (coming soon)' }
+                                  ].map((action) => (
+                                    <div key={action.key} className="flex items-center justify-between p-3 rounded-lg border bg-gray-50 hover:bg-gray-100 transition-colors">
+                                      <div className="flex items-center space-x-3 flex-1">
+                                        <span className="text-xl">{action.icon}</span>
+                                        <div className="flex-1">
+                                          <label className="text-sm font-medium cursor-pointer" htmlFor={`action-${action.key}-2`}>
+                                            {action.label}
+                                          </label>
+                                          <p className="text-xs text-gray-500">{action.desc}</p>
+                                        </div>
+                                      </div>
+                                      <Switch
+                                        id={`action-${action.key}-2`}
+                                        checked={editAvatarProfileData.avatar_actions_enabled?.[action.key] ?? true}
+                                        onCheckedChange={(checked) => {
+                                          setEditAvatarProfileData({
+                                            ...editAvatarProfileData,
+                                            avatar_actions_enabled: {
+                                              ...editAvatarProfileData.avatar_actions_enabled,
+                                              [action.key]: checked
+                                            }
+                                          });
+                                        }}
+                                        disabled={!editAvatarProfileData.avatar_autonomous}
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
+                                
+                                {!editAvatarProfileData.avatar_autonomous && (
+                                  <p className="text-xs text-gray-400 mt-3 text-center">
+                                    Enable autonomy above to configure actions
+                                  </p>
+                                )}
+                              </div>
+
+                              <Button onClick={updateAvatarProfile} className="w-full bg-gradient-to-r from-pink-500 to-purple-600 mt-4">Save Autonomy Settings</Button>
+                            </TabsContent>
+                            
+                            <TabsContent value="activity" className="space-y-4 py-4">
+                              <h3 className="text-lg font-semibold mb-4">📊 Recent Activity</h3>
+                              <AvatarActivityLog />
+                            </TabsContent>
+                            
+                            <TabsContent value="status" className="space-y-4 py-4">
+                              <h3 className="text-lg font-semibold mb-4">⚡ Avatar Status</h3>
+                              <AvatarStatus />
+                            </TabsContent>
+                          </Tabs>
                         </DialogContent>
                       </Dialog>
                     </div>
@@ -794,13 +1351,20 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   
                   {/* Maya Posts */}
                   <h4 className="font-semibold text-gray-700">Maya Posts</h4>
-                  {profileUser.avatar_posts && profileUser.avatar_posts.length > 0 ? (
-                    profileUser.avatar_posts.slice(0, 3).map((post) => (
-                      <Card key={post.id} className="p-3">
-                        <p className="text-sm text-gray-800">{post.text}</p>
-                        <p className="text-xs text-gray-500 mt-2">{new Date(post.created_at).toLocaleDateString()}</p>
-                      </Card>
-                    ))
+                  {profileUser.avatar_posts && Array.isArray(profileUser.avatar_posts) && profileUser.avatar_posts.length > 0 ? (
+                    profileUser.avatar_posts.slice(0, 3).map((post) => {
+                      // Ensure post is a valid object and extract only safe fields
+                      if (!post || typeof post !== 'object') return null;
+                      const { comments, ...safePost } = post;
+                      return (
+                        <Card key={safePost.id || Math.random()} className="p-3">
+                          <p className="text-sm text-gray-800">{safePost.text || ''}</p>
+                          <p className="text-xs text-gray-500 mt-2">
+                            {safePost.created_at ? new Date(safePost.created_at).toLocaleDateString() : ''}
+                          </p>
+                        </Card>
+                      );
+                    })
                   ) : (
                     <Card className="p-4 text-center">
                       <p className="text-sm text-gray-500">No maya posts yet</p>
@@ -842,7 +1406,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
             )}
 
             {/* Posts */}
-            {isOwnProfile && posts.length > 0 ? (
+            {posts.length > 0 ? (
               <div className="space-y-4">
                 {posts.map((post) => (
                   <Card key={post.id} className="p-4">
@@ -904,15 +1468,109 @@ const ProfilePageFull = ({ user: currentUser }) => {
                           <p className="text-gray-800 mb-3">{post.text}</p>
                         )}
                         
-                        <div className="flex items-center space-x-6 text-sm text-gray-500 border-t pt-2">
-                          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600">
-                            <ThumbsUp className="w-4 h-4 mr-1" />
-                            {post.likes || 0}
-                          </Button>
-                          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600">
-                            <MessageCircle className="w-4 h-4 mr-1" />
-                            {post.comments || 0}
-                          </Button>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-6 text-sm border-t pt-2">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="hover:bg-blue-50"
+                              onClick={() => handleLikePost(post.id)}
+                            >
+                              <ThumbsUp 
+                                className="w-5 h-5 mr-1" 
+                                style={{ 
+                                  color: '#1d4ed8', 
+                                  fill: likedPosts.has(post.id) ? '#1d4ed8' : 'none' 
+                                }} 
+                              />
+                              <span className="font-semibold" style={{ color: '#1d4ed8' }}>{post.likes || 0}</span>
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="hover:bg-purple-50"
+                              onClick={() => showLikes(post.id)}
+                            >
+                              <Eye className="w-5 h-5 mr-1" style={{ color: '#7e22ce' }} />
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="hover:bg-green-50"
+                              onClick={() => showComments(post.id)}
+                            >
+                              <MessageCircle className="w-5 h-5 mr-1" style={{ color: '#15803d' }} />
+                              <span className="font-semibold" style={{ color: '#15803d' }}>{Array.isArray(post.comments) ? post.comments.length : (post.comment_count || 0)}</span>
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="hover:bg-orange-50"
+                              onClick={() => {
+                                // Share functionality - can be implemented later
+                                navigator.share?.({ title: 'Check out this post!', url: window.location.href }) || toast.info('Share feature coming soon');
+                              }}
+                            >
+                              <Share2 className="w-5 h-5 mr-1" style={{ color: '#c2410c' }} />
+                            </Button>
+                          </div>
+                          
+                          {/* Comments Section */}
+                          {showingCommentsFor === post.id && (
+                            <div className="border-t pt-3 space-y-3">
+                              {/* Comment Input */}
+                              <div className="flex space-x-2">
+                                <Textarea
+                                  placeholder="Write a comment..."
+                                  value={commentText[post.id] || ''}
+                                  onChange={(e) => setCommentText({...commentText, [post.id]: e.target.value})}
+                                  className="flex-1"
+                                  rows={2}
+                                />
+                                <Button 
+                                  onClick={() => handleAddComment(post.id)}
+                                  disabled={!commentText[post.id]?.trim()}
+                                  className="bg-purple-600 hover:bg-purple-700"
+                                >
+                                  <Send className="w-4 h-4" />
+                                </Button>
+                              </div>
+                              
+                              {/* Comments List */}
+                              {(() => {
+                                const comments = Array.isArray(commentsData[post.id]) 
+                                  ? commentsData[post.id] 
+                                  : [];
+                                return comments.length > 0 ? (
+                                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                                    {comments.map((comment) => {
+                                      // Ensure comment is an object with required fields
+                                      if (!comment || typeof comment !== 'object') {
+                                        return null;
+                                      }
+                                      return (
+                                        <div key={comment.id || Math.random()} className="flex space-x-2 p-2 bg-gray-50 rounded">
+                                          <Avatar className="w-8 h-8">
+                                            <AvatarImage src={comment.user_picture || ''} />
+                                            <AvatarFallback>{(comment.user_name || '?').charAt(0)}</AvatarFallback>
+                                          </Avatar>
+                                          <div className="flex-1">
+                                            <p className="text-sm font-medium">{comment.user_name || 'Unknown'}</p>
+                                            <p className="text-sm text-gray-700">{comment.text || ''}</p>
+                                            <p className="text-xs text-gray-500 mt-1">
+                                              {comment.created_at ? new Date(comment.created_at).toLocaleString() : ''}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                ) : (
+                                  <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
+                                );
+                              })()}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -945,6 +1603,38 @@ const ProfilePageFull = ({ user: currentUser }) => {
           onClose={() => setShowMessenger(false)}
         />
       )}
+      
+      {/* Likes Dialog */}
+      <Dialog open={showingLikesFor !== null} onOpenChange={() => setShowingLikesFor(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>People who liked this post</DialogTitle>
+          </DialogHeader>
+          <div className="max-h-96 overflow-y-auto space-y-2">
+            {likesData.length > 0 ? (
+              likesData.map((user) => (
+                <div key={user.id} className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded">
+                  <Avatar className="w-10 h-10">
+                    <AvatarImage src={user.picture} />
+                    <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium text-sm">{user.name}</p>
+                  </div>
+                </div>
+              ))
+            ) : likesCount > 0 ? (
+              <div className="text-center py-4">
+                <p className="text-gray-600 mb-2">This post has {likesCount} {likesCount === 1 ? 'like' : 'likes'}</p>
+                <p className="text-sm text-gray-500">We don't have details about who liked this post yet.</p>
+                <p className="text-xs text-gray-400 mt-2">New likes will show user details!</p>
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 py-4">No likes yet</p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

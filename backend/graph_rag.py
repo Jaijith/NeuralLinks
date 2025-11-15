@@ -19,13 +19,15 @@ class GraphRAG:
         Get comprehensive user context from knowledge graph
         Returns structured context for LLM prompts
         """
-        # Get all user's graph nodes
+        # Get all user's graph nodes - NO LIMIT on retrieval (fetch all nodes)
+        # Use a high limit (10000) to ensure we get all nodes, but this is just a safety limit
+        # In practice, users shouldn't have more than 10k nodes, but we want to capture everything
         nodes = await self.db.graph_nodes.find(
             {"user_id": user_id},
             {"_id": 0}
-        ).to_list(1000)
+        ).to_list(10000)  # Increased from 1000 to 10000 to ensure all nodes are retrieved
         
-        # Get all edges for future use
+        # Get all edges for future use - NO LIMIT on retrieval
         node_ids = [n["id"] for n in nodes]
         _ = await self.db.graph_edges.find(
             {"$or": [
@@ -33,7 +35,7 @@ class GraphRAG:
                 {"to_node_id": {"$in": node_ids}}
             ]},
             {"_id": 0}
-        ).to_list(1000)
+        ).to_list(10000)  # Increased from 1000 to 10000
         
         # Organize by type
         context = {
@@ -49,12 +51,21 @@ class GraphRAG:
             node_type = node.get("node_type", "interest")
             label = node.get("label", "")
             properties = node.get("properties", {})
-            strength = properties.get("strength", 1.0)
+            base_strength = properties.get("strength", 1.0)
+            source = properties.get("source", "unknown")
+            
+            # Boost strength for platform-sourced data (more reliable/rich)
+            if source and source != "unknown" and source != "profile":
+                # Platform data gets 20% boost to prioritize it
+                strength = min(base_strength * 1.2, 1.0)
+            else:
+                strength = base_strength
             
             item = {
                 "label": label,
                 "strength": strength,
-                "properties": properties
+                "properties": properties,
+                "source": source  # Include source for tracking
             }
             
             # Map singular node types to plural context keys
@@ -70,7 +81,7 @@ class GraphRAG:
             context_key = type_mapping.get(node_type, "interests")  # Default to interests
             context[context_key].append(item)
         
-        # Sort by strength
+        # Sort by strength (platform data will be prioritized)
         for key in context:
             context[key] = sorted(context[key], key=lambda x: x.get("strength", 0), reverse=True)[:max_nodes]
         
@@ -80,13 +91,20 @@ class GraphRAG:
                                    topic: Optional[str] = None) -> str:
         """
         Get relevant context for specific query types
+        Prioritizes platform-sourced data for richer, more authentic responses
         Returns formatted string for LLM prompt
         """
-        context = await self.get_user_context(user_id)
+        context = await self.get_user_context(user_id, max_nodes=30)  # Get more nodes to include platform data
         
         if query_type == "post_generation":
-            # For generating avatar posts
-            interests = [item["label"] for item in context.get("interests", [])[:5]]
+            # For generating avatar posts - prioritize platform interests
+            all_interests = context.get("interests", [])
+            platform_interests = [item for item in all_interests if item.get("source") and item.get("source") not in ["unknown", "profile"]]
+            other_interests = [item for item in all_interests if item.get("source") in ["unknown", "profile"] or not item.get("source")]
+            # Prioritize platform interests
+            prioritized_interests = (platform_interests[:4] + other_interests[:2])[:5]
+            interests = [item["label"] for item in prioritized_interests]
+            
             traits = [item["label"] for item in context.get("traits", [])[:3]]
             values = [item["label"] for item in context.get("values", [])[:3]]
             
@@ -98,8 +116,14 @@ class GraphRAG:
             return prompt_context
         
         elif query_type == "chat_response":
-            # For avatar chat conversations
-            interests = [item["label"] for item in context.get("interests", [])[:8]]
+            # For avatar chat conversations - prioritize platform interests
+            all_interests = context.get("interests", [])
+            platform_interests = [item for item in all_interests if item.get("source") and item.get("source") not in ["unknown", "profile"]]
+            other_interests = [item for item in all_interests if item.get("source") in ["unknown", "profile"] or not item.get("source")]
+            # Prioritize platform interests
+            prioritized_interests = (platform_interests[:6] + other_interests[:3])[:8]
+            interests = [item["label"] for item in prioritized_interests]
+            
             traits = [item["label"] for item in context.get("traits", [])[:5]]
             
             prompt_context = f"""Avatar Personality:
@@ -167,13 +191,49 @@ class GraphRAG:
     async def get_avatar_personality_profile(self, user_id: str) -> str:
         """
         Generate a comprehensive personality profile for the avatar based on graph
+        Prioritizes platform-sourced data for richer, more accurate profiles
         """
-        context = await self.get_user_context(user_id)
+        context = await self.get_user_context(user_id, max_nodes=50)  # Get more nodes to include platform data
         
-        interests = [item["label"] for item in context.get("interests", [])[:8]]
+        # Get archetype from user document (behavioral pattern)
+        user = await self.db.users.find_one({"id": user_id}, {"archetype": 1})
+        archetype = user.get("archetype", "casual_observer") if user else "casual_observer"
+        
+        # Map archetypes to behavioral descriptions
+        archetype_behaviors = {
+            "social_butterfly": "highly active and loves frequent social interactions. You're energetic, outgoing, and enjoy starting conversations",
+            "thoughtful_contributor": "thoughtful and deliberate in your interactions. You value quality over quantity and prefer deep, meaningful exchanges",
+            "casual_observer": "balanced and moderate in your social activity. You engage when something genuinely interests you",
+            "niche_expert": "deeply focused on your areas of expertise. You contribute when you have valuable insights to share",
+            "enthusiastic_newcomer": "eager and excited to engage. You're learning, asking questions, and actively building connections"
+        }
+        
+        archetype_description = archetype_behaviors.get(archetype, archetype_behaviors["casual_observer"])
+        
+        # Prioritize platform-sourced interests (they're more reliable)
+        all_interests = context.get("interests", [])
+        platform_interests = [item for item in all_interests if item.get("source") and item.get("source") not in ["unknown", "profile"]]
+        other_interests = [item for item in all_interests if item.get("source") in ["unknown", "profile"] or not item.get("source")]
+        
+        # Combine: platform interests first, then others
+        prioritized_interests = (platform_interests[:6] + other_interests[:4])[:8]
+        interests = [item["label"] for item in prioritized_interests]
+        
         traits = [item["label"] for item in context.get("traits", [])[:5]]
         values = [item["label"] for item in context.get("values", [])[:5]]
         preferences = [item["label"] for item in context.get("preferences", [])[:5]]
+        
+        # Get platform sources for context
+        platform_sources = set()
+        for item in all_interests:
+            source = item.get("source", "")
+            if source and source not in ["unknown", "profile"]:
+                platform_sources.add(source)
+        
+        sources_note = ""
+        if platform_sources:
+            sources_list = ", ".join(sorted(platform_sources))
+            sources_note = f"\n\nNote: Your interests are enriched by data from: {sources_list}. This makes your personality profile more accurate and authentic."
         
         profile = f"""Personality Profile:
 You are an avatar representing a user with these characteristics:
@@ -183,7 +243,9 @@ Personality Traits: {', '.join(traits) if traits else 'friendly, open, curious'}
 Core Values: {', '.join(values) if values else 'authenticity, growth, connection'}
 Preferences: {', '.join(preferences) if preferences else 'meaningful conversations'}
 
-Your communication style should reflect these characteristics naturally. Be authentic, engaging, and true to these interests and values."""
+Behavioral Pattern: You are {archetype_description}. This affects HOW OFTEN you interact, but your communication style is always authentic to your interests, traits, and values above.
+
+Your communication style should reflect these characteristics naturally. Be authentic, engaging, and true to these interests and values.{sources_note}"""
         
         return profile
     

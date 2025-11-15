@@ -280,49 +280,219 @@ Return ONLY the JSON array, no explanation."""
         
         # Platform-specific extraction
         if platform == "spotify":
-            # Extract music preferences
+            # Extract music preferences and genres as interests
             for artist in data.get("top_artists", [])[:5]:
-                node = {
-                    "id": str(uuid.uuid4()),
+                existing = await self.db.graph_nodes.find_one({
                     "user_id": user_id,
                     "node_type": "preference",
-                    "label": f"music:{artist}",
-                    "properties": {"source": "spotify", "category": "music"},
-                    "created_at": datetime.now(timezone.utc).isoformat(),
-                    "updated_at": datetime.now(timezone.utc).isoformat()
-                }
-                await self.db.graph_nodes.insert_one(node)
-                nodes_created += 1
+                    "label": f"music:{artist.lower()}"
+                })
+                if not existing:
+                    node = {
+                        "id": str(uuid.uuid4()),
+                        "user_id": user_id,
+                        "node_type": "preference",
+                        "label": f"music:{artist.lower()}",
+                        "properties": {"source": platform, "category": "music", "strength": 1.0},
+                        "created_at": datetime.now(timezone.utc).isoformat(),
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }
+                    await self.db.graph_nodes.insert_one(node)
+                    nodes_created += 1
+            
+            # Genres as interests
+            for genre in data.get("top_genres", [])[:5]:
+                existing = await self.db.graph_nodes.find_one({
+                    "user_id": user_id,
+                    "node_type": "interest",
+                    "label": genre.lower()
+                })
+                if not existing:
+                    node = {
+                        "id": str(uuid.uuid4()),
+                        "user_id": user_id,
+                        "node_type": "interest",
+                        "label": genre.lower(),
+                        "properties": {"source": platform, "strength": 0.8},
+                        "created_at": datetime.now(timezone.utc).isoformat(),
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }
+                    await self.db.graph_nodes.insert_one(node)
+                    nodes_created += 1
                 
         elif platform == "youtube":
             # Extract video interests
             for topic in data.get("favorite_topics", [])[:5]:
-                node = {
-                    "id": str(uuid.uuid4()),
+                existing = await self.db.graph_nodes.find_one({
                     "user_id": user_id,
                     "node_type": "interest",
-                    "label": topic.lower(),
-                    "properties": {"source": "youtube", "strength": 0.8},
-                    "created_at": datetime.now(timezone.utc).isoformat(),
-                    "updated_at": datetime.now(timezone.utc).isoformat()
-                }
-                await self.db.graph_nodes.insert_one(node)
-                nodes_created += 1
+                    "label": topic.lower()
+                })
+                if not existing:
+                    node = {
+                        "id": str(uuid.uuid4()),
+                        "user_id": user_id,
+                        "node_type": "interest",
+                        "label": topic.lower(),
+                        "properties": {"source": platform, "strength": 0.8},
+                        "created_at": datetime.now(timezone.utc).isoformat(),
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }
+                    await self.db.graph_nodes.insert_one(node)
+                    nodes_created += 1
                 
         elif platform in ["facebook", "instagram"]:
             # Extract social interests
             for interest in data.get("interests", [])[:10]:
-                node = {
-                    "id": str(uuid.uuid4()),
+                existing = await self.db.graph_nodes.find_one({
                     "user_id": user_id,
                     "node_type": "interest",
-                    "label": interest.lower(),
-                    "properties": {"source": platform, "strength": 0.7},
-                    "created_at": datetime.now(timezone.utc).isoformat(),
-                    "updated_at": datetime.now(timezone.utc).isoformat()
-                }
-                await self.db.graph_nodes.insert_one(node)
-                nodes_created += 1
+                    "label": interest.lower()
+                })
+                if not existing:
+                    node = {
+                        "id": str(uuid.uuid4()),
+                        "user_id": user_id,
+                        "node_type": "interest",
+                        "label": interest.lower(),
+                        "properties": {"source": platform, "strength": 0.7},
+                        "created_at": datetime.now(timezone.utc).isoformat(),
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }
+                    await self.db.graph_nodes.insert_one(node)
+                    nodes_created += 1
+                    
+        elif platform == "twitter":
+            # Extract topics as interests
+            for topic in data.get("topics_followed", [])[:5]:
+                existing = await self.db.graph_nodes.find_one({
+                    "user_id": user_id,
+                    "node_type": "interest",
+                    "label": topic.lower()
+                })
+                if not existing:
+                    node = {
+                        "id": str(uuid.uuid4()),
+                        "user_id": user_id,
+                        "node_type": "interest",
+                        "label": topic.lower(),
+                        "properties": {"source": platform, "strength": 0.75},
+                        "created_at": datetime.now(timezone.utc).isoformat(),
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }
+                    await self.db.graph_nodes.insert_one(node)
+                    nodes_created += 1
+                    
+        elif platform == "linkedin":
+            # Extract skills as interests
+            for skill in data.get("skills", [])[:5]:
+                existing = await self.db.graph_nodes.find_one({
+                    "user_id": user_id,
+                    "node_type": "interest",
+                    "label": skill.lower()
+                })
+                if not existing:
+                    node = {
+                        "id": str(uuid.uuid4()),
+                        "user_id": user_id,
+                        "node_type": "interest",
+                        "label": skill.lower(),
+                        "properties": {"source": platform, "strength": 0.9, "category": "skill"},
+                        "created_at": datetime.now(timezone.utc).isoformat(),
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }
+                    await self.db.graph_nodes.insert_one(node)
+                    nodes_created += 1
+                    
+        elif platform in ["tiktok", "snapchat", "pinterest", "reddit", "discord", "twitch", 
+                          "whatsapp", "telegram", "apple_music", "soundcloud", "hulu", 
+                          "disney_plus", "prime_video", "hbo_max", "ebay", "etsy", "shopify", 
+                          "walmart", "fitbit", "myfitnesspal", "nike_run_club", "garmin",
+                          "medium", "kindle", "audible", "coursera", "udemy"]:
+            # Extract interests from these platforms
+            for interest in data.get("interests", [])[:10]:
+                existing = await self.db.graph_nodes.find_one({
+                    "user_id": user_id,
+                    "node_type": "interest",
+                    "label": interest.lower()
+                })
+                if not existing:
+                    node = {
+                        "id": str(uuid.uuid4()),
+                        "user_id": user_id,
+                        "node_type": "interest",
+                        "label": interest.lower(),
+                        "properties": {"source": platform, "strength": 0.7},
+                        "created_at": datetime.now(timezone.utc).isoformat(),
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }
+                    await self.db.graph_nodes.insert_one(node)
+                    nodes_created += 1
+            
+            # For Reddit, also extract subreddits
+            if platform == "reddit":
+                for subreddit in data.get("subreddits", [])[:5]:
+                    # Extract topic from subreddit name (e.g., "r/programming" -> "programming")
+                    topic = subreddit.replace("r/", "").lower()
+                    existing = await self.db.graph_nodes.find_one({
+                        "user_id": user_id,
+                        "node_type": "interest",
+                        "label": topic
+                    })
+                    if not existing:
+                        node = {
+                            "id": str(uuid.uuid4()),
+                            "user_id": user_id,
+                            "node_type": "interest",
+                            "label": topic,
+                            "properties": {"source": platform, "strength": 0.8, "category": "subreddit"},
+                            "created_at": datetime.now(timezone.utc).isoformat(),
+                            "updated_at": datetime.now(timezone.utc).isoformat()
+                        }
+                        await self.db.graph_nodes.insert_one(node)
+                        nodes_created += 1
+            
+            # For music platforms, extract genres
+            if platform in ["apple_music", "soundcloud"]:
+                for genre in data.get("top_genres", data.get("genres", []))[:5]:
+                    existing = await self.db.graph_nodes.find_one({
+                        "user_id": user_id,
+                        "node_type": "interest",
+                        "label": genre.lower()
+                    })
+                    if not existing:
+                        node = {
+                            "id": str(uuid.uuid4()),
+                            "user_id": user_id,
+                            "node_type": "interest",
+                            "label": genre.lower(),
+                            "properties": {"source": platform, "strength": 0.8, "category": "music"},
+                            "created_at": datetime.now(timezone.utc).isoformat(),
+                            "updated_at": datetime.now(timezone.utc).isoformat()
+                        }
+                        await self.db.graph_nodes.insert_one(node)
+                        nodes_created += 1
+            
+            # For learning platforms, extract course topics
+            if platform in ["coursera", "udemy"]:
+                for topic in data.get("courses_taken", data.get("topics", []))[:5]:
+                    existing = await self.db.graph_nodes.find_one({
+                        "user_id": user_id,
+                        "node_type": "interest",
+                        "label": topic.lower()
+                    })
+                    if not existing:
+                        node = {
+                            "id": str(uuid.uuid4()),
+                            "user_id": user_id,
+                            "node_type": "interest",
+                            "label": topic.lower(),
+                            "properties": {"source": platform, "strength": 0.9, "category": "learning"},
+                            "created_at": datetime.now(timezone.utc).isoformat(),
+                            "updated_at": datetime.now(timezone.utc).isoformat()
+                        }
+                        await self.db.graph_nodes.insert_one(node)
+                        nodes_created += 1
         
         return {"nodes_created": nodes_created, "edges_created": 0}
     

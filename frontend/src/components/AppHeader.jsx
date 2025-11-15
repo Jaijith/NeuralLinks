@@ -116,7 +116,7 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate('/integrations')}
+              onClick={() => navigate('/settings')}
               className="rounded-full p-2"
             >
               <SettingsIcon className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : ''}`} />

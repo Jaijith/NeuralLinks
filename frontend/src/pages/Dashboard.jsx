@@ -117,8 +117,8 @@ const Dashboard = ({ user, setUser }) => {
             </Button>
             <Button
               variant="ghost"
-              onClick={() => navigate("/integrations")}
-              data-testid="nav-integrations-btn"
+              onClick={() => navigate("/settings")}
+              data-testid="nav-settings-btn"
               className="hover:bg-purple-50 rounded-full"
             >
               <Settings className="w-5 h-5" />

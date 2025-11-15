@@ -23,10 +23,7 @@ const WorldModeToggle = ({ className = "" }) => {
           {worldMode === 'avatar' ? (
             <>
               <Sparkles className="w-5 h-5 animate-pulse" />
-              <span className="relative">
-                Maya
-                <span className="absolute -top-1 -right-8 text-xs">🌌</span>
-              </span>
+              <span>Maya</span>
             </>
           ) : (
             <>

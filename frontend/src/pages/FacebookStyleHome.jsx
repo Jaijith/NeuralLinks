@@ -11,8 +11,9 @@ import {
   Camera, MapPin, Briefcase, Heart, Users, MessageCircle, 
   Settings as SettingsIcon, Bot, User as UserIcon, Search,
   Home, Image, Video, Smile, Send, ThumbsUp, Share2,
-  MoreHorizontal, Globe, Lock, TrendingUp
+  MoreHorizontal, Globe, Lock, TrendingUp, Eye
 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import axios from "axios";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
@@ -34,6 +35,16 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   const [friendPosts, setFriendPosts] = useState([]);
   const [showMessenger, setShowMessenger] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
+  
+  // Like & Comment state
+  const [likedPosts, setLikedPosts] = useState(new Set());
+  const [showingLikesFor, setShowingLikesFor] = useState(null);
+  const [likesData, setLikesData] = useState([]);
+  const [likesCount, setLikesCount] = useState(0);
+  const [showingCommentsFor, setShowingCommentsFor] = useState(null);
+  const [commentsData, setCommentsData] = useState({});
+  const [commentText, setCommentText] = useState({});
+  const [showCreatePost, setShowCreatePost] = useState(false);
 
   // Dynamic labels based on world mode
   const labels = {
@@ -55,42 +66,217 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
 
   const fetchData = async () => {
     try {
-      const [friendsRes] = await Promise.all([
-        axios.get(`${API}/friends`, { withCredentials: true })
+      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
+      
+      // Fetch friends and feed posts in parallel
+      const [friendsRes, feedPostsRes] = await Promise.all([
+        axios.get(`${API}/friends`, { withCredentials: true }),
+        axios.get(`${API}/feed/posts?post_type=${postType}`, { withCredentials: true })
       ]);
+      
       setFriends(friendsRes.data.slice(0, 9));
       
-      // Fetch friend posts based on world mode
-      const posts = [];
-      for (const friend of friendsRes.data.slice(0, 10)) {
-        // Choose posts based on world mode
-        const postsToShow = worldMode === 'avatar' 
-          ? (friend.avatar_posts || [])
-          : (friend.posts || []);
-        
-        if (postsToShow && postsToShow.length > 0) {
-          postsToShow.forEach(post => {
-            posts.push({
-              ...post,
-              user: friend,
-              // Add display fields based on world mode
-              displayName: worldMode === 'avatar' 
-                ? (friend.avatar_name || friend.name)
-                : friend.name,
-              displayPicture: worldMode === 'avatar'
-                ? (friend.avatar_picture || friend.picture)
-                : friend.picture
-            });
-          });
-        }
+      // Get all posts from feed
+      const allPosts = feedPostsRes.data || [];
+      
+      // Get user data for each post
+      const postsWithUsers = [];
+      for (const post of allPosts) {
+        const postUser = friendsRes.data.find(f => f.id === post.user_id) || currentUser;
+        postsWithUsers.push({
+          ...post,
+          user: postUser,
+          displayName: worldMode === 'avatar' 
+            ? (postUser.avatar_name || postUser.name)
+            : postUser.name,
+          displayPicture: worldMode === 'avatar'
+            ? (postUser.avatar_picture || postUser.picture)
+            : postUser.picture
+        });
       }
-      // Sort by date
-      posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      setFriendPosts(posts.slice(0, 20));
+      
+      // Sort by date (already sorted by backend, but ensure)
+      postsWithUsers.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      setFriendPosts(postsWithUsers.slice(0, 20));
+      
+      // Initialize liked posts
+      const likedSet = new Set();
+      postsWithUsers.forEach(post => {
+        if (post.liked_by && Array.isArray(post.liked_by) && post.liked_by.includes(currentUser.id)) {
+          likedSet.add(post.id);
+        }
+      });
+      setLikedPosts(likedSet);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
+    }
+  };
+  
+  // Create post
+  const createPost = async () => {
+    if (!postText.trim()) return;
+    
+    try {
+      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
+      const response = await axios.post(`${API}/profile/posts`, 
+        { text: postText, post_type: postType },
+        { withCredentials: true }
+      );
+      
+      console.log("Post created:", response.data);
+      
+      // Add post immediately to feed (optimistic update)
+      const newPost = {
+        ...response.data,
+        user_id: response.data.user_id || currentUser.id,
+        user: currentUser,
+        displayName: worldMode === 'avatar' 
+          ? (currentUser.avatar_name || currentUser.name)
+          : currentUser.name,
+        displayPicture: worldMode === 'avatar'
+          ? (currentUser.avatar_picture || currentUser.picture)
+          : currentUser.picture,
+        likes: response.data.likes || 0,
+        liked_by: response.data.liked_by || [],
+        comments: response.data.comments || [],
+        comment_count: response.data.comment_count || 0
+      };
+      
+      // Add to top of feed
+      setFriendPosts([newPost, ...friendPosts]);
+      
+      console.log("Added post to feed:", newPost);
+      
+      setPostText('');
+      setShowCreatePost(false);
+      toast.success(worldMode === 'avatar' ? "Maya post created!" : "Post created!");
+      
+      // Also refresh feed to ensure sync
+      setTimeout(() => {
+        fetchData();
+      }, 500);
+    } catch (error) {
+      console.error("Error creating post:", error);
+      toast.error("Failed to create post");
+    }
+  };
+  
+  // Like/Unlike post
+  const handleLikePost = async (postId) => {
+    try {
+      const response = await axios.post(`${API}/posts/${postId}/like`, {}, {
+        withCredentials: true,
+      });
+      
+      // Update local state
+      const newLikedPosts = new Set(likedPosts);
+      if (response.data.liked) {
+        newLikedPosts.add(postId);
+      } else {
+        newLikedPosts.delete(postId);
+      }
+      setLikedPosts(newLikedPosts);
+      
+      // Update post in state - fetch fresh data to ensure sync
+      const updatedPosts = friendPosts.map(p => {
+        if (p.id === postId) {
+          const currentLikedBy = Array.isArray(p.liked_by) ? p.liked_by : [];
+          const newLikedBy = response.data.liked 
+            ? [...currentLikedBy, currentUser.id]
+            : currentLikedBy.filter(id => id !== currentUser.id);
+          return {
+            ...p,
+            likes: response.data.likes,
+            liked_by: newLikedBy
+          };
+        }
+        return p;
+      });
+      setFriendPosts(updatedPosts);
+      
+      toast.success(response.data.liked ? "Post liked!" : "Post unliked");
+    } catch (error) {
+      console.error("Error liking post:", error);
+      toast.error("Failed to like post");
+    }
+  };
+  
+  // Show who liked a post
+  const showLikes = async (postId) => {
+    try {
+      const response = await axios.get(`${API}/posts/${postId}/likes`, {
+        withCredentials: true,
+      });
+      setLikesData(response.data.users || []);
+      setLikesCount(response.data.count || 0);
+      setShowingLikesFor(postId);
+    } catch (error) {
+      console.error("Error fetching likes:", error);
+      toast.error("Failed to load likes");
+    }
+  };
+  
+  // Show comments for a post
+  const showComments = async (postId) => {
+    if (showingCommentsFor === postId) {
+      setShowingCommentsFor(null);
+      return;
+    }
+    
+    try {
+      const response = await axios.get(`${API}/posts/${postId}/comments`, {
+        withCredentials: true,
+      });
+      const comments = Array.isArray(response.data?.comments) 
+        ? response.data.comments 
+        : [];
+      setCommentsData({...commentsData, [postId]: comments});
+      setShowingCommentsFor(postId);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      toast.error("Failed to load comments");
+    }
+  };
+  
+  // Add comment to a post
+  const handleAddComment = async (postId) => {
+    const text = commentText[postId]?.trim();
+    if (!text) return;
+    
+    try {
+      const response = await axios.post(
+        `${API}/posts/${postId}/comment`,
+        { text },
+        { withCredentials: true }
+      );
+      
+      // Update comments
+      const existingComments = Array.isArray(commentsData[postId]) 
+        ? commentsData[postId] 
+        : [];
+      const newComment = response.data?.comment;
+      
+      if (newComment) {
+        setCommentsData({
+          ...commentsData,
+          [postId]: [newComment, ...existingComments]
+        });
+      }
+      
+      // Clear input
+      setCommentText({...commentText, [postId]: ''});
+      
+      // Update post comment count
+      setFriendPosts(friendPosts.map(p => 
+        p.id === postId ? {...p, comment_count: (p.comment_count || 0) + 1} : p
+      ));
+      
+      toast.success("Comment added!");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      toast.error("Failed to add comment");
     }
   };
 
@@ -200,7 +386,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/integrations')}
+                onClick={() => navigate('/settings')}
                 className="rounded-full p-2"
               >
                 <SettingsIcon className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : ''}`} />
@@ -290,31 +476,65 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
               <Card className="p-4">
                 <div className="flex items-center space-x-3 mb-3">
                   <Avatar className="w-10 h-10">
-                    <AvatarImage src={currentUser.picture} />
-                    <AvatarFallback>{currentUser.name?.charAt(0)}</AvatarFallback>
+                    <AvatarImage src={worldMode === 'avatar' ? (currentUser.avatar_picture || currentUser.picture) : currentUser.picture} />
+                    <AvatarFallback>{(worldMode === 'avatar' ? (currentUser.avatar_name || currentUser.name) : currentUser.name)?.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <Input
-                    placeholder={mode === 'real' ? "What's on your mind?" : "What's your avatar thinking?"}
-                    className="flex-1 rounded-full bg-gray-100 border-none"
-                    onClick={() => {/* Open create post modal */}}
+                    placeholder={worldMode === 'avatar' ? "What's your avatar thinking?" : "What's on your mind?"}
+                    className="flex-1 rounded-full bg-gray-100 border-none cursor-pointer"
+                    onClick={() => setShowCreatePost(true)}
+                    value={postText}
                     readOnly
                   />
                 </div>
                 <div className="flex items-center justify-around border-t pt-3">
-                  <Button variant="ghost" size="sm" className="flex-1">
+                  <Button variant="ghost" size="sm" className="flex-1" onClick={() => toast.info("Live video feature coming soon")}>
                     <Video className="w-5 h-5 mr-2 text-red-500" />
                     <span className="text-sm font-semibold text-gray-600">Live video</span>
                   </Button>
-                  <Button variant="ghost" size="sm" className="flex-1">
+                  <Button variant="ghost" size="sm" className="flex-1" onClick={() => toast.info("Photo/video upload coming soon")}>
                     <Image className="w-5 h-5 mr-2 text-green-500" />
                     <span className="text-sm font-semibold text-gray-600">Photo/video</span>
                   </Button>
-                  <Button variant="ghost" size="sm" className="flex-1">
+                  <Button variant="ghost" size="sm" className="flex-1" onClick={() => toast.info("Feeling feature coming soon")}>
                     <Smile className="w-5 h-5 mr-2 text-yellow-500" />
                     <span className="text-sm font-semibold text-gray-600">Feeling</span>
                   </Button>
                 </div>
               </Card>
+              
+              {/* Create Post Dialog */}
+              <Dialog open={showCreatePost} onOpenChange={setShowCreatePost}>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>{worldMode === 'avatar' ? "Create Maya Post" : "Create Post"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <Textarea
+                      placeholder={worldMode === 'avatar' ? "What's your avatar thinking?" : "What's on your mind?"}
+                      value={postText}
+                      onChange={(e) => setPostText(e.target.value)}
+                      rows={4}
+                      className="resize-none"
+                    />
+                    <div className="flex justify-end space-x-2">
+                      <Button variant="ghost" onClick={() => {
+                        setShowCreatePost(false);
+                        setPostText('');
+                      }}>
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={createPost}
+                        disabled={!postText.trim()}
+                        className="bg-blue-500 hover:bg-blue-600 text-white"
+                      >
+                        Post
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
 
               {/* Mode Banner */}
               {mode === 'avatar' && (
@@ -363,20 +583,103 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                                 {new Date(post.created_at).toLocaleDateString()}
                               </span>
                             </div>
-                            <p className="text-gray-800 mb-3">{post.text}</p>
-                            <div className="flex items-center space-x-6 text-sm text-gray-500 border-t pt-2">
-                              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600">
-                                <ThumbsUp className="w-4 h-4 mr-1" />
-                                {post.likes || 0}
-                              </Button>
-                              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600">
-                                <MessageCircle className="w-4 h-4 mr-1" />
-                                {post.comments || 0}
-                              </Button>
-                              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-600">
-                                <Share2 className="w-4 h-4 mr-1" />
-                                Share
-                              </Button>
+                            <p className="text-gray-800 mb-3">{post.text || post.content}</p>
+                            <div className="space-y-3">
+                              <div className="flex items-center space-x-6 text-sm border-t pt-2">
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  className={`${likedPosts.has(post.id) ? 'text-blue-700' : 'text-blue-600'} hover:text-blue-800 hover:bg-blue-50 font-semibold`}
+                                  onClick={() => handleLikePost(post.id)}
+                                >
+                                  <ThumbsUp 
+                                    className={`w-5 h-5 mr-1 ${likedPosts.has(post.id) ? 'fill-current' : ''}`} 
+                                    style={{ color: likedPosts.has(post.id) ? '#1d4ed8' : '#2563eb' }}
+                                  />
+                                  <span className="font-semibold" style={{ color: likedPosts.has(post.id) ? '#1d4ed8' : '#2563eb' }}>{post.likes || 0}</span>
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  className="text-purple-700 hover:text-purple-900 hover:bg-purple-50 font-semibold"
+                                  onClick={() => showLikes(post.id)}
+                                >
+                                  <Eye className="w-5 h-5 mr-1" style={{ color: '#7e22ce' }} />
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  className="text-green-700 hover:text-green-900 hover:bg-green-50 font-semibold"
+                                  onClick={() => showComments(post.id)}
+                                >
+                                  <MessageCircle className="w-5 h-5 mr-1" style={{ color: '#15803d' }} />
+                                  <span className="font-semibold" style={{ color: '#15803d' }}>{post.comments?.length || post.comment_count || 0}</span>
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  className="text-orange-700 hover:text-orange-900 hover:bg-orange-50 font-semibold"
+                                  onClick={() => {
+                                    navigator.share?.({ title: 'Check out this post!', url: window.location.href }) || toast.info('Share feature coming soon');
+                                  }}
+                                >
+                                  <Share2 className="w-5 h-5 mr-1" style={{ color: '#c2410c' }} />
+                                </Button>
+                              </div>
+                              
+                              {/* Comments Section */}
+                              {showingCommentsFor === post.id && (
+                                <div className="border-t pt-3 space-y-3">
+                                  {/* Comment Input */}
+                                  <div className="flex space-x-2">
+                                    <Textarea
+                                      placeholder="Write a comment..."
+                                      value={commentText[post.id] || ''}
+                                      onChange={(e) => setCommentText({...commentText, [post.id]: e.target.value})}
+                                      className="flex-1"
+                                      rows={2}
+                                    />
+                                    <Button 
+                                      onClick={() => handleAddComment(post.id)}
+                                      disabled={!commentText[post.id]?.trim()}
+                                      className="bg-purple-600 hover:bg-purple-700"
+                                    >
+                                      <Send className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                  
+                                  {/* Comments List */}
+                                  {(() => {
+                                    const comments = Array.isArray(commentsData[post.id]) 
+                                      ? commentsData[post.id] 
+                                      : [];
+                                    return comments.length > 0 ? (
+                                      <div className="space-y-2 max-h-64 overflow-y-auto">
+                                        {comments.map((comment) => {
+                                          if (!comment || typeof comment !== 'object') return null;
+                                          return (
+                                            <div key={comment.id || Math.random()} className="flex space-x-2 p-2 bg-gray-50 rounded">
+                                              <Avatar className="w-8 h-8">
+                                                <AvatarImage src={comment.user_picture || ''} />
+                                                <AvatarFallback>{(comment.user_name || '?').charAt(0)}</AvatarFallback>
+                                              </Avatar>
+                                              <div className="flex-1">
+                                                <p className="text-sm font-medium">{comment.user_name || 'Unknown'}</p>
+                                                <p className="text-sm text-gray-700">{comment.text || ''}</p>
+                                                <p className="text-xs text-gray-500 mt-1">
+                                                  {comment.created_at ? new Date(comment.created_at).toLocaleString() : ''}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          );
+                                        })}
+                                      </div>
+                                    ) : (
+                                      <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
+                                    );
+                                  })()}
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -680,6 +983,38 @@ const AvatarMessenger = ({ conversations, currentUser, onBack }) => {
           </div>
         )}
       </Card>
+
+      {/* Likes Dialog */}
+      <Dialog open={showingLikesFor !== null} onOpenChange={() => setShowingLikesFor(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>People who liked this post</DialogTitle>
+          </DialogHeader>
+          <div className="max-h-96 overflow-y-auto space-y-2">
+            {likesData.length > 0 ? (
+              likesData.map((user) => (
+                <div key={user.id} className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded">
+                  <Avatar className="w-10 h-10">
+                    <AvatarImage src={user.picture} />
+                    <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium text-sm">{user.name}</p>
+                  </div>
+                </div>
+              ))
+            ) : likesCount > 0 ? (
+              <div className="text-center py-4">
+                <p className="text-gray-600 mb-2">This post has {likesCount} {likesCount === 1 ? 'like' : 'likes'}</p>
+                <p className="text-sm text-gray-500">We don't have details about who liked this post yet.</p>
+                <p className="text-xs text-gray-400 mt-2">New likes will show user details!</p>
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 py-4">No likes yet</p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Side Messenger */}
       {showMessenger && selectedFriend && (

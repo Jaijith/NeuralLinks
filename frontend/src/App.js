@@ -14,6 +14,9 @@ import ProfilePageFull from "./pages/ProfilePageFull";
 import SearchPage from "./pages/SearchPage";
 import FriendsPage from "./pages/FriendsPage";
 import IntegrationsPage from "./pages/IntegrationsPage";
+import AvatarControl from "./pages/AvatarControl";
+import SettingsPage from "./pages/SettingsPage";
+import AvatarVisualization from "./pages/AvatarVisualization";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
 import { WorldModeProvider } from "./contexts/WorldModeContext";
@@ -113,6 +116,18 @@ function App() {
             <Route
               path="/integrations"
               element={user ? <IntegrationsPage user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/settings"
+              element={user ? <SettingsPage user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/avatar-visualization"
+              element={user ? <AvatarVisualization user={user} /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/avatar-control"
+              element={user ? <AvatarControl user={user} /> : <Navigate to="/" />}
             />
             <Route
               path="/matches"
