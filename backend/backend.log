@@ -1,151 +1,1292 @@
 INFO:     Will watch for changes in these directories: ['/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
-INFO:     Started reloader process [72948] using WatchFiles
-INFO:     Started server process [72996]
+INFO:     Started reloader process [70106] using WatchFiles
+INFO:     Started server process [70110]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     127.0.0.1:57637 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:57637 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:57689 - "OPTIONS /api/auth/session-data HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57690 - "OPTIONS /api/auth/session-data HTTP/1.1" 200 OK
-INFO:httpx:HTTP Request: GET https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data "HTTP/1.1 200 OK"
-INFO:     127.0.0.1:57639 - "GET /api/auth/session-data HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57696 - "GET /api/auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57696 - "GET /api/friends HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57699 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57702 - "GET /api/friends HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57699 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
-INFO:httpx:HTTP Request: GET https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data "HTTP/1.1 200 OK"
-INFO:     127.0.0.1:57639 - "GET /api/auth/session-data HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57639 - "GET /api/auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57639 - "GET /api/friends HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57702 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57704 - "GET /api/friends HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57713 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
-WARNING:  WatchFiles detected changes in 'test_avatar_actions.py'. Reloading...
+INFO:     127.0.0.1:55462 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55462 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55462 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55462 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:55469 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55467 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:55469 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55467 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55469 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55467 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55462 - "GET /uploads/images/20251116_120515_images__4_.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55462 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55467 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55462 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:55473 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55469 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55467 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:55473 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55462 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55480 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55480 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55480 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55482 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55480 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55484 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [72996]
-INFO:     Started server process [76508]
+INFO:     Finished server process [70110]
+INFO:     Started server process [70282]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'test_avatar_actions.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [76508]
-INFO:     Started server process [76700]
+INFO:     Finished server process [70282]
+INFO:     Started server process [70290]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     127.0.0.1:57979 - "GET /api/friends HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57980 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57987 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57989 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57993 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57989 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-WARNING:  WatchFiles detected changes in 'avatar_mcp_server.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [76700]
-INFO:     Started server process [89855]
+INFO:     Finished server process [70290]
+INFO:     Started server process [70302]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'avatar_mcp_client.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [89855]
-WARNING:  WatchFiles detected changes in 'avatar_mcp_client.py'. Reloading...
-INFO:     Started server process [90095]
+INFO:     Finished server process [70302]
+INFO:     Started server process [70315]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'server.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [90095]
-INFO:     Started server process [90283]
+INFO:     Finished server process [70315]
+INFO:     Started server process [70346]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'server.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [90283]
-INFO:     Started server process [91553]
+INFO:     Finished server process [70346]
+INFO:     Started server process [70352]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'server.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [91553]
-INFO:     Started server process [91614]
+INFO:     Finished server process [70352]
+INFO:     Started server process [70359]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'server.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [91614]
-INFO:     Started server process [91693]
+INFO:     Finished server process [70359]
+INFO:     Started server process [70361]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'test_mcp_server.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [91693]
-WARNING:  WatchFiles detected changes in 'test_mcp_server.py'. Reloading...
-INFO:     Started server process [92099]
+INFO:     Finished server process [70361]
+INFO:     Started server process [70362]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'test_mcp_server.py', 'avatar_mcp_server.py', 'avatar_mcp_client.py', 'server.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [92099]
-INFO:     Started server process [92345]
+INFO:     Finished server process [70362]
+INFO:     Started server process [70372]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     127.0.0.1:58348 - "GET /api/mcp/tools HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58350 - "GET /api/mcp/tools/available?avatar_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58355 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58357 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
-INFO:httpx:HTTP Request: POST https://openai-airesearch-poc-eastus2-002.openai.azure.com/openai/deployments/deployopenai-airesearch-eastus2-gpt4o/chat/completions?api-version=2025-02-01-preview "HTTP/1.1 200 OK"
-INFO:     127.0.0.1:58359 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58379 - "GET /api/mcp/tools HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58402 - "GET /api/auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58402 - "GET /api/auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58407 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58402 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58409 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58402 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58407 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58402 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-WARNING:  WatchFiles detected changes in 'test_mcp_actions_comprehensive.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [92345]
-INFO:     Started server process [93505]
+INFO:     Finished server process [70372]
+INFO:     Started server process [70445]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     127.0.0.1:58428 - "GET /api/mcp/tools/available?avatar_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58437 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
-INFO:httpx:HTTP Request: POST https://openai-airesearch-poc-eastus2-002.openai.azure.com/openai/deployments/deployopenai-airesearch-eastus2-gpt4o/chat/completions?api-version=2025-02-01-preview "HTTP/1.1 200 OK"
-INFO:     127.0.0.1:58439 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
-INFO:httpx:HTTP Request: POST https://openai-airesearch-poc-eastus2-002.openai.azure.com/openai/deployments/deployopenai-airesearch-eastus2-gpt4o/chat/completions?api-version=2025-02-01-preview "HTTP/1.1 200 OK"
-INFO:     127.0.0.1:58448 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
-INFO:httpx:HTTP Request: POST https://openai-airesearch-poc-eastus2-002.openai.azure.com/openai/deployments/deployopenai-airesearch-eastus2-gpt4o/chat/completions?api-version=2025-02-01-preview "HTTP/1.1 200 OK"
-INFO:     127.0.0.1:58453 - "POST /api/mcp/tools/call HTTP/1.1" 200 OK
-WARNING:  WatchFiles detected changes in 'test_mcp_actions_comprehensive.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [93505]
-INFO:     Started server process [93763]
+INFO:     Finished server process [70445]
+INFO:     Started server process [70448]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70448]
+INFO:     Started server process [70453]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70453]
+INFO:     Started server process [70457]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70457]
+INFO:     Started server process [70463]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70463]
+INFO:     Started server process [70478]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70478]
+INFO:     Started server process [70521]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70521]
+INFO:     Started server process [70539]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70539]
+INFO:     Started server process [70553]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70553]
+INFO:     Started server process [70586]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/test_mcp_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70586]
+INFO:     Started server process [70609]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/test_mcp_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70609]
+INFO:     Started server process [70717]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/test_single_cycle.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70717]
+WARNING:  WatchFiles detected changes in 'scripts/test_single_cycle.py'. Reloading...
+INFO:     Started server process [70738]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/test_mcp_agent.py', 'scripts/test_single_cycle.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70738]
+INFO:     Started server process [70749]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/test_single_cycle.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70749]
+INFO:     Started server process [70857]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/test_single_cycle.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70857]
+INFO:     Started server process [70877]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:55996 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56001 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56001 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56003 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55996 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56001 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56003 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56007 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56025 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56024 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56031 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56024 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56033 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56027 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56025 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56032 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56025 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56032 - "GET /uploads/images/20251116_120515_images__4_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56027 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56027 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56025 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56032 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56027 - "GET /uploads/images/20251116_115125_images.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56025 - "GET /uploads/images/20251116_115406_images__3_.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56033 - "GET /uploads/images/20251116_114413_download%20%281%29.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56032 - "GET /uploads/images/20251116_115159_images__1_.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56024 - "GET /uploads/images/20251116_120416_images__2_.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56031 - "GET /uploads/images/20251116_114359_download.jpeg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:56050 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56050 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56050 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56054 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56052 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56050 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56054 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56052 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56052 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56054 - "GET /api/profile/posts?post_type=real&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56050 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56052 - "GET /api/profile/posts?post_type=real&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56067 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56070 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56069 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56067 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56070 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56069 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56078 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56077 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56078 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56077 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56086 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56088 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56088 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56086 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56090 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56088 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56090 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56092 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56092 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56088 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56090 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56096 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56098 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56096 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56100 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56106 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56107 - "GET /api/profile/posts?post_type=real&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56128 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56129 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56131 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56131 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56143 - "OPTIONS /api/profile/avatar HTTP/1.1" 200 OK
+INFO:services.user_service:🔧 Updating avatar profile for user dedc30ef-dca9-467d-84b1-5e643941e6fd
+INFO:services.user_service:📝 Received data: {'name': 'DigitalHunter', 'bio': 'Digital warrior in the virtual realm', 'picture': 'https://api.dicebear.com/7.x/adventurer/svg?seed=dedc30ef-dca9-467d-84b1-5e643941e6fd', 'interests': [], 'job_title': 'Virtual Explorer', 'location': 'Cyberspace', 'avatar_autonomous': True, 'avatar_activity_level': 'hypo', 'archetype': 'social_butterfly', 'avatar_actions_enabled': {'like_posts': True, 'comment_posts': True, 'create_posts': True, 'send_friend_requests': True, 'accept_friend_requests': True, 'message_friends': True, 'discover_profiles': True, 'share_posts': False}}
+INFO:services.user_service:💾 Saving to DB: {'avatar_name': 'DigitalHunter', 'avatar_bio': 'Digital warrior in the virtual realm', 'avatar_picture': 'https://api.dicebear.com/7.x/adventurer/svg?seed=dedc30ef-dca9-467d-84b1-5e643941e6fd', 'avatar_interests': [], 'avatar_job_title': 'Virtual Explorer', 'avatar_location': 'Cyberspace', 'avatar_autonomous': True, 'avatar_activity_level': 'hypo', 'archetype': 'social_butterfly', 'avatar_actions_enabled': {'like_posts': True, 'comment_posts': True, 'create_posts': True, 'send_friend_requests': True, 'accept_friend_requests': True, 'message_friends': True, 'discover_profiles': True, 'share_posts': False}}
+INFO:services.user_service:✅ Verified saved autonomy settings: {'archetype': 'social_butterfly', 'avatar_activity_level': 'hypo', 'avatar_autonomous': True, 'avatar_actions_enabled': {'like_posts': True, 'comment_posts': True, 'create_posts': True, 'send_friend_requests': True, 'accept_friend_requests': True, 'message_friends': True, 'discover_profiles': True, 'share_posts': False}}
+INFO:     127.0.0.1:56145 - "PUT /api/profile/avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56145 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56145 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56157 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56145 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56159 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56145 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56145 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56159 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56167 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56167 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56174 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56174 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56185 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56187 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56186 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56185 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56187 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56186 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56195 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56197 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56195 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56199 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56201 - "OPTIONS /api/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56203 - "PUT /api/profile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56203 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56203 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56216 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56218 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56203 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56216 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56216 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56203 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:services.user_service:🔧 Updating avatar profile for user dedc30ef-dca9-467d-84b1-5e643941e6fd
+INFO:services.user_service:📝 Received data: {'name': 'DigitalHunter', 'bio': 'Digital warrior in the virtual realm', 'picture': 'https://api.dicebear.com/7.x/adventurer/svg?seed=dedc30ef-dca9-467d-84b1-5e643941e6fd', 'interests': [], 'job_title': 'Virtual Explorer', 'location': 'Cyberspace', 'avatar_autonomous': True, 'avatar_activity_level': 'hypo', 'archetype': 'social_butterfly', 'avatar_actions_enabled': {'like_posts': True, 'comment_posts': True, 'create_posts': True, 'send_friend_requests': True, 'accept_friend_requests': True, 'message_friends': True, 'discover_profiles': True, 'share_posts': False}}
+INFO:services.user_service:💾 Saving to DB: {'avatar_name': 'DigitalHunter', 'avatar_bio': 'Digital warrior in the virtual realm', 'avatar_picture': 'https://api.dicebear.com/7.x/adventurer/svg?seed=dedc30ef-dca9-467d-84b1-5e643941e6fd', 'avatar_interests': [], 'avatar_job_title': 'Virtual Explorer', 'avatar_location': 'Cyberspace', 'avatar_autonomous': True, 'avatar_activity_level': 'hypo', 'archetype': 'social_butterfly', 'avatar_actions_enabled': {'like_posts': True, 'comment_posts': True, 'create_posts': True, 'send_friend_requests': True, 'accept_friend_requests': True, 'message_friends': True, 'discover_profiles': True, 'share_posts': False}}
+INFO:services.user_service:✅ Verified saved autonomy settings: {'archetype': 'social_butterfly', 'avatar_activity_level': 'hypo', 'avatar_autonomous': True, 'avatar_actions_enabled': {'like_posts': True, 'comment_posts': True, 'create_posts': True, 'send_friend_requests': True, 'accept_friend_requests': True, 'message_friends': True, 'discover_profiles': True, 'share_posts': False}}
+INFO:     127.0.0.1:56236 - "PUT /api/profile/avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56236 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56236 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56236 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56250 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56236 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56252 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56252 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56236 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56274 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56274 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56278 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56280 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56274 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56278 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56278 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56274 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56363 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56365 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56364 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56363 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56365 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56369 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56369 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56363 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56365 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56376 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56375 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56376 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56375 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56375 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56375 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56382 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56382 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56382 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56386 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56385 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56382 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56386 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56388 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56399 - "GET /api/users/bot-56ca80f9-c20c-484a-81cf-8da85a7b3553?world_mode=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56401 - "GET /api/friends?user_id=bot-56ca80f9-c20c-484a-81cf-8da85a7b3553 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56402 - "GET /api/profile/posts?post_type=real&user_id=bot-56ca80f9-c20c-484a-81cf-8da85a7b3553 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56401 - "GET /api/friends?user_id=bot-56ca80f9-c20c-484a-81cf-8da85a7b3553 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56404 - "GET /api/users/bot-56ca80f9-c20c-484a-81cf-8da85a7b3553?world_mode=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56402 - "GET /api/profile/posts?post_type=real&user_id=bot-56ca80f9-c20c-484a-81cf-8da85a7b3553 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56402 - "GET /api/messages/bot-56ca80f9-c20c-484a-81cf-8da85a7b3553?world_mode=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56404 - "GET /api/messages/bot-56ca80f9-c20c-484a-81cf-8da85a7b3553?world_mode=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56411 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56413 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56414 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56411 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56414 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56413 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56420 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56420 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56620 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56700 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56699 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56700 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56699 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56705 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56705 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56707 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56707 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56707 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56709 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56709 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56707 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56707 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56709 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56713 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56714 - "GET /api/profile/posts?post_type=real&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56713 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56714 - "GET /api/profile/posts?post_type=real&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56714 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56713 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56716 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56732 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56716 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56732 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56732 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56732 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56716 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56716 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56716 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56716 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56716 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56783 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56787 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56786 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56783 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56787 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56789 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56800 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:56803 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56802 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:56811 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56808 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56809 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56817 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56818 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56817 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56820 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57082 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57082 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57082 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57082 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57084 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57082 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57084 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57087 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57101 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57101 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57101 - "GET /api/avatar/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57101 - "GET /api/avatar/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57101 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57101 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57112 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57115 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57114 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57112 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57115 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57119 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57119 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:57112 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57115 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:57115 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:57115 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57115 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:57123 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57122 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57115 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:57125 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57122 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57257 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57258 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57258 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57257 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:57265 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57264 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:57266 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57260 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57260 - "GET /uploads/images/20251116_120416_images__2_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57266 - "GET /uploads/images/20251116_115159_images__1_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57264 - "GET /uploads/images/20251116_115406_images__3_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57265 - "GET /uploads/images/20251116_115125_images.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57257 - "GET /uploads/images/20251116_114413_download%20%281%29.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57258 - "GET /uploads/images/20251116_114359_download.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57265 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57258 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57258 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57265 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57265 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57265 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57258 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57265 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57270 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57270 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57270 - "GET /api/avatar/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57270 - "GET /api/avatar/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57270 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57276 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57275 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57270 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57276 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57278 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57278 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57278 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57278 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57270 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57276 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57280 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57278 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57270 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57429 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57429 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57429 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57434 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57429 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57432 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57434 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57432 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'scripts/set_all_avatars_hypo.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70877]
+WARNING:  WatchFiles detected changes in 'scripts/set_all_avatars_hypo.py'. Reloading...
+INFO:     Started server process [71774]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/test_avatar_posting.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [71774]
+WARNING:  WatchFiles detected changes in 'scripts/test_avatar_posting.py'. Reloading...
+INFO:     Started server process [71826]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/test_avatar_posting.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [71826]
+INFO:     Started server process [71827]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/check_avatar_posts.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [71827]
+WARNING:  WatchFiles detected changes in 'scripts/check_avatar_posts.py'. Reloading...
+INFO:     Started server process [71866]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/enable_all_avatar_actions.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [71866]
+WARNING:  WatchFiles detected changes in 'scripts/enable_all_avatar_actions.py'. Reloading...
+INFO:     Started server process [71904]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/enable_all_avatar_actions.py', 'scripts/test_avatar_posting.py', 'scripts/check_avatar_posts.py', 'scripts/set_all_avatars_hypo.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [71904]
+INFO:     Started server process [71943]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57802 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57802 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57802 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57809 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57807 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57802 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57809 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57813 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57829 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57828 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57829 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57828 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57837 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57836 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57834 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57835 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57835 - "GET /uploads/images/20251116_120515_images__4_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57834 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57836 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57846 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:57848 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57847 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57847 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57846 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57848 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57853 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57855 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57853 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57857 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57859 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57859 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'scripts/run_autonomous_agents.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [71943]
+INFO:     Started server process [72326]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57908 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57913 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57913 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57913 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57908 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57913 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57925 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57927 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57926 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57925 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:57927 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57930 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'scripts/run_autonomous_agents.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72326]
+INFO:     Started server process [72396]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/run_autonomous_agents.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72396]
+INFO:     Started server process [72565]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'scripts/run_autonomous_agents.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72565]
+INFO:     Started server process [72596]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:58157 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58157 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58162 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58166 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58165 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58157 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58166 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58162 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58185 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58192 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58190 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58195 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58185 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58194 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58194 - "GET /uploads/images/20251116_120515_images__4_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58190 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58185 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58203 - "GET /api/users/2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58206 - "GET /api/friends?user_id=2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58207 - "GET /api/profile/posts?post_type=avatar&user_id=2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58203 - "GET /api/users/2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58206 - "GET /api/friends?user_id=2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58207 - "GET /api/profile/posts?post_type=avatar&user_id=2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58211 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58214 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58212 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58211 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58214 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58218 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58224 - "GET /api/users/bot-f33944a4-1766-4944-a4f0-54bc7bbcb840?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58226 - "GET /api/friends?user_id=bot-f33944a4-1766-4944-a4f0-54bc7bbcb840 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58227 - "GET /api/profile/posts?post_type=avatar&user_id=bot-f33944a4-1766-4944-a4f0-54bc7bbcb840 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58229 - "GET /api/users/bot-f33944a4-1766-4944-a4f0-54bc7bbcb840?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58226 - "GET /api/friends?user_id=bot-f33944a4-1766-4944-a4f0-54bc7bbcb840 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58224 - "GET /api/profile/posts?post_type=avatar&user_id=bot-f33944a4-1766-4944-a4f0-54bc7bbcb840 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'scripts/run_autonomous_agents.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72596]
+INFO:     Started server process [72745]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:58249 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58253 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58251 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58262 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58253 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58251 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58271 - "GET /api/users/bot-9fbc3246-e3c0-4a08-80f2-1b269f640147?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58274 - "GET /api/friends?user_id=bot-9fbc3246-e3c0-4a08-80f2-1b269f640147 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58275 - "GET /api/profile/posts?post_type=avatar&user_id=bot-9fbc3246-e3c0-4a08-80f2-1b269f640147 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58277 - "GET /api/users/bot-9fbc3246-e3c0-4a08-80f2-1b269f640147?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58274 - "GET /api/friends?user_id=bot-9fbc3246-e3c0-4a08-80f2-1b269f640147 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58271 - "GET /api/profile/posts?post_type=avatar&user_id=bot-9fbc3246-e3c0-4a08-80f2-1b269f640147 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58283 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58284 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58326 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58326 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58328 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58330 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58328 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58326 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58326 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58328 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'domain/avatar/manager.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72745]
+INFO:     Started server process [72786]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/manager.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72786]
+INFO:     Started server process [72898]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:58391 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58391 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58396 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58398 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58391 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58396 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58396 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58391 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58435 - "GET /api/posts/post-dedc30ef-dca9-467d-84b1-5e643941e6fd-1763279955.505132/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58441 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58443 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58442 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58441 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58443 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58446 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58468 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58468 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58470 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58473 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58474 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58470 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58474 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58468 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58483 - "GET /api/users/bot-b3bdecf3-fa08-486d-a378-2e5399d78fea?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/friends?user_id=bot-b3bdecf3-fa08-486d-a378-2e5399d78fea HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58486 - "GET /api/profile/posts?post_type=avatar&user_id=bot-b3bdecf3-fa08-486d-a378-2e5399d78fea HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58483 - "GET /api/users/bot-b3bdecf3-fa08-486d-a378-2e5399d78fea?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58485 - "GET /api/friends?user_id=bot-b3bdecf3-fa08-486d-a378-2e5399d78fea HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58488 - "GET /api/profile/posts?post_type=avatar&user_id=bot-b3bdecf3-fa08-486d-a378-2e5399d78fea HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58491 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58494 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58493 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58491 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58494 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58498 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58498 - "GET /api/users/bot-9fbc3246-e3c0-4a08-80f2-1b269f640147?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58494 - "GET /api/friends?user_id=bot-9fbc3246-e3c0-4a08-80f2-1b269f640147 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58491 - "GET /api/profile/posts?post_type=avatar&user_id=bot-9fbc3246-e3c0-4a08-80f2-1b269f640147 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58493 - "GET /api/users/bot-9fbc3246-e3c0-4a08-80f2-1b269f640147?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58494 - "GET /api/friends?user_id=bot-9fbc3246-e3c0-4a08-80f2-1b269f640147 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58498 - "GET /api/profile/posts?post_type=avatar&user_id=bot-9fbc3246-e3c0-4a08-80f2-1b269f640147 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58503 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58505 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58504 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58503 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58505 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58509 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58514 - "GET /api/users/bot-34d0391b-b3da-401c-9886-e5443c16306c?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58516 - "GET /api/friends?user_id=bot-34d0391b-b3da-401c-9886-e5443c16306c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58517 - "GET /api/profile/posts?post_type=avatar&user_id=bot-34d0391b-b3da-401c-9886-e5443c16306c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58516 - "GET /api/friends?user_id=bot-34d0391b-b3da-401c-9886-e5443c16306c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58519 - "GET /api/users/bot-34d0391b-b3da-401c-9886-e5443c16306c?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58514 - "GET /api/profile/posts?post_type=avatar&user_id=bot-34d0391b-b3da-401c-9886-e5443c16306c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58525 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58527 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58526 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58525 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58527 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58526 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58558 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58558 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58565 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58564 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58565 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58561 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58564 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58565 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58590 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58591 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58590 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58591 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58599 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58599 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58605 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58605 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58631 - "GET /api/avatar/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58631 - "GET /api/avatar/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58655 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58655 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58658 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58659 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58659 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58655 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58682 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58682 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58684 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58688 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58686 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58682 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58688 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58684 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58695 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:58697 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58696 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58696 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58695 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58697 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58737 - "GET /api/posts/post-bot-4ce0dda4-6204-4ff0-8e6b-16cfc6226142-1763386662.117089/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58737 - "GET /api/posts/post-bot-57d595b0-2798-4ad9-b326-20f4fed9386f-1763386661.461079/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58739 - "GET /api/posts/post-2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4-1763386658.160969/comments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58748 - "OPTIONS /api/posts/post-bot-57d595b0-2798-4ad9-b326-20f4fed9386f-1763386661.461079/like HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58750 - "POST /api/posts/post-bot-57d595b0-2798-4ad9-b326-20f4fed9386f-1763386661.461079/like HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58748 - "OPTIONS /api/posts/post-2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4-1763386658.160969/like HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58750 - "POST /api/posts/post-2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4-1763386658.160969/like HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58766 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58766 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58766 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58770 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58768 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58766 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58770 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58772 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58778 - "OPTIONS /api/posts/post-bot-4ce0dda4-6204-4ff0-8e6b-16cfc6226142-1763386662.117089/like HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58780 - "POST /api/posts/post-bot-4ce0dda4-6204-4ff0-8e6b-16cfc6226142-1763386662.117089/like HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58782 - "POST /api/posts/post-bot-4ce0dda4-6204-4ff0-8e6b-16cfc6226142-1763386662.117089/like HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58796 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type real
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:58799 - "GET /api/gallery/photos?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58798 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58809 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58811 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58810 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58818 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58818 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58818 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58820 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58823 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58823 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58829 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58829 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58829 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58833 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58831 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58829 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58833 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58837 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58878 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58878 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58880 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58884 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58883 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58884 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58878 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58880 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58886 - "GET /api/users/bot-b3bdecf3-fa08-486d-a378-2e5399d78fea?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58888 - "GET /api/friends?user_id=bot-b3bdecf3-fa08-486d-a378-2e5399d78fea HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58894 - "GET /api/users/bot-b3bdecf3-fa08-486d-a378-2e5399d78fea?world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58888 - "GET /api/friends?user_id=bot-b3bdecf3-fa08-486d-a378-2e5399d78fea HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58890 - "GET /api/profile/posts?post_type=avatar&user_id=bot-b3bdecf3-fa08-486d-a378-2e5399d78fea HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58888 - "GET /api/profile/posts?post_type=avatar&user_id=bot-b3bdecf3-fa08-486d-a378-2e5399d78fea HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58904 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58908 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58907 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58904 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:58908 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58907 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58939 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58937 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58944 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58939 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58951 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58951 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58951 - "GET /api/avatar/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58951 - "GET /api/avatar/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58953 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58953 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58975 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58975 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58975 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58977 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58975 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58979 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58979 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58975 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58981 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58981 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58996 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58996 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58998 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59000 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58996 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58998 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58998 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58996 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58996 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58996 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59015 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59015 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59019 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59021 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59015 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59019 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59019 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59015 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59169 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59167 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59171 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59167 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59169 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59173 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59173 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59169 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59192 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59191 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59274 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59347 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59415 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59491 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59560 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59561 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59561 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59563 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59560 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59565 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59567 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59569 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59592 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59594 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59646 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59705 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59762 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59802 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'api/avatar_routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72898]
+INFO:     Started server process [80458]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/manager.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [80458]
+INFO:     Started server process [81209]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [81209]
+INFO:     Started server process [81324]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [81324]
+INFO:     Started server process [81402]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:api.avatar_routes:Fetching activities for user: dedc30ef-dca9-467d-84b1-5e643941e6fd
+INFO:api.avatar_routes:Found 20 activities for user dedc30ef-dca9-467d-84b1-5e643941e6fd
+INFO:api.avatar_routes:Returning 20 formatted activities
+INFO:     127.0.0.1:60307 - "GET /api/avatar/activity?limit=20 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'domain/avatar/manager.py', 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [81402]
+INFO:     Started server process [81656]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'domain/avatar/manager.py', 'domain/avatar/agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:app.main:Application shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [81656]
+INFO:     Started server process [81690]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:60396 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60396 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60396 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60396 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:60403 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60401 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:60403 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60401 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60396 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60401 - "GET /uploads/images/20251116_120515_images__4_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60403 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60444 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60443 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60444 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60443 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:60452 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60448 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 2 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 2 gallery items
+INFO:     127.0.0.1:60449 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60451 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60449 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60451 - "GET /uploads/images/20251116_120515_images__4_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60448 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60509 - "GET /api/posts/post-2fa6f856-c49b-4ebd-ab7e-17fb7e09f8c4-1763386658.160969/comments HTTP/1.1" 200 OK

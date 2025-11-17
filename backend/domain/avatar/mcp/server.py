@@ -1,0 +1,850 @@
+"""
+MCP Server for Avatar Actions
+Exposes all avatar actions as MCP tools with permission-based access control
+"""
+
+import asyncio
+import json
+import sys
+from typing import Dict, List, Any, Optional
+from datetime import datetime, timezone
+from motor.motor_asyncio import AsyncIOMotorDatabase
+from domain.avatar.intelligent import IntelligentAvatar
+from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+# Load environment
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / '.env')
+
+# MongoDB connection - use core database module
+from core.database import get_database
+db = get_database()
+
+# Initialize IntelligentAvatar (will be set when server starts)
+intelligent_avatar: Optional[IntelligentAvatar] = None
+
+
+class AvatarMCPTool:
+    """Base class for avatar action tools"""
+    
+    def __init__(self, name: str, description: str, action_key: str):
+        self.name = name
+        self.description = description
+        self.action_key = action_key
+    
+    def get_tool_schema(self) -> Dict[str, Any]:
+        """Get MCP tool schema definition"""
+        return {
+            "name": self.name,
+            "description": self.description,
+            "inputSchema": self.get_input_schema()
+        }
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        """Override in subclasses to define input parameters"""
+        return {
+            "type": "object",
+            "properties": {},
+            "required": []
+        }
+    
+    async def check_permission(self, avatar_id: str) -> bool:
+        """Check if avatar has permission to use this tool"""
+        user = await db.users.find_one({"id": avatar_id})
+        if not user:
+            return False
+        
+        actions_enabled = user.get('avatar_actions_enabled', {})
+        return actions_enabled.get(self.action_key, True)  # Default to True
+    
+    async def execute(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """Execute the tool action"""
+        # Check permission first
+        if not await self.check_permission(avatar_id):
+            return {
+                "success": False,
+                "error": f"Action '{self.action_key}' is disabled for this avatar"
+            }
+        
+        # Execute the action
+        return await self._execute_action(avatar_id, **kwargs)
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """Override in subclasses to implement the actual action"""
+        raise NotImplementedError
+
+
+class LikePostTool(AvatarMCPTool):
+    """Tool for liking posts"""
+    
+    def __init__(self):
+        super().__init__(
+            name="like_post",
+            description="Like a post from a friend or in the feed",
+            action_key="like_posts"
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "post_id": {
+                    "type": "string",
+                    "description": "The ID of the post to like"
+                }
+            },
+            "required": ["post_id"]
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        post_id = kwargs.get('post_id')
+        
+        # Get post
+        post = await db.posts.find_one({"id": post_id})
+        if not post:
+            return {"success": False, "error": "Post not found"}
+        
+        # Check if already liked
+        if avatar_id in post.get('liked_by', []):
+            return {"success": False, "error": "Post already liked"}
+        
+        # Like the post
+        await db.posts.update_one(
+            {"id": post_id},
+            {
+                "$addToSet": {"liked_by": avatar_id},
+                "$inc": {"likes": 1}
+            }
+        )
+        
+        # Log activity
+        await self._log_activity(avatar_id, "post_like", {"post_id": post_id})
+        
+        return {
+            "success": True,
+            "message": f"Liked post {post_id}",
+            "post_id": post_id
+        }
+    
+    async def _log_activity(self, avatar_id: str, activity_type: str, details: Dict):
+        """Log avatar activity"""
+        user = await db.users.find_one({"id": avatar_id})
+        activity = {
+            "bot_id": avatar_id,
+            "user_id": avatar_id,
+            "bot_name": user.get('avatar_name', user.get('name', 'Unknown')) if user else 'Unknown',
+            "action_type": activity_type,
+            "description": f"Liked a post",
+            "details": details,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.autonomous_activities.insert_one(activity)
+
+
+class CommentOnPostTool(AvatarMCPTool):
+    """Tool for commenting on posts"""
+    
+    def __init__(self):
+        super().__init__(
+            name="comment_on_post",
+            description="Comment on a post from a friend or in the feed",
+            action_key="comment_posts"
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "post_id": {
+                    "type": "string",
+                    "description": "The ID of the post to comment on"
+                },
+                "comment_text": {
+                    "type": "string",
+                    "description": "Optional: Custom comment text. If not provided, AI will generate one."
+                }
+            },
+            "required": ["post_id"]
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        post_id = kwargs.get('post_id')
+        comment_text = kwargs.get('comment_text')
+        
+        # Get post
+        post = await db.posts.find_one({"id": post_id})
+        if not post:
+            return {"success": False, "error": "Post not found"}
+        
+        # Generate comment if not provided
+        if not comment_text and intelligent_avatar:
+            post_text = post.get('text', post.get('content', ''))
+            post_author = post.get('user_id', 'someone')
+            
+            result = await intelligent_avatar.generate_chat_response(
+                user_id=avatar_id,
+                other_user_id=post_author,
+                conversation_history=[],
+                last_message=post_text
+            )
+            
+            if 'error' not in result:
+                comment_text = result.get('content', '').strip()
+                # Keep it short for a comment
+                if len(comment_text) > 200:
+                    sentences = comment_text.split('. ')
+                    comment_text = sentences[0] + '.' if sentences else comment_text[:197] + "..."
+        
+        if not comment_text:
+            return {"success": False, "error": "Failed to generate comment"}
+        
+        # Create comment
+        user = await db.users.find_one({"id": avatar_id})
+        comment = {
+            "id": f"comment-{datetime.now(timezone.utc).timestamp()}",
+            "user_id": avatar_id,
+            "user_name": user.get('avatar_name', user.get('name', 'Unknown')) if user else 'Unknown',
+            "user_picture": user.get('avatar_picture', user.get('picture', '')) if user else '',
+            "text": comment_text,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Add comment to post
+        await db.posts.update_one(
+            {"id": post_id},
+            {"$push": {"comments": comment}, "$inc": {"comment_count": 1}}
+        )
+        
+        # Log activity
+        await self._log_activity(avatar_id, "post_comment", {
+            "post_id": post_id,
+            "comment_text": comment_text
+        })
+        
+        return {
+            "success": True,
+            "message": f"Commented on post {post_id}",
+            "post_id": post_id,
+            "comment": comment_text
+        }
+    
+    async def _log_activity(self, avatar_id: str, activity_type: str, details: Dict):
+        """Log avatar activity"""
+        user = await db.users.find_one({"id": avatar_id})
+        activity = {
+            "bot_id": avatar_id,
+            "user_id": avatar_id,
+            "bot_name": user.get('avatar_name', user.get('name', 'Unknown')) if user else 'Unknown',
+            "action_type": activity_type,
+            "description": f"Commented: \"{details.get('comment_text', '')[:50]}...\"",
+            "details": details,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.autonomous_activities.insert_one(activity)
+
+
+class CreatePostTool(AvatarMCPTool):
+    """Tool for creating posts"""
+    
+    def __init__(self):
+        super().__init__(
+            name="create_post",
+            description="Create and publish a new post",
+            action_key="create_posts"
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "post_type": {
+                    "type": "string",
+                    "enum": ["general", "interest", "thought", "experience"],
+                    "description": "Type of post to create",
+                    "default": "general"
+                },
+                "post_text": {
+                    "type": "string",
+                    "description": "Optional: Custom post text. If not provided, AI will generate one based on avatar's personality."
+                }
+            },
+            "required": []
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        post_type = kwargs.get('post_type', 'general')
+        post_text = kwargs.get('post_text')
+        
+        # Generate post if not provided
+        if not post_text and intelligent_avatar:
+            result = await intelligent_avatar.generate_avatar_post(
+                user_id=avatar_id,
+                post_type=post_type
+            )
+            
+            if 'error' in result:
+                return {"success": False, "error": result['error']}
+            
+            post_text = result.get('content', '')
+        
+        if not post_text:
+            return {"success": False, "error": "Failed to generate post content"}
+        
+        # Limit length
+        if len(post_text) > 500:
+            post_text = post_text[:497] + "..."
+        
+        # Create post
+        post = {
+            "id": f"post-{avatar_id}-{datetime.now(timezone.utc).timestamp()}",
+            "user_id": avatar_id,
+            "text": post_text,
+            "content": post_text,
+            "post_type": "avatar",
+            "likes": 0,
+            "liked_by": [],
+            "comments": [],
+            "comment_count": 0,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.posts.insert_one(post)
+        
+        # Also add to user document
+        post_for_user = {k: v for k, v in post.items() if k != '_id'}
+        await db.users.update_one(
+            {"id": avatar_id},
+            {"$push": {"avatar_posts": post_for_user}}
+        )
+        
+        # Log activity
+        await self._log_activity(avatar_id, "post_created", {
+            "post_id": post['id'],
+            "world_mode": "avatar"
+        })
+        
+        return {
+            "success": True,
+            "message": f"Created post",
+            "post_id": post['id'],
+            "post_text": post_text
+        }
+    
+    async def _log_activity(self, avatar_id: str, activity_type: str, details: Dict):
+        """Log avatar activity"""
+        user = await db.users.find_one({"id": avatar_id})
+        activity = {
+            "bot_id": avatar_id,
+            "user_id": avatar_id,
+            "bot_name": user.get('avatar_name', user.get('name', 'Unknown')) if user else 'Unknown',
+            "action_type": activity_type,
+            "description": f"Created post in avatar world",
+            "details": details,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.autonomous_activities.insert_one(activity)
+
+
+class SendFriendRequestTool(AvatarMCPTool):
+    """Tool for sending friend requests"""
+    
+    def __init__(self):
+        super().__init__(
+            name="send_friend_request",
+            description="Send a friend request to another avatar",
+            action_key="send_friend_requests"
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "target_user_id": {
+                    "type": "string",
+                    "description": "The ID of the user to send a friend request to"
+                }
+            },
+            "required": ["target_user_id"]
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        target_user_id = kwargs.get('target_user_id')
+        
+        if avatar_id == target_user_id:
+            return {"success": False, "error": "Cannot send friend request to yourself"}
+        
+        # Check if already friends
+        friendship = await db.friendships.find_one({
+            "$or": [
+                {"user1_id": avatar_id, "user2_id": target_user_id},
+                {"user1_id": target_user_id, "user2_id": avatar_id}
+            ]
+        })
+        
+        if friendship:
+            return {"success": False, "error": "Already friends or request pending"}
+        
+        # Create friendship (auto-accept for now)
+        friendship = {
+            "user1_id": avatar_id,
+            "user2_id": target_user_id,
+            "status": "accepted",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.friendships.insert_one(friendship)
+        
+        # Log activity
+        await self._log_activity(avatar_id, "friend_request_sent", {
+            "target_user_id": target_user_id
+        })
+        
+        return {
+            "success": True,
+            "message": f"Sent friend request to {target_user_id}",
+            "target_user_id": target_user_id
+        }
+    
+    async def _log_activity(self, avatar_id: str, activity_type: str, details: Dict):
+        """Log avatar activity"""
+        user = await db.users.find_one({"id": avatar_id})
+        activity = {
+            "bot_id": avatar_id,
+            "user_id": avatar_id,
+            "bot_name": user.get('avatar_name', user.get('name', 'Unknown')) if user else 'Unknown',
+            "action_type": activity_type,
+            "description": f"Sent friend request",
+            "details": details,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.autonomous_activities.insert_one(activity)
+
+
+class AcceptFriendRequestTool(AvatarMCPTool):
+    """Tool for accepting friend requests"""
+    
+    def __init__(self):
+        super().__init__(
+            name="accept_friend_request",
+            description="Accept an incoming friend request",
+            action_key="accept_friend_requests"
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "friendship_id": {
+                    "type": "string",
+                    "description": "The ID of the friendship request to accept"
+                }
+            },
+            "required": ["friendship_id"]
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        friendship_id = kwargs.get('friendship_id')
+        
+        # Find friendship
+        friendship = await db.friendships.find_one({
+            "$or": [
+                {"user1_id": avatar_id, "user2_id": friendship_id},
+                {"user1_id": friendship_id, "user2_id": avatar_id}
+            ]
+        })
+        
+        if not friendship:
+            return {"success": False, "error": "Friendship request not found"}
+        
+        if friendship.get('status') == 'accepted':
+            return {"success": False, "error": "Friendship already accepted"}
+        
+        # Accept friendship
+        await db.friendships.update_one(
+            {"_id": friendship['_id']},
+            {"$set": {"status": "accepted"}}
+        )
+        
+        return {
+            "success": True,
+            "message": f"Accepted friend request",
+            "friendship_id": str(friendship['_id'])
+        }
+
+
+class MessageFriendTool(AvatarMCPTool):
+    """Tool for messaging friends"""
+    
+    def __init__(self):
+        super().__init__(
+            name="message_friend",
+            description="Send a message to a friend",
+            action_key="message_friends"
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "friend_id": {
+                    "type": "string",
+                    "description": "The ID of the friend to message"
+                },
+                "message_text": {
+                    "type": "string",
+                    "description": "Optional: Custom message text. If not provided, AI will generate one based on conversation context."
+                }
+            },
+            "required": ["friend_id"]
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        friend_id = kwargs.get('friend_id')
+        message_text = kwargs.get('message_text')
+        
+        # Verify friendship
+        friendship = await db.friendships.find_one({
+            "$or": [
+                {"user1_id": avatar_id, "user2_id": friend_id},
+                {"user1_id": friend_id, "user2_id": avatar_id}
+            ],
+            "status": "accepted"
+        })
+        
+        if not friendship:
+            return {"success": False, "error": "Not friends with this user"}
+        
+        # Generate message if not provided
+        if not message_text and intelligent_avatar:
+            # Get conversation history
+            user_ids = sorted([avatar_id, friend_id])
+            conversation = await db.agent_conversations.find_one({
+                "agent1_user_id": user_ids[0],
+                "agent2_user_id": user_ids[1]
+            })
+            
+            conversation_history = []
+            if conversation:
+                for msg in conversation.get('messages', [])[-5:]:
+                    conversation_history.append({
+                        "sender_id": msg.get('sender'),
+                        "content": msg.get('message', '')
+                    })
+            
+            # Generate response
+            result = await intelligent_avatar.generate_chat_response(
+                user_id=avatar_id,
+                other_user_id=friend_id,
+                conversation_history=conversation_history,
+                last_message=conversation_history[-1].get('content', '') if conversation_history else "Hello!"
+            )
+            
+            if 'error' not in result:
+                message_text = result.get('content', '').strip()
+        
+        if not message_text:
+            return {"success": False, "error": "Failed to generate message"}
+        
+        # Create or update conversation
+        user_ids = sorted([avatar_id, friend_id])
+        conversation = await db.agent_conversations.find_one({
+            "agent1_user_id": user_ids[0],
+            "agent2_user_id": user_ids[1]
+        })
+        
+        if not conversation:
+            from bson import ObjectId
+            conversation_id = str(ObjectId())
+            await db.agent_conversations.insert_one({
+                "id": conversation_id,
+                "agent1_user_id": user_ids[0],
+                "agent2_user_id": user_ids[1],
+                "messages": [],
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            })
+            conversation = await db.agent_conversations.find_one({
+                "agent1_user_id": user_ids[0],
+                "agent2_user_id": user_ids[1]
+            })
+        
+        # Add message
+        message_dict = {
+            "sender": avatar_id,
+            "message": message_text,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.agent_conversations.update_one(
+            {"agent1_user_id": user_ids[0], "agent2_user_id": user_ids[1]},
+            {
+                "$push": {"messages": message_dict},
+                "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}
+            }
+        )
+        
+        return {
+            "success": True,
+            "message": f"Sent message to {friend_id}",
+            "friend_id": friend_id,
+            "message_text": message_text
+        }
+
+
+class DiscoverProfilesTool(AvatarMCPTool):
+    """Tool for discovering profiles"""
+    
+    def __init__(self):
+        super().__init__(
+            name="discover_profiles",
+            description="Discover and view other avatar profiles",
+            action_key="discover_profiles"
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "number",
+                    "description": "Number of profiles to discover",
+                    "default": 5
+                }
+            },
+            "required": []
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        limit = kwargs.get('limit', 5)
+        
+        # Get random avatars
+        users = await db.users.find({
+            "id": {"$ne": avatar_id},
+            "$or": [
+                {"is_bot": True},
+                {"avatar_autonomous": True}
+            ],
+            "avatar_name": {"$exists": True}
+        }).limit(limit).to_list(limit)
+        
+        profiles = []
+        for user in users:
+            profiles.append({
+                "user_id": user['id'],
+                "avatar_name": user.get('avatar_name', user.get('name', 'Unknown')),
+                "avatar_bio": user.get('avatar_bio', ''),
+                "avatar_picture": user.get('avatar_picture', '')
+            })
+        
+        # Log activity
+        await self._log_activity(avatar_id, "profile_viewed", {
+            "profiles_discovered": len(profiles)
+        })
+        
+        return {
+            "success": True,
+            "message": f"Discovered {len(profiles)} profiles",
+            "profiles": profiles
+        }
+    
+    async def _log_activity(self, avatar_id: str, activity_type: str, details: Dict):
+        """Log avatar activity"""
+        user = await db.users.find_one({"id": avatar_id})
+        activity = {
+            "bot_id": avatar_id,
+            "user_id": avatar_id,
+            "bot_name": user.get('avatar_name', user.get('name', 'Unknown')) if user else 'Unknown',
+            "action_type": activity_type,
+            "description": f"Viewed profiles",
+            "details": details,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.autonomous_activities.insert_one(activity)
+
+
+class SharePostTool(AvatarMCPTool):
+    """Tool for sharing posts (not yet implemented)"""
+    
+    def __init__(self):
+        super().__init__(
+            name="share_post",
+            description="Share a post (coming soon)",
+            action_key="share_posts"
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "post_id": {
+                    "type": "string",
+                    "description": "The ID of the post to share"
+                }
+            },
+            "required": ["post_id"]
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        return {
+            "success": False,
+            "error": "Share post feature is not yet implemented"
+        }
+
+
+class AvatarMCPServer:
+    """MCP Server for Avatar Actions"""
+    
+    def __init__(self):
+        self.tools: Dict[str, AvatarMCPTool] = {}
+        self._register_tools()
+    
+    def _register_tools(self):
+        """Register all available tools"""
+        self.tools = {
+            "like_post": LikePostTool(),
+            "comment_on_post": CommentOnPostTool(),
+            "create_post": CreatePostTool(),
+            "send_friend_request": SendFriendRequestTool(),
+            "accept_friend_request": AcceptFriendRequestTool(),
+            "message_friend": MessageFriendTool(),
+            "discover_profiles": DiscoverProfilesTool(),
+            "share_post": SharePostTool()
+        }
+    
+    def get_tools_list(self) -> List[Dict[str, Any]]:
+        """Get list of all available tools"""
+        return [tool.get_tool_schema() for tool in self.tools.values()]
+    
+    async def call_tool(self, tool_name: str, avatar_id: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+        """Call a tool for a specific avatar"""
+        if tool_name not in self.tools:
+            return {
+                "success": False,
+                "error": f"Tool '{tool_name}' not found"
+            }
+        
+        tool = self.tools[tool_name]
+        return await tool.execute(avatar_id, **arguments)
+    
+    async def get_available_tools_for_avatar(self, avatar_id: str) -> List[Dict[str, Any]]:
+        """Get list of tools available for a specific avatar based on permissions"""
+        available_tools = []
+        
+        for tool in self.tools.values():
+            if await tool.check_permission(avatar_id):
+                available_tools.append(tool.get_tool_schema())
+        
+        return available_tools
+
+
+# Global server instance
+mcp_server = AvatarMCPServer()
+
+
+async def initialize_intelligent_avatar():
+    """Initialize IntelligentAvatar for the MCP server"""
+    global intelligent_avatar
+    
+    from domain.graph.rag import GraphRAG
+    from core.config import get_azure_client, AZURE_OPENAI_DEPLOYMENT
+    
+    azure_client = get_azure_client()
+    graph_rag = GraphRAG(db)
+    intelligent_avatar = IntelligentAvatar(db, azure_client, AZURE_OPENAI_DEPLOYMENT, graph_rag)
+
+
+# Initialize on import (only if event loop is running)
+# Otherwise, will be initialized when MCP server is accessed
+try:
+    loop = asyncio.get_running_loop()
+    asyncio.create_task(initialize_intelligent_avatar())
+except RuntimeError:
+    # No event loop running, will initialize later
+    pass
+
+
+if __name__ == "__main__":
+    """Run MCP server in stdio mode"""
+    import sys
+    
+    async def main():
+        await initialize_intelligent_avatar()
+        
+        # Simple stdio-based MCP server
+        while True:
+            try:
+                line = sys.stdin.readline()
+                if not line:
+                    break
+                
+                request = json.loads(line.strip())
+                
+                if request.get('method') == 'tools/list':
+                    tools = mcp_server.get_tools_list()
+                    response = {
+                        "jsonrpc": "2.0",
+                        "id": request.get('id'),
+                        "result": {"tools": tools}
+                    }
+                
+                elif request.get('method') == 'tools/call':
+                    tool_name = request['params']['name']
+                    avatar_id = request['params'].get('avatar_id')
+                    arguments = request['params'].get('arguments', {})
+                    
+                    if not avatar_id:
+                        response = {
+                            "jsonrpc": "2.0",
+                            "id": request.get('id'),
+                            "error": {"code": -32602, "message": "avatar_id is required"}
+                        }
+                    else:
+                        result = await mcp_server.call_tool(tool_name, avatar_id, arguments)
+                        response = {
+                            "jsonrpc": "2.0",
+                            "id": request.get('id'),
+                            "result": result
+                        }
+                
+                elif request.get('method') == 'tools/available':
+                    avatar_id = request['params'].get('avatar_id')
+                    if not avatar_id:
+                        response = {
+                            "jsonrpc": "2.0",
+                            "id": request.get('id'),
+                            "error": {"code": -32602, "message": "avatar_id is required"}
+                        }
+                    else:
+                        tools = await mcp_server.get_available_tools_for_avatar(avatar_id)
+                        response = {
+                            "jsonrpc": "2.0",
+                            "id": request.get('id'),
+                            "result": {"tools": tools}
+                        }
+                
+                else:
+                    response = {
+                        "jsonrpc": "2.0",
+                        "id": request.get('id'),
+                        "error": {"code": -32601, "message": "Method not found"}
+                    }
+                
+                print(json.dumps(response))
+                sys.stdout.flush()
+            
+            except json.JSONDecodeError:
+                continue
+            except Exception as e:
+                error_response = {
+                    "jsonrpc": "2.0",
+                    "id": request.get('id') if 'request' in locals() else None,
+                    "error": {"code": -32603, "message": str(e)}
+                }
+                print(json.dumps(error_response))
+                sys.stdout.flush()
+    
+    asyncio.run(main())
+

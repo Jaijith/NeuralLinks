@@ -1,0 +1,4 @@
+"""
+Application initialization module
+"""
+
