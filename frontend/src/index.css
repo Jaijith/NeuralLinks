@@ -50,26 +50,30 @@ code {
         --foreground: 0 0% 98%;
         --card: 0 0% 3.9%;
         --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
+    }
+    body.avatar-world {
+        --card: 0 0% 100% !important;
+        --card-foreground: 0 0% 3.9% !important;
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 3.9%;
+        --primary: 0 0% 9%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 0 0% 96.1%;
+        --secondary-foreground: 0 0% 9%;
+        --muted: 0 0% 96.1%;
+        --muted-foreground: 0 0% 45.1%;
+        --accent: 0 0% 96.1%;
+        --accent-foreground: 0 0% 9%;
+        --destructive: 0 84.2% 60.2%;
         --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
+        --border: 0 0% 89.8%;
+        --input: 0 0% 89.8%;
+        --ring: 0 0% 3.9%;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
     }
 }
 
@@ -115,24 +119,24 @@ code {
 }
 
 /* ========================================
-   AVATAR WORLD STYLING - Vibrant Anime/Cartoon Style
-   Colorful, Playful, Energetic
+   AVATAR WORLD STYLING - Light Professional Theme
+   Clean, Modern, Professional
    ======================================== */
 
-/* Global Avatar World Background */
+/* Global Avatar World Background - Light Theme */
 body.avatar-world {
     background: linear-gradient(135deg, 
-        #FF6B9D 0%,
-        #C44569 25%,
-        #9C27B0 50%,
-        #673AB7 75%,
-        #3F51B5 100%
+        #e0f2fe 0%,
+        #f0f9ff 25%,
+        #ffffff 50%,
+        #f8fafc 75%,
+        #f1f5f9 100%
     );
     background-attachment: fixed;
     position: relative;
 }
 
-/* Animated Colorful Particles */
+/* Subtle animated particles for light theme */
 body.avatar-world::before {
     content: '';
     position: fixed;
@@ -140,17 +144,11 @@ body.avatar-world::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 20% 50%, rgba(255, 107, 157, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(156, 39, 176, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(255, 193, 7, 0.12) 0%, transparent 50%);
-    animation: colorfulPulse 6s ease-in-out infinite;
+    background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(99, 102, 241, 0.03) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
-}
-
-@keyframes colorfulPulse {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
 }
 
 /* Avatar Glow Effect for Avatars - Colorful */
@@ -205,14 +203,12 @@ body.avatar-world::before {
     }
 }
 
-/* Avatar Card Styling - Colorful with LIGHT backgrounds */
+/* Avatar Card Styling - Light theme white backgrounds */
 .card-avatar {
-    background: rgba(255, 248, 220, 0.95) !important; /* Light beige */
+    background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(20px);
-    border: 2px solid rgba(255, 193, 7, 0.5) !important;
-    box-shadow: 
-        0 0 30px rgba(255, 107, 157, 0.3),
-        inset 0 0 30px rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 4px 24px rgba(0, 0, 0, 0.04) !important;
     position: relative;
     overflow: hidden;
 }
@@ -249,29 +245,7 @@ body.avatar-world::before {
     transform: translateY(-2px) scale(1.05);
 }
 
-/* Avatar Input Fields */
-.avatar-world input,
-.avatar-world textarea {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border: 2px solid rgba(255, 193, 7, 0.5) !important;
-    color: rgb(255, 255, 255) !important;
-    transition: all 0.3s ease;
-}
-
-.avatar-world input::placeholder,
-.avatar-world textarea::placeholder {
-    color: rgba(255, 255, 255, 0.6) !important;
-}
-
-.avatar-world input:focus,
-.avatar-world textarea:focus {
-    border-color: rgba(255, 193, 7, 0.9) !important;
-    box-shadow: 
-        0 0 0 3px rgba(255, 193, 7, 0.2),
-        0 0 20px rgba(255, 193, 7, 0.4);
-    outline: none;
-    background: rgba(255, 255, 255, 0.2) !important;
-}
+/* Avatar Input Fields - Already handled above, but keeping for compatibility */
 
 /* Avatar Badge with Glow */
 .avatar-world .badge-glow {
@@ -362,143 +336,111 @@ body.avatar-world::before {
     box-shadow: 0 0 15px rgba(255, 193, 7, 0.9);
 }
 
-/* High Contrast Text for Readability */
+/* Light Theme Text - Clean and Professional */
 .avatar-world h1,
 .avatar-world h2,
 .avatar-world h3,
 .avatar-world h4,
 .avatar-world h5,
 .avatar-world h6 {
-    color: rgb(255, 255, 255) !important;
-    text-shadow: 
-        0 2px 8px rgba(0, 0, 0, 0.9),
-        0 0 20px rgba(255, 193, 7, 0.5);
-    font-weight: 800 !important;
-}
-
-.avatar-world p,
-.avatar-world span,
-.avatar-world div {
-    color: rgb(255, 255, 255) !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    color: rgb(17, 24, 39) !important; /* Dark gray */
+    text-shadow: none !important;
     font-weight: 600 !important;
-}
-
-/* Card backgrounds - LIGHT for brown text readability */
-.avatar-world .card,
-.card-avatar {
-    background: rgba(255, 248, 220, 0.95) !important; /* Light beige */
-    backdrop-filter: blur(20px);
-    border: 2px solid rgba(255, 193, 7, 0.6) !important;
-}
-
-/* Override all white backgrounds in avatar world to light beige */
-.avatar-world .bg-white,
-.avatar-world [class*="bg-white"] {
-    background: rgba(255, 248, 220, 0.95) !important;
-}
-
-/* High Contrast Text for Readability - BROWN TEXT */
-.avatar-world h1,
-.avatar-world h2,
-.avatar-world h3,
-.avatar-world h4,
-.avatar-world h5,
-.avatar-world h6 {
-    color: rgb(139, 69, 19) !important; /* Saddle Brown */
-    text-shadow: 
-        0 2px 10px rgba(255, 255, 255, 0.8),
-        0 0 30px rgba(255, 193, 7, 0.6);
-    font-weight: 900 !important;
 }
 
 .avatar-world p,
 .avatar-world span,
 .avatar-world div,
 .avatar-world label {
-    color: rgb(101, 67, 33) !important; /* Dark Brown */
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
-    font-weight: 700 !important;
+    color: rgb(55, 65, 81) !important; /* Medium gray */
+    text-shadow: none !important;
+    font-weight: 400 !important;
 }
 
-/* Force override ALL text color classes */
-.avatar-world .text-gray-100,
-.avatar-world .text-gray-200,
-.avatar-world .text-gray-300,
-.avatar-world .text-gray-400,
-.avatar-world .text-gray-500,
-.avatar-world .text-gray-600,
-.avatar-world .text-gray-700,
-.avatar-world .text-gray-800,
-.avatar-world .text-gray-900,
-.avatar-world .text-black {
-    color: rgb(101, 67, 33) !important;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5) !important;
+  /* Card backgrounds - White with glassmorphism */
+  .avatar-world .card,
+  .card-avatar,
+  body.avatar-world [class*="card"],
+  body.avatar-world .bg-card,
+  body.avatar-world [class*="Card"] {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 4px 24px rgba(0, 0, 0, 0.04) !important;
+  }
+  
+  /* Override shadcn Card component specifically */
+  body.avatar-world [class*="rounded-xl"][class*="border"][class*="bg-card"] {
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+
+/* Override all backgrounds in avatar world to white/light */
+.avatar-world .bg-white,
+.avatar-world [class*="bg-white"] {
+    background: rgba(255, 255, 255, 0.95) !important;
 }
 
-/* Force all nested text elements EXCEPT buttons and links */
+/* Text color classes - use standard gray scale */
+.avatar-world .text-gray-100 { color: rgb(243, 244, 246) !important; }
+.avatar-world .text-gray-200 { color: rgb(229, 231, 235) !important; }
+.avatar-world .text-gray-300 { color: rgb(209, 213, 219) !important; }
+.avatar-world .text-gray-400 { color: rgb(156, 163, 175) !important; }
+.avatar-world .text-gray-500 { color: rgb(107, 114, 128) !important; }
+.avatar-world .text-gray-600 { color: rgb(75, 85, 99) !important; }
+.avatar-world .text-gray-700 { color: rgb(55, 65, 81) !important; }
+.avatar-world .text-gray-800 { color: rgb(31, 41, 55) !important; }
+.avatar-world .text-gray-900 { color: rgb(17, 24, 39) !important; }
+.avatar-world .text-black { color: rgb(0, 0, 0) !important; }
+
+/* All text elements - no shadows, clean look */
 .avatar-world *:not(button):not(button *):not(a):not(a *) {
-    color: rgb(101, 67, 33) !important; /* Dark Brown */
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+    text-shadow: none !important;
 }
 
-/* Button text in avatar world - WHITE for readability */
+/* Button text in avatar world - standard colors */
 .avatar-world button,
 .avatar-world button *,
 .avatar-world button span,
 .avatar-world button div {
-    color: rgb(255, 255, 255) !important; /* White */
-    font-weight: 800 !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important;
+    text-shadow: none !important;
+    font-weight: 500 !important;
 }
 
-/* Input text */
+/* Input text - light theme */
 .avatar-world input,
-.avatar-world textarea,
+.avatar-world textarea {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: rgb(17, 24, 39) !important;
+    font-weight: 400 !important;
+}
+
 .avatar-world input::placeholder,
 .avatar-world textarea::placeholder {
-    font-weight: 700 !important;
-    color: rgb(101, 67, 33) !important;
-    background: rgba(255, 248, 220, 0.95) !important; /* Light beige background */
+    color: rgb(156, 163, 175) !important;
 }
 
-/* Avatar Link Styling - WHITE for visibility */
+.avatar-world input:focus,
+.avatar-world textarea:focus {
+    border-color: rgba(59, 130, 246, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    outline: none;
+}
+
+/* Avatar Link Styling - standard blue */
 .avatar-world a,
 .avatar-world a *,
 .avatar-world a span,
 .avatar-world a div {
-    color: rgb(255, 255, 255) !important; /* White */
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important;
+    color: rgb(37, 99, 235) !important; /* Blue */
+    text-shadow: none !important;
     transition: all 0.3s ease;
-    font-weight: 800 !important;
+    font-weight: 500 !important;
 }
 
 .avatar-world a:hover {
-    color: rgb(255, 193, 7) !important; /* Yellow on hover */
-    text-shadow: 0 0 15px rgba(255, 193, 7, 0.9) !important;
-    transform: scale(1.05);
-}
-
-/* Badge text - Yellow background with brown text */
-.avatar-world .badge,
-.avatar-world [class*="badge"],
-.avatar-world .bg-purple-100 {
-    background: rgba(255, 193, 7, 0.95) !important;
-    color: rgb(101, 67, 33) !important;
-    font-weight: 900 !important;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5) !important;
-}
-
-.avatar-world .badge *,
-.avatar-world [class*="badge"] * {
-    color: rgb(101, 67, 33) !important;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5) !important;
-}
-
-.avatar-world a:hover {
-    color: rgb(255, 193, 7);
-    text-shadow: 0 0 15px rgba(255, 193, 7, 0.9);
-    transform: scale(1.05);
+    color: rgb(29, 78, 216) !important; /* Darker blue on hover */
+    text-shadow: none !important;
 }
 
 /* Energy Ripple Effect */
@@ -559,4 +501,44 @@ body.avatar-world::before {
 
 .avatar-world .friend-card .text-red-600 {
     color: rgb(220, 38, 38) !important; /* Red for remove button */
+}
+
+/* Tabs Styling - Consistent Light Theme */
+body.avatar-world [role="tablist"],
+body.avatar-world .bg-muted[role="tablist"] {
+    background: rgb(241, 245, 249) !important; /* Light gray background */
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+body.avatar-world [role="tab"],
+body.avatar-world button[role="tab"] {
+    color: rgb(100, 116, 139) !important; /* Slate-500 for inactive tabs */
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+body.avatar-world [role="tab"]:hover,
+body.avatar-world button[role="tab"]:hover {
+    color: rgb(71, 85, 105) !important; /* Slate-600 on hover */
+    background: rgba(255, 255, 255, 0.5) !important;
+}
+
+body.avatar-world [role="tab"][data-state="active"],
+body.avatar-world button[role="tab"][data-state="active"],
+body.avatar-world [data-state="active"][role="tab"] {
+    background: rgb(255, 255, 255) !important; /* White background for active */
+    color: rgb(15, 23, 42) !important; /* Slate-900 for active text */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow, no yellow glow */
+    border: none !important;
+}
+
+body.avatar-world [role="tab"][data-state="active"] svg,
+body.avatar-world button[role="tab"][data-state="active"] svg {
+    color: rgb(15, 23, 42) !important; /* Dark icon for active tab */
+}
+
+body.avatar-world [role="tab"] svg,
+body.avatar-world button[role="tab"] svg {
+    color: rgb(100, 116, 139) !important; /* Slate-500 for inactive icons */
 }

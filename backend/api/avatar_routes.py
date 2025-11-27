@@ -350,3 +350,166 @@ async def get_avatar_status(request: Request):
         "status": "active" if is_autonomous else "inactive"
     }
 
+
+@router.get("/avatar/state")
+async def get_avatar_state(request: Request):
+    """Get current avatar state (mood, state machine state, etc.) for memory orb visualization"""
+    current_user = await require_auth(request)
+    
+    try:
+        from domain.avatar.state import StateManager
+        from domain.avatar.state_machine import AvatarStateMachine
+        
+        state_manager = StateManager(db)
+        state_machine = AvatarStateMachine(db, state_manager=state_manager)
+        
+        # Get current state
+        current_state, sub_states = await state_machine.get_current_state(current_user.id)
+        
+        # Get state summary (includes mood, energy, etc.)
+        state_summary = await state_machine.get_state_summary(current_user.id)
+        
+        return {
+            "success": True,
+            "current_state": current_state.value if current_state else "passive",
+            "sub_states": sub_states,
+            "mood": state_summary.get("internal_state", {}).get("mood", "neutral"),
+            "energy_level": state_summary.get("internal_state", {}).get("energy_level", 0.5),
+            "social_desire": state_summary.get("internal_state", {}).get("social_desire", 0.5),
+            "creative_urge": state_summary.get("internal_state", {}).get("creative_urge", 0.5),
+            "state_summary": state_summary
+        }
+    except Exception as e:
+        logger.error(f"Error getting avatar state: {e}")
+        # Return default state if error
+        return {
+            "success": False,
+            "current_state": "passive",
+            "mood": "neutral",
+            "energy_level": 0.5,
+            "social_desire": 0.5,
+            "creative_urge": 0.5,
+            "error": str(e)
+        }
+
+
+@router.get("/avatar/memory-nodes")
+async def get_avatar_memory_nodes(request: Request, limit: int = 100):
+    """Get knowledge graph nodes for avatar memory visualization"""
+    current_user = await require_auth(request)
+    
+    try:
+        # Get graph nodes for this user
+        nodes = await db.graph_nodes.find(
+            {"user_id": current_user.id},
+            {"_id": 0}
+        ).limit(limit).to_list(limit)
+        
+        # Get edges for these nodes
+        node_ids = [n["id"] for n in nodes]
+        edges = await db.graph_edges.find(
+            {"$or": [
+                {"from_node_id": {"$in": node_ids}},
+                {"to_node_id": {"$in": node_ids}}
+            ]},
+            {"_id": 0}
+        ).limit(500).to_list(500)
+        
+        return {
+            "success": True,
+            "nodes": nodes,
+            "edges": edges,
+            "total_nodes": len(nodes),
+            "total_edges": len(edges)
+        }
+    except Exception as e:
+        logger.error(f"Error getting memory nodes: {e}")
+        return {
+            "success": False,
+            "nodes": [],
+            "edges": [],
+            "error": str(e)
+        }
+
+
+@router.get("/avatar/full-memory")
+async def get_avatar_full_memory(request: Request):
+    """
+    Get comprehensive memory context for enhanced Memory Spirit visualization
+    
+    Returns:
+    - Semantic memory (interests, traits, values from knowledge graph)
+    - Procedural memory (action patterns, success rates)
+    - Episodic memory (experiences, emotional history)
+    - Recent activities
+    """
+    current_user = await require_auth(request)
+    
+    try:
+        from domain.avatar.memory import MemoryManager
+        
+        memory_manager = MemoryManager(db)
+        
+        # Get full memory context
+        memory_context = await memory_manager.get_full_memory_context(current_user.id)
+        
+        # Get recent activities for visualization
+        recent_activities = await db.autonomous_activities.find(
+            {"$or": [{"bot_id": current_user.id}, {"user_id": current_user.id}]},
+            {"_id": 0}
+        ).sort("timestamp", -1).limit(10).to_list(10)
+        
+        # Get action memory stats
+        action_patterns = memory_context.get("procedural_memory", {}).get("action_patterns", {})
+        
+        # Get recent experiences
+        episodic = memory_context.get("episodic_memory", {})
+        emotional_state = episodic.get("emotional_state", {})
+        
+        return {
+            "success": True,
+            
+            # Semantic Memory (Knowledge Graph)
+            "semantic_memory": memory_context.get("semantic_memory", {}),
+            
+            # Procedural Memory (Action History)
+            "procedural_memory": {
+                "total_actions": action_patterns.get("total_actions", 0),
+                "action_counts": action_patterns.get("action_counts", {}),
+                "success_rates": action_patterns.get("success_rates", {}),
+                "best_performing": action_patterns.get("best_performing"),
+                "worst_performing": action_patterns.get("worst_performing"),
+                "recent_actions": memory_context.get("procedural_memory", {}).get("recent_actions", [])
+            },
+            
+            # Episodic Memory (Experiences)
+            "episodic_memory": {
+                "total_experiences": emotional_state.get("total_experiences", 0),
+                "emotional_trend": emotional_state.get("emotional_trend", "stable"),
+                "avg_emotional_valence": emotional_state.get("avg_emotional_valence", 0),
+                "recent_highlights": emotional_state.get("recent_highlights", []),
+                "experience_breakdown": emotional_state.get("experience_breakdown", {})
+            },
+            
+            # Recent Activities
+            "recent_activities": [
+                {
+                    "action_type": a.get("action_type", a.get("activity_type", "unknown")),
+                    "description": a.get("description", ""),
+                    "timestamp": a.get("timestamp", "")
+                }
+                for a in recent_activities
+            ]
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting full memory: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "semantic_memory": {"interests": [], "traits": [], "values": []},
+            "procedural_memory": {"total_actions": 0, "action_counts": {}, "success_rates": {}},
+            "episodic_memory": {"total_experiences": 0, "emotional_trend": "stable"},
+            "recent_activities": []
+        }
+

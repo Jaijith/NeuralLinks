@@ -127,4 +127,120 @@ class UserService:
         }
         
         return avatar_profile
+    
+    async def delete_account(self, user_id: str) -> Dict[str, Any]:
+        """Delete user account and all related data"""
+        try:
+            # Delete all user's posts
+            posts_deleted = await self.db.posts.delete_many({"user_id": user_id})
+            logger.info(f"Deleted {posts_deleted.deleted_count} posts for user {user_id}")
+            
+            # Delete all friendships (both directions)
+            friendships_deleted = await self.db.friendships.delete_many({
+                "$or": [
+                    {"user_id": user_id},
+                    {"friend_id": user_id}
+                ]
+            })
+            logger.info(f"Deleted {friendships_deleted.deleted_count} friendships for user {user_id}")
+            
+            # Delete all user sessions
+            sessions_deleted = await self.db.user_sessions.delete_many({"user_id": user_id})
+            logger.info(f"Deleted {sessions_deleted.deleted_count} sessions for user {user_id}")
+            
+            # Delete comments made by user on other posts
+            await self.db.posts.update_many(
+                {},
+                {"$pull": {"comments": {"user_id": user_id}}}
+            )
+            
+            # Delete likes on user's posts and likes made by user
+            await self.db.posts.update_many(
+                {},
+                {"$pull": {"liked_by": user_id}}
+            )
+            
+            # Delete user integrations
+            integrations_deleted = await self.db.user_integrations.delete_many({"user_id": user_id})
+            logger.info(f"Deleted {integrations_deleted.deleted_count} integrations for user {user_id}")
+            
+            # Delete avatar conversations
+            avatar_conversations_deleted = await self.db.avatar_conversations.delete_many({
+                "$or": [
+                    {"agent1_user_id": user_id},
+                    {"agent2_user_id": user_id}
+                ]
+            })
+            logger.info(f"Deleted {avatar_conversations_deleted.deleted_count} avatar conversations for user {user_id}")
+            
+            # Delete matches
+            matches_deleted = await self.db.matches.delete_many({
+                "$or": [
+                    {"user_id": user_id},
+                    {"matched_user_id": user_id}
+                ]
+            })
+            logger.info(f"Deleted {matches_deleted.deleted_count} matches for user {user_id}")
+            
+            # Delete human conversations (get match IDs first)
+            match_ids = [m['id'] for m in await self.db.matches.find({
+                "$or": [
+                    {"user_id": user_id},
+                    {"matched_user_id": user_id}
+                ]
+            }, {"id": 1}).to_list(1000)]
+            if match_ids:
+                conversations_deleted = await self.db.human_conversations.delete_many({"match_id": {"$in": match_ids}})
+                logger.info(f"Deleted {conversations_deleted.deleted_count} conversations for user {user_id}")
+            
+            # Delete autonomous activities
+            activities_deleted = await self.db.autonomous_activities.delete_many({"user_id": user_id})
+            logger.info(f"Deleted {activities_deleted.deleted_count} activities for user {user_id}")
+            
+            # Delete graph nodes and edges
+            graph_nodes = await self.db.graph_nodes.find({"user_id": user_id}, {"id": 1}).to_list(1000)
+            node_ids = [n['id'] for n in graph_nodes]
+            
+            if node_ids:
+                graph_nodes_deleted = await self.db.graph_nodes.delete_many({"user_id": user_id})
+                logger.info(f"Deleted {graph_nodes_deleted.deleted_count} graph nodes for user {user_id}")
+                
+                # Delete graph edges (both directions)
+                graph_edges_deleted = await self.db.graph_edges.delete_many({
+                    "$or": [
+                        {"from_node_id": {"$in": node_ids}},
+                        {"to_node_id": {"$in": node_ids}}
+                    ]
+                })
+                logger.info(f"Deleted {graph_edges_deleted.deleted_count} graph edges for user {user_id}")
+            
+            # Delete AI agents
+            agents_deleted = await self.db.ai_agents.delete_many({"user_id": user_id})
+            logger.info(f"Deleted {agents_deleted.deleted_count} AI agents for user {user_id}")
+            
+            # Delete signup request if exists (by email - we'll need to get user email first)
+            user_doc = await self.db.users.find_one({"id": user_id}, {"email": 1})
+            if user_doc and user_doc.get("email"):
+                await self.db.signup_requests.delete_many({"email": user_doc["email"]})
+            
+            # Finally, delete the user document
+            user_deleted = await self.db.users.delete_one({"id": user_id})
+            
+            if user_deleted.deleted_count > 0:
+                logger.info(f"Successfully deleted account for user {user_id}")
+                return {
+                    "success": True,
+                    "message": "Account deleted successfully"
+                }
+            else:
+                return {
+                    "success": False,
+                    "error": "User not found"
+                }
+        except Exception as e:
+            logger.error(f"Error deleting account for user {user_id}: {e}")
+            return {
+                "success": False,
+                "error": str(e)
+            }
 

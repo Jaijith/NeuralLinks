@@ -2,9 +2,9 @@
 > frontend@0.1.0 start
 > craco start
 
-(node:73079) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:1506) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-(node:73079) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:1506) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 Starting the development server...
 
 Compiled successfully!
@@ -17,4 +17,500 @@ You can now view frontend in the browser.
 Note that the development build is not optimized.
 To create a production build, use npm run build.
 
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/FacebookStyleHome.jsx
+Syntax error: Expected corresponding JSX closing tag for <div>. (630:16) (630:16)
+ERROR in ./src/pages/FacebookStyleHome.jsx
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/src/pages/FacebookStyleHome.jsx: Expected corresponding JSX closing tag for <div>. (630:16)
+
+  628 |                     </div>
+  629 |                   </div>
+> 630 |                 </DialogContent>
+      |                 ^
+  631 |               </Dialog>
+  632 |
+  633 |               {/* Posts Feed */}
+    at constructor (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:367:19)
+    at FlowParserMixin.raise (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:6624:19)
+    at FlowParserMixin.jsxParseElementAt (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4756:16)
+    at FlowParserMixin.jsxParseElementAt (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElementAt (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+    at FlowParserMixin.jsxParseElement (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4778:17)
+    at FlowParserMixin.parseExprAtom (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4788:19)
+    at FlowParserMixin.parseExprSubscripts (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+    at FlowParserMixin.parseUpdate (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+    at FlowParserMixin.parseExprOps (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+    at /Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:3527:39
+    at FlowParserMixin.tryParse (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:6932:20)
+    at FlowParserMixin.parseMaybeAssign (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:3527:18)
+    at /Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10864:39
+    at FlowParserMixin.allowInAnd (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10864:17)
+    at FlowParserMixin.parseMaybeAssignAllowInOrVoidPattern (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:12567:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:11747:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:3620:18)
+    at FlowParserMixin.parseExprAtom (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:11395:23)
+    at FlowParserMixin.parseExprAtom (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:4793:20)
+    at FlowParserMixin.parseExprSubscripts (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+    at FlowParserMixin.parseUpdate (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+    at FlowParserMixin.parseMaybeUnary (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+    at FlowParserMixin.parseExprOps (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+    at FlowParserMixin.parseMaybeConditional (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+    at FlowParserMixin.parseMaybeAssign (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+    at FlowParserMixin.parseMaybeAssign (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:3578:18)
+    at FlowParserMixin.parseExpressionBase (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10848:23)
+    at /Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10844:39
+    at FlowParserMixin.allowInAnd (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:12495:16)
+    at FlowParserMixin.parseExpression (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:10844:17)
+    at FlowParserMixin.parseReturnStatement (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:13218:28)
+    at FlowParserMixin.parseStatementContent (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:12874:21)
+    at FlowParserMixin.parseStatementLike (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:12843:17)
+    at FlowParserMixin.parseStatementLike (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:2945:24)
+    at FlowParserMixin.parseStatementListItem (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:12823:17)
+    at FlowParserMixin.parseBlockOrModuleBlockBody (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:13392:61)
+    at FlowParserMixin.parseBlockBody (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:13385:10)
+    at FlowParserMixin.parseBlock (/Users/jaijiths/Documents/jai_gym/NeuralLinks/frontend/node_modules/@babel/parser/lib/index.js:13373:10)
+
+ERROR in [eslint] 
+src/pages/FacebookStyleHome.jsx
+  Line 630:16:  Parsing error: Expected corresponding JSX closing tag for <div>. (630:16)
+
+webpack compiled with 2 errors
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
 webpack compiled successfully

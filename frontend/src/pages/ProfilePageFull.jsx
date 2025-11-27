@@ -288,11 +288,13 @@ const ProfilePageFull = ({ user: currentUser }) => {
       const response = await axios.get(`${API}/profile/posts?${queryParams}`, {
         withCredentials: true,
       });
-      console.log(`[DEBUG] Received ${response.data.length} posts:`, response.data.map(p => ({id: p.id, text: p.text?.substring(0, 30)})));
+      // API returns { posts: [...], total, skip, limit, has_more }
+      const postsData = response.data?.posts || response.data || [];
+      console.log(`[DEBUG] Received ${postsData.length} posts:`, postsData.map(p => ({id: p.id, text: p.text?.substring(0, 30)})));
       
       // Sanitize posts - ensure comments array is not included (we fetch comments separately)
       // Only keep comment_count, not the full comments array
-      const sanitizedPosts = response.data.map(post => {
+      const sanitizedPosts = postsData.map(post => {
         const { comments, ...postWithoutComments } = post;
         // Only keep comment_count, not the full comments array to avoid rendering issues
         return {

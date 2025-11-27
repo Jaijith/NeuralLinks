@@ -694,6 +694,241 @@ class SharePostTool(AvatarMCPTool):
         }
 
 
+class ReadMessagesTool(AvatarMCPTool):
+    """Tool for reading/marking messages as read"""
+    
+    def __init__(self):
+        super().__init__(
+            name="read_messages",
+            description="Read and mark messages as read",
+            action_key="read_messages"
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "conversation_id": {
+                    "type": "string",
+                    "description": "Optional: Specific conversation ID to mark as read. If not provided, marks all unread messages as read."
+                }
+            },
+            "required": []
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """Mark messages as read"""
+        try:
+            conversation_id = kwargs.get("conversation_id")
+            messages_marked = 0
+            
+            # Mark messages as read in direct_messages collection (real world)
+            if conversation_id:
+                # Mark specific conversation
+                result = await db.direct_messages.update_many(
+                    {
+                        "$or": [
+                            {"user1_id": avatar_id},
+                            {"user2_id": avatar_id}
+                        ],
+                        "conversation_id": conversation_id
+                    },
+                    {
+                        "$set": {
+                            "messages.$[elem].read": True
+                        }
+                    },
+                    array_filters=[{"elem.sender_id": {"$ne": avatar_id}, "elem.read": False}]
+                )
+                messages_marked += result.modified_count
+            else:
+                # Mark all unread messages
+                conversations = await db.direct_messages.find({
+                    "$or": [
+                        {"user1_id": avatar_id},
+                        {"user2_id": avatar_id}
+                    ]
+                }).to_list(100)
+                
+                for conv in conversations:
+                    messages = conv.get('messages', [])
+                    updated = False
+                    for msg in messages:
+                        if msg.get('read', True) == False and msg.get('sender_id') != avatar_id:
+                            msg['read'] = True
+                            updated = True
+                            messages_marked += 1
+                    
+                    if updated:
+                        await db.direct_messages.update_one(
+                            {"_id": conv["_id"]},
+                            {"$set": {"messages": messages}}
+                        )
+            
+            # Mark messages as read in agent_conversations collection (avatar world)
+            if conversation_id:
+                result = await db.agent_conversations.update_many(
+                    {
+                        "$or": [
+                            {"agent1_user_id": avatar_id},
+                            {"agent2_user_id": avatar_id}
+                        ],
+                        "id": conversation_id
+                    },
+                    {
+                        "$set": {
+                            "messages.$[elem].read": True
+                        }
+                    },
+                    array_filters=[{"elem.sender": {"$ne": avatar_id}, "elem.read": {"$ne": True}}]
+                )
+                messages_marked += result.modified_count
+            else:
+                # Mark all unread messages in agent conversations
+                conversations = await db.agent_conversations.find({
+                    "$or": [
+                        {"agent1_user_id": avatar_id},
+                        {"agent2_user_id": avatar_id}
+                    ]
+                }).to_list(100)
+                
+                for conv in conversations:
+                    messages = conv.get('messages', [])
+                    updated = False
+                    for msg in messages:
+                        if msg.get('read', True) == False and msg.get('sender') != avatar_id:
+                            msg['read'] = True
+                            updated = True
+                            messages_marked += 1
+                    
+                    if updated:
+                        await db.agent_conversations.update_one(
+                            {"_id": conv["_id"]},
+                            {"$set": {"messages": messages}}
+                        )
+            
+            return {
+                "success": True,
+                "messages_marked": messages_marked,
+                "message": f"Marked {messages_marked} message(s) as read"
+            }
+            
+        except Exception as e:
+            return {
+                "success": False,
+                "error": f"Error marking messages as read: {str(e)}"
+            }
+
+
+class BrowseFeedTool(AvatarMCPTool):
+    """Tool for browsing the feed to discover new content"""
+
+    def __init__(self):
+        super().__init__(
+            name="browse_feed",
+            description="Browse the feed to discover new posts and content from friends and the network",
+            action_key="browse_feed"
+        )
+
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer",
+                    "description": "Number of posts to fetch (default: 20)",
+                    "default": 20
+                },
+                "post_type": {
+                    "type": "string",
+                    "description": "Type of posts to browse (default: 'all')",
+                    "enum": ["all", "avatar", "user"],
+                    "default": "all"
+                }
+            },
+            "required": []
+        }
+
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """
+        Browse the feed - fetch recent posts from friends and network
+        
+        This action:
+        1. Fetches recent posts from friends
+        2. Fetches trending posts from the network
+        3. Updates the avatar's perception of the feed
+        """
+        from datetime import datetime, timezone, timedelta
+        
+        limit = kwargs.get("limit", 20)
+        post_type = kwargs.get("post_type", "all")
+        
+        try:
+            # Get avatar's friends
+            from services.friend_service import FriendService
+            friend_service = FriendService(db)
+            friends = await friend_service.get_friends(avatar_id)
+            friend_ids = [f['id'] for f in friends]
+            
+            # Build query
+            query = {}
+            if post_type == "avatar":
+                query["post_type"] = "avatar"
+            elif post_type == "user":
+                query["post_type"] = {"$ne": "avatar"}
+            
+            # Get recent posts (last 7 days)
+            since_time = datetime.now(timezone.utc) - timedelta(days=7)
+            
+            # Fetch posts from friends first
+            friend_posts = []
+            if friend_ids:
+                friend_query = {**query, "user_id": {"$in": friend_ids}}
+                friend_posts_cursor = db.posts.find(friend_query).sort("created_at", -1).limit(limit)
+                friend_posts = await friend_posts_cursor.to_list(limit)
+            
+            # Fetch trending posts from network (not from friends)
+            network_limit = max(5, limit - len(friend_posts))
+            network_query = {**query}
+            if friend_ids:
+                network_query["user_id"] = {"$nin": friend_ids}
+            
+            network_posts_cursor = db.posts.find(network_query).sort("created_at", -1).limit(network_limit)
+            network_posts = await network_posts_cursor.to_list(network_limit)
+            
+            # Combine and sort by created_at
+            all_posts = friend_posts + network_posts
+            all_posts.sort(key=lambda p: p.get('created_at', ''), reverse=True)
+            all_posts = all_posts[:limit]
+            
+            # Format posts for response
+            posts_data = []
+            for post in all_posts:
+                posts_data.append({
+                    "id": post.get("id"),
+                    "user_id": post.get("user_id"),
+                    "content": post.get("content", "")[:200],  # Truncate for response
+                    "post_type": post.get("post_type", "general"),
+                    "created_at": post.get("created_at"),
+                    "likes": post.get("likes", 0),
+                    "comment_count": post.get("comment_count", 0)
+                })
+            
+            return {
+                "success": True,
+                "message": f"Feed browsed - found {len(posts_data)} posts",
+                "posts": posts_data,
+                "friend_posts_count": len(friend_posts),
+                "network_posts_count": len(network_posts)
+            }
+        
+        except Exception as e:
+            return {
+                "success": False,
+                "error": f"Error browsing feed: {str(e)}"
+            }
+
+
 class AvatarMCPServer:
     """MCP Server for Avatar Actions"""
     
@@ -711,7 +946,9 @@ class AvatarMCPServer:
             "accept_friend_request": AcceptFriendRequestTool(),
             "message_friend": MessageFriendTool(),
             "discover_profiles": DiscoverProfilesTool(),
-            "share_post": SharePostTool()
+            "share_post": SharePostTool(),
+            "read_messages": ReadMessagesTool(),
+            "browse_feed": BrowseFeedTool()
         }
     
     def get_tools_list(self) -> List[Dict[str, Any]]:

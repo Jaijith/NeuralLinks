@@ -74,23 +74,111 @@ class PostService:
         new_post.pop('_id', None)
         return new_post
     
-    async def get_user_posts(self, user_id: str, post_type: str = "real", limit: int = 100) -> List[Dict[str, Any]]:
-        """Get user's posts"""
+    async def get_user_posts(self, user_id: str, post_type: str = "real", limit: int = 20, skip: int = 0) -> Dict[str, Any]:
+        """Get user's posts with pagination"""
+        # Count total posts
+        total_count = await self.db.posts.count_documents({
+            "user_id": user_id,
+            "post_type": post_type
+        })
+        
+        # Fetch larger batch to handle sorting issues (mixed types)
+        # Use $natural sort (insertion order) descending to get the most recently inserted documents
+        # This avoids issues where created_at sort fails due to mixed types (String vs Date)
+        fetch_limit = min(total_count, 5000)
+        
         posts_cursor = self.db.posts.find({
             "user_id": user_id,
             "post_type": post_type
-        }).sort([("created_at", -1)]).limit(limit)
+        }).sort("$natural", -1).limit(fetch_limit)
         
-        posts = await posts_cursor.to_list(limit)
+        all_posts = await posts_cursor.to_list(fetch_limit)
         
-        # Remove _id fields for JSON serialization
-        for post in posts:
+        # Remove _id fields and normalize created_at format
+        posts_processed = []
+        for post in all_posts:
             post.pop('_id', None)
+            
+            # Normalize created_at to datetime object for sorting
+            created_at = post.get('created_at')
+            if isinstance(created_at, str):
+                try:
+                    if 'T' in created_at:
+                        # ISO format
+                        try:
+                            iso_str = created_at
+                            if '+' in iso_str and not iso_str.endswith('+00:00'):
+                                parts = iso_str.split('+')
+                                if len(parts) == 2:
+                                    iso_str = parts[0] + '+00:00'
+                            elif 'Z' in iso_str:
+                                iso_str = iso_str.replace('Z', '+00:00')
+                            post['created_at'] = datetime.fromisoformat(iso_str)
+                        except:
+                            # Fallback
+                            date_part = created_at.split('T')[0]
+                            post['created_at'] = datetime.strptime(date_part, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+                    else:
+                        # Old format
+                        dt = datetime.strptime(created_at.split('.')[0], '%Y-%m-%d %H:%M:%S')
+                        post['created_at'] = dt.replace(tzinfo=timezone.utc)
+                except Exception:
+                    pass
+            
+            # Ensure datetime objects have timezone
+            if isinstance(post.get('created_at'), datetime) and post['created_at'].tzinfo is None:
+                post['created_at'] = post['created_at'].replace(tzinfo=timezone.utc)
+                
+            posts_processed.append(post)
         
-        return posts
+        # Re-sort posts by actual date
+        def safe_sort_key(post):
+            created_at = post.get('created_at')
+            if created_at is None:
+                return datetime.min.replace(tzinfo=timezone.utc)
+            if isinstance(created_at, datetime):
+                return created_at
+            return datetime.min.replace(tzinfo=timezone.utc)
+        
+        posts_processed.sort(key=safe_sort_key, reverse=True)
+        
+        # Apply pagination in Python
+        posts = posts_processed[skip:skip + limit]
+        
+        # Enrich posts with author information
+        # Get user info for the post author
+        user = await self.db.users.find_one(
+            {"id": user_id},
+            {"id": 1, "name": 1, "avatar_name": 1, "picture": 1, "avatar_picture": 1, "is_bot": 1}
+        )
+        
+        # Add author info to each post
+        for post in posts:
+            if user:
+                post['author_name'] = user.get('name', 'Unknown')
+                post['author_avatar_name'] = user.get('avatar_name', user.get('name', 'Unknown'))
+                post['author_picture'] = user.get('picture')
+                post['author_avatar_picture'] = user.get('avatar_picture', user.get('picture'))
+                post['author_is_bot'] = user.get('is_bot', False)
+        
+        # Convert datetime objects back to ISO strings
+        for post in posts:
+            if isinstance(post.get('created_at'), datetime):
+                post['created_at'] = post['created_at'].isoformat()
+        
+        # Calculate has_more
+        has_more = (skip + len(posts)) < total_count
+        
+        return {
+            "posts": posts,
+            "total": total_count,
+            "skip": skip,
+            "limit": limit,
+            "has_more": has_more
+        }
     
-    async def get_feed_posts(self, user_id: str, post_type: str = "real", limit: int = 50) -> List[Dict[str, Any]]:
-        """Get feed posts (posts from friends and user)"""
+    async def get_feed_posts(self, user_id: str, post_type: str = "real", limit: int = 20, skip: int = 0) -> Dict[str, Any]:
+        """Get feed posts (posts from friends and user) with pagination"""
         # Get user's friends
         friendships = await self.db.friendships.find({
             "$or": [
@@ -106,19 +194,137 @@ class PostService:
             else:
                 friend_ids.append(f['user_id'])
         
+        # Count total posts
+        total_count = await self.db.posts.count_documents({
+            "user_id": {"$in": friend_ids},
+            "post_type": post_type
+        })
+        
         # Get posts from friends
+        # CRITICAL: MongoDB sorts datetime objects before strings, so newer string dates get pushed down
+        # Solution: Fetch ALL posts (or a very large batch), then sort in Python by actual datetime
+        # This ensures we get the newest posts regardless of storage format
+        fetch_limit = min(total_count, 5000)  # Fetch up to 5000 to ensure we get all posts including newest
+        
+        # Fetch all posts without MongoDB sort (since it doesn't work with mixed types)
+        # We'll sort properly in Python after converting all dates to datetime objects
         posts_cursor = self.db.posts.find({
             "user_id": {"$in": friend_ids},
             "post_type": post_type
-        }).sort([("created_at", -1)]).limit(limit)
+        }).limit(fetch_limit)
         
-        posts = await posts_cursor.to_list(limit)
+        all_posts = await posts_cursor.to_list(fetch_limit)
         
-        # Remove _id fields
-        for post in posts:
+        logger.info(f"Fetched {len(all_posts)} posts for feed (total available: {total_count}, fetch_limit: {fetch_limit})")
+        
+        # Remove _id fields and convert all dates to datetime objects for proper sorting
+        posts_processed = []
+        for post in all_posts:
             post.pop('_id', None)
+            created_at = post.get('created_at')
+            
+            # Convert to datetime object if it's a string
+            if isinstance(created_at, str):
+                try:
+                    if 'T' in created_at:
+                        # ISO format: "2025-11-17T13:37:38.160979+00:00"
+                        # Use datetime.fromisoformat which handles ISO format
+                        try:
+                            # Clean up the string for parsing
+                            iso_str = created_at
+                            if '+' in iso_str and not iso_str.endswith('+00:00'):
+                                # Extract timezone offset
+                                parts = iso_str.split('+')
+                                if len(parts) == 2:
+                                    iso_str = parts[0] + '+00:00'
+                            elif 'Z' in iso_str:
+                                iso_str = iso_str.replace('Z', '+00:00')
+                            post['created_at'] = datetime.fromisoformat(iso_str)
+                        except Exception as parse_error:
+                            # Fallback: try simpler parsing
+                            try:
+                                # Just get the date part and add default time
+                                date_part = created_at.split('T')[0]
+                                post['created_at'] = datetime.strptime(date_part, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+                            except:
+                                logger.warning(f"Could not parse ISO date {created_at}: {parse_error}")
+                                continue
+                    else:
+                        # Old format: "2025-10-25 09:20:32.884000"
+                        dt = datetime.strptime(created_at.split('.')[0], '%Y-%m-%d %H:%M:%S')
+                        post['created_at'] = dt.replace(tzinfo=timezone.utc)
+                except Exception as e:
+                    logger.warning(f"Failed to parse date {created_at}: {e}")
+                    # Skip posts with unparseable dates
+                    continue
+            
+            # Ensure datetime objects have timezone
+            if isinstance(post.get('created_at'), datetime) and post['created_at'].tzinfo is None:
+                post['created_at'] = post['created_at'].replace(tzinfo=timezone.utc)
+            
+            posts_processed.append(post)
         
-        return posts
+        # Sort by actual datetime (newest first)
+        # Use a safe sort key that handles None values
+        def safe_sort_key(post):
+            created_at = post.get('created_at')
+            if created_at is None:
+                return datetime.min.replace(tzinfo=timezone.utc)
+            if isinstance(created_at, datetime):
+                return created_at
+            # Should not happen after processing, but just in case
+            return datetime.min.replace(tzinfo=timezone.utc)
+        
+        posts_processed.sort(key=safe_sort_key, reverse=True)
+        
+        # Log first few posts for debugging
+        if posts_processed:
+            logger.info(f"Feed posts after sorting - First 3 dates: {[p.get('created_at') for p in posts_processed[:3]]}")
+        
+        # Apply pagination after sorting
+        posts = posts_processed[skip:skip + limit]
+        
+        # Enrich posts with author information
+        # Get unique user IDs from posts
+        post_user_ids = list(set(p.get('user_id') for p in posts if p.get('user_id')))
+        
+        # Fetch user info for all post authors
+        users_cursor = self.db.users.find(
+            {"id": {"$in": post_user_ids}},
+            {"id": 1, "name": 1, "avatar_name": 1, "picture": 1, "avatar_picture": 1, "is_bot": 1}
+        )
+        users_map = {u['id']: u async for u in users_cursor}
+        
+        # Add author info to each post
+        for post in posts:
+            author = users_map.get(post.get('user_id'), {})
+            post['author_name'] = author.get('name', 'Unknown')
+            post['author_avatar_name'] = author.get('avatar_name', author.get('name', 'Unknown'))
+            post['author_picture'] = author.get('picture')
+            post['author_avatar_picture'] = author.get('avatar_picture', author.get('picture'))
+            post['author_is_bot'] = author.get('is_bot', False)
+        
+        # Convert datetime objects back to ISO strings for JSON serialization
+        for post in posts:
+            if isinstance(post.get('created_at'), datetime):
+                post['created_at'] = post['created_at'].isoformat()
+        
+        # Calculate has_more correctly:
+        # - If we fetched fewer posts than total, check if we've shown all fetched posts
+        # - If we fetched all posts, check if we've shown all of them
+        total_fetched = len(posts_processed)
+        posts_returned = len(posts)
+        has_more = (skip + posts_returned) < min(total_fetched, total_count)
+        
+        logger.info(f"Feed pagination: skip={skip}, returned={posts_returned}, total_fetched={total_fetched}, total_count={total_count}, has_more={has_more}")
+        
+        return {
+            "posts": posts,
+            "total": total_count,
+            "skip": skip,
+            "limit": limit,
+            "has_more": has_more
+        }
     
     async def delete_post(self, post_id: str, user_id: str) -> bool:
         """Delete a post"""

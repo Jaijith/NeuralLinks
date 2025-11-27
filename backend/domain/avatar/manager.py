@@ -1,13 +1,13 @@
 """
-Simple Agent Manager - Phase 1 MVP
-Coordinates all reactive bot agents
+State-Aware Agent Manager - Phase 6
+Coordinates all state-aware avatar agents
 """
 
 import asyncio
 from datetime import datetime, timezone, timedelta
 from typing import List, Dict
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from domain.avatar.agent import SimpleReactiveAgent
+from domain.avatar.state_aware_agent import StateAwareAgent
 from domain.avatar.intelligent import IntelligentAvatar
 from domain.graph.rag import GraphRAG
 
@@ -22,7 +22,7 @@ class SimpleAgentManager:
         self.db = db
         self.llm_client = llm_client
         self.deployment = deployment
-        self.agents: List[SimpleReactiveAgent] = []
+        self.agents: List[StateAwareAgent] = []
         self.running = False
         
         # Create Graph RAG for intelligent avatar
@@ -44,7 +44,7 @@ class SimpleAgentManager:
     async def initialize_agents(self):
         """Initialize all autonomous agents (bots + user avatars)"""
         print("\n" + "="*60)
-        print("🤖 INITIALIZING AUTONOMOUS AGENTS - Phase 1.5")
+        print("🤖 INITIALIZING STATE-AWARE AGENTS - Phase 6")
         print("="*60)
         
         # Get all users with avatars enabled for autonomy
@@ -70,107 +70,92 @@ class SimpleAgentManager:
         
         # Create agent for each autonomous entity (bot or user avatar)
         for agent_data in agents_data:
-            agent = SimpleReactiveAgent(
+            agent = StateAwareAgent(
                 bot=agent_data,  # Works for both bots and user avatars
                 db=self.db,
                 intelligent_avatar=self.intelligent_avatar
             )
+            # Initialize the agent (loads state and character profile)
+            await agent.initialize()
             self.agents.append(agent)
-            
-            # Mark if this is a user avatar (for special handling)
-            if not agent_data.get('is_bot'):
-                agent.is_user_avatar = True
         
-        print(f"\n✅ Initialized {len(self.agents)} agents")
+        print(f"\n✅ Initialized {len(self.agents)} state-aware agents")
         if user_avatars_count > 0:
             print(f"   🎉 Including {user_avatars_count} user avatar(s)!")
         print("="*60 + "\n")
     
-    async def run_single_cycle(self):
-        """Run one activity cycle for all agents"""
-        print("\n" + "🔄 " + "="*58)
-        print(f"⏰ ACTIVITY CYCLE - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print("="*60)
+    async def run_continuously(self):
+        """
+        Start all agents in continuous, self-driven loops
         
-        # Separate user avatars from bots
-        import random
-        user_avatars = [a for a in self.agents if getattr(a, 'is_user_avatar', False)]
-        bots = [a for a in self.agents if not getattr(a, 'is_user_avatar', False)]
-        
-        # ALWAYS include user avatars (they should post regularly)
-        active_agents = user_avatars.copy()
-        
-        # Include ALL bots for now (to ensure all avatars get a chance to post)
-        # In production, you might want to limit this, but for testing let's run all
-        active_agents.extend(bots)
-        
-        # Shuffle final list (but user avatars are guaranteed)
-        random.shuffle(active_agents)
-        
-        print(f"🎯 Running {len(active_agents)} / {len(self.agents)} agents this cycle")
-        if user_avatars:
-            print(f"   ✨ Including {len(user_avatars)} user avatar(s)\n")
-        else:
-            print()
-        
-        # Run agents in parallel (but with delays)
-        tasks = []
-        for agent in active_agents:
-            tasks.append(agent.run_cycle())
-            await asyncio.sleep(0.5)  # Stagger starts
-        
-        # Wait for all to complete
-        await asyncio.gather(*tasks, return_exceptions=True)
-        
-        print("\n✅ Cycle complete")
-        print("="*60 + "\n")
-    
-    async def run_forever(self, cycle_interval_minutes: int = 10):
-        """Run agent cycles continuously"""
+        Each agent runs independently:
+        - Continuously perceives and acts
+        - State machine decides when to be passive/resting
+        - No external scheduler - agents are self-driven
+        """
         self.running = True
-        cycle_count = 0
         
         print("\n" + "🚀 " + "="*58)
-        print("AUTONOMOUS AGENT SYSTEM STARTED")
-        print(f"Cycle interval: {cycle_interval_minutes} minutes")
-        print("Press Ctrl+C to stop")
+        print("AUTONOMOUS AGENT SYSTEM - CONTINUOUS MODE")
+        print("="*60)
+        print("🤖 Each agent runs continuously and independently")
+        print("🔄 Agents perceive → transition → act → loop")
+        print("💤 State machine controls when agents go passive/resting")
+        print("⏸️  Press Ctrl+C to stop")
         print("="*60 + "\n")
         
-        try:
-            while self.running:
-                cycle_count += 1
-                
-                print(f"\n{'='*60}")
-                print(f"📍 CYCLE #{cycle_count}")
-                print(f"{'='*60}\n")
-                
-                # Run cycle
-                await self.run_single_cycle()
-                
-                # Reset hourly limits (every hour)
-                if cycle_count % 6 == 0:  # If running every 10 min, 6 cycles = 1 hour
-                    self._reset_hourly_limits()
-                
-                # Wait for next cycle
-                print(f"\n⏳ Sleeping for {cycle_interval_minutes} minutes...")
-                print(f"   Next cycle at: {self._get_next_cycle_time(cycle_interval_minutes)}")
-                
-                await asyncio.sleep(cycle_interval_minutes * 60)
+        # Start each agent in its own continuous loop
+        agent_tasks = []
+        for agent in self.agents:
+            task = asyncio.create_task(agent.run_continuously())
+            agent_tasks.append(task)
+            # Small stagger to prevent all starting at once
+            await asyncio.sleep(0.1)
         
+        print(f"✅ Started {len(agent_tasks)} agents in continuous mode\n")
+        
+        # Background task to reset hourly limits
+        async def reset_limits_periodically():
+            while self.running:
+                await asyncio.sleep(3600)  # Every hour
+                if self.running:
+                    self._reset_hourly_limits()
+        
+        reset_task = asyncio.create_task(reset_limits_periodically())
+        
+        try:
+            # Wait for all agent tasks (they run forever until cancelled)
+            await asyncio.gather(*agent_tasks, return_exceptions=True)
         except KeyboardInterrupt:
             print("\n\n🛑 Stopping autonomous agent system...")
             self.running = False
+            
+            # Cancel all agent tasks
+            for task in agent_tasks:
+                task.cancel()
+            
+            # Cancel reset task
+            reset_task.cancel()
+            
+            # Wait for tasks to finish cancelling
+            await asyncio.gather(*agent_tasks, reset_task, return_exceptions=True)
+            
+            print("✅ All agents stopped")
         except Exception as e:
             print(f"\n❌ Error in agent manager: {e}")
             self.running = False
+            # Cancel all tasks
+            for task in agent_tasks:
+                task.cancel()
+            reset_task.cancel()
     
     def _reset_hourly_limits(self):
         """Reset hourly action limits for all agents"""
-        print("\n" + "♻️  " + "="*58)
-        print("RESETTING HOURLY LIMITS")
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info("♻️  Resetting hourly limits for all agents")
         for agent in self.agents:
             agent.reset_hourly_limit()
-        print("="*60 + "\n")
     
     def _get_next_cycle_time(self, minutes: int) -> str:
         """Get next cycle time as string"""

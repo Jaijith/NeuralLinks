@@ -32,24 +32,28 @@ async def create_post(post_data: Dict[str, str], request: Request):
 async def get_user_posts(
     post_type: str = Query("real", description="Post type: 'real' or 'avatar'"),
     user_id: Optional[str] = Query(None, description="User ID (defaults to current user)"),
+    limit: int = Query(20, description="Number of posts to return"),
+    skip: int = Query(0, description="Number of posts to skip"),
     request: Request = None
 ):
-    """Get user's posts (current user or specified user_id)"""
+    """Get user's posts (current user or specified user_id) with pagination"""
     current_user = await require_auth(request)
     target_user_id = user_id if user_id else current_user.id
     post_service = get_post_service()
-    return await post_service.get_user_posts(target_user_id, post_type)
+    return await post_service.get_user_posts(target_user_id, post_type, limit=limit, skip=skip)
 
 
 @router.get("/feed/posts")
 async def get_feed_posts(
     post_type: str = Query("real", description="Post type: 'real' or 'avatar'"),
+    limit: int = Query(20, description="Number of posts to return"),
+    skip: int = Query(0, description="Number of posts to skip"),
     request: Request = None
 ):
-    """Get feed posts (posts from friends and user)"""
+    """Get feed posts (posts from friends and user) with pagination"""
     current_user = await require_auth(request)
     post_service = get_post_service()
-    return await post_service.get_feed_posts(current_user.id, post_type)
+    return await post_service.get_feed_posts(current_user.id, post_type, limit=limit, skip=skip)
 
 
 @router.delete("/profile/posts/{post_id}")

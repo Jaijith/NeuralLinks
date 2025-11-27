@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ArrowLeft, CheckCircle, XCircle, RefreshCw, Video, Book, Heart, ShoppingCart, X } from "lucide-react";
+import { useWorldMode } from "@/contexts/WorldModeContext";
 import {
   FaInstagram,
   FaFacebook,
@@ -129,6 +130,8 @@ const getPlatformColor = (platformName) => {
 
 const IntegrationsPage = ({ user, hideHeader = false }) => {
   const navigate = useNavigate();
+  const { worldMode } = useWorldMode();
+  const isAvatarWorld = worldMode === 'avatar';
   const [integrations, setIntegrations] = useState({
     social_media: [],
     media_entertainment: [],
@@ -147,6 +150,18 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
     client_id: "",
     client_secret: ""
   });
+
+  // Apply avatar-world class to body when in avatar mode
+  useEffect(() => {
+    if (isAvatarWorld) {
+      document.body.classList.add('avatar-world');
+    } else {
+      document.body.classList.remove('avatar-world');
+    }
+    return () => {
+      document.body.classList.remove('avatar-world');
+    };
+  }, [isAvatarWorld]);
 
   useEffect(() => {
     fetchIntegrations();
@@ -412,25 +427,29 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
     const gradient = getPlatformColor(platformId);
     
     return (
-      <Card className="glass-morphism p-6 card-hover" data-testid={`platform-${platformId}`}>
+      <Card className={`${isAvatarWorld ? 'card-avatar' : 'glass-morphism'} p-6 card-hover`} data-testid={`platform-${platformId}`}>
         <div className="flex items-start justify-between mb-4">
           <div className={`w-12 h-12 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center shadow-lg`}>
             <IconComponent className="w-6 h-6 text-white" />
           </div>
           {platform.connected ? (
-            <Badge className="bg-green-100 text-green-700">
+            <Badge className={isAvatarWorld ? 'bg-yellow-400 text-slate-900 font-bold' : 'bg-green-100 text-green-700'}>
               <CheckCircle className="w-3 h-3 mr-1" />
               Connected
             </Badge>
           ) : (
-            <Badge className="bg-gray-100 text-gray-700">
+            <Badge className={isAvatarWorld ? 'bg-yellow-400/50 text-slate-800 font-semibold' : 'bg-gray-100 text-gray-700'}>
               <XCircle className="w-3 h-3 mr-1" />
               Available
             </Badge>
           )}
         </div>
-        <h3 className="text-lg font-bold text-gray-800 mb-2">{platformName}</h3>
-        <p className="text-sm text-gray-600 mb-4">{platform.description || 'Connect to sync your data'}</p>
+        <h3 className={`text-lg font-bold mb-2 ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
+          {platformName}
+        </h3>
+        <p className={`text-sm mb-4 ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
+          {platform.description || 'Connect to sync your data'}
+        </p>
         
         {platform.connected ? (
           <div className="space-y-2">
@@ -438,7 +457,7 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
               <Button
                 onClick={() => syncPlatform(platformId)}
                 variant="outline"
-                className="flex-1 border-2 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-full"
+                className={isAvatarWorld ? 'flex-1 border-2 border-yellow-400 text-yellow-700 hover:bg-yellow-500/20 rounded-full font-semibold' : 'flex-1 border-2 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-full'}
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Sync Data
@@ -446,7 +465,7 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
               <Button
                 onClick={() => disconnectPlatform(platformId)}
                 variant="ghost"
-                className="text-red-600 hover:text-red-700 hover:bg-red-50 rounded-full border border-red-200"
+                className={isAvatarWorld ? 'text-red-600 hover:text-red-700 hover:bg-red-50/50 rounded-full border border-red-400 font-semibold' : 'text-red-600 hover:text-red-700 hover:bg-red-50 rounded-full border border-red-200'}
                 size="default"
               >
                 <X className="w-4 h-4 mr-1" />
@@ -454,7 +473,7 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
               </Button>
             </div>
             {platformId === "youtube" && (
-              <p className="text-xs text-gray-500 text-center mt-1">
+              <p className={`text-xs text-center mt-1 ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-500'}`}>
                 Sync will analyze your watch history and update your character
               </p>
             )}
@@ -462,7 +481,11 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
         ) : (
           <Button
             onClick={() => connectPlatform(platformId)}
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:shadow-lg"
+            className={`w-full rounded-full hover:shadow-lg ${
+              isAvatarWorld 
+                ? 'bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold' 
+                : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+            }`}
           >
             Connect {platformName}
           </Button>
@@ -519,8 +542,10 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
             <Icon className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
-            <p className="text-sm text-gray-600">
+            <h2 className={`text-2xl font-bold ${isAvatarWorld ? 'text-yellow-200' : 'text-gray-800'}`}>
+              {title}
+            </h2>
+            <p className={`text-sm ${isAvatarWorld ? 'text-blue-100 font-semibold' : 'text-gray-600'}`}>
               {platforms.length} {platforms.length === 1 ? 'platform' : 'platforms'} available
             </p>
           </div>
@@ -532,8 +557,10 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
             ))}
           </div>
         ) : (
-          <Card className="glass-morphism p-6">
-            <p className="text-gray-500 text-center">No platforms in this category yet</p>
+          <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
+            <p className={`text-center ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-500'}`}>
+              No platforms in this category yet
+            </p>
           </Card>
         )}
       </div>
@@ -541,7 +568,7 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
   };
 
   return (
-    <div className={hideHeader ? "" : "min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50"}>
+    <div className={hideHeader ? "" : `min-h-screen ${isAvatarWorld ? 'bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-700' : 'bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50'}`}>
       <div className={hideHeader ? "" : "max-w-7xl mx-auto px-6 py-8"}>
         {/* Header */}
         {!hideHeader && (
@@ -550,21 +577,27 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
               variant="ghost"
               onClick={() => navigate("/dashboard")}
               data-testid="back-btn"
-              className="hover:bg-purple-50"
+              className={isAvatarWorld ? 'hover:bg-yellow-500/20 text-yellow-200' : 'hover:bg-purple-50'}
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h1 className="text-4xl font-bold gradient-text">Connected Platforms</h1>
-              <p className="text-gray-600">Your AI agent learns from all your connected accounts</p>
+              <h1 className={`text-4xl font-bold ${isAvatarWorld ? 'text-yellow-200' : 'gradient-text'}`}>
+                Connected Platforms
+              </h1>
+              <p className={isAvatarWorld ? 'text-blue-100 font-semibold' : 'text-gray-600'}>
+                Your AI agent learns from all your connected accounts
+              </p>
             </div>
           </div>
         )}
 
         {loading ? (
           <div className="text-center py-20">
-            <div className="w-16 h-16 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading integrations...</p>
+            <div className={`w-16 h-16 border-4 ${isAvatarWorld ? 'border-yellow-400' : 'border-purple-400'} border-t-transparent rounded-full animate-spin mx-auto mb-4`}></div>
+            <p className={isAvatarWorld ? 'text-blue-100 font-semibold' : 'text-gray-600'}>
+              Loading integrations...
+            </p>
           </div>
         ) : (
           <div>

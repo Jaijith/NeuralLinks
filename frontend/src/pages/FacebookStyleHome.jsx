@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,27 +10,121 @@ import {
   Camera, MapPin, Briefcase, Heart, Users, MessageCircle, 
   Settings as SettingsIcon, Bot, User as UserIcon, Search,
   Home, Image, Video, Smile, Send, ThumbsUp, Share2,
-  MoreHorizontal, Globe, Lock, TrendingUp, Eye
+  MoreHorizontal, Globe, Lock, TrendingUp, Eye, Sparkles,
+  Bookmark, Zap, Star, Clock, ChevronRight, Plus, Bell
 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import axios from "axios";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
-import WorldModeToggle from "@/components/WorldModeToggle";
 import SideMessenger from "@/components/SideMessenger";
+import AppHeader from "@/components/AppHeader";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Custom CSS styles for the page - Light theme for avatar world
+const customStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  
+  /* Light theme styling for avatar world */
+  .home-container,
+  .home-container * {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    text-shadow: none !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  
+  .glass-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 4px 24px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .glass-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 8px 32px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+  
+  .glass-card-dark {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 4px 24px rgba(0, 0, 0, 0.04);
+  }
+  
+  .glass-card-dark:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 8px 32px rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+  
+  .post-card {
+    animation: slideUp 0.4s ease-out forwards;
+    opacity: 0;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .post-card:nth-child(1) { animation-delay: 0.05s; }
+  .post-card:nth-child(2) { animation-delay: 0.1s; }
+  .post-card:nth-child(3) { animation-delay: 0.15s; }
+  .post-card:nth-child(4) { animation-delay: 0.2s; }
+  .post-card:nth-child(5) { animation-delay: 0.25s; }
+  
+  .pulse-dot {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+  }
+  
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  
+  .floating {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+`;
+
 const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   const navigate = useNavigate();
   const { worldMode } = useWorldMode();
-  const [mode, setMode] = useState('real'); // 'real' or 'avatar' - personal view
+  const [mode, setMode] = useState('real');
   const [friends, setFriends] = useState([]);
   const [avatarConversations, setAvatarConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [postText, setPostText] = useState('');
-  const [selectedTab, setSelectedTab] = useState('timeline');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [friendPosts, setFriendPosts] = useState([]);
   const [showMessenger, setShowMessenger] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
@@ -46,17 +139,13 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   const [commentText, setCommentText] = useState({});
   const [showCreatePost, setShowCreatePost] = useState(false);
 
-  // Dynamic labels based on world mode
-  const labels = {
-    matches: worldMode === 'avatar' ? 'Neural Links' : 'Matches',
-    friends: worldMode === 'avatar' ? 'Connections' : 'Friends',
-    messages: worldMode === 'avatar' ? 'Neural Sync' : 'Messages',
-    profile: worldMode === 'avatar' ? 'Identity Matrix' : 'Profile'
-  };
+  const isAvatarWorld = worldMode === 'avatar';
+  // Use light theme for avatar world
+  const isDark = false;
 
   useEffect(() => {
     fetchData();
-  }, [worldMode]); // Re-fetch when worldMode changes
+  }, [worldMode]);
 
   useEffect(() => {
     if (mode === 'avatar') {
@@ -68,7 +157,6 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     try {
       const postType = worldMode === 'avatar' ? 'avatar' : 'real';
       
-      // Fetch friends and feed posts in parallel
       const [friendsRes, feedPostsRes] = await Promise.all([
         axios.get(`${API}/friends`, { withCredentials: true }),
         axios.get(`${API}/feed/posts?post_type=${postType}`, { withCredentials: true })
@@ -76,10 +164,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       
       setFriends(friendsRes.data.slice(0, 9));
       
-      // Get all posts from feed
-      const allPosts = feedPostsRes.data || [];
+      // API returns { posts: [...], total, skip, limit, has_more }
+      const allPosts = feedPostsRes.data?.posts || feedPostsRes.data || [];
       
-      // Get user data for each post
       const postsWithUsers = [];
       for (const post of allPosts) {
         const postUser = friendsRes.data.find(f => f.id === post.user_id) || currentUser;
@@ -87,19 +174,18 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
           ...post,
           user: postUser,
           displayName: worldMode === 'avatar' 
-            ? (postUser.avatar_name || postUser.name)
-            : postUser.name,
+            ? (post.author_avatar_name || postUser.avatar_name || postUser.name)
+            : (post.author_name || postUser.name),
           displayPicture: worldMode === 'avatar'
-            ? (postUser.avatar_picture || postUser.picture)
-            : postUser.picture
+            ? (post.author_avatar_picture || postUser.avatar_picture || postUser.picture)
+            : (post.author_picture || postUser.picture),
+          isBot: post.author_is_bot || postUser.is_bot
         });
       }
       
-      // Sort by date (already sorted by backend, but ensure)
       postsWithUsers.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       setFriendPosts(postsWithUsers.slice(0, 20));
       
-      // Initialize liked posts
       const likedSet = new Set();
       postsWithUsers.forEach(post => {
         if (post.liked_by && Array.isArray(post.liked_by) && post.liked_by.includes(currentUser.id)) {
@@ -114,23 +200,51 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     }
   };
   
-  // Create post
+  const handleImageSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    setSelectedImage(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
   const createPost = async () => {
-    if (!postText.trim()) return;
+    if (!postText.trim() && !selectedImage) return;
     
+    setUploadingImage(true);
     try {
       const postType = worldMode === 'avatar' ? 'avatar' : 'real';
-      const response = await axios.post(`${API}/profile/posts`, 
-        { text: postText, post_type: postType },
-        { withCredentials: true }
-      );
+      let response;
+
+      if (selectedImage) {
+        // Upload image with caption
+        const formData = new FormData();
+        formData.append('file', selectedImage);
+        formData.append('caption', postText);
+        formData.append('post_type', postType);
+
+        response = await axios.post(`${API}/posts/upload-image`, formData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        // Create text-only post
+        response = await axios.post(`${API}/profile/posts`, 
+          { text: postText, post_type: postType },
+          { withCredentials: true }
+        );
+      }
       
-      console.log("Post created:", response.data);
-      
-      // Add post immediately to feed (optimistic update)
       const newPost = {
-        ...response.data,
-        user_id: response.data.user_id || currentUser.id,
+        ...response.data.post || response.data,
+        user_id: (response.data.post || response.data).user_id || currentUser.id,
         user: currentUser,
         displayName: worldMode === 'avatar' 
           ? (currentUser.avatar_name || currentUser.name)
@@ -138,39 +252,34 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
         displayPicture: worldMode === 'avatar'
           ? (currentUser.avatar_picture || currentUser.picture)
           : currentUser.picture,
-        likes: response.data.likes || 0,
-        liked_by: response.data.liked_by || [],
-        comments: response.data.comments || [],
-        comment_count: response.data.comment_count || 0
+        likes: (response.data.post || response.data).likes || 0,
+        liked_by: (response.data.post || response.data).liked_by || [],
+        comments: (response.data.post || response.data).comments || [],
+        comment_count: (response.data.post || response.data).comment_count || 0
       };
       
-      // Add to top of feed
       setFriendPosts([newPost, ...friendPosts]);
-      
-      console.log("Added post to feed:", newPost);
-      
       setPostText('');
+      setSelectedImage(null);
+      setImagePreview(null);
       setShowCreatePost(false);
-      toast.success(worldMode === 'avatar' ? "Maya post created!" : "Post created!");
+      toast.success(worldMode === 'avatar' ? "✨ Maya post created!" : "🎉 Post created!");
       
-      // Also refresh feed to ensure sync
-      setTimeout(() => {
-        fetchData();
-      }, 500);
+      setTimeout(() => fetchData(), 500);
     } catch (error) {
       console.error("Error creating post:", error);
       toast.error("Failed to create post");
+    } finally {
+      setUploadingImage(false);
     }
   };
   
-  // Like/Unlike post
   const handleLikePost = async (postId) => {
     try {
       const response = await axios.post(`${API}/posts/${postId}/like`, {}, {
         withCredentials: true,
       });
       
-      // Update local state
       const newLikedPosts = new Set(likedPosts);
       if (response.data.liked) {
         newLikedPosts.add(postId);
@@ -179,7 +288,6 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       }
       setLikedPosts(newLikedPosts);
       
-      // Update post in state - fetch fresh data to ensure sync
       const updatedPosts = friendPosts.map(p => {
         if (p.id === postId) {
           const currentLikedBy = Array.isArray(p.liked_by) ? p.liked_by : [];
@@ -195,15 +303,12 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
         return p;
       });
       setFriendPosts(updatedPosts);
-      
-      toast.success(response.data.liked ? "Post liked!" : "Post unliked");
     } catch (error) {
       console.error("Error liking post:", error);
       toast.error("Failed to like post");
     }
   };
   
-  // Show who liked a post
   const showLikes = async (postId) => {
     try {
       const response = await axios.get(`${API}/posts/${postId}/likes`, {
@@ -214,11 +319,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       setShowingLikesFor(postId);
     } catch (error) {
       console.error("Error fetching likes:", error);
-      toast.error("Failed to load likes");
     }
   };
   
-  // Show comments for a post
   const showComments = async (postId) => {
     if (showingCommentsFor === postId) {
       setShowingCommentsFor(null);
@@ -236,11 +339,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       setShowingCommentsFor(postId);
     } catch (error) {
       console.error("Error fetching comments:", error);
-      toast.error("Failed to load comments");
     }
   };
   
-  // Add comment to a post
   const handleAddComment = async (postId) => {
     const text = commentText[postId]?.trim();
     if (!text) return;
@@ -252,7 +353,6 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
         { withCredentials: true }
       );
       
-      // Update comments
       const existingComments = Array.isArray(commentsData[postId]) 
         ? commentsData[postId] 
         : [];
@@ -265,15 +365,13 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
         });
       }
       
-      // Clear input
       setCommentText({...commentText, [postId]: ''});
       
-      // Update post comment count
       setFriendPosts(friendPosts.map(p => 
         p.id === postId ? {...p, comment_count: (p.comment_count || 0) + 1} : p
       ));
       
-      toast.success("Comment added!");
+      toast.success("💬 Comment added!");
     } catch (error) {
       console.error("Error adding comment:", error);
       toast.error("Failed to add comment");
@@ -291,744 +389,653 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
-      setUser(null);
-      navigate("/");
-      toast.success("Logged out");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+  const formatTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+    
+    if (seconds < 60) return 'Just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
+    if (seconds < 604800) return `${Math.floor(seconds / 86400)}d`;
+    return date.toLocaleDateString();
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
+      <>
+        <style>{customStyles}</style>
+        <div className="min-h-screen flex items-center justify-center home-container bg-gradient-to-br from-blue-50 via-white to-slate-50">
+          <div className="text-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <Sparkles className="w-8 h-8 text-white" />
+            </div>
+            <p className="text-sm font-medium text-gray-600">
+              {isAvatarWorld ? 'Entering Maya...' : 'Loading your feed...'}
+            </p>
+          </div>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className={`min-h-screen ${worldMode === 'avatar' ? 'bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900' : 'bg-gray-100'}`}>
-      {/* Facebook Header */}
-      <header className={`shadow-sm sticky top-0 z-50 border-b ${
-        worldMode === 'avatar' 
-          ? 'bg-slate-900/90 backdrop-blur-md border-blue-500/30' 
-          : 'bg-white border-gray-200'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-14">
-            {/* Left - Logo & Search */}
-            <div className="flex items-center space-x-2 flex-1">
-              <div 
-                className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer ${
-                  worldMode === 'avatar' 
-                    ? 'bg-gradient-to-br from-blue-500 to-purple-600 avatar-glow' 
-                    : 'bg-blue-500'
-                }`}
-                onClick={() => setSelectedTab('timeline')}
-              >
-                <Heart className="w-6 h-6 text-white fill-white" />
-              </div>
-              <div className="relative hidden md:block">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  placeholder="Search"
-                  onClick={() => navigate('/search')}
-                  readOnly
-                  className={`pl-10 rounded-full w-60 cursor-pointer border-none ${
-                    worldMode === 'avatar'
-                      ? 'bg-slate-800 text-blue-100 placeholder:text-blue-300/50'
-                      : 'bg-gray-100'
-                  }`}
-                />
-              </div>
-            </div>
+    <>
+      <style>{customStyles}</style>
+      <div className="min-h-screen home-container bg-gradient-to-br from-blue-50 via-white to-slate-50">
+        <AppHeader user={currentUser} setUser={setUser} currentPage="home" />
 
-            {/* Center - Navigation */}
-            <div className="flex items-center space-x-1">
-              <Button
-                variant="ghost"
-                onClick={() => setSelectedTab('timeline')}
-                className={`px-8 py-2 rounded-lg ${
-                  selectedTab === 'timeline' 
-                    ? worldMode === 'avatar'
-                      ? 'border-b-4 border-blue-400'
-                      : 'border-b-4 border-blue-500'
-                    : ''
-                }`}
-              >
-                <Home className={`w-6 h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => navigate('/friends')}
-                className="px-8 py-2 rounded-lg"
-              >
-                <Users className={`w-6 h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => navigate('/matches')}
-                className="px-8 py-2 rounded-lg"
-              >
-                <Heart className={`w-6 h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
-              </Button>
-            </div>
-
-            {/* Right - World Toggle & Profile */}
-            <div className="flex items-center space-x-3 flex-1 justify-end">
-              {/* Global World Mode Toggle */}
-              <WorldModeToggle />
-
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate('/settings')}
-                className="rounded-full p-2"
-              >
-                <SettingsIcon className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : ''}`} />
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleLogout}
-                className="rounded-full p-2"
-              >
-                <MoreHorizontal className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : ''}`} />
-              </Button>
-
-              <Avatar 
-                className={`w-8 h-8 cursor-pointer ${
-                  worldMode === 'avatar' 
-                    ? 'border-2 border-blue-400 avatar-glow' 
-                    : 'border-2 border-blue-500'
-                }`}
-                onClick={() => navigate('/myprofile')}
-              >
-                <AvatarImage src={currentUser.picture} />
-                <AvatarFallback className={worldMode === 'avatar' ? 'bg-blue-600 text-white text-sm' : 'bg-blue-500 text-white text-sm'}>
-                  {currentUser.name?.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        {selectedTab === 'timeline' ? (
-          <div className="grid grid-cols-12 gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="grid grid-cols-12 gap-6">
+            
             {/* Left Sidebar */}
-            <div className="col-span-3 space-y-2">
-              <Card className={worldMode === 'avatar' ? 'card-avatar p-3 hover:bg-slate-800/50 cursor-pointer' : 'p-3 hover:bg-gray-50 cursor-pointer'}>
-                <div className="flex items-center space-x-3">
-                  <Avatar className={`w-9 h-9 ${worldMode === 'avatar' ? 'avatar-glow' : ''}`}>
-                    <AvatarImage src={currentUser.picture} />
-                    <AvatarFallback>{currentUser.name?.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <span className={`font-semibold text-sm ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
-                    {currentUser.name}
-                  </span>
+            <div className="col-span-3 space-y-4">
+              {/* Profile Card */}
+              <div className="rounded-xl overflow-hidden glass-card">
+                <div className="p-4">
+                  <div 
+                    className="flex items-center gap-3 cursor-pointer"
+                    onClick={() => navigate('/myprofile')}
+                  >
+                    <Avatar className="w-14 h-14">
+                      <AvatarImage src={isAvatarWorld ? (currentUser.avatar_picture || currentUser.picture) : currentUser.picture} />
+                      <AvatarFallback className="text-lg font-semibold bg-blue-500 text-white">
+                        {(isAvatarWorld ? (currentUser.avatar_name || currentUser.name) : currentUser.name)?.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">
+                        {isAvatarWorld ? (currentUser.avatar_name || currentUser.name) : currentUser.name}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {currentUser.bio || (isAvatarWorld ? 'Digital spirit in Maya' : 'Welcome to your feed')}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </Card>
-              <Button 
-                variant="ghost" 
-                className={`w-full justify-start text-sm font-semibold ${
-                  worldMode === 'avatar' ? 'text-blue-200 hover:bg-slate-800/50' : ''
-                }`}
-                onClick={() => navigate('/friends')}
-              >
-                <Users className={`w-5 h-5 mr-3 ${worldMode === 'avatar' ? 'text-blue-400' : 'text-blue-500'}`} />
-                {labels.friends}
-              </Button>
-              <Button 
-                variant="ghost" 
-                className={`w-full justify-start text-sm font-semibold ${
-                  worldMode === 'avatar' ? 'text-blue-200 hover:bg-slate-800/50' : ''
-                }`}
-                onClick={() => navigate('/matches')}
-              >
-                <Heart className={`w-5 h-5 mr-3 ${worldMode === 'avatar' ? 'text-pink-400 bioluminescent' : 'text-pink-500'}`} />
-                {labels.matches}
-              </Button>
-              {mode === 'avatar' && (
-                <Button 
-                  variant="ghost" 
-                  className={`w-full justify-start text-sm font-semibold ${
-                    worldMode === 'avatar' ? 'text-blue-200 hover:bg-slate-800/50' : ''
-                  }`}
-                  onClick={() => setSelectedTab('messenger')}
-                >
-                  <MessageCircle className={`w-5 h-5 mr-3 ${worldMode === 'avatar' ? 'text-purple-400 bioluminescent' : 'text-purple-500'}`} />
-                  {worldMode === 'avatar' ? 'Neural Sync' : 'Avatar Messenger'}
-                </Button>
-              )}
+              </div>
+
+              {/* Quick Links */}
+              <div className="rounded-xl p-3 glass-card">
+                <div className="space-y-1">
+                  {[
+                    { icon: Users, label: isAvatarWorld ? 'Connections' : 'Friends', path: '/friends', iconColor: '#3b82f6' },
+                    { icon: Heart, label: isAvatarWorld ? 'Neural Links' : 'Matches', path: '/matches', iconColor: '#f43f5e' },
+                    { icon: Image, label: 'Gallery', path: '/gallery', iconColor: '#10b981' },
+                    { icon: Bookmark, label: 'Saved', path: '#', iconColor: '#f59e0b' },
+                  ].map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => item.path !== '#' ? navigate(item.path) : toast.info('Coming soon!')}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all hover:bg-gray-100"
+                    >
+                      <item.icon className="w-5 h-5" style={{ color: item.iconColor }} />
+                      <span className="font-medium text-sm text-gray-700">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Trending Section */}
+              <div className="rounded-xl p-4 glass-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <TrendingUp className="w-4 h-4 text-purple-500" />
+                  <h3 className="font-semibold text-sm text-gray-900">
+                    {isAvatarWorld ? 'Trending in Maya' : 'Trending'}
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    { tag: '#Connections', posts: 584 },
+                    { tag: '#MayaWorld', posts: 803 },
+                    { tag: '#AIFriends', posts: 226 },
+                  ].map((item, idx) => (
+                    <div key={idx}>
+                      <span className="font-semibold text-sm text-gray-900">{item.tag}</span>
+                      <p className="text-xs text-gray-600">{item.posts} posts</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* Center - Feed */}
+            {/* Main Feed */}
             <div className="col-span-6 space-y-4">
-              {/* Create Post */}
-              <Card className="p-4">
-                <div className="flex items-center space-x-3 mb-3">
+              {/* Create Post Card */}
+              <div className="rounded-xl p-4 glass-card">
+                <div className="flex items-center gap-3">
                   <Avatar className="w-10 h-10">
-                    <AvatarImage src={worldMode === 'avatar' ? (currentUser.avatar_picture || currentUser.picture) : currentUser.picture} />
-                    <AvatarFallback>{(worldMode === 'avatar' ? (currentUser.avatar_name || currentUser.name) : currentUser.name)?.charAt(0)}</AvatarFallback>
+                    <AvatarImage src={isAvatarWorld ? (currentUser.avatar_picture || currentUser.picture) : currentUser.picture} />
+                    <AvatarFallback className="bg-blue-500 text-white">
+                      {(isAvatarWorld ? (currentUser.avatar_name || currentUser.name) : currentUser.name)?.charAt(0)}
+                    </AvatarFallback>
                   </Avatar>
-                  <Input
-                    placeholder={worldMode === 'avatar' ? "What's your avatar thinking?" : "What's on your mind?"}
-                    className="flex-1 rounded-full bg-gray-100 border-none cursor-pointer"
+                  <button
                     onClick={() => setShowCreatePost(true)}
-                    value={postText}
-                    readOnly
-                  />
+                    className="flex-1 text-left px-4 py-2.5 rounded-full transition-all bg-gray-100 hover:bg-gray-200 text-gray-600"
+                  >
+                    {isAvatarWorld ? "Share a thought in Maya..." : "What's on your mind?"}
+                  </button>
                 </div>
-                <div className="flex items-center justify-around border-t pt-3">
-                  <Button variant="ghost" size="sm" className="flex-1" onClick={() => toast.info("Live video feature coming soon")}>
-                    <Video className="w-5 h-5 mr-2 text-red-500" />
-                    <span className="text-sm font-semibold text-gray-600">Live video</span>
-                  </Button>
-                  <Button variant="ghost" size="sm" className="flex-1" onClick={() => toast.info("Photo/video upload coming soon")}>
-                    <Image className="w-5 h-5 mr-2 text-green-500" />
-                    <span className="text-sm font-semibold text-gray-600">Photo/video</span>
-                  </Button>
-                  <Button variant="ghost" size="sm" className="flex-1" onClick={() => toast.info("Feeling feature coming soon")}>
-                    <Smile className="w-5 h-5 mr-2 text-yellow-500" />
-                    <span className="text-sm font-semibold text-gray-600">Feeling</span>
-                  </Button>
+                <div className="flex items-center justify-around mt-3 pt-3 border-t border-gray-200">
+                  {[
+                    { icon: Video, label: 'Live', iconColor: '#fb7185' },
+                    { icon: Image, label: 'Photo', iconColor: '#34d399' },
+                    { icon: Smile, label: 'Feeling', iconColor: '#fbbf24' },
+                  ].map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        if (item.label === 'Photo') {
+                          setShowCreatePost(true);
+                          // Small delay to ensure dialog is open before triggering file input
+                          setTimeout(() => {
+                            document.getElementById('post-image-upload')?.click();
+                          }, 100);
+                        } else {
+                          toast.info(`${item.label} feature coming soon!`);
+                        }
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:bg-gray-100"
+                    >
+                      <item.icon className="w-5 h-5" style={{ color: item.iconColor }} />
+                      <span className="font-medium text-sm text-gray-700">{item.label}</span>
+                    </button>
+                  ))}
                 </div>
-              </Card>
-              
+              </div>
+
               {/* Create Post Dialog */}
               <Dialog open={showCreatePost} onOpenChange={setShowCreatePost}>
-                <DialogContent className="max-w-2xl">
+                <DialogContent className="max-w-lg bg-white">
                   <DialogHeader>
-                    <DialogTitle>{worldMode === 'avatar' ? "Create Maya Post" : "Create Post"}</DialogTitle>
+                    <DialogTitle className="text-xl font-bold text-gray-900">
+                      {isAvatarWorld ? '✨ Create Maya Post' : '📝 Create Post'}
+                    </DialogTitle>
                   </DialogHeader>
-                  <div className="space-y-4">
+                  <div className="space-y-4 mt-4">
+                    <div className="flex items-start gap-3">
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src={isAvatarWorld ? (currentUser.avatar_picture || currentUser.picture) : currentUser.picture} />
+                        <AvatarFallback>{currentUser.name?.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-900">
+                          {isAvatarWorld ? (currentUser.avatar_name || currentUser.name) : currentUser.name}
+                        </p>
+                        <div className="flex items-center gap-1 text-xs text-gray-500">
+                          <Globe className="w-3 h-3" />
+                          <span>Public</span>
+                        </div>
+                      </div>
+                    </div>
                     <Textarea
-                      placeholder={worldMode === 'avatar' ? "What's your avatar thinking?" : "What's on your mind?"}
+                      placeholder={isAvatarWorld ? "What's your avatar thinking?" : "What's on your mind?"}
                       value={postText}
                       onChange={(e) => setPostText(e.target.value)}
-                      rows={4}
-                      className="resize-none"
+                      rows={5}
+                      className="resize-none border-none text-lg bg-gray-50 focus:ring-blue-500/50"
                     />
-                    <div className="flex justify-end space-x-2">
-                      <Button variant="ghost" onClick={() => {
-                        setShowCreatePost(false);
-                        setPostText('');
-                      }}>
-                        Cancel
-                      </Button>
-                      <Button 
-                        onClick={createPost}
-                        disabled={!postText.trim()}
-                        className="bg-blue-500 hover:bg-blue-600 text-white"
+                    {/* Hidden file input */}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageSelect}
+                      className="hidden"
+                      id="post-image-upload"
+                    />
+                    {/* Image Preview */}
+                    {imagePreview && (
+                      <div className="relative">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-full h-64 object-cover rounded-lg"
+                        />
+                        <button
+                          onClick={() => {
+                            setSelectedImage(null);
+                            setImagePreview(null);
+                          }}
+                          className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5"
+                        >
+                          <span className="text-sm">×</span>
+                        </button>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <label
+                        htmlFor="post-image-upload"
+                        className="cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
                       >
-                        Post
-                      </Button>
+                        <Image className="w-5 h-5" style={{ color: '#34d399' }} />
+                        <span className="font-medium text-sm">Add Photo</span>
+                      </label>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="ghost" 
+                          onClick={() => {
+                            setShowCreatePost(false);
+                            setPostText('');
+                            setSelectedImage(null);
+                            setImagePreview(null);
+                          }}
+                          className="text-gray-600 hover:bg-gray-100"
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          onClick={createPost}
+                          disabled={(!postText.trim() && !selectedImage) || uploadingImage}
+                          className="px-6 bg-blue-500 hover:bg-blue-600 text-white"
+                        >
+                          {uploadingImage ? 'Posting...' : 'Post'}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </DialogContent>
               </Dialog>
 
-              {/* Mode Banner */}
-              {mode === 'avatar' && (
-                <Card className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200">
-                  <div className="flex items-center space-x-3">
-                    <Bot className="w-8 h-8 text-purple-600" />
-                    <div>
-                      <h3 className="font-bold text-gray-900">Avatar Mode Active</h3>
-                      <p className="text-sm text-gray-600">
-                        You're viewing what your AI avatar is doing. {avatarConversations.length} active conversations.
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              )}
-
               {/* Posts Feed */}
-              {mode === 'real' ? (
-                friendPosts.length > 0 ? (
-                  <div className="space-y-4">
-                    {friendPosts.map((post, idx) => (
-                      <Card key={idx} className="p-4">
-                        <div className="flex items-start space-x-3">
-                          <Avatar 
-                            className="w-10 h-10 cursor-pointer"
-                            onClick={() => navigate(`/profile/${post.user.id}`)}
-                          >
-                            <AvatarImage src={post.displayPicture} />
-                            <AvatarFallback>{post.displayName?.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-center space-x-2 mb-1">
-                              <span 
-                                className="font-semibold cursor-pointer hover:underline"
-                                onClick={() => navigate(`/profile/${post.user.id}`)}
-                              >
-                                {post.displayName}
-                              </span>
-                              {post.user.is_bot && (
-                                <Badge className="bg-purple-100 text-purple-700 text-xs">
-                                  <Bot className="w-3 h-3 mr-1" />
-                                  Bot
-                                </Badge>
-                              )}
-                              <span className="text-xs text-gray-500">
-                                {new Date(post.created_at).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <p className="text-gray-800 mb-3">{post.text || post.content}</p>
-                            <div className="space-y-3">
-                              <div className="flex items-center space-x-6 text-sm border-t pt-2">
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className={`${likedPosts.has(post.id) ? 'text-blue-700' : 'text-blue-600'} hover:text-blue-800 hover:bg-blue-50 font-semibold`}
-                                  onClick={() => handleLikePost(post.id)}
-                                >
-                                  <ThumbsUp 
-                                    className={`w-5 h-5 mr-1 ${likedPosts.has(post.id) ? 'fill-current' : ''}`} 
-                                    style={{ color: likedPosts.has(post.id) ? '#1d4ed8' : '#2563eb' }}
-                                  />
-                                  <span className="font-semibold" style={{ color: likedPosts.has(post.id) ? '#1d4ed8' : '#2563eb' }}>{post.likes || 0}</span>
-                                </Button>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="text-purple-700 hover:text-purple-900 hover:bg-purple-50 font-semibold"
-                                  onClick={() => showLikes(post.id)}
-                                >
-                                  <Eye className="w-5 h-5 mr-1" style={{ color: '#7e22ce' }} />
-                                </Button>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="text-green-700 hover:text-green-900 hover:bg-green-50 font-semibold"
-                                  onClick={() => showComments(post.id)}
-                                >
-                                  <MessageCircle className="w-5 h-5 mr-1" style={{ color: '#15803d' }} />
-                                  <span className="font-semibold" style={{ color: '#15803d' }}>{post.comments?.length || post.comment_count || 0}</span>
-                                </Button>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="text-orange-700 hover:text-orange-900 hover:bg-orange-50 font-semibold"
-                                  onClick={() => {
-                                    navigator.share?.({ title: 'Check out this post!', url: window.location.href }) || toast.info('Share feature coming soon');
-                                  }}
-                                >
-                                  <Share2 className="w-5 h-5 mr-1" style={{ color: '#c2410c' }} />
-                                </Button>
-                              </div>
-                              
-                              {/* Comments Section */}
-                              {showingCommentsFor === post.id && (
-                                <div className="border-t pt-3 space-y-3">
-                                  {/* Comment Input */}
-                                  <div className="flex space-x-2">
-                                    <Textarea
-                                      placeholder="Write a comment..."
-                                      value={commentText[post.id] || ''}
-                                      onChange={(e) => setCommentText({...commentText, [post.id]: e.target.value})}
-                                      className="flex-1"
-                                      rows={2}
-                                    />
-                                    <Button 
-                                      onClick={() => handleAddComment(post.id)}
-                                      disabled={!commentText[post.id]?.trim()}
-                                      className="bg-purple-600 hover:bg-purple-700"
-                                    >
-                                      <Send className="w-4 h-4" />
-                                    </Button>
-                                  </div>
-                                  
-                                  {/* Comments List */}
-                                  {(() => {
-                                    const comments = Array.isArray(commentsData[post.id]) 
-                                      ? commentsData[post.id] 
-                                      : [];
-                                    return comments.length > 0 ? (
-                                      <div className="space-y-2 max-h-64 overflow-y-auto">
-                                        {comments.map((comment) => {
-                                          if (!comment || typeof comment !== 'object') return null;
-                                          return (
-                                            <div key={comment.id || Math.random()} className="flex space-x-2 p-2 bg-gray-50 rounded">
-                                              <Avatar className="w-8 h-8">
-                                                <AvatarImage src={comment.user_picture || ''} />
-                                                <AvatarFallback>{(comment.user_name || '?').charAt(0)}</AvatarFallback>
-                                              </Avatar>
-                                              <div className="flex-1">
-                                                <p className="text-sm font-medium">{comment.user_name || 'Unknown'}</p>
-                                                <p className="text-sm text-gray-700">{comment.text || ''}</p>
-                                                <p className="text-xs text-gray-500 mt-1">
-                                                  {comment.created_at ? new Date(comment.created_at).toLocaleString() : ''}
-                                                </p>
-                                              </div>
-                                            </div>
-                                          );
-                                        })}
-                                      </div>
-                                    ) : (
-                                      <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
-                                    );
-                                  })()}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
-                ) : (
-                  <Card className="p-6">
-                    <div className="text-center py-12">
-                      <Home className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-gray-800 mb-2">Welcome to your feed!</h3>
-                      <p className="text-gray-600 mb-4">Start by adding friends or creating your first post</p>
-                      <Button 
-                        className="bg-blue-500 hover:bg-blue-600 text-white"
-                        onClick={() => navigate('/search')}
-                      >
-                        Find Friends
-                      </Button>
-                    </div>
-                  </Card>
-                )
-              ) : (
-                // Avatar Activity Feed
+              {friendPosts.length > 0 ? (
                 <div className="space-y-4">
-                  {avatarConversations.length === 0 ? (
-                    <Card className="p-6">
-                      <div className="text-center py-12">
-                        <Bot className="w-16 h-16 text-purple-300 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-gray-800 mb-2">Your avatar is ready!</h3>
-                        <p className="text-gray-600 mb-4">Start discovery to let your avatar find matches</p>
-                        <Button 
-                          className="bg-purple-500 hover:bg-purple-600 text-white"
-                          onClick={() => navigate('/matches')}
-                        >
-                          Start Discovery
-                        </Button>
+                  {friendPosts.map((post, idx) => (
+                    <div 
+                      key={post.id || idx} 
+                      className="rounded-xl overflow-hidden post-card glass-card"
+                      style={{ animationDelay: `${idx * 0.05}s` }}
+                    >
+                      {/* Post Header */}
+                      <div className="p-4 pb-2">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-3">
+                            <div 
+                              className="cursor-pointer"
+                              onClick={() => navigate(`/profile/${post.user?.id}`)}
+                            >
+                              <Avatar className="w-11 h-11">
+                                <AvatarImage src={post.displayPicture} />
+                                <AvatarFallback className="font-medium bg-blue-500 text-white">
+                                  {post.displayName?.charAt(0)}
+                                </AvatarFallback>
+                              </Avatar>
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span 
+                                  className="font-semibold cursor-pointer hover:underline text-gray-900"
+                                  onClick={() => navigate(`/profile/${post.user?.id}`)}
+                                >
+                                  {post.displayName}
+                                </span>
+                                {post.isBot && (
+                                  <Badge className="text-xs px-1.5 py-0 border-0 bg-purple-100 text-purple-700">
+                                    <Bot className="w-3 h-3 mr-0.5" />
+                                    AI
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                                <Clock className="w-3 h-3" />
+                                <span>{formatTimeAgo(post.created_at)}</span>
+                                <span>•</span>
+                                <Globe className="w-3 h-3" />
+                              </div>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="rounded-full p-1 h-8 w-8 hover:bg-gray-100 text-gray-600"
+                          >
+                            <MoreHorizontal className="w-5 h-5" />
+                          </Button>
+                        </div>
                       </div>
-                    </Card>
-                  ) : (
-                    avatarConversations.map((conv, idx) => (
-                      <Card key={idx} className="p-4">
-                        <div className="flex items-start space-x-3">
-                          <Avatar className="w-10 h-10">
-                            <AvatarImage src={currentUser.picture} />
-                            <AvatarFallback>{currentUser.name?.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-center space-x-2 mb-1">
-                              <span className="font-semibold">{currentUser.name}'s Avatar</span>
-                              <Badge className="bg-purple-100 text-purple-700 text-xs">
-                                <Bot className="w-3 h-3 mr-1" />
-                                AI Agent
-                              </Badge>
-                              <span className="text-xs text-gray-500">
-                                {new Date(conv.created_at).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-700 mb-2">
-                              Started a conversation with <span className="font-semibold">{conv.other_user?.name}</span>'s avatar
-                            </p>
-                            <div className="bg-gray-50 rounded-lg p-3 mb-3">
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-xs font-semibold text-gray-600">Compatibility Score</span>
-                                <Badge className="bg-green-100 text-green-700">
-                                  {Math.round(conv.compatibility_score || 0)}%
-                                </Badge>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-2">
-                                <div
-                                  className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full"
-                                  style={{ width: `${conv.compatibility_score || 0}%` }}
-                                ></div>
-                              </div>
-                              {conv.conversation_summary && (
-                                <p className="text-xs text-gray-600 mt-2">{conv.conversation_summary}</p>
-                              )}
-                            </div>
-                            <div className="flex items-center space-x-4 text-sm">
-                              <Button variant="ghost" size="sm" className="text-gray-600">
-                                <ThumbsUp className="w-4 h-4 mr-1" />
-                                Approve
-                              </Button>
+
+                      {/* Post Content */}
+                      <div className="px-4 pb-3">
+                        {(post.text || post.content) && (
+                          <p className="text-sm leading-relaxed whitespace-pre-wrap text-gray-800 mb-3">
+                            {post.text || post.content}
+                          </p>
+                        )}
+                        {/* Post Image */}
+                        {(post.image_url || post.has_image) && (
+                          <div className="mt-3 rounded-lg overflow-hidden">
+                            <img
+                              src={post.image_url}
+                              alt={post.text || post.content || 'Post image'}
+                              className="w-full max-h-96 object-cover cursor-pointer"
+                              onClick={() => {
+                                // Open image in new tab or modal
+                                window.open(post.image_url, '_blank');
+                              }}
+                              onError={(e) => {
+                                console.error("Image load error:", post.image_url);
+                                e.target.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Engagement Stats */}
+                      {(post.likes > 0 || post.comment_count > 0) && (
+                        <div className="px-4 py-2 flex items-center justify-between text-sm text-gray-600">
+                          <button 
+                            onClick={() => showLikes(post.id)}
+                            className="flex items-center gap-1.5 hover:underline"
+                          >
+                            {post.likes > 0 && (
+                              <>
+                                <div className="w-5 h-5 rounded-full flex items-center justify-center bg-blue-500">
+                                  <ThumbsUp className="w-3 h-3 text-white fill-white" />
+                                </div>
+                                <span>{post.likes}</span>
+                              </>
+                            )}
+                          </button>
+                          {(post.comment_count > 0 || post.comments?.length > 0) && (
+                            <button 
+                              onClick={() => showComments(post.id)}
+                              className="hover:underline text-gray-600"
+                            >
+                              {post.comment_count || post.comments?.length || 0} comments
+                            </button>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Action Buttons */}
+                      <div className="px-2 py-1.5 border-t border-gray-200">
+                        <div className="flex items-center justify-around">
+                          <button
+                            onClick={() => handleLikePost(post.id)}
+                            className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
+                            style={{ color: likedPosts.has(post.id) ? '#3b82f6' : '#4b5563' }}
+                          >
+                            <ThumbsUp className={`w-4 h-4 ${likedPosts.has(post.id) ? 'fill-current' : ''}`} />
+                            <span className="font-medium text-sm">Like</span>
+                          </button>
+                          <button
+                            onClick={() => showComments(post.id)}
+                            className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
+                          >
+                            <MessageCircle className="w-4 h-4" />
+                            <span className="font-medium text-sm">Comment</span>
+                          </button>
+                          <button
+                            onClick={() => {
+                              navigator.share?.({ title: 'Check out this post!', url: window.location.href }) || toast.info('Share feature coming soon!');
+                            }}
+                            className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
+                          >
+                            <Share2 className="w-4 h-4" />
+                            <span className="font-medium text-sm">Share</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Comments Section */}
+                      {showingCommentsFor === post.id && (
+                        <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
+                          {/* Comment Input */}
+                          <div className="flex items-start gap-3 mb-4">
+                            <Avatar className="w-8 h-8">
+                              <AvatarImage src={currentUser.picture} />
+                              <AvatarFallback>{currentUser.name?.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1 flex gap-2">
+                              <Input
+                                placeholder="Write a comment..."
+                                value={commentText[post.id] || ''}
+                                onChange={(e) => setCommentText({...commentText, [post.id]: e.target.value})}
+                                onKeyPress={(e) => e.key === 'Enter' && handleAddComment(post.id)}
+                                className="rounded-full text-sm bg-white border-gray-200"
+                              />
                               <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="text-gray-600"
-                                onClick={() => setSelectedTab('messenger')}
+                                onClick={() => handleAddComment(post.id)}
+                                disabled={!commentText[post.id]?.trim()}
+                                size="sm"
+                                className="rounded-full px-3 bg-blue-500 hover:bg-blue-600 text-white"
                               >
-                                <MessageCircle className="w-4 h-4 mr-1" />
-                                View Chat
-                              </Button>
-                              <Button variant="ghost" size="sm" className="text-gray-600">
-                                <Share2 className="w-4 h-4 mr-1" />
-                                Share
+                                <Send className="w-4 h-4" />
                               </Button>
                             </div>
                           </div>
+                          
+                          {/* Comments List */}
+                          {(() => {
+                            const comments = Array.isArray(commentsData[post.id]) ? commentsData[post.id] : [];
+                            return comments.length > 0 ? (
+                              <div className="space-y-3 max-h-64 overflow-y-auto">
+                                {comments.map((comment) => {
+                                  if (!comment || typeof comment !== 'object') return null;
+                                  return (
+                                    <div key={comment.id || Math.random()} className="flex gap-2">
+                                      <Avatar className="w-7 h-7">
+                                        <AvatarImage src={comment.user_picture || ''} />
+                                        <AvatarFallback>{(comment.user_name || '?').charAt(0)}</AvatarFallback>
+                                      </Avatar>
+                                      <div className="flex-1 rounded-2xl px-4 py-2.5 bg-white">
+                                        <p className="text-sm font-semibold text-gray-900">
+                                          {comment.user_name || 'Unknown'}
+                                        </p>
+                                        <p className="text-sm text-gray-700">
+                                          {comment.text || ''}
+                                        </p>
+                                        <p className="text-xs mt-1 text-gray-500">
+                                          {comment.created_at ? formatTimeAgo(comment.created_at) : ''}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            ) : (
+                              <p className="text-sm text-center py-4 text-gray-500">
+                                No comments yet. Be the first to comment!
+                              </p>
+                            );
+                          })()}
                         </div>
-                      </Card>
-                    ))
-                  )}
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className={`rounded-2xl p-12 text-center ${isDark ? 'glass-card-dark' : 'glass-card'}`}>
+                  <div className={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center ${isDark ? 'bg-blue-500/20' : 'bg-violet-100'}`}>
+                    <Sparkles className={`w-10 h-10 ${isDark ? 'text-blue-400' : 'text-violet-500'}`} />
+                  </div>
+                  <h3 className={`text-2xl font-bold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {isDark ? 'Welcome to Maya' : 'Welcome to your feed!'}
+                  </h3>
+                  <p className={`mb-6 ${isDark ? 'text-blue-300' : 'text-gray-600'}`}>
+                    {isDark 
+                      ? 'Connect with other digital spirits and share your thoughts'
+                      : 'Start by adding friends or creating your first post'
+                    }
+                  </p>
+                  <Button 
+                    onClick={() => navigate('/search')}
+                    className={`px-8 py-3 rounded-full ${
+                      isDark 
+                        ? 'bg-blue-600 hover:bg-blue-500 text-white' 
+                        : 'bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 text-white'
+                    }`}
+                  >
+                    <Search className="w-5 h-5 mr-2" />
+                    Find {isDark ? 'Connections' : 'Friends'}
+                  </Button>
                 </div>
               )}
             </div>
 
             {/* Right Sidebar */}
             <div className="col-span-3 space-y-4">
-              <Card className={worldMode === 'avatar' ? 'card-avatar p-4' : 'p-4'}>
-                <h3 className={`font-semibold mb-3 ${worldMode === 'avatar' ? 'text-blue-200' : 'text-gray-700'}`}>
-                  {labels.friends}
-                </h3>
-                <div className="space-y-2">
+              {/* Connections */}
+              <div className="rounded-xl p-4 glass-card">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold text-sm text-gray-900">
+                    {isAvatarWorld ? 'Connections' : 'Friends'}
+                  </h3>
+                  <button 
+                    onClick={() => navigate('/friends')}
+                    className="text-xs font-medium hover:opacity-80 text-blue-600"
+                  >
+                    See all
+                  </button>
+                </div>
+                <div className="space-y-1">
                   {friends.slice(0, 6).map((friend, idx) => {
-                    const displayName = worldMode === 'avatar' 
+                    const displayName = isAvatarWorld 
                       ? (friend.avatar_name || friend.name)
                       : friend.name;
-                    const displayPicture = worldMode === 'avatar'
+                    const displayPicture = isAvatarWorld
                       ? (friend.avatar_picture || friend.picture)
                       : friend.picture;
                     
                     return (
                       <div 
                         key={idx} 
-                        className={`flex items-center justify-between p-2 rounded group ${
-                          worldMode === 'avatar' ? 'hover:bg-slate-800/50' : 'hover:bg-gray-50'
-                        }`}
+                        className="flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all hover:bg-gray-100"
+                        onClick={() => navigate(`/profile/${friend.id}`)}
                       >
-                        <div 
-                          className="flex items-center space-x-2 cursor-pointer flex-1"
-                          onClick={() => navigate(`/profile/${friend.id}`)}
-                        >
-                          <Avatar className={`w-8 h-8 ${worldMode === 'avatar' ? 'avatar-glow' : ''}`}>
-                            <AvatarImage src={displayPicture} />
-                            <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <span className={`text-sm font-medium ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
-                            {displayName}
-                          </span>
-                        </div>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-auto"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedFriend(friend);
-                            setShowMessenger(true);
-                          }}
-                        >
-                          <MessageCircle className="w-4 h-4 text-blue-500" />
-                        </Button>
+                        <Avatar className="w-9 h-9">
+                          <AvatarImage src={displayPicture} />
+                          <AvatarFallback className="bg-blue-500 text-white text-sm">
+                            {displayName?.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="font-medium text-sm text-gray-700">
+                          {displayName}
+                        </span>
                       </div>
                     );
                   })}
                 </div>
-              </Card>
+              </div>
 
-              {mode === 'avatar' && (
-                <Card className={worldMode === 'avatar' ? 'card-avatar p-4' : 'p-4'}>
-                  <h3 className={`font-semibold mb-3 flex items-center ${worldMode === 'avatar' ? 'text-blue-200' : 'text-gray-700'}`}>
-                    <TrendingUp className={`w-4 h-4 mr-2 ${worldMode === 'avatar' ? 'text-purple-400' : 'text-purple-600'}`} />
-                    {worldMode === 'avatar' ? 'Neural Stats' : 'Avatar Stats'}
-                  </h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className={worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}>Conversations</span>
-                      <span className={`font-semibold ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
-                        {avatarConversations.length}
-                      </span>
+              {/* Discover Spirits */}
+              <div className="rounded-xl p-4 glass-card">
+                <h3 className="font-semibold text-sm mb-3 text-gray-900">
+                  {isAvatarWorld ? 'Discover Spirits' : 'Suggested for you'}
+                </h3>
+                <div className="space-y-3">
+                  {[1, 2, 3].map((_, idx) => (
+                    <div 
+                      key={idx}
+                      className="flex items-center gap-3 p-2 rounded-lg bg-gray-50"
+                    >
+                      <Avatar className="w-10 h-10">
+                        <AvatarFallback className="bg-gradient-to-br from-purple-500 to-pink-500 text-white text-sm">
+                          ?
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm text-gray-900">
+                          {isAvatarWorld ? 'Digital Spirit' : 'New User'}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {idx + 2} mutual connections
+                        </p>
+                      </div>
+                      <Button 
+                        size="sm"
+                        variant="outline"
+                        className={`rounded-full text-xs ${
+                          isDark 
+                            ? 'border-blue-500/50 text-blue-300 hover:bg-blue-500/20' 
+                            : 'border-violet-300 text-violet-600 hover:bg-violet-50'
+                        }`}
+                        onClick={() => navigate('/search')}
+                      >
+                        <Plus className="w-3 h-3 mr-1" />
+                        Add
+                      </Button>
                     </div>
-                    <div className="flex justify-between">
-                      <span className={worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}>Avg Score</span>
-                      <span className={`font-semibold ${worldMode === 'avatar' ? 'text-blue-100' : ''}`}>
-                        {avatarConversations.length > 0
-                          ? Math.round(
-                              avatarConversations.reduce((acc, c) => acc + (c.compatibility_score || 0), 0) /
-                                avatarConversations.length
-                            )
-                          : 0}%
-                      </span>
-                    </div>
-                  </div>
-                </Card>
-              )}
-            </div>
-          </div>
-        ) : selectedTab === 'messenger' ? (
-          // Avatar Messenger View
-          <AvatarMessenger 
-            conversations={avatarConversations}
-            currentUser={currentUser}
-            onBack={() => setSelectedTab('timeline')}
-          />
-        ) : null}
-      </div>
-    </div>
-  );
-};
-
-// Avatar Messenger Component
-const AvatarMessenger = ({ conversations, currentUser, onBack }) => {
-  const [selectedConv, setSelectedConv] = useState(null);
-
-  return (
-    <div className="grid grid-cols-12 gap-4 h-[calc(100vh-120px)]">
-      {/* Conversations List */}
-      <Card className="col-span-4 p-0 overflow-hidden">
-        <div className="p-4 border-b bg-white">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-xl font-bold">Avatar Messenger</h2>
-            <Button variant="ghost" size="sm" onClick={onBack}>
-              <Home className="w-4 h-4" />
-            </Button>
-          </div>
-          <p className="text-sm text-gray-600">Your avatar's conversations</p>
-        </div>
-        <div className="overflow-y-auto h-full">
-          {conversations.map((conv, idx) => (
-            <div
-              key={idx}
-              className={`p-4 border-b cursor-pointer hover:bg-gray-50 ${
-                selectedConv?.id === conv.id ? 'bg-blue-50' : ''
-              }`}
-              onClick={() => setSelectedConv(conv)}
-            >
-              <div className="flex items-center space-x-3">
-                <Avatar className="w-12 h-12">
-                  <AvatarImage src={conv.other_user?.picture} />
-                  <AvatarFallback>{conv.other_user?.name?.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-semibold text-sm">{conv.other_user?.name}'s Avatar</span>
-                    <Badge className="bg-purple-100 text-purple-700 text-xs">
-                      {Math.round(conv.compatibility_score || 0)}%
-                    </Badge>
-                  </div>
-                  <p className="text-xs text-gray-600 truncate">{conv.conversation_summary}</p>
+                  ))}
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </Card>
 
-      {/* Chat Window */}
-      <Card className="col-span-8 p-0 overflow-hidden flex flex-col">
-        {selectedConv ? (
-          <>
-            <div className="p-4 border-b bg-white">
-              <div className="flex items-center space-x-3">
-                <Avatar className="w-10 h-10">
-                  <AvatarImage src={selectedConv.other_user?.picture} />
-                  <AvatarFallback>{selectedConv.other_user?.name?.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold">{selectedConv.other_user?.name}'s Avatar</h3>
-                  <p className="text-xs text-gray-600">{selectedConv.other_user?.bio}</p>
+              {/* Footer Links */}
+              <div className={`text-xs space-y-2 px-2 ${isDark ? 'text-blue-400/60' : 'text-gray-400'}`}>
+                <div className="flex flex-wrap gap-x-2 gap-y-1">
+                  <span className="hover:underline cursor-pointer">Privacy</span>
+                  <span>•</span>
+                  <span className="hover:underline cursor-pointer">Terms</span>
+                  <span>•</span>
+                  <span className="hover:underline cursor-pointer">Help</span>
                 </div>
+                <p>© 2024 {isDark ? 'Maya World' : 'NeuralLinks'}</p>
               </div>
             </div>
-            <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
-              {selectedConv.messages && selectedConv.messages.length > 0 ? (
-                selectedConv.messages.map((msg, idx) => (
-                  <div key={idx} className={`flex mb-3 ${msg.sender === currentUser.id ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-xs px-4 py-2 rounded-2xl ${
-                      msg.sender === currentUser.id
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-white text-gray-800 border'
-                    }`}>
-                      <p className="text-sm">{msg.message}</p>
-                    </div>
+          </div>
+        </div>
+
+        {/* Likes Dialog */}
+        <Dialog open={showingLikesFor !== null} onOpenChange={() => setShowingLikesFor(null)}>
+          <DialogContent className={`max-w-md ${isDark ? 'bg-slate-900 border-blue-500/30' : 'bg-white'}`}>
+            <DialogHeader>
+              <DialogTitle className={isDark ? 'text-white' : 'text-gray-900'}>
+                People who liked this
+              </DialogTitle>
+            </DialogHeader>
+            <div className="max-h-96 overflow-y-auto space-y-2 mt-4">
+              {likesData.length > 0 ? (
+                likesData.map((user) => (
+                  <div 
+                    key={user.id} 
+                    className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer ${
+                      isDark ? 'hover:bg-slate-800' : 'hover:bg-gray-50'
+                    }`}
+                    onClick={() => {
+                      setShowingLikesFor(null);
+                      navigate(`/profile/${user.id}`);
+                    }}
+                  >
+                    <Avatar className="w-10 h-10">
+                      <AvatarImage src={user.picture} />
+                      <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{user.name}</p>
                   </div>
                 ))
-              ) : (
-                <div className="text-center py-12">
-                  <MessageCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-600">Conversation in progress...</p>
+              ) : likesCount > 0 ? (
+                <div className="text-center py-6">
+                  <div className={`w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center ${isDark ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
+                    <ThumbsUp className={`w-6 h-6 ${isDark ? 'text-blue-400' : 'text-blue-500'}`} />
+                  </div>
+                  <p className={isDark ? 'text-blue-200' : 'text-gray-600'}>
+                    {likesCount} {likesCount === 1 ? 'person likes' : 'people like'} this
+                  </p>
                 </div>
+              ) : (
+                <p className={`text-center py-6 ${isDark ? 'text-blue-400' : 'text-gray-500'}`}>
+                  No likes yet
+                </p>
               )}
             </div>
-            <div className="p-4 border-t bg-white">
-              <div className="flex items-center space-x-2">
-                <Input
-                  placeholder="Your avatar is chatting..."
-                  disabled
-                  className="flex-1 rounded-full"
-                />
-                <Button size="sm" className="rounded-full bg-blue-500" disabled>
-                  <Send className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <MessageCircle className="w-20 h-20 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-600">Select a conversation to view</p>
-            </div>
-          </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Side Messenger */}
+        {showMessenger && selectedFriend && (
+          <SideMessenger
+            user={currentUser}
+            otherUserId={selectedFriend.id}
+            otherUserData={selectedFriend}
+            onClose={() => {
+              setShowMessenger(false);
+              setSelectedFriend(null);
+            }}
+          />
         )}
-      </Card>
-
-      {/* Likes Dialog */}
-      <Dialog open={showingLikesFor !== null} onOpenChange={() => setShowingLikesFor(null)}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>People who liked this post</DialogTitle>
-          </DialogHeader>
-          <div className="max-h-96 overflow-y-auto space-y-2">
-            {likesData.length > 0 ? (
-              likesData.map((user) => (
-                <div key={user.id} className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded">
-                  <Avatar className="w-10 h-10">
-                    <AvatarImage src={user.picture} />
-                    <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium text-sm">{user.name}</p>
-                  </div>
-                </div>
-              ))
-            ) : likesCount > 0 ? (
-              <div className="text-center py-4">
-                <p className="text-gray-600 mb-2">This post has {likesCount} {likesCount === 1 ? 'like' : 'likes'}</p>
-                <p className="text-sm text-gray-500">We don't have details about who liked this post yet.</p>
-                <p className="text-xs text-gray-400 mt-2">New likes will show user details!</p>
-              </div>
-            ) : (
-              <p className="text-center text-gray-500 py-4">No likes yet</p>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Side Messenger */}
-      {showMessenger && selectedFriend && (
-        <SideMessenger
-          user={currentUser}
-          otherUserId={selectedFriend.id}
-          otherUserData={selectedFriend}
-          onClose={() => {
-            setShowMessenger(false);
-            setSelectedFriend(null);
-          }}
-        />
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 

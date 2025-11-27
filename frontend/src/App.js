@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import ProfilePageFull from "./pages/ProfilePageFull";
 import SearchPage from "./pages/SearchPage";
 import FriendsPage from "./pages/FriendsPage";
+import GalleryPage from "./pages/GalleryPage";
 import IntegrationsPage from "./pages/IntegrationsPage";
 import AvatarControl from "./pages/AvatarControl";
 import SettingsPage from "./pages/SettingsPage";
@@ -114,12 +115,16 @@ function App() {
               element={user ? <FriendsPage user={user} /> : <Navigate to="/" />}
             />
             <Route
+              path="/gallery"
+              element={user ? <GalleryPage user={user} setUser={setUser} /> : <Navigate to="/" />}
+            />
+            <Route
               path="/integrations"
               element={user ? <IntegrationsPage user={user} /> : <Navigate to="/" />}
             />
             <Route
               path="/settings"
-              element={user ? <SettingsPage user={user} /> : <Navigate to="/" />}
+              element={user ? <SettingsPage user={user} setUser={setUser} /> : <Navigate to="/" />}
             />
             <Route
               path="/avatar-visualization"
@@ -131,7 +136,7 @@ function App() {
             />
             <Route
               path="/matches"
-              element={user ? <Matches user={user} /> : <Navigate to="/" />}
+              element={user ? <Matches user={user} setUser={setUser} /> : <Navigate to="/" />}
             />
             <Route
               path="/chat/:matchId"

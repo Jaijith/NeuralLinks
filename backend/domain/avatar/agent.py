@@ -139,21 +139,21 @@ class SimpleReactiveAgent:
             activity_level = self.bot.get('avatar_activity_level', 'medium')
             is_hypo = activity_level == 'hypo'
             
-            # 1. Create post (higher priority for hypo, 50% chance vs 20%)
-            post_chance = 0.5 if is_hypo else 0.2
+            # 1. Create post (reduced activity: 10% chance for hypo, 5% for others)
+            post_chance = 0.1 if is_hypo else 0.05
             if random.random() < post_chance and creation_tools:
                 await self._execute_creation_action(creation_tools[0])
             
-            # 2. React to posts (60% chance)
-            if random.random() < 0.6 and reaction_tools:
+            # 2. React to posts (reduced activity: 20% chance)
+            if random.random() < 0.2 and reaction_tools:
                 await self._execute_reaction_action(reaction_tools)
             
-            # 3. Social actions (30% chance)
-            if random.random() < 0.3 and social_tools:
+            # 3. Social actions (reduced activity: 10% chance)
+            if random.random() < 0.1 and social_tools:
                 await self._execute_social_action(social_tools)
             
-            # 4. Discovery (10% chance)
-            if random.random() < 0.1 and discovery_tools:
+            # 4. Discovery (reduced activity: 5% chance)
+            if random.random() < 0.05 and discovery_tools:
                 await self._execute_discovery_action(discovery_tools[0])
                 
         except Exception as e:
@@ -281,13 +281,15 @@ class SimpleReactiveAgent:
                 
                 hours_since_last = (datetime.now(timezone.utc) - last_post_time).total_seconds() / 3600
                 
-                # For "hypo" activity level, use shorter min_hours to allow more frequent posting
+                # Increased cooldown periods to reduce activity
                 activity_level = self.bot.get('avatar_activity_level', 'medium')
                 if activity_level == 'hypo':
-                    # Hypo mode: allow posting every 1 hour minimum (more frequent)
-                    min_hours = 1.0
+                    # Hypo mode: allow posting every 6 hours minimum (reduced activity)
+                    min_hours = 6.0
                 else:
-                    min_hours = float(self.config['posting_frequency']['min_hours'])
+                    # Other modes: use config min_hours but add 12 hours minimum
+                    config_min = float(self.config['posting_frequency']['min_hours'])
+                    min_hours = max(config_min, 12.0)  # At least 12 hours between posts
                 
                 if hours_since_last < min_hours:
                     print(f"   ⏸️  Too soon to post (last post {hours_since_last:.1f}h ago, need {min_hours}h)")

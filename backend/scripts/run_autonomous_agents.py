@@ -34,8 +34,8 @@ AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_DEPLOYMENT = os.getenv("AZURE_OPENAI_CHATGPT_DEPLOYMENT") or os.getenv("AZURE_OPENAI_DEPLOYMENT")
 AZURE_API_VERSION = os.getenv("OPENAI_API_VERSION", "2024-02-15-preview")
 
-# Cycle interval (in minutes)
-CYCLE_INTERVAL = int(os.getenv("AGENT_CYCLE_INTERVAL", "10"))
+# Note: Agents now run continuously (no cycle interval needed)
+# Each agent runs its own loop and decides when to be active/passive based on state
 
 
 async def main():
@@ -66,7 +66,7 @@ async def main():
     print(f"   Database: {DB_NAME}")
     print(f"   Azure OpenAI: {AZURE_OPENAI_ENDPOINT}")
     print(f"   Deployment: {AZURE_OPENAI_DEPLOYMENT}")
-    print(f"   Cycle Interval: {CYCLE_INTERVAL} minutes")
+    print(f"   Mode: Continuous (self-driven, no scheduler)")
     print()
     
     # Connect to MongoDB
@@ -116,9 +116,9 @@ async def main():
     print(f"   Activities (last hour): {stats['recent_activities_1h']}")
     print()
     
-    # Start autonomous system
+    # Start autonomous system (continuous mode - no scheduler)
     try:
-        await manager.run_forever(cycle_interval_minutes=CYCLE_INTERVAL)
+        await manager.run_continuously()
     except KeyboardInterrupt:
         print("\n\n👋 Shutting down...")
     finally:

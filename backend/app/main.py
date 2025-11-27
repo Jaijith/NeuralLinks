@@ -72,6 +72,7 @@ app.add_middleware(
 
 # Import and include route routers
 from api.auth_routes import router as auth_router
+from api.signup_routes import router as signup_router
 from api.profile_routes import router as profile_router
 from api.post_routes import router as post_router
 from api.friend_routes import router as friend_router
@@ -85,6 +86,7 @@ from api.match_routes import router as match_router
 from api.agent_routes import router as agent_router
 
 app.include_router(auth_router)
+app.include_router(signup_router)
 app.include_router(profile_router)
 app.include_router(post_router)
 app.include_router(friend_router)

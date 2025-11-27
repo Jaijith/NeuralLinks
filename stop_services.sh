@@ -46,6 +46,25 @@ echo -e "${BLUE}🔧 Stopping Backend...${NC}"
 kill_port 8001 "Backend"
 echo ""
 
+# Stop Autonomous Agents
+echo -e "${BLUE}🤖 Stopping Autonomous Agents...${NC}"
+if pgrep -f "run_autonomous_agents.py" > /dev/null; then
+    AGENT_PIDS=$(pgrep -f "run_autonomous_agents.py")
+    for pid in $AGENT_PIDS; do
+        kill $pid 2>/dev/null
+        sleep 1
+        if ! ps -p $pid > /dev/null 2>&1; then
+            echo -e "${GREEN}✅ Stopped Autonomous Agents (PID: $pid)${NC}"
+        else
+            kill -9 $pid 2>/dev/null
+            echo -e "${YELLOW}⚠️  Force stopped Autonomous Agents (PID: $pid)${NC}"
+        fi
+    done
+else
+    echo -e "${BLUE}ℹ️  Autonomous Agents are not running${NC}"
+fi
+echo ""
+
 # Stop MongoDB (optional - commented out by default)
 echo -e "${BLUE}📦 MongoDB Status...${NC}"
 if pgrep -x "mongod" > /dev/null; then

@@ -8,6 +8,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import AppHeader from "@/components/AppHeader";
+import SideMessenger from "@/components/SideMessenger";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -19,6 +20,8 @@ const FriendsPage = ({ user }) => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("friends"); // "friends" or "requests"
+  const [showMessenger, setShowMessenger] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState(null);
 
   useEffect(() => {
     fetchFriends();
@@ -82,19 +85,26 @@ const FriendsPage = ({ user }) => {
     if (!window.confirm("Are you sure you want to remove this friend?")) return;
     
     try {
-      await axios.delete(`${API}/friends/${friendId}`, {
+      const response = await axios.delete(`${API}/friends/${friendId}`, {
         withCredentials: true,
       });
-      toast.success("Friend removed");
+      
+      if (response.data && response.data.message) {
+        toast.success(response.data.message);
+      } else {
+        toast.success("Friend removed");
+      }
+      
       fetchFriends();
     } catch (error) {
       console.error("Error removing friend:", error);
-      toast.error("Failed to remove friend");
+      const errorMessage = error.response?.data?.detail || error.message || "Failed to remove friend";
+      toast.error(errorMessage);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
       <AppHeader user={user} currentPage="friends" />
       
       <div className="max-w-7xl mx-auto px-6 py-8">
@@ -279,7 +289,22 @@ const FriendsPage = ({ user }) => {
                         View Profile
                       </Button>
                       <Button
-                        onClick={() => removeFriend(friend.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedFriend(friend);
+                          setShowMessenger(true);
+                        }}
+                        data-testid={`message-friend-${idx}`}
+                        className="bg-blue-500 hover:bg-blue-600 text-white rounded-full px-3 font-bold"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          removeFriend(friend.id);
+                        }}
                         data-testid={`remove-friend-${idx}`}
                         variant="outline"
                         className="border-2 border-red-400 text-red-600 hover:bg-red-50 rounded-full px-3 font-bold"
@@ -294,6 +319,19 @@ const FriendsPage = ({ user }) => {
           </div>
         )}
       </div>
+
+      {/* Side Messenger */}
+      {showMessenger && selectedFriend && (
+        <SideMessenger
+          user={user}
+          otherUserId={selectedFriend.id}
+          otherUserData={selectedFriend}
+          onClose={() => {
+            setShowMessenger(false);
+            setSelectedFriend(null);
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -4,14 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, ArrowLeft, Sparkles, TrendingUp, Brain } from "lucide-react";
+import { Heart, MessageCircle, Sparkles, TrendingUp, Brain } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
+import AppHeader from "@/components/AppHeader";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const Matches = ({ user }) => {
+const Matches = ({ user, setUser }) => {
   const navigate = useNavigate();
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,24 +50,8 @@ const Matches = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
-      {/* Header */}
-      <header className="bg-white/70 backdrop-blur-md border-b border-purple-100 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/dashboard")}
-            data-testid="back-to-dashboard-btn"
-            className="hover:bg-purple-50"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <h1 className="text-2xl font-bold gradient-text">Your Matches</h1>
-          <Badge className="bg-gradient-to-r from-pink-500 to-purple-600 text-white">
-            {matches.length} Matches
-          </Badge>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
+      <AppHeader user={user} setUser={setUser} currentPage="matches" />
 
       <main className="max-w-7xl mx-auto px-6 py-12">
         {loading ? (

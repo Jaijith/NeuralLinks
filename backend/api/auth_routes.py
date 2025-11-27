@@ -54,6 +54,34 @@ async def get_session_data(request: Request):
             existing_user = await db.users.find_one({"email": data['email']})
             
             if not existing_user:
+                # Check if signup request is approved
+                signup_request = await db.signup_requests.find_one(
+                    {"email": data['email']},
+                    sort=[("requested_at", -1)]
+                )
+                
+                if not signup_request:
+                    raise HTTPException(
+                        status_code=403,
+                        detail="Please submit a signup request first. Your request will be reviewed before you can create an account."
+                    )
+                
+                if signup_request.get("status") != "approved":
+                    if signup_request.get("status") == "pending":
+                        raise HTTPException(
+                            status_code=403,
+                            detail="Your signup request is pending approval. You will receive an email once it's reviewed."
+                        )
+                    elif signup_request.get("status") == "rejected":
+                        raise HTTPException(
+                            status_code=403,
+                            detail="Your signup request was not approved. Please contact support for more information."
+                        )
+                    else:
+                        raise HTTPException(
+                            status_code=403,
+                            detail="Your signup request is not approved. Please contact support."
+                        )
                 # Create new user with BOTH real and avatar profiles
                 # Generate unique user ID first
                 new_user_id = str(uuid.uuid4())
@@ -130,4 +158,27 @@ async def logout(request: Request, response: Response):
     # Clear session token
     response.delete_cookie("session_token")
     return {"message": "Logged out"}
+
+
+@router.delete("/account")
+async def delete_account(request: Request, response: Response):
+    """Delete user account and all related data"""
+    user = await require_auth(request)
+    
+    from services.user_service import UserService
+    from core.database import get_database
+    from app.globals import graph_builder
+    
+    db = get_database()
+    user_service = UserService(db, graph_builder)
+    
+    result = await user_service.delete_account(user.id)
+    
+    if result.get("success"):
+        # Clear session token
+        response.delete_cookie("session_token")
+        logger.info(f"Account deleted for user {user.id}")
+        return {"message": "Account deleted successfully"}
+    else:
+        raise HTTPException(status_code=500, detail=result.get("error", "Failed to delete account"))
 

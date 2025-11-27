@@ -7,6 +7,12 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Parse arguments
+START_AGENTS=false
+if [[ "$1" == "--auto" ]] || [[ "$1" == "-a" ]]; then
+    START_AGENTS=true
+fi
+
 # Get the directory where the script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BACKEND_DIR="$SCRIPT_DIR/backend"
@@ -85,8 +91,8 @@ else
         echo -e "${YELLOW}⚠️  Warning: .env file not found in backend directory${NC}"
     fi
     
-    # Start backend in background
-    nohup uvicorn server:app --reload --host 0.0.0.0 --port 8001 > backend.log 2>&1 &
+    # Start backend in background (using modularized app.main)
+    nohup uvicorn app.main:app --reload --host 0.0.0.0 --port 8001 > backend.log 2>&1 &
     BACKEND_PID=$!
     
     sleep 3
@@ -156,10 +162,61 @@ else
     echo -e "${RED}❌ Frontend: Not Running${NC}"
 fi
 
+# ============ Autonomous Agents ============
+if [ "$START_AGENTS" = true ]; then
+    echo ""
+    echo -e "${BLUE}🤖 Checking Autonomous Agents...${NC}"
+    
+    # Check if agents are already running
+    if pgrep -f "run_autonomous_agents.py" > /dev/null; then
+        AGENT_PID=$(pgrep -f "run_autonomous_agents.py" | head -1)
+        echo -e "${GREEN}✅ Autonomous Agents: Already running (PID: $AGENT_PID)${NC}"
+    else
+        echo -e "${YELLOW}⚠️  Autonomous Agents: Not running. Starting...${NC}"
+        
+        if [ ! -d "$BACKEND_DIR/venv" ]; then
+            echo -e "${RED}❌ Virtual environment not found. Cannot start agents.${NC}"
+        else
+            cd "$BACKEND_DIR"
+            source venv/bin/activate
+            
+            # Start agents in background
+            nohup python scripts/run_autonomous_agents.py > agents.log 2>&1 &
+            AGENT_PID=$!
+            
+            sleep 3
+            
+            # Check if started successfully
+            if pgrep -f "run_autonomous_agents.py" > /dev/null; then
+                echo -e "${GREEN}✅ Autonomous Agents: Started successfully (PID: $AGENT_PID)${NC}"
+                echo -e "   ${BLUE}📝 Logs: $BACKEND_DIR/agents.log${NC}"
+            else
+                echo -e "${YELLOW}⚠️  Autonomous Agents: Starting (may take a moment)...${NC}"
+                echo -e "   ${BLUE}📝 Logs: $BACKEND_DIR/agents.log${NC}"
+            fi
+            
+            cd "$SCRIPT_DIR"
+        fi
+    fi
+else
+    echo ""
+    echo -e "${BLUE}🤖 Autonomous Agents:${NC}"
+    if pgrep -f "run_autonomous_agents.py" > /dev/null; then
+        AGENT_PID=$(pgrep -f "run_autonomous_agents.py" | head -1)
+        echo -e "${GREEN}✅ Running (PID: $AGENT_PID)${NC}"
+    else
+        echo -e "${YELLOW}⏸️  Not running${NC}"
+        echo -e "   ${BLUE}💡 Start with: ${YELLOW}./start_services.sh --auto${NC}"
+    fi
+fi
+
 echo ""
 echo -e "${BLUE}💡 Tips:${NC}"
 echo -e "   • View backend logs: ${YELLOW}tail -f $BACKEND_DIR/backend.log${NC}"
 echo -e "   • View frontend logs: ${YELLOW}tail -f $FRONTEND_DIR/frontend.log${NC}"
+if [ "$START_AGENTS" = true ]; then
+    echo -e "   • View agent logs: ${YELLOW}tail -f $BACKEND_DIR/agents.log${NC}"
+fi
 echo -e "   • Stop all services: ${YELLOW}./stop_services.sh${NC} (if available)"
 echo ""
 

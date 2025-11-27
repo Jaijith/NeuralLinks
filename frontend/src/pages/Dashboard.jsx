@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Heart, Users, MessageCircle, LogOut, User, Sparkles, TrendingUp, Search, Settings } from "lucide-react";
+import { Sparkles, TrendingUp, MessageCircle, Heart, Users } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
+import AppHeader from "@/components/AppHeader";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -38,17 +38,6 @@ const Dashboard = ({ user, setUser }) => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
-      setUser(null);
-      navigate("/");
-      toast.success("Logged out successfully");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
-
   const discoverMatches = async () => {
     setDiscovering(true);
     try {
@@ -67,81 +56,7 @@ const Dashboard = ({ user, setUser }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
-      {/* Header */}
-      <header className="bg-white/70 backdrop-blur-md border-b border-purple-100 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center gap-4">
-          <div className="flex items-center space-x-3" data-testid="dashboard-header">
-            <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center cursor-pointer" onClick={() => navigate("/dashboard")}>
-              <Heart className="w-6 h-6 text-white fill-white" />
-            </div>
-            <h1 className="text-2xl font-bold gradient-text hidden md:block">AI Match</h1>
-          </div>
-
-          {/* Search Bar */}
-          <div className="flex-1 max-w-xl" data-testid="header-search">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <Input
-                placeholder="Search people..."
-                onClick={() => navigate("/search")}
-                readOnly
-                className="pl-10 border-2 border-purple-200 focus:border-purple-400 rounded-full cursor-pointer"
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/search")}
-              data-testid="nav-search-btn"
-              className="hover:bg-purple-50 rounded-full"
-            >
-              <Search className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/friends")}
-              data-testid="nav-friends-btn"
-              className="hover:bg-purple-50 rounded-full"
-            >
-              <Users className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/matches")}
-              data-testid="nav-matches-btn"
-              className="hover:bg-purple-50 rounded-full"
-            >
-              <Heart className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/settings")}
-              data-testid="nav-settings-btn"
-              className="hover:bg-purple-50 rounded-full"
-            >
-              <Settings className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/myprofile")}
-              data-testid="nav-profile-btn"
-              className="hover:bg-purple-50 rounded-full"
-            >
-              <User className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={handleLogout}
-              data-testid="logout-btn"
-              className="hover:bg-red-50 hover:text-red-600 rounded-full"
-            >
-              <LogOut className="w-5 h-5" />
-            </Button>
-          </div>
-        </div>
-      </header>
+      <AppHeader user={user} setUser={setUser} currentPage="home" />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-12">

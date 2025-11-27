@@ -8,12 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { Search, UserPlus, Users, MessageCircle, Check, X } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
+import { useWorldMode } from "@/contexts/WorldModeContext";
+import AppHeader from "@/components/AppHeader";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const SearchPage = ({ user }) => {
   const navigate = useNavigate();
+  const { worldMode } = useWorldMode();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,7 +35,7 @@ const SearchPage = ({ user }) => {
     } else {
       setSearchResults([]);
     }
-  }, [searchQuery]);
+  }, [searchQuery, worldMode]);
 
   const fetchFriendRequests = async () => {
     try {
@@ -48,9 +51,10 @@ const SearchPage = ({ user }) => {
   const performSearch = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API}/search/users?q=${encodeURIComponent(searchQuery)}`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${API}/search/users?q=${encodeURIComponent(searchQuery)}&world_mode=${worldMode}`,
+        { withCredentials: true }
+      );
       setSearchResults(response.data);
     } catch (error) {
       console.error("Search error:", error);
@@ -88,6 +92,7 @@ const SearchPage = ({ user }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+      <AppHeader user={user} currentPage="search" />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Search Bar */}
         <Card className="glass-morphism p-6 mb-8" data-testid="search-bar">
@@ -180,23 +185,27 @@ const SearchPage = ({ user }) => {
                   >
                     <div className="flex flex-col items-center text-center">
                       <Avatar className="w-20 h-20 border-4 border-white shadow-lg mb-4">
-                        <AvatarImage src={result.picture} />
+                        <AvatarImage src={worldMode === 'avatar' ? (result.avatar_picture || result.picture) : result.picture} />
                         <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-600 text-white text-2xl">
-                          {result.name?.charAt(0)}
+                          {(worldMode === 'avatar' ? (result.avatar_name || result.name) : result.name)?.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
-                      <h3 className="text-lg font-bold text-gray-800 mb-1">{result.name}</h3>
+                      <h3 className="text-lg font-bold text-gray-800 mb-1">
+                        {worldMode === 'avatar' ? (result.avatar_name || result.name) : result.name}
+                      </h3>
                       <p className="text-sm text-gray-600 mb-2">
-                        {result.age} • {result.location}
+                        {result.age} • {worldMode === 'avatar' ? (result.avatar_location || result.location) : result.location}
                       </p>
-                      {result.job_title && (
+                      {(worldMode === 'avatar' ? result.avatar_job_title : result.job_title) && (
                         <Badge className="mb-3 bg-purple-100 text-purple-700">
-                          {result.job_title}
+                          {worldMode === 'avatar' ? result.avatar_job_title : result.job_title}
                         </Badge>
                       )}
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">{result.bio}</p>
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                        {worldMode === 'avatar' ? (result.avatar_bio || result.bio) : result.bio}
+                      </p>
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {result.interests?.slice(0, 3).map((interest, i) => (
+                        {(worldMode === 'avatar' ? result.avatar_interests : result.interests)?.slice(0, 3).map((interest, i) => (
                           <span
                             key={i}
                             className="bg-purple-50 text-purple-700 text-xs px-2 py-1 rounded-full"
