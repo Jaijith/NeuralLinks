@@ -359,7 +359,7 @@ class ActionUtility:
                 # If we just did it, utility drops significantly
                 return 0.1
             return 0.4
-
+        
         return 0.5
     
     def _calculate_expected_outcome(

@@ -212,7 +212,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     setSelectedImage(file);
     setImagePreview(URL.createObjectURL(file));
   };
-
+  
   const createPost = async () => {
     if (!postText.trim() && !selectedImage) return;
     
@@ -237,9 +237,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       } else {
         // Create text-only post
         response = await axios.post(`${API}/profile/posts`, 
-          { text: postText, post_type: postType },
-          { withCredentials: true }
-        );
+        { text: postText, post_type: postType },
+        { withCredentials: true }
+      );
       }
       
       const newPost = {
@@ -314,11 +314,15 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       const response = await axios.get(`${API}/posts/${postId}/likes`, {
         withCredentials: true,
       });
-      setLikesData(response.data.users || []);
+      console.log("Likes response:", response.data);
+      const users = response.data.users || [];
+      console.log("Users who liked:", users);
+      setLikesData(users);
       setLikesCount(response.data.count || 0);
       setShowingLikesFor(postId);
     } catch (error) {
       console.error("Error fetching likes:", error);
+      toast.error("Failed to load likes");
     }
   };
   
@@ -409,7 +413,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
           <div className="text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
               <Sparkles className="w-8 h-8 text-white" />
-            </div>
+      </div>
             <p className="text-sm font-medium text-gray-600">
               {isAvatarWorld ? 'Entering Maya...' : 'Loading your feed...'}
             </p>
@@ -423,7 +427,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     <>
       <style>{customStyles}</style>
       <div className="min-h-screen home-container bg-gradient-to-br from-blue-50 via-white to-slate-50">
-        <AppHeader user={currentUser} setUser={setUser} currentPage="home" />
+      <AppHeader user={currentUser} setUser={setUser} currentPage="home" />
 
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="grid grid-cols-12 gap-6">
@@ -441,19 +445,19 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                       <AvatarImage src={isAvatarWorld ? (currentUser.avatar_picture || currentUser.picture) : currentUser.picture} />
                       <AvatarFallback className="text-lg font-semibold bg-blue-500 text-white">
                         {(isAvatarWorld ? (currentUser.avatar_name || currentUser.name) : currentUser.name)?.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
+                    </AvatarFallback>
+                  </Avatar>
                     <div>
                       <h3 className="font-semibold text-gray-900">
                         {isAvatarWorld ? (currentUser.avatar_name || currentUser.name) : currentUser.name}
-                      </h3>
+                    </h3>
                       <p className="text-sm text-gray-600">
                         {currentUser.bio || (isAvatarWorld ? 'Digital spirit in Maya' : 'Welcome to your feed')}
-                      </p>
-                    </div>
-                  </div>
+                  </p>
                 </div>
-              </div>
+                  </div>
+                  </div>
+                  </div>
 
               {/* Quick Links */}
               <div className="rounded-xl p-3 glass-card">
@@ -483,7 +487,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   <h3 className="font-semibold text-sm text-gray-900">
                     {isAvatarWorld ? 'Trending in Maya' : 'Trending'}
                   </h3>
-                </div>
+                          </div>
                 <div className="space-y-3">
                   {[
                     { tag: '#Connections', posts: 584 },
@@ -493,9 +497,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                     <div key={idx}>
                       <span className="font-semibold text-sm text-gray-900">{item.tag}</span>
                       <p className="text-xs text-gray-600">{item.posts} posts</p>
-                    </div>
+                        </div>
                   ))}
-                </div>
+                  </div>
               </div>
             </div>
 
@@ -530,7 +534,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                           setShowCreatePost(true);
                           // Small delay to ensure dialog is open before triggering file input
                           setTimeout(() => {
-                            document.getElementById('post-image-upload')?.click();
+                        document.getElementById('post-image-upload')?.click();
                           }, 100);
                         } else {
                           toast.info(`${item.label} feature coming soon!`);
@@ -544,7 +548,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   ))}
                 </div>
               </div>
-
+              
               {/* Create Post Dialog */}
               <Dialog open={showCreatePost} onOpenChange={setShowCreatePost}>
                 <DialogContent className="max-w-lg bg-white">
@@ -615,22 +619,22 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                         <Button 
                           variant="ghost" 
                           onClick={() => {
-                            setShowCreatePost(false);
-                            setPostText('');
+                        setShowCreatePost(false);
+                        setPostText('');
                             setSelectedImage(null);
                             setImagePreview(null);
                           }}
                           className="text-gray-600 hover:bg-gray-100"
                         >
-                          Cancel
-                        </Button>
-                        <Button 
-                          onClick={createPost}
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={createPost}
                           disabled={(!postText.trim() && !selectedImage) || uploadingImage}
                           className="px-6 bg-blue-500 hover:bg-blue-600 text-white"
-                        >
+                      >
                           {uploadingImage ? 'Posting...' : 'Post'}
-                        </Button>
+                      </Button>
                       </div>
                     </div>
                   </div>
@@ -639,8 +643,8 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
 
               {/* Posts Feed */}
               {friendPosts.length > 0 ? (
-                <div className="space-y-4">
-                  {friendPosts.map((post, idx) => (
+                  <div className="space-y-4">
+                    {friendPosts.map((post, idx) => (
                     <div 
                       key={post.id || idx} 
                       className="rounded-xl overflow-hidden post-card glass-card"
@@ -653,29 +657,29 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                             <div 
                               className="cursor-pointer"
                               onClick={() => navigate(`/profile/${post.user?.id}`)}
-                            >
+                          >
                               <Avatar className="w-11 h-11">
-                                <AvatarImage src={post.displayPicture} />
+                            <AvatarImage src={post.displayPicture} />
                                 <AvatarFallback className="font-medium bg-blue-500 text-white">
                                   {post.displayName?.charAt(0)}
                                 </AvatarFallback>
-                              </Avatar>
+                          </Avatar>
                             </div>
                             <div>
                               <div className="flex items-center gap-2">
-                                <span 
+                              <span 
                                   className="font-semibold cursor-pointer hover:underline text-gray-900"
                                   onClick={() => navigate(`/profile/${post.user?.id}`)}
-                                >
-                                  {post.displayName}
-                                </span>
+                              >
+                                {post.displayName}
+                              </span>
                                 {post.isBot && (
                                   <Badge className="text-xs px-1.5 py-0 border-0 bg-purple-100 text-purple-700">
                                     <Bot className="w-3 h-3 mr-0.5" />
                                     AI
-                                  </Badge>
-                                )}
-                              </div>
+                                </Badge>
+                              )}
+                            </div>
                               <div className="flex items-center gap-1.5 text-xs text-gray-500">
                                 <Clock className="w-3 h-3" />
                                 <span>{formatTimeAgo(post.created_at)}</span>
@@ -704,28 +708,28 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                         {/* Post Image */}
                         {(post.image_url || post.has_image) && (
                           <div className="mt-3 rounded-lg overflow-hidden">
-                            <img
-                              src={post.image_url}
-                              alt={post.text || post.content || 'Post image'}
-                              className="w-full max-h-96 object-cover cursor-pointer"
+                                <img
+                                  src={post.image_url}
+                                  alt={post.text || post.content || 'Post image'}
+                                  className="w-full max-h-96 object-cover cursor-pointer"
                               onClick={() => {
                                 // Open image in new tab or modal
                                 window.open(post.image_url, '_blank');
                               }}
-                              onError={(e) => {
+                                  onError={(e) => {
                                 console.error("Image load error:", post.image_url);
-                                e.target.style.display = 'none';
-                              }}
-                            />
-                          </div>
-                        )}
+                                    e.target.style.display = 'none';
+                                  }}
+                                />
+                              </div>
+                            )}
                       </div>
 
                       {/* Engagement Stats */}
                       {(post.likes > 0 || post.comment_count > 0) && (
                         <div className="px-4 py-2 flex items-center justify-between text-sm text-gray-600">
                           <button 
-                            onClick={() => showLikes(post.id)}
+                                  onClick={() => showLikes(post.id)}
                             className="flex items-center gap-1.5 hover:underline"
                           >
                             {post.likes > 0 && (
@@ -739,7 +743,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                           </button>
                           {(post.comment_count > 0 || post.comments?.length > 0) && (
                             <button 
-                              onClick={() => showComments(post.id)}
+                                  onClick={() => showComments(post.id)}
                               className="hover:underline text-gray-600"
                             >
                               {post.comment_count || post.comments?.length || 0} comments
@@ -767,21 +771,21 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                             <span className="font-medium text-sm">Comment</span>
                           </button>
                           <button
-                            onClick={() => {
+                                  onClick={() => {
                               navigator.share?.({ title: 'Check out this post!', url: window.location.href }) || toast.info('Share feature coming soon!');
-                            }}
+                                  }}
                             className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
-                          >
+                                >
                             <Share2 className="w-4 h-4" />
                             <span className="font-medium text-sm">Share</span>
                           </button>
                         </div>
-                      </div>
-
-                      {/* Comments Section */}
-                      {showingCommentsFor === post.id && (
+                              </div>
+                              
+                              {/* Comments Section */}
+                              {showingCommentsFor === post.id && (
                         <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
-                          {/* Comment Input */}
+                                  {/* Comment Input */}
                           <div className="flex items-start gap-3 mb-4">
                             <Avatar className="w-8 h-8">
                               <AvatarImage src={currentUser.picture} />
@@ -789,67 +793,67 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                             </Avatar>
                             <div className="flex-1 flex gap-2">
                               <Input
-                                placeholder="Write a comment..."
-                                value={commentText[post.id] || ''}
-                                onChange={(e) => setCommentText({...commentText, [post.id]: e.target.value})}
+                                      placeholder="Write a comment..."
+                                      value={commentText[post.id] || ''}
+                                      onChange={(e) => setCommentText({...commentText, [post.id]: e.target.value})}
                                 onKeyPress={(e) => e.key === 'Enter' && handleAddComment(post.id)}
                                 className="rounded-full text-sm bg-white border-gray-200"
-                              />
-                              <Button 
-                                onClick={() => handleAddComment(post.id)}
-                                disabled={!commentText[post.id]?.trim()}
+                                    />
+                                    <Button 
+                                      onClick={() => handleAddComment(post.id)}
+                                      disabled={!commentText[post.id]?.trim()}
                                 size="sm"
                                 className="rounded-full px-3 bg-blue-500 hover:bg-blue-600 text-white"
-                              >
-                                <Send className="w-4 h-4" />
-                              </Button>
+                                    >
+                                      <Send className="w-4 h-4" />
+                                    </Button>
                             </div>
-                          </div>
-                          
-                          {/* Comments List */}
-                          {(() => {
+                                  </div>
+                                  
+                                  {/* Comments List */}
+                                  {(() => {
                             const comments = Array.isArray(commentsData[post.id]) ? commentsData[post.id] : [];
-                            return comments.length > 0 ? (
+                                    return comments.length > 0 ? (
                               <div className="space-y-3 max-h-64 overflow-y-auto">
-                                {comments.map((comment) => {
-                                  if (!comment || typeof comment !== 'object') return null;
-                                  return (
+                                        {comments.map((comment) => {
+                                          if (!comment || typeof comment !== 'object') return null;
+                                          return (
                                     <div key={comment.id || Math.random()} className="flex gap-2">
                                       <Avatar className="w-7 h-7">
-                                        <AvatarImage src={comment.user_picture || ''} />
-                                        <AvatarFallback>{(comment.user_name || '?').charAt(0)}</AvatarFallback>
-                                      </Avatar>
+                                                <AvatarImage src={comment.user_picture || ''} />
+                                                <AvatarFallback>{(comment.user_name || '?').charAt(0)}</AvatarFallback>
+                                              </Avatar>
                                       <div className="flex-1 rounded-2xl px-4 py-2.5 bg-white">
                                         <p className="text-sm font-semibold text-gray-900">
-                                          {comment.user_name || 'Unknown'}
-                                        </p>
+                                                  {comment.user_name || 'Unknown'}
+                                                </p>
                                         <p className="text-sm text-gray-700">
-                                          {comment.text || ''}
-                                        </p>
+                                                  {comment.text || ''}
+                                                </p>
                                         <p className="text-xs mt-1 text-gray-500">
                                           {comment.created_at ? formatTimeAgo(comment.created_at) : ''}
-                                        </p>
+                                                </p>
+                                              </div>
+                                            </div>
+                                          );
+                                        })}
                                       </div>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            ) : (
+                                    ) : (
                               <p className="text-sm text-center py-4 text-gray-500">
                                 No comments yet. Be the first to comment!
-                              </p>
-                            );
-                          })()}
-                        </div>
-                      )}
-                    </div>
+                                      </p>
+                                    );
+                                  })()}
+                                </div>
+                              )}
+                            </div>
                   ))}
-                </div>
-              ) : (
+                  </div>
+                ) : (
                 <div className={`rounded-2xl p-12 text-center ${isDark ? 'glass-card-dark' : 'glass-card'}`}>
                   <div className={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center ${isDark ? 'bg-blue-500/20' : 'bg-violet-100'}`}>
                     <Sparkles className={`w-10 h-10 ${isDark ? 'text-blue-400' : 'text-violet-500'}`} />
-                  </div>
+                    </div>
                   <h3 className={`text-2xl font-bold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {isDark ? 'Welcome to Maya' : 'Welcome to your feed!'}
                   </h3>
@@ -859,7 +863,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                       : 'Start by adding friends or creating your first post'
                     }
                   </p>
-                  <Button 
+                              <Button 
                     onClick={() => navigate('/search')}
                     className={`px-8 py-3 rounded-full ${
                       isDark 
@@ -869,7 +873,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   >
                     <Search className="w-5 h-5 mr-2" />
                     Find {isDark ? 'Connections' : 'Friends'}
-                  </Button>
+                              </Button>
                 </div>
               )}
             </div>
@@ -897,7 +901,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                     const displayPicture = isAvatarWorld
                       ? (friend.avatar_picture || friend.picture)
                       : friend.picture;
-                    
+
                     return (
                       <div 
                         key={idx} 
@@ -905,13 +909,13 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                         onClick={() => navigate(`/profile/${friend.id}`)}
                       >
                         <Avatar className="w-9 h-9">
-                          <AvatarImage src={displayPicture} />
+                            <AvatarImage src={displayPicture} />
                           <AvatarFallback className="bg-blue-500 text-white text-sm">
                             {displayName?.charAt(0)}
                           </AvatarFallback>
-                        </Avatar>
+                          </Avatar>
                         <span className="font-medium text-sm text-gray-700">
-                          {displayName}
+                              {displayName}
                         </span>
                       </div>
                     );
@@ -926,23 +930,23 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                 </h3>
                 <div className="space-y-3">
                   {[1, 2, 3].map((_, idx) => (
-                    <div 
+                      <div 
                       key={idx}
                       className="flex items-center gap-3 p-2 rounded-lg bg-gray-50"
-                    >
-                      <Avatar className="w-10 h-10">
+                      >
+                        <Avatar className="w-10 h-10">
                         <AvatarFallback className="bg-gradient-to-br from-purple-500 to-pink-500 text-white text-sm">
                           ?
                         </AvatarFallback>
-                      </Avatar>
+                        </Avatar>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm text-gray-900">
                           {isAvatarWorld ? 'Digital Spirit' : 'New User'}
-                        </p>
+                          </p>
                         <p className="text-xs text-gray-600">
                           {idx + 2} mutual connections
-                        </p>
-                      </div>
+                          </p>
+                        </div>
                       <Button 
                         size="sm"
                         variant="outline"
@@ -950,15 +954,15 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                           isDark 
                             ? 'border-blue-500/50 text-blue-300 hover:bg-blue-500/20' 
                             : 'border-violet-300 text-violet-600 hover:bg-violet-50'
-                        }`}
+              }`}
                         onClick={() => navigate('/search')}
                       >
                         <Plus className="w-3 h-3 mr-1" />
                         Add
                       </Button>
-                    </div>
-                  ))}
-                </div>
+            </div>
+          ))}
+        </div>
               </div>
 
               {/* Footer Links */}
@@ -973,38 +977,48 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                 <p>© 2024 {isDark ? 'Maya World' : 'NeuralLinks'}</p>
               </div>
             </div>
-          </div>
-        </div>
+                    </div>
+                  </div>
 
-        {/* Likes Dialog */}
-        <Dialog open={showingLikesFor !== null} onOpenChange={() => setShowingLikesFor(null)}>
+      {/* Likes Dialog */}
+      <Dialog open={showingLikesFor !== null} onOpenChange={() => setShowingLikesFor(null)}>
           <DialogContent className={`max-w-md ${isDark ? 'bg-slate-900 border-blue-500/30' : 'bg-white'}`}>
-            <DialogHeader>
+          <DialogHeader>
               <DialogTitle className={isDark ? 'text-white' : 'text-gray-900'}>
                 People who liked this
               </DialogTitle>
-            </DialogHeader>
+          </DialogHeader>
             <div className="max-h-96 overflow-y-auto space-y-2 mt-4">
-              {likesData.length > 0 ? (
-                likesData.map((user) => (
+            {likesData.length > 0 ? (
+              likesData.map((user) => {
+                const displayName = user.name || user.avatar_name || 'Unknown User';
+                const displayPicture = user.picture || user.avatar_picture || '';
+                return (
                   <div 
-                    key={user.id} 
+                    key={user.id || Math.random()} 
                     className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer ${
                       isDark ? 'hover:bg-slate-800' : 'hover:bg-gray-50'
                     }`}
                     onClick={() => {
                       setShowingLikesFor(null);
-                      navigate(`/profile/${user.id}`);
+                      if (user.id) {
+                        navigate(`/profile/${user.id}`);
+                      }
                     }}
                   >
                     <Avatar className="w-10 h-10">
-                      <AvatarImage src={user.picture} />
-                      <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+                      <AvatarImage src={displayPicture} />
+                      <AvatarFallback className="bg-blue-500 text-white">
+                        {displayName.charAt(0).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
-                    <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{user.name}</p>
+                    <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      {displayName}
+                    </p>
                   </div>
-                ))
-              ) : likesCount > 0 ? (
+                );
+              })
+            ) : likesCount > 0 ? (
                 <div className="text-center py-6">
                   <div className={`w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center ${isDark ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
                     <ThumbsUp className={`w-6 h-6 ${isDark ? 'text-blue-400' : 'text-blue-500'}`} />
@@ -1012,29 +1026,29 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   <p className={isDark ? 'text-blue-200' : 'text-gray-600'}>
                     {likesCount} {likesCount === 1 ? 'person likes' : 'people like'} this
                   </p>
-                </div>
-              ) : (
+              </div>
+            ) : (
                 <p className={`text-center py-6 ${isDark ? 'text-blue-400' : 'text-gray-500'}`}>
                   No likes yet
                 </p>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
-        {/* Side Messenger */}
+      {/* Side Messenger */}
         {showMessenger && selectedFriend && (
-          <SideMessenger
-            user={currentUser}
-            otherUserId={selectedFriend.id}
-            otherUserData={selectedFriend}
-            onClose={() => {
-              setShowMessenger(false);
-              setSelectedFriend(null);
-            }}
-          />
-        )}
-      </div>
+        <SideMessenger
+          user={currentUser}
+          otherUserId={selectedFriend.id}
+          otherUserData={selectedFriend}
+          onClose={() => {
+            setShowMessenger(false);
+            setSelectedFriend(null);
+          }}
+        />
+      )}
+    </div>
     </>
   );
 };

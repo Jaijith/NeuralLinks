@@ -462,7 +462,7 @@ class DecisionEngine:
                     "post_type": "trending",
                     "topic": trending_interests[0],
                     "interest_aligned": True
-                })
+            })
             
             # Share content
             actions.append({

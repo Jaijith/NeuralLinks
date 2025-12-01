@@ -166,6 +166,9 @@ const ProfilePageFull = ({ user: currentUser }) => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const [newPostText, setNewPostText] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
   const [editedPostText, setEditedPostText] = useState('');
   const [viewMode, setViewMode] = useState('single'); // 'single' or 'both'
@@ -318,20 +321,59 @@ const ProfilePageFull = ({ user: currentUser }) => {
     }
   };
 
+  const handleImageSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    setSelectedImage(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
   const createPost = async () => {
-    if (!newPostText.trim()) return;
+    if (!newPostText.trim() && !selectedImage) return;
     
+    setUploadingImage(true);
     try {
       const postType = worldMode === 'avatar' ? 'avatar' : 'real';
-      const response = await axios.post(`${API}/profile/posts`, 
-        { text: newPostText, post_type: postType },
-        { withCredentials: true }
-      );
-      setPosts([response.data, ...posts]);
+      let response;
+
+      if (selectedImage) {
+        // Upload image with caption
+        const formData = new FormData();
+        formData.append('file', selectedImage);
+        formData.append('caption', newPostText);
+        formData.append('post_type', postType);
+
+        response = await axios.post(`${API}/posts/upload-image`, formData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        // Create text-only post
+        response = await axios.post(`${API}/profile/posts`, 
+          { text: newPostText, post_type: postType },
+          { withCredentials: true }
+        );
+      }
+      
+      const newPost = response.data.post || response.data;
+      setPosts([newPost, ...posts]);
       setNewPostText('');
+      setSelectedImage(null);
+      setImagePreview(null);
       toast.success(worldMode === 'avatar' ? "Maya post created!" : "Post created!");
     } catch (error) {
+      console.error("Error creating post:", error);
       toast.error("Failed to create post");
+    } finally {
+      setUploadingImage(false);
     }
   };
 
@@ -382,7 +424,10 @@ const ProfilePageFull = ({ user: currentUser }) => {
       const response = await axios.get(`${API}/posts/${postId}/likes`, {
         withCredentials: true,
       });
-      setLikesData(response.data.users || []);
+      console.log("Likes response:", response.data);
+      const users = response.data.users || [];
+      console.log("Users who liked:", users);
+      setLikesData(users);
       setLikesCount(response.data.count || 0);
       setShowingLikesFor(postId);
     } catch (error) {
@@ -1394,14 +1439,50 @@ const ProfilePageFull = ({ user: currentUser }) => {
                       className="mb-2"
                       rows={2}
                     />
-                    <Button 
-                      onClick={createPost}
-                      disabled={!newPostText.trim()}
-                      className="bg-purple-600 hover:bg-purple-700 text-white"
-                    >
-                      <Send className="w-4 h-4 mr-2" />
-                      Post
-                    </Button>
+                    {/* Hidden file input */}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageSelect}
+                      className="hidden"
+                      id="profile-post-image-upload"
+                    />
+                    {/* Image Preview */}
+                    {imagePreview && (
+                      <div className="relative mb-2">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-full h-64 object-cover rounded-lg"
+                        />
+                        <button
+                          onClick={() => {
+                            setSelectedImage(null);
+                            setImagePreview(null);
+                          }}
+                          className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <label
+                        htmlFor="profile-post-image-upload"
+                        className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
+                      >
+                        <Camera className="w-5 h-5" style={{ color: '#34d399' }} />
+                        <span className="font-medium text-sm">Add Photo</span>
+                      </label>
+                      <Button 
+                        onClick={createPost}
+                        disabled={(!newPostText.trim() && !selectedImage) || uploadingImage}
+                        className="bg-purple-600 hover:bg-purple-700 text-white"
+                      >
+                        <Send className="w-4 h-4 mr-2" />
+                        {uploadingImage ? 'Posting...' : 'Post'}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </Card>
@@ -1467,7 +1548,29 @@ const ProfilePageFull = ({ user: currentUser }) => {
                             </div>
                           </div>
                         ) : (
-                          <p className="text-gray-800 mb-3">{post.text}</p>
+                          <>
+                            {post.text && (
+                              <p className="text-gray-800 mb-3">{post.text}</p>
+                            )}
+                            {/* Post Image */}
+                            {(post.image_url || post.has_image) && (
+                              <div className="mb-3 rounded-lg overflow-hidden">
+                                <img
+                                  src={post.image_url}
+                                  alt={post.text || 'Post image'}
+                                  className="w-full max-h-96 object-cover cursor-pointer"
+                                  onClick={() => {
+                                    // Open image in new tab or modal
+                                    window.open(post.image_url, '_blank');
+                                  }}
+                                  onError={(e) => {
+                                    console.error("Image load error:", post.image_url);
+                                    e.target.style.display = 'none';
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </>
                         )}
                         
                         <div className="space-y-3">
@@ -1614,17 +1717,31 @@ const ProfilePageFull = ({ user: currentUser }) => {
           </DialogHeader>
           <div className="max-h-96 overflow-y-auto space-y-2">
             {likesData.length > 0 ? (
-              likesData.map((user) => (
-                <div key={user.id} className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded">
-                  <Avatar className="w-10 h-10">
-                    <AvatarImage src={user.picture} />
-                    <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium text-sm">{user.name}</p>
+              likesData.map((user) => {
+                const displayName = user.name || user.avatar_name || 'Unknown User';
+                const displayPicture = user.picture || user.avatar_picture || '';
+                return (
+                  <div 
+                    key={user.id || Math.random()} 
+                    className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
+                    onClick={() => {
+                      if (user.id) {
+                        navigate(`/profile/${user.id}`);
+                      }
+                    }}
+                  >
+                    <Avatar className="w-10 h-10">
+                      <AvatarImage src={displayPicture} />
+                      <AvatarFallback className="bg-blue-500 text-white">
+                        {displayName.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium text-sm">{displayName}</p>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : likesCount > 0 ? (
               <div className="text-center py-4">
                 <p className="text-gray-600 mb-2">This post has {likesCount} {likesCount === 1 ? 'like' : 'likes'}</p>

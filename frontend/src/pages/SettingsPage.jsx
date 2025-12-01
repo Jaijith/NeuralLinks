@@ -108,19 +108,19 @@ const SettingsPage = ({ user, setUser }) => {
 
           <TabsContent value="memory" className="mt-0">
             <div className="flex justify-center items-center min-h-[600px]">
-              {user ? (
+            {user ? (
                 <div className="w-full max-w-4xl">
-                  <MemoryOrb user={user} hideHeader={true} />
+              <MemoryOrb user={user} hideHeader={true} />
                 </div>
-              ) : (
-                <Card className="glass-morphism p-6">
-                  <div className="text-center py-12">
-                    <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Memory Spirit</h3>
-                    <p className="text-gray-600">Please log in to view your memory spirit</p>
-                  </div>
-                </Card>
-              )}
+            ) : (
+              <Card className="glass-morphism p-6">
+                <div className="text-center py-12">
+                  <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">Memory Spirit</h3>
+                  <p className="text-gray-600">Please log in to view your memory spirit</p>
+                </div>
+              </Card>
+            )}
             </div>
           </TabsContent>
 

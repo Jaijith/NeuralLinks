@@ -462,21 +462,31 @@ class PostService:
         if not liked_by_ids:
             return {"success": True, "users": [], "count": post.get("likes", 0)}
         
+        # Filter out None/empty IDs
+        valid_ids = [uid for uid in liked_by_ids if uid]
+        if not valid_ids:
+            return {"success": True, "users": [], "count": post.get("likes", 0)}
+        
         # Get user details
         users = await self.db.users.find(
-            {"id": {"$in": liked_by_ids}},
+            {"id": {"$in": valid_ids}},
             {"_id": 0, "id": 1, "name": 1, "avatar_name": 1, "picture": 1, "avatar_picture": 1}
         ).to_list(100)
         
-        # Format users
+        # Format users - ensure all fields are present
         liked_users = []
         for u in users:
+            if not u.get("id"):
+                continue  # Skip users without ID
+            user_name = u.get("avatar_name") or u.get("name") or "Unknown User"
+            user_picture = u.get("avatar_picture") or u.get("picture") or ""
             liked_users.append({
                 "id": u["id"],
-                "name": u.get("avatar_name") or u.get("name"),
-                "picture": u.get("avatar_picture") or u.get("picture")
+                "name": user_name,
+                "picture": user_picture
             })
         
+        logger.info(f"Found {len(liked_users)} users who liked post {post_id} out of {len(valid_ids)} IDs")
         return {"success": True, "users": liked_users, "count": len(liked_by_ids)}
     
     async def update_post(self, post_id: str, user_id: str, post_data: Dict[str, Any]) -> Dict[str, Any]:

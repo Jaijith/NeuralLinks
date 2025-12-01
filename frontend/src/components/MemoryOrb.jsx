@@ -194,7 +194,7 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
   // Cycle through words in center
   useEffect(() => {
     if (knowledgeWords.length === 0) return;
-    
+
     const interval = setInterval(() => {
       setWordIndex(prev => {
         const next = (prev + 1) % knowledgeWords.length;
@@ -420,7 +420,7 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
           letter-spacing: 1px;
           text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
           animation: wordFade 2.5s ease-in-out infinite;
-        }
+          }
 
         .memory-orb-page .energy-ring {
           position: absolute;
@@ -637,18 +637,18 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
           display: 'flex',
           gap: '0.5rem'
         }}>
-          <Button
+        <Button
             onClick={() => { fetchAvatarState(); fetchFullMemory(); }}
-            variant="outline"
-            size="sm"
+          variant="outline"
+          size="sm"
             style={{
               background: 'rgba(255, 255, 255, 0.95)',
               border: '1px solid rgba(0, 0, 0, 0.1)',
               color: '#374151'
             }}
-          >
-            <RefreshCw className="w-4 h-4" />
-          </Button>
+        >
+          <RefreshCw className="w-4 h-4" />
+        </Button>
         </div>
       )}
 
@@ -688,11 +688,11 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
           
           {/* Main orb */}
           <div className="orb" ref={orbRef}>
-            {currentWord && (
+          {currentWord && (
               <div className="center-word">{currentWord}</div>
-            )}
-          </div>
-          
+          )}
+        </div>
+        
           {/* Floating memory particles */}
           {particles.map((p, i) => (
             <span
@@ -767,7 +767,7 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
       {/* Mood selector - Horizontal below stat bars */}
       <div className="mood-selector" style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '2rem', marginBottom: '1.5rem' }}>
         {Object.entries(moods).slice(0, 6).map(([moodName, _]) => (
-          <button
+          <button 
             key={moodName}
             className={`mood-btn ${mood === moodName ? 'active' : ''}`}
             onClick={() => setSelectedMood(moodName)}
@@ -806,24 +806,24 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
         {showDetails && (
           <>
             <div className="panel-tabs">
-              <button 
+          <button 
                 className={`panel-tab ${activeTab === 'semantic' ? 'active' : ''}`}
                 onClick={() => setActiveTab('semantic')}
-              >
+          >
                 🧠 Interests
-              </button>
-              <button 
+          </button>
+          <button 
                 className={`panel-tab ${activeTab === 'procedural' ? 'active' : ''}`}
                 onClick={() => setActiveTab('procedural')}
-              >
+          >
                 ⚡ Actions
-              </button>
-              <button 
+          </button>
+          <button 
                 className={`panel-tab ${activeTab === 'episodic' ? 'active' : ''}`}
                 onClick={() => setActiveTab('episodic')}
-              >
+          >
                 💫 Experiences
-              </button>
+          </button>
             </div>
 
             <div className="panel-content">
@@ -906,9 +906,9 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
                         </span>
                       </div>
                       <div style={{ fontSize: '10px', color: '#6b7280' }}>Emotional Trend</div>
-                    </div>
-                  </div>
-                  
+        </div>
+      </div>
+
                   <div style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '0.5rem', fontWeight: '500' }}>RECENT ACTIVITIES</div>
                   {(fullMemory.recent_activities || []).slice(0, 5).map((activity, i) => (
                     <div key={i} className="memory-item">
@@ -918,7 +918,7 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
                       </span>
                       <span style={{ fontSize: '10px', color: '#9ca3af', marginLeft: 'auto' }}>
                         {activity.timestamp ? new Date(activity.timestamp).toLocaleTimeString() : ''}
-                      </span>
+          </span>
                     </div>
                   ))}
                 </div>

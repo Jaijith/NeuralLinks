@@ -282,7 +282,7 @@ class StateAwareAgent:
                 
         except Exception as e:
             logger.warning(f"Error updating mood: {e}")
-
+    
     def _get_state_based_delay(self, current_state, internal_state) -> float:
         """
         Get delay based on current state - state machine controls activity

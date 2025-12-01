@@ -358,7 +358,7 @@ body.avatar-world::before {
 }
 
   /* Card backgrounds - White with glassmorphism */
-  .avatar-world .card,
+.avatar-world .card,
   .card-avatar,
   body.avatar-world [class*="card"],
   body.avatar-world .bg-card,
@@ -367,8 +367,8 @@ body.avatar-world::before {
     backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 4px 24px rgba(0, 0, 0, 0.04) !important;
-  }
-  
+}
+
   /* Override shadcn Card component specifically */
   body.avatar-world [class*="rounded-xl"][class*="border"][class*="bg-card"] {
     background: rgba(255, 255, 255, 0.95) !important;
