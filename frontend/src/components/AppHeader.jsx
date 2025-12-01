@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   Home, Users, Heart, Search, Settings as SettingsIcon, 
-  MoreHorizontal, Image 
+  Image, LogOut
 } from "lucide-react";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import WorldModeToggle from "./WorldModeToggle";
@@ -21,12 +21,25 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
+      // Clear user state immediately
       if (setUser) setUser(null);
-      navigate('/');
-      toast.success("Logged out successfully!");
+      
+      // Clear localStorage
+      localStorage.clear();
+      
+      // Call logout endpoint (don't wait for it to complete)
+      axios.post(`${API}/auth/logout`, {}, { withCredentials: true }).catch(err => {
+        console.error("Logout API error (non-critical):", err);
+      });
+      
+      // Use window.location for hard redirect to ensure it works from any page
+      window.location.href = '/';
     } catch (error) {
       console.error("Logout error:", error);
+      // Even if there's an error, still redirect
+      if (setUser) setUser(null);
+      localStorage.clear();
+      window.location.href = '/';
     }
   };
 
@@ -141,7 +154,7 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
               onClick={handleLogout}
               className="rounded-full p-2"
             >
-              <MoreHorizontal className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : ''}`} />
+              <LogOut className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
             </Button>
 
             <Avatar 

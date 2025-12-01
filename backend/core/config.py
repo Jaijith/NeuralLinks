@@ -22,6 +22,11 @@ AZURE_OPENAI_API_VERSION = os.environ.get('AZURE_OPENAI_API_VERSION', '2024-10-2
 # CORS Configuration
 CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*').split(',')
 
+# Google OAuth Configuration
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET', '')
+GOOGLE_REDIRECT_URI = os.environ.get('GOOGLE_REDIRECT_URI', 'http://localhost:3000/auth/google/callback')
+
 # Global Azure client (initialized on first access)
 _azure_client: Optional[AsyncAzureOpenAI] = None
 

@@ -2,14 +2,17 @@
 Profile Routes
 """
 
-from fastapi import APIRouter, Request, HTTPException, Query
+from fastapi import APIRouter, Request, HTTPException, Query, UploadFile, File, Form
 from typing import Dict, Any, Optional
 from core.auth import require_auth
 from services.user_service import UserService
 from services.friend_service import FriendService
 from core.database import get_database
+from utils.file_storage import save_file, get_file_url
+import logging
 
 db = get_database()
+logger = logging.getLogger(__name__)
 # Services will be injected from main app
 router = APIRouter(prefix="/api", tags=["profile"])
 
@@ -72,4 +75,90 @@ async def get_avatar_profile(request: Request):
     user = await require_auth(request)
     user_service = get_user_service()
     return await user_service.get_avatar_profile(user.id)
+
+
+@router.post("/profile/upload-picture")
+async def upload_profile_picture(
+    file: UploadFile = File(...),
+    world_mode: str = Form("real"),
+    request: Request = None
+):
+    """Upload profile picture for Sense (real) or Maya (avatar) world"""
+    user = await require_auth(request)
+    
+    # Validate file type
+    if not file.content_type or not file.content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    
+    # Read file content
+    file_content = await file.read()
+    
+    # Save file
+    try:
+        file_path = await save_file(file_content, file.filename, 'profile_pictures')
+        image_url = get_file_url(file_path)
+        logger.info(f"Profile picture saved: {file_path}, URL: {image_url}")
+    except Exception as e:
+        logger.error(f"Error saving profile picture: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save profile picture")
+    
+    # Update user profile
+    user_service = get_user_service()
+    if world_mode == 'avatar':
+        # Update avatar picture
+        await db.users.update_one(
+            {"id": user.id},
+            {"$set": {"avatar_picture": image_url}}
+        )
+    else:
+        # Update real profile picture
+        await db.users.update_one(
+            {"id": user.id},
+            {"$set": {"picture": image_url}}
+        )
+    
+    return {
+        "success": True,
+        "image_url": image_url,
+        "world_mode": world_mode
+    }
+
+
+@router.post("/profile/upload-cover")
+async def upload_cover_photo(
+    file: UploadFile = File(...),
+    world_mode: str = Form("real"),
+    request: Request = None
+):
+    """Upload cover photo for Sense (real) or Maya (avatar) world"""
+    user = await require_auth(request)
+    
+    # Validate file type
+    if not file.content_type or not file.content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    
+    # Read file content
+    file_content = await file.read()
+    
+    # Save file
+    try:
+        file_path = await save_file(file_content, file.filename, 'cover_photos')
+        image_url = get_file_url(file_path)
+        logger.info(f"Cover photo saved: {file_path}, URL: {image_url}")
+    except Exception as e:
+        logger.error(f"Error saving cover photo: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save cover photo")
+    
+    # Update user profile
+    field_name = "avatar_cover_photo" if world_mode == 'avatar' else "cover_photo"
+    await db.users.update_one(
+        {"id": user.id},
+        {"$set": {field_name: image_url}}
+    )
+    
+    return {
+        "success": True,
+        "image_url": image_url,
+        "world_mode": world_mode
+    }
 

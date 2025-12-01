@@ -43,32 +43,23 @@ function App() {
   };
 
   const handleAuthCallback = async () => {
-    const hash = window.location.hash;
-    if (hash && hash.includes("session_id=")) {
-      const sessionId = hash.split("session_id=")[1].split("&")[0];
-      
-      try {
-        const response = await axios.get(`${API}/auth/session-data`, {
-          headers: { "X-Session-ID": sessionId },
-          withCredentials: true,
-        });
-
-        document.cookie = `session_token=${response.data.session_token}; path=/; secure; samesite=none; max-age=604800`;
-
-        // Clear the hash from URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-
-        // Fetch user data
+    // Check if we're returning from Google OAuth callback
+    // The backend sets the cookie and redirects, so we just need to check auth
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    
+    if (code) {
+      // We're coming back from OAuth - backend has already set the cookie
+      // Just wait a moment for the cookie to be set, then check auth
+      setTimeout(async () => {
         await checkAuth();
-        
-        toast.success("Welcome to AI Dating Match!");
-      } catch (error) {
-        console.error("Auth error:", error);
-        toast.error("Authentication failed. Please try again.");
-        setLoading(false);
-      }
+        toast.success("Welcome to Geneses!");
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }, 100);
     } else {
-      checkAuth();
+      // Normal page load - just check if user is authenticated
+      await checkAuth();
     }
   };
 

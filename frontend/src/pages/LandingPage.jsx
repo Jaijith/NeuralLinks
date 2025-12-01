@@ -43,7 +43,8 @@ const LandingPage = ({ setUser }) => {
   }, []);
 
   const handleLogin = () => {
-    window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+    window.location.href = `${backendUrl}/api/auth/google/login?redirect=${encodeURIComponent(
       REDIRECT_URL
     )}`;
   };

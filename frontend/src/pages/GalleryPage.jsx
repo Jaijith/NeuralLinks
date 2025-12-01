@@ -180,7 +180,7 @@ const GalleryPage = ({ user, setUser }) => {
             {galleryPhotos.map((photo) => (
               <div
                 key={photo.id}
-                className="aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity border border-gray-200 shadow-sm"
+                className="relative aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity border border-gray-200 shadow-sm group"
                 onClick={() => handleImageClick(photo)}
               >
                 <img
@@ -194,8 +194,10 @@ const GalleryPage = ({ user, setUser }) => {
                   }}
                 />
                 {photo.caption && (
-                  <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent text-white">
-                    <p className="text-sm truncate">{photo.caption}</p>
+                  <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 via-black/60 to-transparent">
+                    <p className="text-sm text-white font-medium line-clamp-2 break-words">
+                      {photo.caption}
+                    </p>
                   </div>
                 )}
               </div>

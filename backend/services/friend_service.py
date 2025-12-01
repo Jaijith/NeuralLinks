@@ -19,8 +19,27 @@ class FriendService:
     
     async def send_friend_request(self, user_id: str, friend_id: str) -> Dict[str, Any]:
         """Send a friend request"""
+        logger.info(f"send_friend_request called: user_id={user_id}, friend_id={friend_id}")
+        
+        if not user_id or not friend_id:
+            logger.error(f"Invalid user_id or friend_id: user_id={user_id}, friend_id={friend_id}")
+            return {"success": False, "error": "Invalid user ID or friend ID"}
+        
         if user_id == friend_id:
+            logger.warning(f"User tried to send friend request to themselves: {user_id}")
             return {"success": False, "error": "Cannot send friend request to yourself"}
+        
+        # Verify both users exist
+        user_exists = await self.db.users.find_one({"id": user_id})
+        friend_exists = await self.db.users.find_one({"id": friend_id})
+        
+        if not user_exists:
+            logger.error(f"User not found: {user_id}")
+            return {"success": False, "error": "User not found"}
+        
+        if not friend_exists:
+            logger.error(f"Friend not found: {friend_id}")
+            return {"success": False, "error": "User not found"}
         
         # Check if friendship already exists
         existing = await self.db.friendships.find_one({
@@ -31,6 +50,7 @@ class FriendService:
         })
         
         if existing:
+            logger.info(f"Friendship already exists: user_id={user_id}, friend_id={friend_id}, status={existing.get('status')}")
             return {"success": False, "error": "Friendship already exists or request pending"}
         
         # Create friendship request
@@ -41,9 +61,22 @@ class FriendService:
             "created_at": datetime.now(timezone.utc).isoformat()
         }
         
-        await self.db.friendships.insert_one(friendship)
-        
-        return {"success": True, "message": "Friend request sent", "friendship": friendship}
+        try:
+            result = await self.db.friendships.insert_one(friendship)
+            logger.info(f"Friend request created successfully: {result.inserted_id}")
+            
+            # Convert friendship to JSON-serializable format (remove _id or convert to string)
+            friendship_response = {
+                "user_id": friendship["user_id"],
+                "friend_id": friendship["friend_id"],
+                "status": friendship["status"],
+                "created_at": friendship["created_at"]
+            }
+            
+            return {"success": True, "message": "Friend request sent", "friendship": friendship_response}
+        except Exception as e:
+            logger.error(f"Error creating friend request: {str(e)}")
+            return {"success": False, "error": f"Failed to create friend request: {str(e)}"}
     
     async def accept_friend_request(self, friendship_id: str, user_id: str) -> Dict[str, Any]:
         """Accept a friend request"""

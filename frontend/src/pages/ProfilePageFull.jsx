@@ -169,9 +169,16 @@ const ProfilePageFull = ({ user: currentUser }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingProfilePicture, setUploadingProfilePicture] = useState(false);
+  const [uploadingCoverPhoto, setUploadingCoverPhoto] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
   const [editedPostText, setEditedPostText] = useState('');
   const [viewMode, setViewMode] = useState('single'); // 'single' or 'both'
+  
+  // Pagination state
+  const [postsSkip, setPostsSkip] = useState(0);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
+  const [loadingMorePosts, setLoadingMorePosts] = useState(false);
   
   // Like & Comment state
   const [likedPosts, setLikedPosts] = useState(new Set()); // Track which posts user liked
@@ -219,9 +226,11 @@ const ProfilePageFull = ({ user: currentUser }) => {
     const targetUserId = userId || currentUser.id;
     setIsOwnProfile(targetUserId === currentUser.id);
     setPosts([]); // Clear posts immediately when navigating to a new profile
+    setPostsSkip(0);
+    setHasMorePosts(true);
     fetchProfile(targetUserId);
     fetchFriends(targetUserId);
-    fetchPosts(targetUserId); // Pass the targetUserId to fetch correct posts
+    fetchPosts(targetUserId, 0, false); // Pass the targetUserId to fetch correct posts
   }, [userId, currentUser, worldMode]); // Re-fetch when worldMode changes
 
   const fetchProfile = async (id) => {
@@ -282,18 +291,26 @@ const ProfilePageFull = ({ user: currentUser }) => {
     }
   };
 
-  const fetchPosts = async (targetUserId) => {
+  const fetchPosts = async (targetUserId, skip = 0, append = false) => {
     try {
+      if (!append) {
+        setPostsSkip(0);
+      } else {
+        setLoadingMorePosts(true);
+      }
+      
       const postType = worldMode === 'avatar' ? 'avatar' : 'real';
+      const limit = 20;
       // Use the passed targetUserId to get the correct user's posts
-      const queryParams = `post_type=${postType}&user_id=${targetUserId}`;
-      console.log(`[DEBUG] Fetching posts for user: ${targetUserId}, postType: ${postType}`);
+      const queryParams = `post_type=${postType}&user_id=${targetUserId}&limit=${limit}&skip=${skip}`;
+      console.log(`[DEBUG] Fetching posts for user: ${targetUserId}, postType: ${postType}, skip: ${skip}`);
       const response = await axios.get(`${API}/profile/posts?${queryParams}`, {
         withCredentials: true,
       });
       // API returns { posts: [...], total, skip, limit, has_more }
       const postsData = response.data?.posts || response.data || [];
-      console.log(`[DEBUG] Received ${postsData.length} posts:`, postsData.map(p => ({id: p.id, text: p.text?.substring(0, 30)})));
+      const hasMore = response.data?.has_more || false;
+      console.log(`[DEBUG] Received ${postsData.length} posts, has_more: ${hasMore}`);
       
       // Sanitize posts - ensure comments array is not included (we fetch comments separately)
       // Only keep comment_count, not the full comments array
@@ -306,11 +323,19 @@ const ProfilePageFull = ({ user: currentUser }) => {
         };
       });
       
-      setPosts(sanitizedPosts);
+      if (append) {
+        setPosts(prev => [...prev, ...sanitizedPosts]);
+      } else {
+        setPosts(sanitizedPosts);
+      }
+      
+      setHasMorePosts(hasMore);
+      setPostsSkip(skip + sanitizedPosts.length);
       
       // Initialize liked posts (check if current user liked any posts)
       const likedSet = new Set();
-      sanitizedPosts.forEach(post => {
+      const allPostsList = append ? [...posts, ...sanitizedPosts] : sanitizedPosts;
+      allPostsList.forEach(post => {
         if (post.liked_by && post.liked_by.includes(currentUser.id)) {
           likedSet.add(post.id);
         }
@@ -318,6 +343,15 @@ const ProfilePageFull = ({ user: currentUser }) => {
       setLikedPosts(likedSet);
     } catch (error) {
       console.error("Error fetching posts:", error);
+    } finally {
+      setLoadingMorePosts(false);
+    }
+  };
+  
+  const loadMorePosts = () => {
+    const targetUserId = userId || currentUser.id;
+    if (!loadingMorePosts && hasMorePosts) {
+      fetchPosts(targetUserId, postsSkip, true);
     }
   };
 
@@ -332,6 +366,76 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
     setSelectedImage(file);
     setImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleProfilePictureUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    setUploadingProfilePicture(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('world_mode', worldMode === 'avatar' ? 'avatar' : 'real');
+
+      const response = await axios.post(`${API}/profile/upload-picture`, formData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      toast.success(worldMode === 'avatar' ? "Maya profile picture updated!" : "Profile picture updated!");
+      
+      // Refresh profile to get updated data
+      const targetUserId = userId || currentUser.id;
+      await fetchProfile(targetUserId);
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+      toast.error("Failed to upload profile picture");
+    } finally {
+      setUploadingProfilePicture(false);
+    }
+  };
+
+  const handleCoverPhotoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    setUploadingCoverPhoto(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('world_mode', worldMode === 'avatar' ? 'avatar' : 'real');
+
+      const response = await axios.post(`${API}/profile/upload-cover`, formData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      toast.success(worldMode === 'avatar' ? "Maya cover photo updated!" : "Cover photo updated!");
+      
+      // Refresh profile to get updated data
+      const targetUserId = userId || currentUser.id;
+      await fetchProfile(targetUserId);
+    } catch (error) {
+      console.error("Error uploading cover photo:", error);
+      toast.error("Failed to upload cover photo");
+    } finally {
+      setUploadingCoverPhoto(false);
+    }
   };
 
   const createPost = async () => {
@@ -358,9 +462,9 @@ const ProfilePageFull = ({ user: currentUser }) => {
       } else {
         // Create text-only post
         response = await axios.post(`${API}/profile/posts`, 
-          { text: newPostText, post_type: postType },
-          { withCredentials: true }
-        );
+        { text: newPostText, post_type: postType },
+        { withCredentials: true }
+      );
       }
       
       const newPost = response.data.post || response.data;
@@ -544,14 +648,23 @@ const ProfilePageFull = ({ user: currentUser }) => {
   };
 
   const sendFriendRequest = async () => {
+    if (!profileUser?.id) {
+      toast.error("Invalid user ID");
+      return;
+    }
+    
     try {
-      await axios.post(`${API}/friends/request/${profileUser.id}`, {}, {
+      const response = await axios.post(`${API}/friends/request/${profileUser.id}`, {}, {
         withCredentials: true,
       });
       toast.success("Friend request sent!");
       setFriendshipStatus('pending');
+      // Refresh profile to update friendship status
+      fetchProfile(profileUser.id);
     } catch (error) {
-      toast.error("Failed to send request");
+      console.error("Error sending friend request:", error);
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || error.message || "Failed to send friend request";
+      toast.error(errorMessage);
     }
   };
 
@@ -613,17 +726,40 @@ const ProfilePageFull = ({ user: currentUser }) => {
       <AppHeader user={currentUser} currentPage="profile" />
       
       {/* Cover Photo */}
-      <div className="relative h-96 bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-600 profile-cover">
+      <div className="relative h-96 bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-600 profile-cover overflow-hidden">
+        {(worldMode === 'avatar' ? profileUser?.avatar_cover_photo : profileUser?.cover_photo) ? (
+          <img
+            src={worldMode === 'avatar' ? profileUser.avatar_cover_photo : profileUser.cover_photo}
+            alt="Cover photo"
+            className="w-full h-full object-cover"
+          />
+        ) : null}
         <div className="absolute inset-0 bg-black/20"></div>
         {isOwnProfile && (
+          <div className="absolute bottom-4 right-4 z-10">
+            <label className="cursor-pointer">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleCoverPhotoUpload}
+                className="hidden"
+                id="cover-photo-upload"
+                disabled={uploadingCoverPhoto}
+              />
           <Button
             variant="secondary"
-            className="absolute bottom-4 right-4 bg-white/90 hover:bg-white"
-            onClick={() => toast.info("Cover photo edit coming soon!")}
+                className="bg-white/90 hover:bg-white shadow-lg"
+                disabled={uploadingCoverPhoto}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('cover-photo-upload')?.click();
+                }}
           >
             <Camera className="w-4 h-4 mr-2" />
-            Edit Cover Photo
+                {uploadingCoverPhoto ? 'Uploading...' : 'Edit Cover Photo'}
           </Button>
+            </label>
+          </div>
         )}
       </div>
 
@@ -638,13 +774,27 @@ const ProfilePageFull = ({ user: currentUser }) => {
               </AvatarFallback>
             </Avatar>
             {isOwnProfile && (
+              <label className="cursor-pointer">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleProfilePictureUpload}
+                  className="hidden"
+                  id="profile-picture-upload"
+                  disabled={uploadingProfilePicture}
+                />
               <Button
                 size="sm"
                 className="absolute bottom-2 right-2 rounded-full w-10 h-10 p-0 bg-white hover:bg-gray-100"
-                onClick={() => toast.info("Profile photo upload coming soon!")}
+                  disabled={uploadingProfilePicture}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('profile-picture-upload')?.click();
+                  }}
               >
                 <Camera className="w-5 h-5 text-gray-700" />
               </Button>
+              </label>
             )}
           </div>
 
@@ -1474,14 +1624,14 @@ const ProfilePageFull = ({ user: currentUser }) => {
                         <Camera className="w-5 h-5" style={{ color: '#34d399' }} />
                         <span className="font-medium text-sm">Add Photo</span>
                       </label>
-                      <Button 
-                        onClick={createPost}
+                    <Button 
+                      onClick={createPost}
                         disabled={(!newPostText.trim() && !selectedImage) || uploadingImage}
-                        className="bg-purple-600 hover:bg-purple-700 text-white"
-                      >
-                        <Send className="w-4 h-4 mr-2" />
+                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                    >
+                      <Send className="w-4 h-4 mr-2" />
                         {uploadingImage ? 'Posting...' : 'Post'}
-                      </Button>
+                    </Button>
                     </div>
                   </div>
                 </div>
@@ -1550,7 +1700,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                         ) : (
                           <>
                             {post.text && (
-                              <p className="text-gray-800 mb-3">{post.text}</p>
+                          <p className="text-gray-800 mb-3">{post.text}</p>
                             )}
                             {/* Post Image */}
                             {(post.image_url || post.has_image) && (
@@ -1681,6 +1831,27 @@ const ProfilePageFull = ({ user: currentUser }) => {
                     </div>
                   </Card>
                 ))}
+                
+                {/* Load More Button */}
+                {hasMorePosts && (
+                  <div className="flex justify-center py-6">
+                    <Button
+                      onClick={loadMorePosts}
+                      disabled={loadingMorePosts}
+                      variant="outline"
+                      className="px-8 py-2"
+                    >
+                      {loadingMorePosts ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin mr-2"></div>
+                          Loading...
+                        </>
+                      ) : (
+                        'Load More Posts'
+                      )}
+                    </Button>
+                  </div>
+                )}
               </div>
             ) : (
               <Card className="p-6">
@@ -1730,16 +1901,16 @@ const ProfilePageFull = ({ user: currentUser }) => {
                       }
                     }}
                   >
-                    <Avatar className="w-10 h-10">
+                  <Avatar className="w-10 h-10">
                       <AvatarImage src={displayPicture} />
                       <AvatarFallback className="bg-blue-500 text-white">
                         {displayName.charAt(0).toUpperCase()}
                       </AvatarFallback>
-                    </Avatar>
-                    <div>
+                  </Avatar>
+                  <div>
                       <p className="font-medium text-sm">{displayName}</p>
-                    </div>
                   </div>
+                </div>
                 );
               })
             ) : likesCount > 0 ? (

@@ -128,6 +128,13 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   const [friendPosts, setFriendPosts] = useState([]);
   const [showMessenger, setShowMessenger] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
+  const [suggestedUsers, setSuggestedUsers] = useState([]);
+  const [sendingRequests, setSendingRequests] = useState(new Set());
+  
+  // Pagination state
+  const [postsSkip, setPostsSkip] = useState(0);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
+  const [loadingMorePosts, setLoadingMorePosts] = useState(false);
   
   // Like & Comment state
   const [likedPosts, setLikedPosts] = useState(new Set());
@@ -144,7 +151,8 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   const isDark = false;
 
   useEffect(() => {
-    fetchData();
+    fetchData(0, false);
+    fetchSuggestedUsers();
   }, [worldMode]);
 
   useEffect(() => {
@@ -153,23 +161,47 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     }
   }, [mode]);
 
-  const fetchData = async () => {
+  const fetchData = async (skip = 0, append = false) => {
     try {
+      if (!append) {
+        setLoading(true);
+        setPostsSkip(0);
+      } else {
+        setLoadingMorePosts(true);
+      }
+      
       const postType = worldMode === 'avatar' ? 'avatar' : 'real';
+      const limit = 20;
       
       const [friendsRes, feedPostsRes] = await Promise.all([
         axios.get(`${API}/friends`, { withCredentials: true }),
-        axios.get(`${API}/feed/posts?post_type=${postType}`, { withCredentials: true })
+        axios.get(`${API}/feed/posts?post_type=${postType}&limit=${limit}&skip=${skip}`, { withCredentials: true })
       ]);
       
       setFriends(friendsRes.data.slice(0, 9));
       
       // API returns { posts: [...], total, skip, limit, has_more }
       const allPosts = feedPostsRes.data?.posts || feedPostsRes.data || [];
+      const hasMore = feedPostsRes.data?.has_more || false;
       
       const postsWithUsers = [];
       for (const post of allPosts) {
-        const postUser = friendsRes.data.find(f => f.id === post.user_id) || currentUser;
+        // Try to find user in friends list first
+        let postUser = friendsRes.data.find(f => f.id === post.user_id);
+        
+        // If not found, create a minimal user object from post's author info
+        // This handles bots and users not in friends list
+        if (!postUser) {
+          postUser = {
+            id: post.user_id,
+            name: post.author_name || 'Unknown',
+            avatar_name: post.author_avatar_name || post.author_name || 'Unknown',
+            picture: post.author_picture,
+            avatar_picture: post.author_avatar_picture || post.author_picture,
+            is_bot: post.author_is_bot || false
+          };
+        }
+        
         postsWithUsers.push({
           ...post,
           user: postUser,
@@ -184,10 +216,20 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       }
       
       postsWithUsers.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      setFriendPosts(postsWithUsers.slice(0, 20));
       
+      if (append) {
+        setFriendPosts(prev => [...prev, ...postsWithUsers]);
+      } else {
+        setFriendPosts(postsWithUsers);
+      }
+      
+      setHasMorePosts(hasMore);
+      setPostsSkip(skip + postsWithUsers.length);
+      
+      // Update liked posts for all posts (existing + new)
+      const allPostsList = append ? [...friendPosts, ...postsWithUsers] : postsWithUsers;
       const likedSet = new Set();
-      postsWithUsers.forEach(post => {
+      allPostsList.forEach(post => {
         if (post.liked_by && Array.isArray(post.liked_by) && post.liked_by.includes(currentUser.id)) {
           likedSet.add(post.id);
         }
@@ -197,9 +239,59 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
+      setLoadingMorePosts(false);
     }
   };
   
+  const loadMorePosts = () => {
+    if (!loadingMorePosts && hasMorePosts) {
+      fetchData(postsSkip, true);
+    }
+  };
+  
+  const fetchSuggestedUsers = async () => {
+    try {
+      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
+      const response = await axios.get(`${API}/friends/suggestions?limit=5&world_mode=${postType}`, {
+        withCredentials: true,
+      });
+      setSuggestedUsers(response.data || []);
+    } catch (error) {
+      console.error("Error fetching suggested users:", error);
+      setSuggestedUsers([]);
+    }
+  };
+
+  const handleSendFriendRequest = async (userId) => {
+    if (!userId) {
+      toast.error("Invalid user ID");
+      return;
+    }
+    
+    if (sendingRequests.has(userId)) return;
+    
+    setSendingRequests(new Set(sendingRequests).add(userId));
+    try {
+      const response = await axios.post(`${API}/friends/request/${userId}`, {}, {
+        withCredentials: true,
+      });
+      
+      toast.success("Friend request sent!");
+      // Remove from suggestions
+      setSuggestedUsers(suggestedUsers.filter(u => u.id !== userId));
+      // Refresh friends list to show updated status
+      fetchData();
+    } catch (error) {
+      console.error("Error sending friend request:", error);
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || error.message || "Failed to send friend request";
+      toast.error(errorMessage);
+    } finally {
+      const newSet = new Set(sendingRequests);
+      newSet.delete(userId);
+      setSendingRequests(newSet);
+    }
+  };
+
   const handleImageSelect = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -212,10 +304,10 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     setSelectedImage(file);
     setImagePreview(URL.createObjectURL(file));
   };
-  
+
   const createPost = async () => {
     if (!postText.trim() && !selectedImage) return;
-    
+
     setUploadingImage(true);
     try {
       const postType = worldMode === 'avatar' ? 'avatar' : 'real';
@@ -223,17 +315,17 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
 
       if (selectedImage) {
         // Upload image with caption
-        const formData = new FormData();
-        formData.append('file', selectedImage);
+      const formData = new FormData();
+      formData.append('file', selectedImage);
         formData.append('caption', postText);
         formData.append('post_type', postType);
 
         response = await axios.post(`${API}/posts/upload-image`, formData, {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       } else {
         // Create text-only post
         response = await axios.post(`${API}/profile/posts`, 
@@ -656,7 +748,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                           <div className="flex items-center gap-3">
                             <div 
                               className="cursor-pointer"
-                              onClick={() => navigate(`/profile/${post.user?.id}`)}
+                              onClick={() => navigate(`/profile/${post.user_id || post.user?.id}`)}
                           >
                               <Avatar className="w-11 h-11">
                             <AvatarImage src={post.displayPicture} />
@@ -669,7 +761,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                               <div className="flex items-center gap-2">
                               <span 
                                   className="font-semibold cursor-pointer hover:underline text-gray-900"
-                                  onClick={() => navigate(`/profile/${post.user?.id}`)}
+                                  onClick={() => navigate(`/profile/${post.user_id || post.user?.id}`)}
                               >
                                 {post.displayName}
                               </span>
@@ -848,6 +940,27 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                               )}
                             </div>
                   ))}
+                  
+                  {/* Load More Button */}
+                  {hasMorePosts && (
+                    <div className="flex justify-center py-6">
+                      <Button
+                        onClick={loadMorePosts}
+                        disabled={loadingMorePosts}
+                        variant="outline"
+                        className="px-8 py-2"
+                      >
+                        {loadingMorePosts ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin mr-2"></div>
+                            Loading...
+                          </>
+                        ) : (
+                          'Load More Posts'
+                        )}
+                      </Button>
+                    </div>
+                  )}
                   </div>
                 ) : (
                 <div className={`rounded-2xl p-12 text-center ${isDark ? 'glass-card-dark' : 'glass-card'}`}>
@@ -923,46 +1036,71 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                 </div>
               </div>
 
-              {/* Discover Spirits */}
+              {/* Discover Spirits / Suggested for you */}
               <div className="rounded-xl p-4 glass-card">
                 <h3 className="font-semibold text-sm mb-3 text-gray-900">
                   {isAvatarWorld ? 'Discover Spirits' : 'Suggested for you'}
                 </h3>
                 <div className="space-y-3">
-                  {[1, 2, 3].map((_, idx) => (
+                  {suggestedUsers.length > 0 ? (
+                    suggestedUsers.map((user) => (
                       <div 
-                      key={idx}
-                      className="flex items-center gap-3 p-2 rounded-lg bg-gray-50"
+                        key={user.id}
+                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                        onClick={() => navigate(`/profile/${user.id}`)}
                       >
                         <Avatar className="w-10 h-10">
-                        <AvatarFallback className="bg-gradient-to-br from-purple-500 to-pink-500 text-white text-sm">
-                          ?
-                        </AvatarFallback>
+                          <AvatarImage src={user.picture} />
+                          <AvatarFallback className="bg-gradient-to-br from-purple-500 to-pink-500 text-white text-sm">
+                            {user.name?.charAt(0) || '?'}
+                          </AvatarFallback>
                         </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm text-gray-900">
-                          {isAvatarWorld ? 'Digital Spirit' : 'New User'}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm text-gray-900 truncate">
+                            {user.name}
                           </p>
-                        <p className="text-xs text-gray-600">
-                          {idx + 2} mutual connections
+                          {user.mutual_connections > 0 ? (
+                            <p className="text-xs text-gray-600">
+                              {user.mutual_connections} {user.mutual_connections === 1 ? 'mutual connection' : 'mutual connections'}
+                            </p>
+                          ) : (
+                            <p className="text-xs text-gray-500">
+                              {isAvatarWorld ? 'Digital Spirit' : 'New to the network'}
                           </p>
+                          )}
                         </div>
-                      <Button 
+                        <Button 
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full text-xs border-violet-300 text-violet-600 hover:bg-violet-50 flex-shrink-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSendFriendRequest(user.id);
+                          }}
+                          disabled={sendingRequests.has(user.id)}
+                        >
+                          <Plus className="w-3 h-3 mr-1" />
+                          {sendingRequests.has(user.id) ? 'Sending...' : 'Add'}
+            </Button>
+          </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-4">
+                      <p className="text-sm text-gray-500">
+                        {isAvatarWorld ? 'No spirits to discover yet' : 'No suggestions available'}
+                      </p>
+                      <Button
                         size="sm"
-                        variant="outline"
-                        className={`rounded-full text-xs ${
-                          isDark 
-                            ? 'border-blue-500/50 text-blue-300 hover:bg-blue-500/20' 
-                            : 'border-violet-300 text-violet-600 hover:bg-violet-50'
-              }`}
+                        variant="ghost"
+                        className="mt-2 text-xs text-violet-600 hover:text-violet-700"
                         onClick={() => navigate('/search')}
                       >
-                        <Plus className="w-3 h-3 mr-1" />
-                        Add
+                        <Search className="w-3 h-3 mr-1" />
+                        Search users
                       </Button>
-            </div>
-          ))}
-        </div>
+                  </div>
+                  )}
+                </div>
               </div>
 
               {/* Footer Links */}
@@ -1006,12 +1144,12 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                       }
                     }}
                   >
-                    <Avatar className="w-10 h-10">
+                  <Avatar className="w-10 h-10">
                       <AvatarImage src={displayPicture} />
                       <AvatarFallback className="bg-blue-500 text-white">
                         {displayName.charAt(0).toUpperCase()}
                       </AvatarFallback>
-                    </Avatar>
+                  </Avatar>
                     <p className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {displayName}
                     </p>

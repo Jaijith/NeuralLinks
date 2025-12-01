@@ -1,6 +1,6 @@
 INFO:     Will watch for changes in these directories: ['/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
-INFO:     Started reloader process [30468] using WatchFiles
+INFO:     Started reloader process [97318] using WatchFiles
 Process SpawnProcess-1:
 Traceback (most recent call last):
   File "/opt/homebrew/Cellar/python@3.13/3.13.4/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
@@ -41,122 +41,359 @@ Traceback (most recent call last):
   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
   File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/app/main.py", line 13, in <module>
-    from domain.avatar import IntelligentAvatar
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/__init__.py", line 7, in <module>
-    from .manager import SimpleAgentManager
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/manager.py", line 10, in <module>
-    from domain.avatar.state_aware_agent import StateAwareAgent
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/state_aware_agent.py", line 21, in <module>
-    from domain.avatar.decision import DecisionEngine
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/decision/__init__.py", line 7, in <module>
-    from .decision_engine import DecisionEngine
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/decision/decision_engine.py", line 87
-    perception_data = await self.perception_engine.perceive_all(avatar_id)
-    ^^^^^^^^^^^^^^^
-IndentationError: expected an indented block after 'else' statement on line 86
+  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/app/main.py", line 15, in <module>
+    from services.post_service import PostService
+  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/services/post_service.py", line 140
+    return created_at
+    ^^^^^^
+IndentationError: expected an indented block after 'if' statement on line 139
 WARNING:  WatchFiles detected changes in 'services/post_service.py'. Reloading...
-Process SpawnProcess-2:
-Traceback (most recent call last):
-  File "/opt/homebrew/Cellar/python@3.13/3.13.4/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
-    self.run()
-    ~~~~~~~~^^
-  File "/opt/homebrew/Cellar/python@3.13/3.13.4/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/venv/lib/python3.13/site-packages/uvicorn/_subprocess.py", line 76, in subprocess_started
-    target(sockets=sockets)
-    ~~~~~~^^^^^^^^^^^^^^^^^
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/venv/lib/python3.13/site-packages/uvicorn/server.py", line 61, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/homebrew/Cellar/python@3.13/3.13.4/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
-    return runner.run(main)
-           ~~~~~~~~~~^^^^^^
-  File "/opt/homebrew/Cellar/python@3.13/3.13.4/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "/opt/homebrew/Cellar/python@3.13/3.13.4/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
-    return future.result()
-           ~~~~~~~~~~~~~^^
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/venv/lib/python3.13/site-packages/uvicorn/server.py", line 68, in serve
-    config.load()
-    ~~~~~~~~~~~^^
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/venv/lib/python3.13/site-packages/uvicorn/config.py", line 467, in load
-    self.loaded_app = import_from_string(self.app)
-                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/venv/lib/python3.13/site-packages/uvicorn/importer.py", line 21, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/opt/homebrew/Cellar/python@3.13/3.13.4/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
-  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/app/main.py", line 13, in <module>
-    from domain.avatar import IntelligentAvatar
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/__init__.py", line 7, in <module>
-    from .manager import SimpleAgentManager
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/manager.py", line 10, in <module>
-    from domain.avatar.state_aware_agent import StateAwareAgent
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/state_aware_agent.py", line 21, in <module>
-    from domain.avatar.decision import DecisionEngine
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/decision/__init__.py", line 7, in <module>
-    from .decision_engine import DecisionEngine
-  File "/Users/jaijiths/Documents/jai_gym/NeuralLinks/backend/domain/avatar/decision/decision_engine.py", line 87
-    perception_data = await self.perception_engine.perceive_all(avatar_id)
-    ^^^^^^^^^^^^^^^
-IndentationError: expected an indented block after 'else' statement on line 86
-WARNING:  WatchFiles detected changes in 'domain/avatar/decision/decision_engine.py'. Reloading...
 WARNING:services.email_service:Email service not configured. SMTP credentials missing.
-INFO:     Started server process [30890]
+INFO:     Started server process [98538]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'services/post_service.py', 'domain/avatar/decision/decision_engine.py'. Reloading...
+INFO:     127.0.0.1:50219 - "GET /api/auth/google/login?redirect=http%3A%2F%2Flocalhost%3A3000%2Fhome HTTP/1.1" 307 Temporary Redirect
+WARNING:  WatchFiles detected changes in 'services/post_service.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:app.main:Application shutdown complete
 INFO:     Application shutdown complete.
-INFO:     Finished server process [30890]
+INFO:     Finished server process [98538]
 WARNING:services.email_service:Email service not configured. SMTP credentials missing.
-INFO:     Started server process [31111]
+INFO:     Started server process [98699]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     127.0.0.1:55751 - "OPTIONS /api/auth/session-data HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55752 - "OPTIONS /api/auth/session-data HTTP/1.1" 200 OK
-INFO:httpx:HTTP Request: GET https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data "HTTP/1.1 200 OK"
-INFO:     127.0.0.1:55754 - "GET /api/auth/session-data HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55763 - "GET /api/auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55763 - "GET /api/friends HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55763 - "GET /api/friends HTTP/1.1" 200 OK
-INFO:services.post_service:Fetched 1663 posts for feed (total available: 1663, fetch_limit: 1663)
-INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 28, 5, 12, 59, 640004, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 12, 56, 997601, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 12, 53, 583201, tzinfo=datetime.timezone.utc)]
-INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=1663, total_count=1663, has_more=True
-INFO:     127.0.0.1:55766 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
-INFO:services.post_service:Fetched 1663 posts for feed (total available: 1663, fetch_limit: 1663)
-INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 28, 5, 12, 59, 640004, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 12, 56, 997601, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 12, 53, 583201, tzinfo=datetime.timezone.utc)]
-INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=1663, total_count=1663, has_more=True
-INFO:     127.0.0.1:55763 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
-INFO:httpx:HTTP Request: GET https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data "HTTP/1.1 200 OK"
-INFO:     127.0.0.1:55754 - "GET /api/auth/session-data HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55754 - "GET /api/auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55770 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55770 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55792 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55770 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55770 - "GET /api/posts/post-dedc30ef-dca9-467d-84b1-5e643941e6fd-1764306773.583184/likes HTTP/1.1" 200 OK
-INFO:services.post_service:Found 7 users who liked post post-dedc30ef-dca9-467d-84b1-5e643941e6fd-1764145356.980521 out of 7 IDs
-INFO:     127.0.0.1:55794 - "GET /api/posts/post-dedc30ef-dca9-467d-84b1-5e643941e6fd-1764145356.980521/likes HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55813 - "GET /api/friends HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55813 - "GET /api/friends HTTP/1.1" 200 OK
-INFO:services.post_service:Fetched 1663 posts for feed (total available: 1663, fetch_limit: 1663)
-INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 28, 5, 12, 59, 640004, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 12, 56, 997601, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 12, 53, 583201, tzinfo=datetime.timezone.utc)]
-INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=1663, total_count=1663, has_more=True
-INFO:     127.0.0.1:55814 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
-INFO:services.post_service:Fetched 1663 posts for feed (total available: 1663, fetch_limit: 1663)
-INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 28, 5, 12, 59, 640004, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 12, 56, 997601, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 12, 53, 583201, tzinfo=datetime.timezone.utc)]
-INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=1663, total_count=1663, has_more=True
-INFO:     127.0.0.1:55813 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:api.auth_routes:Preserving custom uploaded picture for user dedc30ef-dca9-467d-84b1-5e643941e6fd: http://localhost:8001/uploads/profile_pictures/20251201_110253_jaijith.png
+INFO:     127.0.0.1:50336 - "GET /api/auth/google/callback?state=OsPRvOl7jovhhrcqyv0UeGPqEABVuz&code=4%2F0Ab32j90aII7ciTXgnlMMg2N2RtiuS2nt9vVyzWIT2QLBEQeHORSLV_WLZ8Zo0nMVCwfXpA&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:50336 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50355 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50336 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50355 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50364 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50363 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:50361 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:50362 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50362 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50364 - "GET /uploads/images/20251116_115159_images__1_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50361 - "GET /uploads/images/20251116_120416_images__2_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50362 - "GET /uploads/images/20251116_115125_images.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50336 - "GET /uploads/images/20251116_114359_download.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50363 - "GET /uploads/images/20251116_115406_images__3_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50355 - "GET /uploads/images/20251116_114413_download%20%281%29.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50361 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50355 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50336 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2991 posts for feed (total available: 2991, fetch_limit: 2991)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=2991, total_count=2991, has_more=True
+INFO:     127.0.0.1:50363 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50363 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50361 - "GET /uploads/images/20251201_105549_digital-art-style-traditional-christmas-scene_23-2151064185.avif HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50361 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50842 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50842 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50839 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50840 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:50838 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50838 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50839 - "GET /uploads/images/20251116_114359_download.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50842 - "GET /uploads/images/20251116_115406_images__3_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50838 - "GET /uploads/images/20251116_120416_images__2_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50840 - "GET /uploads/images/20251116_114413_download%20%281%29.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50850 - "GET /uploads/images/20251116_115159_images__1_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50851 - "GET /uploads/images/20251116_115125_images.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50840 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50937 - "OPTIONS /api/auth/logout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50939 - "POST /api/auth/logout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50986 - "GET /api/auth/google/login?redirect=http%3A%2F%2Flocalhost%3A3000%2Fhome HTTP/1.1" 307 Temporary Redirect
+INFO:api.auth_routes:Preserving custom uploaded picture for user dedc30ef-dca9-467d-84b1-5e643941e6fd: http://localhost:8001/uploads/profile_pictures/20251201_110253_jaijith.png
+INFO:     127.0.0.1:50987 - "GET /api/auth/google/callback?state=k1H3wicN3NRBwPSeKWMmluaW7NRHmY&code=4%2F0Ab32j92Ez2OqmO5oCI7JO2rzlokWucrB8YdYbY9C5I1fX6t9yCjz6TqTpK853Ll5vXx8LA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&prompt=none HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:51024 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50987 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50987 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51028 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:     127.0.0.1:51026 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:51024 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:50987 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51030 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51030 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51030 - "GET /uploads/images/20251116_120416_images__2_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51030 - "GET /uploads/images/20251116_115406_images__3_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51030 - "GET /uploads/images/20251116_115159_images__1_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51030 - "GET /uploads/images/20251116_115125_images.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51030 - "GET /uploads/images/20251116_114413_download%20%281%29.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51030 - "GET /uploads/images/20251116_114359_download.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51076 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51082 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51075 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51080 - "GET /api/profile/posts?post_type=real&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /api/profile/posts?post_type=real&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /uploads/cover_photos/20251201_102817_coverphoto.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /uploads/images/20251116_115406_images__3_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /uploads/images/20251116_115159_images__1_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /uploads/images/20251116_115125_images.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /uploads/images/20251116_114413_download%20%281%29.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /uploads/images/20251116_114359_download.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51144 - "OPTIONS /api/auth/logout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51146 - "POST /api/auth/logout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51146 - "GET /api/friends HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51150 - "GET /api/feed/posts?post_type=real HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51154 - "GET /api/friends HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51156 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51157 - "GET /api/feed/posts?post_type=real HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51146 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51146 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51146 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51423 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51425 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51495 - "GET /api/auth/google/login?redirect=http%3A%2F%2Flocalhost%3A3000%2Fhome HTTP/1.1" 307 Temporary Redirect
+INFO:api.auth_routes:Preserving custom uploaded picture for user dedc30ef-dca9-467d-84b1-5e643941e6fd: http://localhost:8001/uploads/profile_pictures/20251201_110253_jaijith.png
+INFO:     127.0.0.1:51505 - "GET /api/auth/google/callback?state=izvIFQrVvpL4eDEmTOmiIvPZzazLFe&code=4%2F0Ab32j901Lgr81vfycbnPRQSLsYAIvvOAMKta9jQhy-mCm4BcRnyGeZzlzVfzrD2yQPXhqA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:51521 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51521 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51521 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51521 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51526 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51526 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:51523 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:51526 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51602 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51598 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51600 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2991 posts for feed (total available: 2991, fetch_limit: 2991)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=2991, total_count=2991, has_more=True
+INFO:     127.0.0.1:51599 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51599 - "GET /uploads/images/20251201_105549_digital-art-style-traditional-christmas-scene_23-2151064185.avif HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51599 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51598 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51600 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51598 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51600 - "GET /uploads/cover_photos/20251201_103356_digital-art-style-christmas-scene-with-traditional-concept.jpg HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51608 - "POST /api/auth/logout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51608 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51608 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51682 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51684 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51698 - "GET /api/auth/google/login?redirect=http%3A%2F%2Flocalhost%3A3000%2Fhome HTTP/1.1" 307 Temporary Redirect
+INFO:api.auth_routes:Preserving custom uploaded picture for user dedc30ef-dca9-467d-84b1-5e643941e6fd: http://localhost:8001/uploads/profile_pictures/20251201_110253_jaijith.png
+INFO:     127.0.0.1:51733 - "GET /api/auth/google/callback?state=S0sQ7THUqkZMJF3jG1F6hDXnbNqP3X&code=4%2F0Ab32j92qGD--aiV_wXGA4g4ro-G3ZbsHvZhe8anOPSXBU4hs2iPvlIlQYDelUJgoDoyYrw&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&prompt=none HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:51733 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51747 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51747 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51753 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51751 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51756 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:51754 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:51733 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51733 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51751 - "GET /uploads/images/20251116_115125_images.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51754 - "GET /uploads/images/20251116_120416_images__2_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51733 - "GET /uploads/images/20251116_115159_images__1_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51756 - "GET /uploads/images/20251116_115406_images__3_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51747 - "GET /uploads/images/20251116_114359_download.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51753 - "GET /uploads/images/20251116_114413_download%20%281%29.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51771 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51776 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51774 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2991 posts for feed (total available: 2991, fetch_limit: 2991)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=2991, total_count=2991, has_more=True
+INFO:     127.0.0.1:51772 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51772 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51776 - "GET /uploads/images/20251201_105549_digital-art-style-traditional-christmas-scene_23-2151064185.avif HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51772 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51776 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51772 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51774 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51771 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51772 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51776 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51772 - "GET /uploads/cover_photos/20251201_103356_digital-art-style-christmas-scene-with-traditional-concept.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51772 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51776 - "GET /uploads/images/20251201_105549_digital-art-style-traditional-christmas-scene_23-2151064185.avif HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51776 - "GET /uploads/images/20251126_185131_Screenshot_2025-11-26_at_12.20.52_PM.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51774 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51771 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51774 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51776 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51800 - "OPTIONS /api/auth/logout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51802 - "POST /api/auth/logout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51802 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51823 - "GET /api/auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:52017 - "GET /api/auth/google/login?redirect=http%3A%2F%2Flocalhost%3A3000%2Fhome HTTP/1.1" 307 Temporary Redirect
+INFO:api.auth_routes:Preserving custom uploaded picture for user dedc30ef-dca9-467d-84b1-5e643941e6fd: http://localhost:8001/uploads/profile_pictures/20251201_110253_jaijith.png
+INFO:     127.0.0.1:52051 - "GET /api/auth/google/callback?state=3WwzNa9266ikDkh1nq8HGK9pGPg0Er&code=4%2F0Ab32j90OtIs3Z7FTS1R8Zs7eoSa5zBNB7TH0S9kjqNgOxvKAA8LCWyoaG033QfoORuZvEw&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&prompt=none HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:52051 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52069 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52077 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52078 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52074 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52073 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:52069 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:52051 - "GET /api/feed/posts?post_type=real HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52051 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52051 - "GET /uploads/images/20251116_120416_images__2_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52069 - "GET /uploads/images/20251116_115406_images__3_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52073 - "GET /uploads/images/20251116_115125_images.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52077 - "GET /uploads/images/20251116_114359_download.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52074 - "GET /uploads/images/20251116_115159_images__1_.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52078 - "GET /uploads/images/20251116_114413_download%20%281%29.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52096 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52091 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52094 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2991 posts for feed (total available: 2991, fetch_limit: 2991)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=2991, total_count=2991, has_more=True
+INFO:     127.0.0.1:52092 - "GET /api/feed/posts?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52092 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52092 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52094 - "GET /uploads/images/20251201_105549_digital-art-style-traditional-christmas-scene_23-2151064185.avif HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52092 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52132 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52137 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52138 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52132 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "GET /uploads/cover_photos/20251201_103356_digital-art-style-christmas-scene-with-traditional-concept.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52132 - "GET /uploads/images/20251201_105549_digital-art-style-traditional-christmas-scene_23-2151064185.avif HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52137 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52132 - "GET /uploads/images/20251126_185131_Screenshot_2025-11-26_at_12.20.52_PM.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52138 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52132 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52274 - "OPTIONS /api/profile/posts/post-dedc30ef-dca9-467d-84b1-5e643941e6fd-1763181872.300067?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52276 - "DELETE /api/profile/posts/post-dedc30ef-dca9-467d-84b1-5e643941e6fd-1763181872.300067?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52274 - "OPTIONS /api/profile/posts/post-dedc30ef-dca9-467d-84b1-5e643941e6fd-1763270117.148045?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52276 - "DELETE /api/profile/posts/post-dedc30ef-dca9-467d-84b1-5e643941e6fd-1763270117.148045?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52327 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52329 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52329 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52332 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52337 - "GET /uploads/cover_photos/20251201_103356_digital-art-style-christmas-scene-with-traditional-concept.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52329 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52336 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52327 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52333 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52329 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52337 - "GET /uploads/images/20251201_105549_digital-art-style-traditional-christmas-scene_23-2151064185.avif HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52336 - "GET /uploads/images/20251126_185131_Screenshot_2025-11-26_at_12.20.52_PM.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52333 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53407 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53407 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53411 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53411 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2989 posts for feed (total available: 2989, fetch_limit: 2989)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=2989, total_count=2989, has_more=True
+INFO:     127.0.0.1:53410 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2989 posts for feed (total available: 2989, fetch_limit: 2989)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=2989, total_count=2989, has_more=True
+INFO:     127.0.0.1:53411 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53411 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53410 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53410 - "GET /uploads/images/20251201_105549_digital-art-style-traditional-christmas-scene_23-2151064185.avif HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53410 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2989 posts for feed (total available: 2989, fetch_limit: 2989)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=20, returned=20, total_fetched=2989, total_count=2989, has_more=True
+INFO:     127.0.0.1:53411 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53415 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53415 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53471 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53415 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53473 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53473 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53473 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53473 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53500 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53473 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53502 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53502 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53502 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53502 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53502 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53589 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53502 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53589 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53589 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53591 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53611 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53591 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53611 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53614 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53615 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53591 - "GET /uploads/cover_photos/20251201_103356_digital-art-style-christmas-scene-with-traditional-concept.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53611 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53617 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53591 - "GET /uploads/images/20251201_105549_digital-art-style-traditional-christmas-scene_23-2151064185.avif HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53591 - "GET /uploads/images/20251126_185131_Screenshot_2025-11-26_at_12.20.52_PM.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53591 - "GET /uploads/images/20251116_115958_art2.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53617 - "GET /uploads/images/20251116_115915_digital_art.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53720 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53720 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53723 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53723 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2989 posts for feed (total available: 2989, fetch_limit: 2989)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=2989, total_count=2989, has_more=True
+INFO:     127.0.0.1:53721 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2989 posts for feed (total available: 2989, fetch_limit: 2989)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=2989, total_count=2989, has_more=True
+INFO:     127.0.0.1:53723 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53787 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2989 posts for feed (total available: 2989, fetch_limit: 2989)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=20, returned=20, total_fetched=2989, total_count=2989, has_more=True
+INFO:     127.0.0.1:53788 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53793 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53795 - "GET /api/friends/suggestions?limit=5&world_mode=real HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 116 posts for feed (total available: 116, fetch_limit: 116)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 11, 17, 16, 43, 20, 479985, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 17, 15, 35, 36, 738872, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 16, 8, 4, 16, 117083, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=116, total_count=116, has_more=True
+INFO:     127.0.0.1:53794 - "GET /api/feed/posts?post_type=real&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53794 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53793 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 2989 posts for feed (total available: 2989, fetch_limit: 2989)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 2, 524557, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=2989, total_count=2989, has_more=True
+INFO:     127.0.0.1:53795 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
