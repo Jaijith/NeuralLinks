@@ -54,14 +54,29 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
           {/* Left - Logo & Search */}
           <div className="flex items-center space-x-2 flex-1">
             <div 
-              className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer ${
-                worldMode === 'avatar' 
-                  ? 'bg-gradient-to-br from-blue-500 to-purple-600 avatar-glow' 
-                  : 'bg-blue-500'
-              }`}
+              className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer overflow-hidden bg-transparent"
               onClick={() => navigate('/home')}
             >
-              <Heart className="w-6 h-6 text-white fill-white" />
+              <img 
+                src="/logo.png" 
+                alt="Logo" 
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  // Fallback to Heart icon if image not found
+                  e.target.style.display = 'none';
+                  const fallback = e.target.nextElementSibling;
+                  if (fallback) fallback.style.display = 'flex';
+                }}
+              />
+              <div 
+                className={`w-full h-full rounded-full flex items-center justify-center hidden ${
+                  worldMode === 'avatar' 
+                    ? 'bg-gradient-to-br from-blue-500 to-purple-600 avatar-glow' 
+                    : 'bg-blue-500'
+                }`}
+              >
+                <Heart className="w-6 h-6 text-white fill-white" />
+              </div>
             </div>
             <div className="relative hidden md:block">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />

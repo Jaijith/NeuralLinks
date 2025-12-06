@@ -10,4 +10,7 @@ export { default as PostActions } from './PostActions';
 export { default as CommentSection } from './CommentSection';
 export { default as CommentItem } from './CommentItem';
 export { default as LikeButton } from './LikeButton';
+export { default as CreatePostCard } from './CreatePostCard';
+export { default as CreatePostDialog } from './CreatePostDialog';
+export { default as LikesDialog } from './LikesDialog';
 

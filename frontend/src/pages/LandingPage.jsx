@@ -87,8 +87,21 @@ const LandingPage = ({ setUser }) => {
       <header className="relative z-10 px-6 py-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-400 via-pink-400 to-indigo-400 rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-105 transition-transform ring-2 ring-purple-300/50">
-              <Star className="w-7 h-7 text-white fill-white" />
+            <div className="w-12 h-12 bg-transparent rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-105 transition-transform ring-2 ring-purple-300/50 overflow-hidden">
+              <img 
+                src="/logo.png" 
+                alt="Logo" 
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  // Fallback to Star icon if image not found
+                  e.target.style.display = 'none';
+                  const fallback = e.target.nextElementSibling;
+                  if (fallback) fallback.style.display = 'flex';
+                }}
+              />
+              <div className="w-full h-full bg-gradient-to-br from-purple-400 via-pink-400 to-indigo-400 rounded-2xl flex items-center justify-center hidden">
+                <Star className="w-7 h-7 text-white fill-white" />
+              </div>
             </div>
             <div>
               <h1 className={`text-2xl font-bold ${isAvatarWorld ? '!text-white font-black' : 'bg-gradient-to-r from-purple-300 via-pink-300 to-indigo-300 bg-clip-text text-transparent'}`} style={isAvatarWorld ? { color: '#ffffff' } : {}}>

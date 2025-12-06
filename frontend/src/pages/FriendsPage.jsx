@@ -1,101 +1,52 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, MessageCircle, UserMinus, UserPlus, UserX, Check, X } from "lucide-react";
-import axios from "axios";
+import { Users, MessageCircle, UserMinus, UserPlus, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
-import AppHeader from "@/components/AppHeader";
+import { PageContainer } from "@/components/layout";
+import { ConfirmDialog } from "@/components/common";
+import { useFriends, useFriendRequests } from "@/features/friends";
+import { friendService } from "@/services/api";
 import SideMessenger from "@/components/SideMessenger";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import { LoadingSpinner, EmptyState } from "@/components/common";
 
 const FriendsPage = ({ user }) => {
   const navigate = useNavigate();
   const { worldMode } = useWorldMode();
-  const [friends, setFriends] = useState([]);
-  const [friendRequests, setFriendRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("friends"); // "friends" or "requests"
+  const [activeTab, setActiveTab] = useState("friends");
   const [showMessenger, setShowMessenger] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
+  const [friendToRemove, setFriendToRemove] = useState(null);
 
-  useEffect(() => {
-    fetchFriends();
-    fetchFriendRequests();
-  }, [worldMode]); // Re-fetch when worldMode changes
+  // Use custom hooks
+  const { friends, loading: friendsLoading, refresh: refreshFriends } = useFriends(worldMode);
+  const { 
+    friendRequests, 
+    loading: requestsLoading, 
+    processing,
+    acceptRequest,
+    declineRequest,
+    refresh: refreshRequests
+  } = useFriendRequests(worldMode);
 
-  const fetchFriends = async () => {
-    try {
-      const response = await axios.get(`${API}/friends`, {
-        withCredentials: true,
-      });
-      setFriends(response.data);
-    } catch (error) {
-      console.error("Error fetching friends:", error);
-      toast.error("Failed to load friends");
-    } finally {
-      setLoading(false);
-    }
+  const loading = friendsLoading || requestsLoading;
+
+  const handleAcceptRequest = async (friendshipId, requesterId) => {
+    await acceptRequest(friendshipId, requesterId);
+    refreshFriends(); // Refresh friends list after accepting
   };
 
-  const fetchFriendRequests = async () => {
-    try {
-      const response = await axios.get(`${API}/friends/requests`, {
-        withCredentials: true,
-      });
-      setFriendRequests(response.data);
-    } catch (error) {
-      console.error("Error fetching friend requests:", error);
-      // Don't show error toast for requests, just log it
-    }
-  };
-
-  const acceptFriendRequest = async (friendshipId, requesterId) => {
-    try {
-      await axios.post(`${API}/friends/accept/${friendshipId}`, {}, {
-        withCredentials: true,
-      });
-      toast.success("Friend request accepted!");
-      fetchFriends();
-      fetchFriendRequests();
-    } catch (error) {
-      console.error("Error accepting friend request:", error);
-      toast.error("Failed to accept friend request");
-    }
-  };
-
-  const declineFriendRequest = async (friendshipId) => {
-    try {
-      await axios.post(`${API}/friends/decline/${friendshipId}`, {}, {
-        withCredentials: true,
-      });
-      toast.success("Friend request declined");
-      fetchFriendRequests();
-    } catch (error) {
-      console.error("Error declining friend request:", error);
-      toast.error("Failed to decline friend request");
-    }
-  };
-
-  const removeFriend = async (friendId) => {
-    if (!window.confirm("Are you sure you want to remove this friend?")) return;
+  const handleRemoveFriend = async () => {
+    if (!friendToRemove) return;
     
     try {
-      const response = await axios.delete(`${API}/friends/${friendId}`, {
-        withCredentials: true,
-      });
-      
-      if (response.data && response.data.message) {
-        toast.success(response.data.message);
-      } else {
-        toast.success("Friend removed");
-      }
-      
-      fetchFriends();
+      await friendService.removeFriend(friendToRemove.id);
+      toast.success("Friend removed");
+      refreshFriends();
+      setFriendToRemove(null);
     } catch (error) {
       console.error("Error removing friend:", error);
       const errorMessage = error.response?.data?.detail || error.message || "Failed to remove friend";
@@ -103,14 +54,20 @@ const FriendsPage = ({ user }) => {
     }
   };
 
+  const isAvatarWorld = worldMode === 'avatar';
+  const pageTitle = isAvatarWorld ? 'Connections' : 'Friends';
+  const pageSubtitle = isAvatarWorld ? 'Manage your digital connections' : 'Manage your connections';
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
-      <AppHeader user={user} currentPage="friends" />
-      
+    <PageContainer 
+      user={user} 
+      currentPage="friends"
+      backgroundClass="bg-gradient-to-br from-blue-50 via-white to-slate-50"
+    >
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold gradient-text mb-2">Friends</h1>
-          <p className="text-gray-600">Manage your connections</p>
+          <h1 className="text-4xl font-bold gradient-text mb-2">{pageTitle}</h1>
+          <p className="text-gray-600">{pageSubtitle}</p>
         </div>
 
         {/* Tabs for Friends and Requests */}
@@ -124,7 +81,7 @@ const FriendsPage = ({ user }) => {
             }`}
           >
             <Users className="w-4 h-4 inline mr-2" />
-            Friends {friends.length > 0 && `(${friends.length})`}
+            {pageTitle} {friends.length > 0 && `(${friends.length})`}
           </button>
           <button
             onClick={() => setActiveTab("requests")}
@@ -145,10 +102,7 @@ const FriendsPage = ({ user }) => {
         </div>
 
         {loading ? (
-          <div className="text-center py-20">
-            <div className="w-16 h-16 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading...</p>
-          </div>
+          <LoadingSpinner message="Loading..." />
         ) : activeTab === "requests" ? (
           // Friend Requests Tab
           friendRequests.length === 0 ? (
@@ -161,21 +115,23 @@ const FriendsPage = ({ user }) => {
             </Card>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {friendRequests.map((request, idx) => {
-                const requester = request.user || {};
-                const displayName = worldMode === 'avatar' 
+              {friendRequests.map((request) => {
+                const requester = request.user || request;
+                const displayName = isAvatarWorld 
                   ? (requester.avatar_name || requester.name)
                   : requester.name;
-                const displayPicture = worldMode === 'avatar'
+                const displayPicture = isAvatarWorld
                   ? (requester.avatar_picture || requester.picture)
                   : requester.picture;
-                const displayBio = worldMode === 'avatar'
+                const displayBio = isAvatarWorld
                   ? (requester.avatar_bio || requester.bio)
                   : requester.bio;
+                const requestId = request.id || request._id;
+                const isProcessing = processing.has(requestId);
                 
                 return (
                   <Card
-                    key={request.id}
+                    key={requestId}
                     className="glass-morphism p-6 card-hover"
                   >
                     <div className="flex flex-col items-center text-center">
@@ -198,14 +154,16 @@ const FriendsPage = ({ user }) => {
                       </div>
                       <div className="flex gap-2 w-full mt-3">
                         <Button
-                          onClick={() => acceptFriendRequest(request.id, requester.id)}
+                          onClick={() => handleAcceptRequest(requestId, requester.id)}
+                          disabled={isProcessing}
                           className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 rounded-full"
                         >
                           <Check className="w-4 h-4 mr-2" />
-                          Accept
+                          {isProcessing ? 'Processing...' : 'Accept'}
                         </Button>
                         <Button
-                          onClick={() => declineFriendRequest(request.id)}
+                          onClick={() => declineRequest(requestId)}
+                          disabled={isProcessing}
                           variant="outline"
                           className="border-2 border-red-400 text-red-600 hover:bg-red-50 rounded-full"
                         >
@@ -219,33 +177,25 @@ const FriendsPage = ({ user }) => {
             </div>
           )
         ) : friends.length === 0 ? (
-          <Card className="glass-morphism p-12 text-center" data-testid="no-friends">
-            <div className="w-24 h-24 bg-gradient-to-br from-purple-200 to-purple-300 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Users className="w-12 h-12 text-purple-600" />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-3">No friends yet</h3>
-            <p className="text-gray-600 mb-6">Start connecting with people to grow your network</p>
-            <Button
-              onClick={() => navigate("/search")}
-              data-testid="find-friends-btn"
-              className="btn-primary text-white px-8 py-3 rounded-full"
-            >
-              Find Friends
-            </Button>
-          </Card>
+          <EmptyState.NoFriends
+            action={{
+              label: isAvatarWorld ? 'Discover Spirits' : 'Find Friends',
+              onClick: () => navigate("/search")
+            }}
+          />
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {friends.map((friend, idx) => {
-              const displayName = worldMode === 'avatar' 
+              const displayName = isAvatarWorld 
                 ? (friend.avatar_name || friend.name)
                 : friend.name;
-              const displayPicture = worldMode === 'avatar'
+              const displayPicture = isAvatarWorld
                 ? (friend.avatar_picture || friend.picture)
                 : friend.picture;
-              const displayBio = worldMode === 'avatar'
+              const displayBio = isAvatarWorld
                 ? (friend.avatar_bio || friend.bio)
                 : friend.bio;
-              const displayInterests = worldMode === 'avatar'
+              const displayInterests = isAvatarWorld
                 ? (friend.avatar_interests || friend.interests || [])
                 : (friend.interests || []);
               
@@ -264,7 +214,7 @@ const FriendsPage = ({ user }) => {
                     </Avatar>
                     <h3 className="text-xl font-bold mb-1">{displayName}</h3>
                     <p className="text-sm text-gray-600 mb-3">
-                      {friend.age} • {worldMode === 'avatar' ? (friend.avatar_location || friend.location) : friend.location}
+                      {friend.age} • {isAvatarWorld ? (friend.avatar_location || friend.location) : friend.location}
                     </p>
                     <p className="text-sm text-gray-600 mb-4 line-clamp-2">{displayBio}</p>
                     {displayInterests && displayInterests.length > 0 && (
@@ -303,7 +253,7 @@ const FriendsPage = ({ user }) => {
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
-                          removeFriend(friend.id);
+                          setFriendToRemove(friend);
                         }}
                         data-testid={`remove-friend-${idx}`}
                         variant="outline"
@@ -320,6 +270,18 @@ const FriendsPage = ({ user }) => {
         )}
       </div>
 
+      {/* Remove Friend Confirmation Dialog */}
+      <ConfirmDialog
+        open={friendToRemove !== null}
+        onOpenChange={(open) => !open && setFriendToRemove(null)}
+        title="Remove Friend"
+        description={`Are you sure you want to remove ${friendToRemove ? (isAvatarWorld ? (friendToRemove.avatar_name || friendToRemove.name) : friendToRemove.name) : ''} from your friends?`}
+        confirmLabel="Remove"
+        cancelLabel="Cancel"
+        onConfirm={handleRemoveFriend}
+        variant="destructive"
+      />
+
       {/* Side Messenger */}
       {showMessenger && selectedFriend && (
         <SideMessenger
@@ -332,7 +294,7 @@ const FriendsPage = ({ user }) => {
           }}
         />
       )}
-    </div>
+    </PageContainer>
   );
 };
 

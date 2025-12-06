@@ -1,6 +1,7 @@
 /**
  * PostCard Component
  * Complete post card with all sections
+ * Supports both Maya (avatar) and Sense (real) worlds
  */
 
 import { memo, useState } from 'react';
@@ -9,6 +10,27 @@ import PostContent from './PostContent';
 import PostEngagement from './PostEngagement';
 import PostActions from './PostActions';
 import CommentSection from './CommentSection';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+
+/**
+ * @typedef {Object} PostCardProps
+ * @property {Object} post - The post object
+ * @property {Object} currentUser - Current logged-in user
+ * @property {string} [worldMode] - Current world mode ('real' or 'avatar')
+ * @property {boolean} [isLiked] - Whether the current user liked this post
+ * @property {function} [onLike] - Handler for like action
+ * @property {function} [onComment] - Handler for comment action
+ * @property {function} [onShare] - Handler for share action
+ * @property {function} [onUserClick] - Handler when user clicks on post author
+ * @property {function} [onMoreClick] - Handler for more options
+ * @property {Array} [comments] - Array of comments
+ * @property {function} [onAddComment] - Handler for adding a comment
+ * @property {boolean} [showComments] - Whether to show comments section
+ * @property {function} [onToggleComments] - Handler to toggle comments visibility
+ * @property {string} [className] - Additional CSS classes
+ * @property {Object} [style] - Additional inline styles
+ */
 
 const PostCard = memo(({ 
   post,
@@ -41,8 +63,8 @@ const PostCard = memo(({
   const displayComments = localComments.length > 0 ? localComments : comments;
 
   return (
-    <div 
-      className={`rounded-xl overflow-hidden post-card glass-card ${className}`}
+    <Card 
+      className={cn("rounded-xl overflow-hidden post-card glass-card", className)}
       style={style}
     >
       <PostHeader
@@ -77,7 +99,7 @@ const PostCard = memo(({
           onUserClick={onUserClick}
         />
       )}
-    </div>
+    </Card>
   );
 });
 
