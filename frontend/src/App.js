@@ -1,29 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import axios from "axios";
-import LandingPage from "./pages/LandingPage";
-import FacebookStyleHome from "./pages/FacebookStyleHome";
-import Dashboard from "./pages/Dashboard";
-import OnboardingChat from "./pages/OnboardingChat";
-import Matches from "./pages/Matches";
-import Chat from "./pages/Chat";
-import AvatarChat from "./pages/AvatarChat";
-import Profile from "./pages/Profile";
-import ProfilePageFull from "./pages/ProfilePageFull";
-import SearchPage from "./pages/SearchPage";
-import FriendsPage from "./pages/FriendsPage";
-import GalleryPage from "./pages/GalleryPage";
-import IntegrationsPage from "./pages/IntegrationsPage";
-import AvatarControl from "./pages/AvatarControl";
-import SettingsPage from "./pages/SettingsPage";
-import AvatarVisualization from "./pages/AvatarVisualization";
+import { authService } from "@/services/api";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
 import { WorldModeProvider } from "./contexts/WorldModeContext";
+import LazyPage from "./components/common/LazyPage";
+import LoadingSpinner from "./components/common/LoadingSpinner";
+import ErrorBoundary from "./components/common/ErrorBoundary";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Lazy load all pages for code splitting
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const FacebookStyleHome = lazy(() => import("./pages/FacebookStyleHome"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const OnboardingChat = lazy(() => import("./pages/OnboardingChat"));
+const Matches = lazy(() => import("./pages/Matches"));
+const Chat = lazy(() => import("./pages/Chat"));
+const AvatarChat = lazy(() => import("./pages/AvatarChat"));
+const Profile = lazy(() => import("./pages/Profile"));
+const ProfilePageFull = lazy(() => import("./pages/ProfilePageFull"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const FriendsPage = lazy(() => import("./pages/FriendsPage"));
+const GalleryPage = lazy(() => import("./pages/GalleryPage"));
+const IntegrationsPage = lazy(() => import("./pages/IntegrationsPage"));
+const AvatarControl = lazy(() => import("./pages/AvatarControl"));
+const SettingsPage = lazy(() => import("./pages/SettingsPage"));
+const AvatarVisualization = lazy(() => import("./pages/AvatarVisualization"));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,10 +33,8 @@ function App() {
 
   const checkAuth = async () => {
     try {
-      const response = await axios.get(`${API}/auth/me`, {
-        withCredentials: true,
-      });
-      setUser(response.data);
+      const userData = await authService.getCurrentUser();
+      setUser(userData);
     } catch (error) {
       setUser(null);
     } finally {
@@ -68,91 +68,225 @@ function App() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner size="lg" message="Loading..." fullScreen />;
   }
 
   return (
-    <WorldModeProvider>
-      <div className="App">
-        <BrowserRouter>
-          <Toaster position="top-right" />
-          <Routes>
-            <Route path="/" element={user ? <Navigate to="/home" /> : <LandingPage setUser={setUser} />} />
-            <Route
-              path="/onboarding"
-              element={user ? <OnboardingChat user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/home"
-              element={user ? <FacebookStyleHome user={user} setUser={setUser} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/dashboard"
-              element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/search"
-              element={user ? <SearchPage user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/friends"
-              element={user ? <FriendsPage user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/gallery"
-              element={user ? <GalleryPage user={user} setUser={setUser} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/integrations"
-              element={user ? <IntegrationsPage user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/settings"
-              element={user ? <SettingsPage user={user} setUser={setUser} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/avatar-visualization"
-              element={user ? <AvatarVisualization user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/avatar-control"
-              element={user ? <AvatarControl user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/matches"
-              element={user ? <Matches user={user} setUser={setUser} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/chat/:matchId"
-              element={user ? <Chat user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/avatar-chat/:userId"
-              element={user ? <AvatarChat user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/profile"
-              element={user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/profile/:userId"
-              element={user ? <ProfilePageFull user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/myprofile"
-              element={user ? <ProfilePageFull user={user} /> : <Navigate to="/" />}
-            />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </WorldModeProvider>
+    <ErrorBoundary>
+      <WorldModeProvider>
+        <div className="App">
+          <BrowserRouter>
+            <Toaster position="top-right" />
+            <Routes>
+              <Route 
+                path="/" 
+                element={
+                  user ? (
+                    <Navigate to="/home" />
+                  ) : (
+                    <LazyPage>
+                      <LandingPage setUser={setUser} />
+                    </LazyPage>
+                  )
+                } 
+              />
+              <Route
+                path="/onboarding"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <OnboardingChat user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/home"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <FacebookStyleHome user={user} setUser={setUser} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <Dashboard user={user} setUser={setUser} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <SearchPage user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/friends"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <FriendsPage user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/gallery"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <GalleryPage user={user} setUser={setUser} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/integrations"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <IntegrationsPage user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <SettingsPage user={user} setUser={setUser} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/avatar-visualization"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <AvatarVisualization user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/avatar-control"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <AvatarControl user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/matches"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <Matches user={user} setUser={setUser} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/chat/:matchId"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <Chat user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/avatar-chat/:userId"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <AvatarChat user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <Profile user={user} setUser={setUser} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/profile/:userId"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <ProfilePageFull user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/myprofile"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <ProfilePageFull user={user} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </WorldModeProvider>
+    </ErrorBoundary>
   );
 }
 

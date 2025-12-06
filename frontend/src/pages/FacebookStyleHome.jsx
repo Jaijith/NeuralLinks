@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -150,18 +150,10 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   // Use light theme for avatar world
   const isDark = false;
 
-  useEffect(() => {
-    fetchData(0, false);
-    fetchSuggestedUsers();
-  }, [worldMode]);
+  // Memoize world mode dependent values
+  const postType = useMemo(() => worldMode === 'avatar' ? 'avatar' : 'real', [worldMode]);
 
-  useEffect(() => {
-    if (mode === 'avatar') {
-      fetchAvatarConversations();
-    }
-  }, [mode]);
-
-  const fetchData = async (skip = 0, append = false) => {
+  const fetchData = useCallback(async (skip = 0, append = false) => {
     try {
       if (!append) {
         setLoading(true);
@@ -170,7 +162,6 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
         setLoadingMorePosts(true);
       }
       
-      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
       const limit = 20;
       
       const [friendsRes, feedPostsRes] = await Promise.all([
@@ -218,40 +209,48 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       postsWithUsers.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       
       if (append) {
-        setFriendPosts(prev => [...prev, ...postsWithUsers]);
+        setFriendPosts(prev => {
+          const allPostsList = [...prev, ...postsWithUsers];
+          // Update liked posts
+          const likedSet = new Set();
+          allPostsList.forEach(post => {
+            if (post.liked_by && Array.isArray(post.liked_by) && post.liked_by.includes(currentUser?.id)) {
+              likedSet.add(post.id);
+            }
+          });
+          setLikedPosts(likedSet);
+          return allPostsList;
+        });
       } else {
         setFriendPosts(postsWithUsers);
+        // Update liked posts
+        const likedSet = new Set();
+        postsWithUsers.forEach(post => {
+          if (post.liked_by && Array.isArray(post.liked_by) && post.liked_by.includes(currentUser?.id)) {
+            likedSet.add(post.id);
+          }
+        });
+        setLikedPosts(likedSet);
       }
       
       setHasMorePosts(hasMore);
       setPostsSkip(skip + postsWithUsers.length);
-      
-      // Update liked posts for all posts (existing + new)
-      const allPostsList = append ? [...friendPosts, ...postsWithUsers] : postsWithUsers;
-      const likedSet = new Set();
-      allPostsList.forEach(post => {
-        if (post.liked_by && Array.isArray(post.liked_by) && post.liked_by.includes(currentUser.id)) {
-          likedSet.add(post.id);
-        }
-      });
-      setLikedPosts(likedSet);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
       setLoadingMorePosts(false);
     }
-  };
+  }, [worldMode, postType, currentUser?.id]);
   
-  const loadMorePosts = () => {
+  const loadMorePosts = useCallback(() => {
     if (!loadingMorePosts && hasMorePosts) {
       fetchData(postsSkip, true);
     }
-  };
+  }, [loadingMorePosts, hasMorePosts, postsSkip, fetchData]);
   
-  const fetchSuggestedUsers = async () => {
+  const fetchSuggestedUsers = useCallback(async () => {
     try {
-      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
       const response = await axios.get(`${API}/friends/suggestions?limit=5&world_mode=${postType}`, {
         withCredentials: true,
       });
@@ -260,9 +259,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       console.error("Error fetching suggested users:", error);
       setSuggestedUsers([]);
     }
-  };
+  }, [postType]);
 
-  const handleSendFriendRequest = async (userId) => {
+  const handleSendFriendRequest = useCallback(async (userId) => {
     if (!userId) {
       toast.error("Invalid user ID");
       return;
@@ -278,9 +277,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       
       toast.success("Friend request sent!");
       // Remove from suggestions
-      setSuggestedUsers(suggestedUsers.filter(u => u.id !== userId));
+      setSuggestedUsers(prev => prev.filter(u => u.id !== userId));
       // Refresh friends list to show updated status
-      fetchData();
+      fetchData(0, false);
     } catch (error) {
       console.error("Error sending friend request:", error);
       const errorMessage = error.response?.data?.detail || error.response?.data?.message || error.message || "Failed to send friend request";
@@ -290,9 +289,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       newSet.delete(userId);
       setSendingRequests(newSet);
     }
-  };
+  }, [sendingRequests]);
 
-  const handleImageSelect = (e) => {
+  const handleImageSelect = useCallback((e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -303,14 +302,13 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
 
     setSelectedImage(file);
     setImagePreview(URL.createObjectURL(file));
-  };
+  }, []);
 
-  const createPost = async () => {
+  const createPost = useCallback(async () => {
     if (!postText.trim() && !selectedImage) return;
 
     setUploadingImage(true);
     try {
-      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
       let response;
 
       if (selectedImage) {
@@ -350,23 +348,25 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
         comment_count: (response.data.post || response.data).comment_count || 0
       };
       
-      setFriendPosts([newPost, ...friendPosts]);
+      setFriendPosts(prev => [newPost, ...prev]);
       setPostText('');
       setSelectedImage(null);
       setImagePreview(null);
       setShowCreatePost(false);
       toast.success(worldMode === 'avatar' ? "✨ Maya post created!" : "🎉 Post created!");
       
-      setTimeout(() => fetchData(), 500);
+      setTimeout(() => {
+        fetchData(0, false);
+      }, 500);
     } catch (error) {
       console.error("Error creating post:", error);
       toast.error("Failed to create post");
     } finally {
       setUploadingImage(false);
     }
-  };
+  }, [postText, selectedImage, postType, worldMode, currentUser?.id, fetchData]);
   
-  const handleLikePost = async (postId) => {
+  const handleLikePost = useCallback(async (postId) => {
     try {
       const response = await axios.post(`${API}/posts/${postId}/like`, {}, {
         withCredentials: true,
@@ -380,12 +380,12 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       }
       setLikedPosts(newLikedPosts);
       
-      const updatedPosts = friendPosts.map(p => {
+      setFriendPosts(prev => prev.map(p => {
         if (p.id === postId) {
           const currentLikedBy = Array.isArray(p.liked_by) ? p.liked_by : [];
           const newLikedBy = response.data.liked 
-            ? [...currentLikedBy, currentUser.id]
-            : currentLikedBy.filter(id => id !== currentUser.id);
+            ? [...currentLikedBy, currentUser?.id]
+            : currentLikedBy.filter(id => id !== currentUser?.id);
           return {
             ...p,
             likes: response.data.likes,
@@ -393,15 +393,14 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
           };
         }
         return p;
-      });
-      setFriendPosts(updatedPosts);
+      }));
     } catch (error) {
       console.error("Error liking post:", error);
       toast.error("Failed to like post");
     }
-  };
+  }, [currentUser?.id, likedPosts]);
   
-  const showLikes = async (postId) => {
+  const showLikes = useCallback(async (postId) => {
     try {
       const response = await axios.get(`${API}/posts/${postId}/likes`, {
         withCredentials: true,
@@ -416,9 +415,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       console.error("Error fetching likes:", error);
       toast.error("Failed to load likes");
     }
-  };
+  }, []);
   
-  const showComments = async (postId) => {
+  const showComments = useCallback(async (postId) => {
     if (showingCommentsFor === postId) {
       setShowingCommentsFor(null);
       return;
@@ -436,9 +435,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
-  };
+  }, [commentsData]);
   
-  const handleAddComment = async (postId) => {
+  const handleAddComment = useCallback(async (postId) => {
     const text = commentText[postId]?.trim();
     if (!text) return;
     
@@ -461,9 +460,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
         });
       }
       
-      setCommentText({...commentText, [postId]: ''});
+      setCommentText(prev => ({...prev, [postId]: ''}));
       
-      setFriendPosts(friendPosts.map(p => 
+      setFriendPosts(prev => prev.map(p => 
         p.id === postId ? {...p, comment_count: (p.comment_count || 0) + 1} : p
       ));
       
@@ -472,9 +471,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       console.error("Error adding comment:", error);
       toast.error("Failed to add comment");
     }
-  };
-
-  const fetchAvatarConversations = async () => {
+  }, [commentText, commentsData]);
+  
+  const fetchAvatarConversations = useCallback(async () => {
     try {
       const response = await axios.get(`${API}/avatar/conversations`, {
         withCredentials: true,
@@ -483,9 +482,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     } catch (error) {
       console.error("Error fetching avatar conversations:", error);
     }
-  };
+  }, []);
 
-  const formatTimeAgo = (dateString) => {
+  const formatTimeAgo = useCallback((dateString) => {
     const date = new Date(dateString);
     const now = new Date();
     const seconds = Math.floor((now - date) / 1000);
@@ -495,7 +494,20 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
     if (seconds < 604800) return `${Math.floor(seconds / 86400)}d`;
     return date.toLocaleDateString();
-  };
+  }, []);
+
+  // useEffect hooks after all functions are defined
+  // Only depend on worldMode to avoid infinite loops - functions are stable with useCallback
+  useEffect(() => {
+    fetchData(0, false);
+    fetchSuggestedUsers();
+  }, [worldMode]);
+
+  useEffect(() => {
+    if (mode === 'avatar') {
+      fetchAvatarConversations();
+    }
+  }, [mode, fetchAvatarConversations]);
 
   if (loading) {
     return (

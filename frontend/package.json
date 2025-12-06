@@ -59,7 +59,10 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "test:e2e": "node scripts/e2e-test.js",
+    "test:build": "node scripts/test-build.js",
+    "test:all": "npm run test:build && npm run test:e2e"
   },
   "browserslist": {
     "production": [
