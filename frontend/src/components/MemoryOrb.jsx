@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Brain, Zap, Heart, Sparkles, Activity, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { RefreshCw, Zap, Heart, Sparkles, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import axios from "axios";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 
@@ -136,8 +136,6 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
   const [currentWord, setCurrentWord] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const [knowledgeWords, setKnowledgeWords] = useState([]);
-  const [showDetails, setShowDetails] = useState(false);
-  const [activeTab, setActiveTab] = useState('semantic');
   const { worldMode } = useWorldMode();
   const isAvatarWorld = worldMode === 'avatar';
   const orbRef = useRef(null);
@@ -783,150 +781,6 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
         ))}
       </div>
 
-      {/* Memory Panel */}
-      <div className={`memory-panel ${showDetails ? 'expanded' : 'collapsed'}`}>
-        <div className="panel-header" onClick={() => setShowDetails(!showDetails)}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <Brain className="w-4 h-4" style={{ color: '#3b82f6' }} />
-            <span style={{ fontSize: '13px', fontWeight: '500', color: '#1f2937' }}>Memory Details</span>
-            {fullMemory && (
-              <span style={{ fontSize: '11px', color: '#6b7280' }}>
-                {fullMemory.procedural_memory?.total_actions || 0} actions learned
-              </span>
-            )}
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            {fullMemory?.episodic_memory && getTrendIcon(fullMemory.episodic_memory.emotional_trend)}
-            <span style={{ fontSize: '20px', transform: showDetails ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.3s', color: '#6b7280' }}>
-              ⌄
-            </span>
-          </div>
-        </div>
-
-        {showDetails && (
-          <>
-            <div className="panel-tabs">
-          <button 
-                className={`panel-tab ${activeTab === 'semantic' ? 'active' : ''}`}
-                onClick={() => setActiveTab('semantic')}
-          >
-                🧠 Interests
-          </button>
-          <button 
-                className={`panel-tab ${activeTab === 'procedural' ? 'active' : ''}`}
-                onClick={() => setActiveTab('procedural')}
-          >
-                ⚡ Actions
-          </button>
-          <button 
-                className={`panel-tab ${activeTab === 'episodic' ? 'active' : ''}`}
-                onClick={() => setActiveTab('episodic')}
-          >
-                💫 Experiences
-          </button>
-            </div>
-
-            <div className="panel-content">
-              {activeTab === 'semantic' && fullMemory?.semantic_memory && (
-                <div>
-                  <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '0.5rem', fontWeight: '500' }}>INTERESTS</div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {(fullMemory.semantic_memory.interests || []).map((interest, i) => (
-                        <span key={i} className="memory-tag" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>
-                          {interest}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '0.5rem', fontWeight: '500' }}>TRAITS</div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {(fullMemory.semantic_memory.traits || []).map((trait, i) => (
-                        <span key={i} className="memory-tag" style={{ background: 'rgba(251, 146, 60, 0.1)', color: '#f97316' }}>
-                          {trait}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '0.5rem', fontWeight: '500' }}>VALUES</div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {(fullMemory.semantic_memory.values || []).map((value, i) => (
-                        <span key={i} className="memory-tag" style={{ background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7' }}>
-                          {value}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'procedural' && fullMemory?.procedural_memory && (
-                <div>
-                  <div style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '0.75rem', fontWeight: '500' }}>
-                    ACTION SUCCESS RATES
-                  </div>
-                  {Object.entries(fullMemory.procedural_memory.success_rates || {}).map(([action, rate]) => (
-                    <div key={action} className="action-stat">
-                      <span style={{ textTransform: 'capitalize', color: '#374151' }}>{action.replace(/_/g, ' ')}</span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <div className="success-bar">
-                          <div className="success-fill" style={{ width: `${rate * 100}%` }} />
-                        </div>
-                        <span style={{ fontSize: '11px', color: '#6b7280' }}>{(rate * 100).toFixed(0)}%</span>
-                      </div>
-                    </div>
-                  ))}
-                  {fullMemory.procedural_memory.best_performing && (
-                    <div style={{ marginTop: '1rem', padding: '0.75rem', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px' }}>
-                      <span style={{ fontSize: '11px', color: '#6b7280' }}>Best performing: </span>
-                      <span style={{ color: '#22c55e', textTransform: 'capitalize', fontWeight: '500' }}>
-                        {fullMemory.procedural_memory.best_performing.replace(/_/g, ' ')}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {activeTab === 'episodic' && fullMemory?.episodic_memory && (
-                <div>
-                  <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                    <div style={{ flex: 1, padding: '0.75rem', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px' }}>
-                      <div style={{ fontSize: '20px', fontWeight: '600', color: '#1f2937' }}>
-                        {fullMemory.episodic_memory.total_experiences || 0}
-                      </div>
-                      <div style={{ fontSize: '10px', color: '#6b7280' }}>Experiences</div>
-                    </div>
-                    <div style={{ flex: 1, padding: '0.75rem', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px' }}>
-                      <div style={{ fontSize: '20px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#1f2937' }}>
-                        {getTrendIcon(fullMemory.episodic_memory.emotional_trend)}
-                        <span style={{ textTransform: 'capitalize' }}>
-                          {fullMemory.episodic_memory.emotional_trend || 'stable'}
-                        </span>
-                      </div>
-                      <div style={{ fontSize: '10px', color: '#6b7280' }}>Emotional Trend</div>
-        </div>
-      </div>
-
-                  <div style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '0.5rem', fontWeight: '500' }}>RECENT ACTIVITIES</div>
-                  {(fullMemory.recent_activities || []).slice(0, 5).map((activity, i) => (
-                    <div key={i} className="memory-item">
-                      <Activity className="w-3 h-3" style={{ color: '#6b7280' }} />
-                      <span style={{ fontSize: '12px', textTransform: 'capitalize', color: '#374151' }}>
-                        {activity.action_type?.replace(/_/g, ' ') || 'Activity'}
-                      </span>
-                      <span style={{ fontSize: '10px', color: '#9ca3af', marginLeft: 'auto' }}>
-                        {activity.timestamp ? new Date(activity.timestamp).toLocaleTimeString() : ''}
-          </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </>
-        )}
-      </div>
     </div>
   );
 };

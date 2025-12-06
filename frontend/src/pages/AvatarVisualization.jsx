@@ -11,6 +11,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useWorldMode } from "@/contexts/WorldModeContext";
+import MemoryOrb from "@/components/MemoryOrb";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
@@ -244,47 +245,60 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
 
         {/* Overview Tab */}
         {activeTab === "overview" && (
-          <div className="grid md:grid-cols-3 gap-6">
-            <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-lg font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>Interests</h3>
-                <Star className={`w-5 h-5 ${isAvatarWorld ? 'text-yellow-600' : 'text-yellow-500'}`} />
+          <div className="space-y-6">
+            {/* Memory Orb */}
+            {user && (
+              <div className="flex justify-center items-center w-full">
+                <div className="w-full max-w-4xl">
+                  <MemoryOrb user={user} hideHeader={true} />
+                </div>
               </div>
-              <div className={`text-4xl font-bold mb-2 ${isAvatarWorld ? 'text-yellow-600' : 'text-purple-600'}`}>
-                {graph_stats.interests_count}
-              </div>
-              <p className={`text-sm ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
-                Unique interests discovered
-              </p>
-            </Card>
+            )}
+            
+            {/* Stats Cards */}
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className={`text-lg font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>Interests</h3>
+                  <Star className={`w-5 h-5 ${isAvatarWorld ? 'text-yellow-600' : 'text-yellow-500'}`} />
+                </div>
+                <div className={`text-4xl font-bold mb-2 ${isAvatarWorld ? 'text-yellow-600' : 'text-purple-600'}`}>
+                  {graph_stats.interests_count}
+                </div>
+                <p className={`text-sm ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
+                  Unique interests discovered
+                </p>
+              </Card>
 
-            <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-lg font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>Traits</h3>
-                <Heart className={`w-5 h-5 ${isAvatarWorld ? 'text-pink-600' : 'text-pink-500'}`} />
-              </div>
-              <div className={`text-4xl font-bold mb-2 ${isAvatarWorld ? 'text-yellow-600' : 'text-purple-600'}`}>
-                {graph_stats.traits_count}
-              </div>
-              <p className={`text-sm ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
-                Personality traits identified
-              </p>
-            </Card>
+              <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className={`text-lg font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>Traits</h3>
+                  <Heart className={`w-5 h-5 ${isAvatarWorld ? 'text-pink-600' : 'text-pink-500'}`} />
+                </div>
+                <div className={`text-4xl font-bold mb-2 ${isAvatarWorld ? 'text-yellow-600' : 'text-purple-600'}`}>
+                  {graph_stats.traits_count}
+                </div>
+                <p className={`text-sm ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
+                  Personality traits identified
+                </p>
+              </Card>
 
-            <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-lg font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>Values</h3>
-                <Sparkles className={`w-5 h-5 ${isAvatarWorld ? 'text-blue-600' : 'text-blue-500'}`} />
-              </div>
-              <div className={`text-4xl font-bold mb-2 ${isAvatarWorld ? 'text-yellow-600' : 'text-purple-600'}`}>
-                {graph_stats.values_count}
-              </div>
-              <p className={`text-sm ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
-                Core values extracted
-              </p>
-            </Card>
+              <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className={`text-lg font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>Values</h3>
+                  <Sparkles className={`w-5 h-5 ${isAvatarWorld ? 'text-blue-600' : 'text-blue-500'}`} />
+                </div>
+                <div className={`text-4xl font-bold mb-2 ${isAvatarWorld ? 'text-yellow-600' : 'text-purple-600'}`}>
+                  {graph_stats.values_count}
+                </div>
+                <p className={`text-sm ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
+                  Core values extracted
+                </p>
+              </Card>
+            </div>
 
-            <Card className={`${isAvatarWorld ? 'card-avatar' : 'glass-morphism'} p-6 md:col-span-3`}>
+            {/* Personality Profile Card */}
+            <Card className={`${isAvatarWorld ? 'card-avatar' : 'glass-morphism'} p-6`}>
               <h3 className={`text-lg font-bold mb-4 ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
                 Personality Profile
               </h3>

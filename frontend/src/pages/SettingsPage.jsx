@@ -4,10 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Settings, Link2, Eye, User, Trash2, AlertTriangle, Sparkles } from "lucide-react";
+import { Settings, Link2, Eye, User, Trash2, AlertTriangle } from "lucide-react";
 import IntegrationsPage from "./IntegrationsPage";
 import AvatarVisualization from "./AvatarVisualization";
-import MemoryOrb from "@/components/MemoryOrb";
 import AppHeader from "@/components/AppHeader";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +18,7 @@ const API = `${BACKEND_URL}/api`;
 
 const SettingsPage = ({ user, setUser }) => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("integrations");
+  const [activeTab, setActiveTab] = useState("avatar");
   const { worldMode } = useWorldMode();
   const isAvatarWorld = worldMode === 'avatar';
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -57,14 +56,7 @@ const SettingsPage = ({ user, setUser }) => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6">
-            <TabsTrigger 
-              value="integrations" 
-              className="flex items-center justify-center space-x-2"
-            >
-              <Link2 className="w-4 h-4" />
-              <span>Integrations</span>
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-6">
             <TabsTrigger 
               value="avatar" 
               className="flex items-center justify-center space-x-2"
@@ -73,11 +65,11 @@ const SettingsPage = ({ user, setUser }) => {
               <span>Avatar Visualization</span>
             </TabsTrigger>
             <TabsTrigger 
-              value="memory" 
+              value="integrations" 
               className="flex items-center justify-center space-x-2"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>Memory Spirit</span>
+              <Link2 className="w-4 h-4" />
+              <span>Integrations</span>
             </TabsTrigger>
             <TabsTrigger 
               value="profile" 
@@ -87,10 +79,6 @@ const SettingsPage = ({ user, setUser }) => {
               <span>Profile</span>
             </TabsTrigger>
           </TabsList>
-
-          <TabsContent value="integrations" className="mt-0">
-            <IntegrationsPage user={user} hideHeader={true} />
-          </TabsContent>
 
           <TabsContent value="avatar" className="mt-0">
             {user ? (
@@ -106,22 +94,8 @@ const SettingsPage = ({ user, setUser }) => {
             )}
           </TabsContent>
 
-          <TabsContent value="memory" className="mt-0">
-            <div className="flex justify-center items-center min-h-[600px]">
-            {user ? (
-                <div className="w-full max-w-4xl">
-              <MemoryOrb user={user} hideHeader={true} />
-                </div>
-            ) : (
-              <Card className="glass-morphism p-6">
-                <div className="text-center py-12">
-                  <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Memory Spirit</h3>
-                  <p className="text-gray-600">Please log in to view your memory spirit</p>
-                </div>
-              </Card>
-            )}
-            </div>
+          <TabsContent value="integrations" className="mt-0">
+            <IntegrationsPage user={user} hideHeader={true} />
           </TabsContent>
 
           <TabsContent value="profile" className="mt-0">

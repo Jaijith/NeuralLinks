@@ -24560,3 +24560,246 @@ INFO:     127.0.0.1:61394 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61394 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61394 - "GET /api/graph/visualization HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61394 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61640 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61640 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61644 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:61643 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61644 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:61640 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61664 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61663 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61664 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61663 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61663 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61666 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61663 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61666 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:61664 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:61666 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61674 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61674 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61702 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61674 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62355 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62355 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62357 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62357 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62359 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62359 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62432 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62430 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62430 - "GET /uploads/profile_pictures/20251201_110253_jaijith.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62432 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62446 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62450 - "GET /uploads/profile_pictures/20251201_110543_avatarpic.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62446 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62430 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62432 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62448 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62448 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62448 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62504 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62504 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62505 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62505 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62505 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62505 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62505 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62514 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62514 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62517 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62517 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62518 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62518 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62518 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62518 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62518 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62528 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62528 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62528 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62528 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62518 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62538 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62538 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62538 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62538 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62538 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62538 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62538 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62541 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62541 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62541 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62538 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62538 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62538 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62538 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62541 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62546 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62546 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62546 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62546 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62546 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62559 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62559 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62559 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62559 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62561 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62561 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62561 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62561 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62565 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62565 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62565 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62565 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62588 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62588 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62588 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62588 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62624 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62624 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62624 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62624 - "GET /api/integrations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62624 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62648 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62624 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62648 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62633 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62648 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62648 - "GET /uploads/images/20251206_081519_winter-landscape-digital-painting-with-ornithological-elements_899449-194196.avif HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62668 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62650 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62668 - "GET /api/friends/requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62670 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62670 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62670 - "GET /api/matches HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:62670 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Found 5 posts with images for user dedc30ef-dca9-467d-84b1-5e643941e6fd, type avatar
+INFO:services.post_service:Returning 5 gallery items
+INFO:     127.0.0.1:62670 - "GET /api/gallery/photos?post_type=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62670 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62670 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62650 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62650 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62668 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62650 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62755 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62755 - "GET /api/graph/visualization HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62755 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62755 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62757 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62757 - "GET /api/avatar/full-memory HTTP/1.1" 200 OK
+INFO:domain.avatar.state_machine.avatar_state_machine:State machine initialized for dedc30ef-dca9-467d-84b1-5e643941e6fd: creative
+INFO:     127.0.0.1:62757 - "GET /api/avatar/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62757 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62757 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62776 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62776 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62775 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62776 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62776 - "GET /uploads/images/20251206_081519_winter-landscape-digital-painting-with-ornithological-elements_899449-194196.avif HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62776 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62757 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62775 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62757 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62757 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62757 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62776 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62775 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62757 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62776 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62780 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62780 - "GET /api/friends?user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62792 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62780 - "GET /api/profile/posts?post_type=avatar&user_id=dedc30ef-dca9-467d-84b1-5e643941e6fd&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62794 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62800 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62794 - "GET /api/friends HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62799 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62800 - "GET /api/friends/suggestions?limit=5&world_mode=avatar HTTP/1.1" 200 OK
+INFO:services.post_service:Fetched 3169 posts for feed (total available: 3169, fetch_limit: 3169)
+INFO:services.post_service:Feed posts after sorting - First 3 dates: [datetime.datetime(2025, 12, 6, 4, 15, 19, 268861, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 1, 6, 55, 49, 523465, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 11, 28, 5, 13, 7, 728089, tzinfo=datetime.timezone.utc)]
+INFO:services.post_service:Feed pagination: skip=0, returned=20, total_fetched=3169, total_count=3169, has_more=True
+INFO:     127.0.0.1:62794 - "GET /api/feed/posts?post_type=avatar&limit=20&skip=0 HTTP/1.1" 200 OK
