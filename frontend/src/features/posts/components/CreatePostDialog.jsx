@@ -86,19 +86,25 @@ const CreatePostDialog = React.memo(({
 
     setUploading(true);
     try {
-      let response;
       let newPost;
 
       if (selectedImage) {
-        // Upload image with caption
-        response = await postService.uploadPostImage(selectedImage);
-        const imageUrl = response.image_url || response.url;
+        // Upload image with caption using FormData
+        const formData = new FormData();
+        formData.append('file', selectedImage);
+        formData.append('caption', postText);
+        formData.append('post_type', postType);
         
-        // Create post with image
-        newPost = await postService.createPost(postText, postType, imageUrl);
+        const response = await postService.createPostWithImage(formData);
+        newPost = response.post || response;
       } else {
         // Create text-only post
-        newPost = await postService.createPost(postText, postType);
+        const postData = {
+          text: postText,
+          post_type: postType
+        };
+        const response = await postService.createPost(postData);
+        newPost = response.post || response;
       }
 
       // Success
@@ -112,11 +118,12 @@ const CreatePostDialog = React.memo(({
 
       // Notify parent
       if (onPostCreated) {
-        onPostCreated(newPost.post || newPost);
+        onPostCreated(newPost);
       }
     } catch (error) {
       console.error("Error creating post:", error);
-      toast.error("Failed to create post");
+      const errorMessage = error.response?.data?.detail || error.message || "Failed to create post";
+      toast.error(errorMessage);
     } finally {
       setUploading(false);
     }

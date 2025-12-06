@@ -65,21 +65,21 @@ const SignupForm = ({ onSignupSuccess, onSwitchToLogin }) => {
 
   if (submitted) {
     return (
-      <Card className="w-full max-w-md mx-auto glass-morphism border-purple-400/30">
+      <Card className="w-full max-w-md mx-auto glass-morphism border-cyan-400/30">
         <CardContent className="pt-6">
           <div className="text-center space-y-4">
-            <div className="mx-auto w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center">
-              <CheckCircle className="w-8 h-8 text-purple-300" />
+            <div className="mx-auto w-16 h-16 bg-cyan-500/20 rounded-full flex items-center justify-center">
+              <CheckCircle className="w-8 h-8 text-cyan-300" />
             </div>
             <div>
               <h3 className="text-xl font-bold text-white mb-2">Request Submitted!</h3>
-              <p className="text-purple-200 text-sm mb-4">
+              <p className="text-cyan-200 text-sm mb-4">
                 Your signup request has been sent for approval. You'll receive an email at <strong>{formData.email}</strong> once it's reviewed.
               </p>
               <Button
                 onClick={checkStatus}
                 variant="outline"
-                className="border-purple-400/50 text-purple-200 hover:bg-purple-500/20 mb-4"
+                className="border-cyan-400/50 text-cyan-200 hover:bg-cyan-500/20 mb-4"
               >
                 Check Status
               </Button>
@@ -112,50 +112,50 @@ const SignupForm = ({ onSignupSuccess, onSwitchToLogin }) => {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto glass-morphism border-purple-400/30">
+    <Card className="w-full max-w-md mx-auto glass-morphism border-cyan-400/30">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-white text-center">
-          Join Maya
+          Join 2N1
         </CardTitle>
-        <p className="text-purple-200 text-sm text-center mt-2">
+        <p className="text-cyan-200 text-sm text-center mt-2">
           Request access to create your avatar
         </p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-purple-200 mb-2">
+            <label className="block text-sm font-medium text-cyan-200 mb-2">
               Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-purple-300" />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-cyan-300" />
               <Input
                 type="text"
                 placeholder="Enter your name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
-                className="pl-10 bg-white/10 border-purple-400/30 text-white placeholder:text-purple-300/50 focus:border-purple-400"
+                className="pl-10 bg-white/10 border-cyan-400/30 text-white placeholder:text-cyan-300/50 focus:border-cyan-400"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-purple-200 mb-2">
+            <label className="block text-sm font-medium text-cyan-200 mb-2">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-purple-300" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-cyan-300" />
               <Input
                 type="email"
                 placeholder="your.email@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
-                className="pl-10 bg-white/10 border-purple-400/30 text-white placeholder:text-purple-300/50 focus:border-purple-400"
+                className="pl-10 bg-white/10 border-cyan-400/30 text-white placeholder:text-cyan-300/50 focus:border-cyan-400"
               />
             </div>
-            <p className="text-xs text-purple-300/70 mt-1">
+            <p className="text-xs text-cyan-300/70 mt-1">
               You'll use this email to log in with Google after approval
             </p>
           </div>
@@ -163,7 +163,7 @@ const SignupForm = ({ onSignupSuccess, onSwitchToLogin }) => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-600 hover:from-purple-600 hover:via-pink-600 hover:to-indigo-700 text-white font-bold py-6 rounded-lg shadow-xl transform hover:scale-105 transition-all"
+            className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 hover:from-cyan-600 hover:via-blue-600 hover:to-cyan-700 text-white font-bold py-6 rounded-lg shadow-xl transform hover:scale-105 transition-all"
           >
             {loading ? (
               <>
@@ -179,7 +179,7 @@ const SignupForm = ({ onSignupSuccess, onSwitchToLogin }) => {
             <button
               type="button"
               onClick={onSwitchToLogin}
-              className="text-sm text-purple-300 hover:text-purple-200 underline"
+              className="text-sm text-cyan-300 hover:text-cyan-200 underline"
             >
               Already approved? Log in with Google
             </button>

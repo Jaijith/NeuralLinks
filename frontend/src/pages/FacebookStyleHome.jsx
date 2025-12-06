@@ -134,7 +134,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                 {isAvatarWorld ? 'Entering Maya...' : 'Loading your feed...'}
               </p>
             </div>
-          </div>
+      </div>
         </PageContainer>
       </>
     );
@@ -170,11 +170,11 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                 onPhotoClick={() => {
                   setShowDialog(true);
                   setTimeout(() => {
-                    document.getElementById('post-image-upload')?.click();
+                        document.getElementById('post-image-upload')?.click();
                   }, 100);
                 }}
               />
-
+              
               {/* Create Post Dialog */}
               <CreatePostDialog
                 open={showDialog}
@@ -223,7 +223,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   <span className="hover:underline cursor-pointer">Help</span>
                 </div>
                 <p>© 2024 {isAvatarWorld ? 'Maya World' : 'NeuralLinks'}</p>
-              </div>
+                </div>
             </div>
           </div>
         </div>
