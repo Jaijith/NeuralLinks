@@ -60,17 +60,32 @@ const GalleryPage = ({ user, setUser }) => {
 
     setUploadingImage(true);
     try {
-      const formData = new FormData();
-      formData.append('file', selectedImage);
-      formData.append('caption', imageCaption);
-      formData.append('post_type', worldMode === 'avatar' ? 'avatar' : 'real');
-
-      const response = await axios.post(`${API}/posts/upload-image`, formData, {
-        withCredentials: true,
+      const postType = worldMode === 'avatar' ? 'avatar' : 'real';
+      
+      // Step 1: Get presigned URL from backend
+      const presignedResponse = await axios.post(`${API}/posts/presigned-upload`, {
+        filename: selectedImage.name,
+        content_type: selectedImage.type,
+        subfolder: 'images',
+      }, { withCredentials: true });
+      
+      const { presigned_url, public_url } = presignedResponse.data;
+      
+      // Step 2: Upload file directly to S3 using presigned URL
+      await fetch(presigned_url, {
+        method: 'PUT',
+        body: selectedImage,
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': selectedImage.type,
         },
       });
+      
+      // Step 3: Create the post with the S3 image URL
+      await axios.post(`${API}/posts/create-with-s3-image`, {
+        image_url: public_url,
+        caption: imageCaption,
+        post_type: postType,
+      }, { withCredentials: true });
 
       toast.success("Image uploaded successfully!");
       setShowUploadImage(false);

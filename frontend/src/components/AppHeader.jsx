@@ -27,16 +27,14 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
       // Clear localStorage
       localStorage.clear();
       
-      // Call logout endpoint (don't wait for it to complete)
-      axios.post(`${API}/auth/logout`, {}, { withCredentials: true }).catch(err => {
-        console.error("Logout API error (non-critical):", err);
-      });
+      // Call logout endpoint and WAIT for it to complete before redirecting
+      await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
       
       // Use window.location for hard redirect to ensure it works from any page
       window.location.href = '/';
     } catch (error) {
       console.error("Logout error:", error);
-      // Even if there's an error, still redirect
+      // Even if there's an error, still redirect (cookie might still be cleared)
       if (setUser) setUser(null);
       localStorage.clear();
       window.location.href = '/';

@@ -2,12 +2,17 @@
 Post Routes
 """
 
+import os
+import uuid
+from datetime import datetime
 from fastapi import APIRouter, Request, HTTPException, Query, UploadFile, File, Form
 from typing import Dict, Any, Optional
 from core.auth import require_auth
 from services.post_service import PostService
 from utils.file_storage import save_file, get_file_url
 import logging
+import boto3
+from botocore.exceptions import ClientError
 
 logger = logging.getLogger(__name__)
 
@@ -128,6 +133,88 @@ async def update_post(post_id: str, post_data: Dict[str, str], request: Request)
     return {"message": "Post updated"}
 
 
+@router.post("/posts/get-upload-url")
+async def get_upload_url(request: Request, data: Dict[str, Any]):
+    """Get a presigned S3 URL for direct image upload"""
+    user = await require_auth(request)
+    
+    filename = data.get('filename', 'image.jpg')
+    content_type = data.get('content_type', 'image/jpeg')
+    
+    # Validate content type
+    if not content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="File must be an image")
+    
+    # Generate unique S3 key
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    file_ext = os.path.splitext(filename)[1] or '.jpg'
+    safe_name = "".join(c if c.isalnum() or c in "._-" else "_" for c in os.path.splitext(filename)[0])
+    s3_key = f"images/{timestamp}_{safe_name}{file_ext}"
+    
+    # Get S3 configuration
+    s3_bucket = os.environ.get('AWS_S3_BUCKET', '')
+    s3_region = os.environ.get('AWS_S3_REGION', 'us-west-2')
+    
+    if not s3_bucket:
+        raise HTTPException(status_code=500, detail="S3 not configured")
+    
+    try:
+        s3_client = boto3.client('s3', region_name=s3_region)
+        
+        # Generate presigned URL for upload
+        presigned_url = s3_client.generate_presigned_url(
+            'put_object',
+            Params={
+                'Bucket': s3_bucket,
+                'Key': s3_key,
+                'ContentType': content_type,
+            },
+            ExpiresIn=300,  # 5 minutes
+        )
+        
+        # Generate the final image URL
+        image_url = f"https://{s3_bucket}.s3.{s3_region}.amazonaws.com/{s3_key}"
+        
+        return {
+            "upload_url": presigned_url,
+            "image_url": image_url,
+            "s3_key": s3_key,
+        }
+    except ClientError as e:
+        logger.error(f"Error generating presigned URL: {e}")
+        raise HTTPException(status_code=500, detail="Failed to generate upload URL")
+
+
+@router.post("/posts/create-with-image")
+async def create_post_with_image(request: Request, data: Dict[str, Any]):
+    """Create a post after image has been uploaded to S3"""
+    user = await require_auth(request)
+    
+    image_url = data.get('image_url')
+    caption = data.get('caption', '')
+    post_type = data.get('post_type', 'real')
+    
+    if not image_url:
+        raise HTTPException(status_code=400, detail="image_url is required")
+    
+    # Create post with image
+    post_service = get_post_service()
+    post_data = {
+        'text': caption,
+        'post_type': post_type,
+        'image_url': image_url
+    }
+    
+    post = await post_service.create_post(user.id, post_data)
+    logger.info(f"Post created with image: {post.get('id')}, image_url: {image_url}")
+    
+    return {
+        "success": True,
+        "post": post,
+        "image_url": image_url
+    }
+
+
 @router.post("/posts/upload-image")
 async def upload_image(
     file: UploadFile = File(...),
@@ -135,7 +222,7 @@ async def upload_image(
     post_type: str = Form("real"),
     request: Request = None
 ):
-    """Upload an image and create a photo post"""
+    """Upload an image and create a photo post (legacy endpoint - may have issues with large files)"""
     user = await require_auth(request)
     
     # Validate file type
@@ -164,6 +251,102 @@ async def upload_image(
     
     post = await post_service.create_post(user.id, post_data)
     logger.info(f"Post created with image: {post.get('id')}, image_url: {post.get('image_url')}")
+    
+    return {
+        "success": True,
+        "post": post,
+        "image_url": image_url
+    }
+
+
+@router.post("/posts/presigned-upload")
+async def get_presigned_upload_url(
+    request: Request,
+    data: Dict[str, Any]
+):
+    """
+    Get a presigned URL for direct S3 upload.
+    This bypasses API Gateway payload limits.
+    """
+    user = await require_auth(request)
+    
+    filename = data.get('filename', 'image.jpg')
+    content_type = data.get('content_type', 'image/jpeg')
+    subfolder = data.get('subfolder', 'images')
+    
+    # Generate unique filename
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    file_ext = os.path.splitext(filename)[1] or '.jpg'
+    safe_name = "".join(c if c.isalnum() or c in "._-" else "_" for c in os.path.splitext(filename)[0])
+    unique_filename = f"{timestamp}_{safe_name}{file_ext}"
+    s3_key = f"{subfolder}/{unique_filename}"
+    
+    # Get S3 configuration
+    s3_bucket = os.environ.get('AWS_S3_BUCKET', '')
+    s3_region = os.environ.get('AWS_S3_REGION', 'us-west-2')
+    
+    if not s3_bucket:
+        raise HTTPException(status_code=500, detail="S3 not configured")
+    
+    try:
+        s3_client = boto3.client('s3', region_name=s3_region)
+        
+        # Generate presigned URL for PUT operation
+        presigned_url = s3_client.generate_presigned_url(
+            'put_object',
+            Params={
+                'Bucket': s3_bucket,
+                'Key': s3_key,
+                'ContentType': content_type,
+            },
+            ExpiresIn=300  # 5 minutes
+        )
+        
+        # Generate the final public URL for the file
+        public_url = f"https://{s3_bucket}.s3.{s3_region}.amazonaws.com/{s3_key}"
+        
+        logger.info(f"Generated presigned URL for {s3_key}")
+        
+        return {
+            "presigned_url": presigned_url,
+            "public_url": public_url,
+            "s3_key": s3_key,
+            "expires_in": 300
+        }
+        
+    except ClientError as e:
+        logger.error(f"Error generating presigned URL: {e}")
+        raise HTTPException(status_code=500, detail="Failed to generate upload URL")
+
+
+@router.post("/posts/create-with-s3-image")
+async def create_post_with_s3_image(
+    request: Request,
+    data: Dict[str, Any]
+):
+    """
+    Create a post with an image that was uploaded directly to S3.
+    Called after successful presigned URL upload.
+    """
+    user = await require_auth(request)
+    
+    image_url = data.get('image_url')
+    caption = data.get('caption', '')
+    post_type = data.get('post_type', 'real')
+    
+    if not image_url:
+        raise HTTPException(status_code=400, detail="image_url is required")
+    
+    # Create post with image
+    post_service = get_post_service()
+    post_data = {
+        'text': caption,
+        'post_type': post_type,
+        'image_url': image_url
+    }
+    
+    post = await post_service.create_post(user.id, post_data)
+    logger.info(f"Post created with S3 image: {post.get('id')}, image_url: {image_url}")
     
     return {
         "success": True,

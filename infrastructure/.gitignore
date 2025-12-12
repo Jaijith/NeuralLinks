@@ -1,0 +1,25 @@
+# CDK asset staging directory
+cdk.out
+*.swp
+*.swo
+*~
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build
+*.js
+!jest.config.js
+*.d.ts
+
+# IDE
+.idea
+.vscode
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+

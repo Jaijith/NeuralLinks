@@ -100,12 +100,22 @@ app.include_router(match_router)
 app.include_router(agent_router)
 
 # Serve static files (uploads)
-# Use absolute path to ensure consistency
+# Use absolute path to ensure consistency - handle Lambda read-only filesystem
 import os
 ROOT_DIR = Path(__file__).parent.parent.parent  # Go up to project root
-UPLOAD_DIR = ROOT_DIR / 'uploads'
-UPLOAD_DIR.mkdir(exist_ok=True)
-app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
+
+# For Lambda, use /tmp which is writable; otherwise use local uploads folder
+if os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+    UPLOAD_DIR = Path('/tmp/uploads')
+else:
+    UPLOAD_DIR = ROOT_DIR / 'uploads'
+
+# Create directory only if it doesn't exist (handle read-only filesystem)
+try:
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
+except OSError as e:
+    logger.warning(f"Could not create/mount upload directory: {UPLOAD_DIR} - {e}")
 
 # All routes are now in api/ modules - server.py has been removed
 # All global instances are available via app.globals

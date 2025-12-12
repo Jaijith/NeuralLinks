@@ -117,8 +117,24 @@ const useHomeFeed = (worldMode = 'real', currentUser) => {
   }, [fetchData]);
 
   const addPost = useCallback((newPost) => {
-    setPosts(prev => [newPost, ...prev]);
-  }, []);
+    // Enrich new post with current user data
+    const enrichedPost = {
+      ...newPost,
+      user_id: newPost.user_id || currentUser?.id,
+      user: currentUser,
+      author_name: newPost.author_name || currentUser?.name,
+      author_avatar_name: newPost.author_avatar_name || currentUser?.avatar_name,
+      author_picture: newPost.author_picture || currentUser?.picture,
+      author_avatar_picture: newPost.author_avatar_picture || currentUser?.avatar_picture,
+      displayName: worldMode === 'avatar'
+        ? (newPost.author_avatar_name || currentUser?.avatar_name || currentUser?.name)
+        : (newPost.author_name || currentUser?.name),
+      displayPicture: worldMode === 'avatar'
+        ? (newPost.author_avatar_picture || currentUser?.avatar_picture || currentUser?.picture)
+        : (newPost.author_picture || currentUser?.picture),
+    };
+    setPosts(prev => [enrichedPost, ...prev]);
+  }, [currentUser, worldMode]);
 
   return {
     posts,

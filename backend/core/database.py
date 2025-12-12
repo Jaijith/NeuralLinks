@@ -14,7 +14,8 @@ ROOT_DIR = Path(__file__).parent.parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection settings
-MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+# Priority: MONGODB_URI (for production/Atlas) > MONGO_URL (for local dev)
+MONGODB_URI = os.environ.get('MONGODB_URI') or os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
 DB_NAME = os.environ.get('DB_NAME', 'neurallinks_local')
 
 # Global database client (initialized on first access)
@@ -26,7 +27,7 @@ def get_mongo_client() -> AsyncIOMotorClient:
     """Get or create MongoDB client"""
     global _client
     if _client is None:
-        _client = AsyncIOMotorClient(MONGO_URL)
+        _client = AsyncIOMotorClient(MONGODB_URI)
     return _client
 
 

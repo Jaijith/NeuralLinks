@@ -2,6 +2,7 @@
 Authentication Routes
 """
 
+import os
 from fastapi import APIRouter, Request, Response, HTTPException
 from fastapi.responses import RedirectResponse
 from core.auth import require_auth
@@ -217,7 +218,11 @@ async def google_callback(request: Request, response: Response):
         await db.user_sessions.insert_one(session_dict)
         
         # Get redirect URL from query params or use default
-        redirect_url = request.query_params.get('redirect', 'http://localhost:3000/home')
+        frontend_url = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
+        redirect_url = request.query_params.get('redirect', f'{frontend_url}/home')
+        
+        # Determine if we're in production (HTTPS)
+        is_production = frontend_url.startswith('https')
         
         # Set cookie and redirect
         response = RedirectResponse(url=redirect_url)
@@ -226,9 +231,10 @@ async def google_callback(request: Request, response: Response):
             value=session_token,
             max_age=7 * 24 * 60 * 60,  # 7 days
             httponly=True,
-            secure=True,
-            samesite='lax',
-            path='/'
+            secure=is_production,
+            samesite='lax' if is_production else 'lax',
+            path='/',
+            domain='.2ness.com' if is_production else None  # Allow subdomain access in production
         )
         
         return response
@@ -257,11 +263,29 @@ async def get_me(request: Request):
 
 @router.post("/logout")
 async def logout(request: Request, response: Response):
-    """Logout user"""
-    user = await require_auth(request)
+    """Logout user - doesn't require auth, just clears the cookie"""
+    # Determine if we're in production
+    frontend_url = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
+    is_production = frontend_url.startswith('https')
     
-    # Clear session token
-    response.delete_cookie("session_token")
+    # Try to get session token and invalidate it in DB
+    session_token = request.cookies.get("session_token")
+    if session_token:
+        try:
+            await db.user_sessions.delete_one({"session_token": session_token})
+        except Exception as e:
+            logger.warning(f"Failed to delete session from DB: {e}")
+    
+    # Clear session token with matching cookie settings
+    response.delete_cookie(
+        key="session_token",
+        path='/',
+        domain='.2ness.com' if is_production else None
+    )
+    
+    # Also try clearing without domain for backwards compatibility
+    response.delete_cookie(key="session_token", path='/')
+    
     return {"message": "Logged out"}
 
 

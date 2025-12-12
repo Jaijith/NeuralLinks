@@ -38,15 +38,48 @@ export const postService = {
   },
 
   /**
-   * Create a post with image
+   * Create a post with image using presigned S3 URL
+   * This bypasses API Gateway payload limits and avoids binary corruption
    */
   createPostWithImage: async (formData) => {
-    const response = await apiClient.post(endpoints.posts.uploadImage, formData, {
+    // Extract file and metadata from FormData
+    const file = formData.get('file');
+    const caption = formData.get('caption') || '';
+    const postType = formData.get('post_type') || 'real';
+    
+    if (!file) {
+      throw new Error('No file provided');
+    }
+    
+    // Step 1: Get presigned URL from backend
+    const presignedResponse = await apiClient.post(endpoints.posts.getUploadUrl, {
+      filename: file.name,
+      content_type: file.type,
+    });
+    
+    const { upload_url, image_url } = presignedResponse.data;
+    
+    // Step 2: Upload file directly to S3 using presigned URL
+    const uploadResponse = await fetch(upload_url, {
+      method: 'PUT',
+      body: file,
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': file.type,
       },
     });
-    return response.data;
+    
+    if (!uploadResponse.ok) {
+      throw new Error(`S3 upload failed: ${uploadResponse.status}`);
+    }
+    
+    // Step 3: Create the post with the S3 image URL
+    const postResponse = await apiClient.post(endpoints.posts.createWithImage, {
+      image_url: image_url,
+      caption: caption,
+      post_type: postType,
+    });
+    
+    return postResponse.data;
   },
 
   /**
