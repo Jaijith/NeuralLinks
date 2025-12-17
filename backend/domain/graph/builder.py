@@ -4,21 +4,25 @@ Handles knowledge graph construction and enrichment from user data
 """
 
 import re
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any, Tuple, Union
 from datetime import datetime, timezone
 import uuid
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from openai import AsyncAzureOpenAI
+from openai import AsyncOpenAI, AsyncAzureOpenAI
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class GraphBuilder:
     """Builds and enriches knowledge graphs from user data"""
     
-    def __init__(self, db: AsyncIOMotorDatabase, llm_client: AsyncAzureOpenAI, deployment: str):
+    def __init__(self, db: AsyncIOMotorDatabase, llm_client: Union[AsyncOpenAI, AsyncAzureOpenAI, None], model: str = "gpt-4o-mini"):
         self.db = db
         self.llm_client = llm_client
-        self.deployment = deployment
+        self.model = model  # Model name for OpenAI or deployment name for Azure
+        self.deployment = model  # Alias for backwards compatibility
     
     async def extract_entities_from_text(self, text: str, user_id: str) -> List[Dict[str, Any]]:
         """
@@ -42,11 +46,12 @@ Text: {text}
 Return ONLY the JSON array, no explanation."""
 
             response = await self.llm_client.chat.completions.create(
-                model=self.deployment,
+                model=self.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3,
                 max_tokens=500
             )
+            logger.info(f"Successfully extracted entities using {self.model}")
             
             content = response.choices[0].message.content.strip()
             

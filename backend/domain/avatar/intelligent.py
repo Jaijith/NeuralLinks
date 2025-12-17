@@ -3,9 +3,9 @@ Intelligent Avatar Module
 Handles avatar behavior powered by Graph RAG and LLM
 """
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 from datetime import datetime, timezone
-from openai import AsyncAzureOpenAI
+from openai import AsyncOpenAI, AsyncAzureOpenAI
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from domain.graph.rag import GraphRAG
 import uuid
@@ -14,11 +14,11 @@ import uuid
 class IntelligentAvatar:
     """Avatar with Graph RAG-powered intelligence"""
     
-    def __init__(self, db: AsyncIOMotorDatabase, llm_client: AsyncAzureOpenAI, 
-                 deployment: str, graph_rag: GraphRAG):
+    def __init__(self, db: AsyncIOMotorDatabase, llm_client: Union[AsyncOpenAI, AsyncAzureOpenAI, None], 
+                 model: str, graph_rag: GraphRAG):
         self.db = db
         self.llm_client = llm_client
-        self.deployment = deployment
+        self.model = model  # Model name for OpenAI
         self.graph_rag = graph_rag
     
     async def generate_avatar_post(self, user_id: str, post_type: str = "general") -> Dict[str, Any]:
@@ -76,7 +76,7 @@ Return ONLY the post text, no quotes or explanations."""
         
         try:
             response = await self.llm_client.chat.completions.create(
-                model=self.deployment,
+                model=self.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.8,
                 max_tokens=250
@@ -139,7 +139,7 @@ Return ONLY the response text, no labels or quotes."""
         
         try:
             response = await self.llm_client.chat.completions.create(
-                model=self.deployment,
+                model=self.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.8,
                 max_tokens=150
@@ -190,7 +190,7 @@ Return ONLY the bio text, no quotes."""
         
         try:
             response = await self.llm_client.chat.completions.create(
-                model=self.deployment,
+                model=self.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.8,
                 max_tokens=200
@@ -240,7 +240,7 @@ Return ONLY the conversation starters, one per line, no numbering or quotes."""
         
         try:
             response = await self.llm_client.chat.completions.create(
-                model=self.deployment,
+                model=self.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.9,
                 max_tokens=150

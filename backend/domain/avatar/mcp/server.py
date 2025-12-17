@@ -986,11 +986,12 @@ async def initialize_intelligent_avatar():
     global intelligent_avatar
     
     from domain.graph.rag import GraphRAG
-    from core.config import get_azure_client, AZURE_OPENAI_DEPLOYMENT
+    from core.config import get_openai_client, OPENAI_MODEL
     
-    azure_client = get_azure_client()
+    openai_client = get_openai_client()
+    model_name = OPENAI_MODEL or "gpt-4o-mini"
     graph_rag = GraphRAG(db)
-    intelligent_avatar = IntelligentAvatar(db, azure_client, AZURE_OPENAI_DEPLOYMENT, graph_rag)
+    intelligent_avatar = IntelligentAvatar(db, openai_client, model_name, graph_rag)
 
 
 # Initialize on import (only if event loop is running)

@@ -7,16 +7,18 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
-from core.config import CORS_ORIGINS, get_azure_client, AZURE_OPENAI_DEPLOYMENT
+from core.config import CORS_ORIGINS, get_openai_client, OPENAI_MODEL, AZURE_OPENAI_DEPLOYMENT
 from core.database import get_database, close_database
 from domain.graph import GraphBuilder, GraphRAG
 from domain.avatar import IntelligentAvatar
+from domain.avatar.runner import AutonomousAgentRunner
 from services.user_service import UserService
 from services.post_service import PostService
 from services.friend_service import FriendService
 from services.graph_service import GraphService
 import logging
 import os
+import asyncio
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -25,19 +27,37 @@ logger = logging.getLogger(__name__)
 # Initialize database
 db = get_database()
 
-# Initialize Azure OpenAI client
-azure_client = get_azure_client()
+# Initialize OpenAI client
+openai_client = get_openai_client()
+azure_client = openai_client  # Alias for backwards compatibility
 
 # Initialize Graph RAG modules
 graph_rag = GraphRAG(db)
-graph_builder = GraphBuilder(db, azure_client, AZURE_OPENAI_DEPLOYMENT)
-intelligent_avatar = IntelligentAvatar(db, azure_client, AZURE_OPENAI_DEPLOYMENT, graph_rag)
+model_name = OPENAI_MODEL or AZURE_OPENAI_DEPLOYMENT or "gpt-4o-mini"
+graph_builder = GraphBuilder(db, openai_client, model_name)
+intelligent_avatar = IntelligentAvatar(db, openai_client, model_name, graph_rag)
+
+logger.info(f"Initialized with OpenAI model: {model_name}")
 
 # Initialize Services
 user_service = UserService(db, graph_builder)
 post_service = PostService(db, graph_builder)
 friend_service = FriendService(db)
 graph_service = GraphService(db, graph_rag, graph_builder)
+
+# Initialize Autonomous Agent Runner (only if OpenAI is configured)
+agent_runner = None
+if openai_client:
+    agent_runner = AutonomousAgentRunner(
+        db=db,
+        llm_client=openai_client,
+        model_name=model_name,
+        intelligent_avatar=intelligent_avatar,
+        graph_rag=graph_rag
+    )
+    logger.info("🤖 Autonomous Agent Runner initialized")
+else:
+    logger.warning("⚠️ OpenAI not configured - Autonomous Agent Runner disabled")
 
 # Initialize global state
 from app.globals import initialize_globals
@@ -51,7 +71,8 @@ initialize_globals(
     user_service_instance=user_service,
     post_service_instance=post_service,
     friend_service_instance=friend_service,
-    graph_service_instance=graph_service
+    graph_service_instance=graph_service,
+    agent_runner_instance=agent_runner
 )
 
 # Create FastAPI app
@@ -121,9 +142,23 @@ except OSError as e:
 # All global instances are available via app.globals
 
 
+@app.on_event("startup")
+async def startup_event():
+    """Resume autonomous agents on application startup"""
+    if agent_runner:
+        # Run in background to not block startup
+        asyncio.create_task(agent_runner.resume_all_enabled_agents())
+        logger.info("🚀 Autonomous agent resume task scheduled")
+
+
 @app.on_event("shutdown")
 async def shutdown_event():
     """Cleanup on application shutdown"""
+    # Stop all autonomous agents
+    if agent_runner:
+        await agent_runner.stop_all_agents()
+        logger.info("⏹️ All autonomous agents stopped")
+    
     await close_database()
     logger.info("Application shutdown complete")
 

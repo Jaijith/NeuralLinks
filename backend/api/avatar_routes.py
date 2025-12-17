@@ -205,14 +205,21 @@ async def update_avatar_config(
     current_user = await require_auth(request)
     
     from domain.avatar.config import get_archetype_config
+    from app.globals import get_agent_runner
     
     update_fields = {}
+    autonomy_changed = False
+    new_autonomy_state = None
     
     # Update autonomy flag
     if avatar_autonomous is not None:
         update_fields['avatar_autonomous'] = avatar_autonomous
+        autonomy_changed = True
+        new_autonomy_state = avatar_autonomous
         if avatar_autonomous:
             update_fields['autonomous_enabled_at'] = datetime.now(timezone.utc).isoformat()
+        else:
+            update_fields['autonomous_disabled_at'] = datetime.now(timezone.utc).isoformat()
     
     # Update activity level
     if avatar_activity_level:
@@ -236,10 +243,35 @@ async def update_avatar_config(
             {"$set": update_fields}
         )
     
+    # Start or stop autonomous agent based on autonomy toggle
+    agent_status = None
+    if autonomy_changed:
+        agent_runner = get_agent_runner()
+        if agent_runner:
+            if new_autonomy_state:
+                # Autonomy enabled - start the agent
+                logger.info(f"🚀 Starting autonomous agent for user {current_user.id}")
+                success = await agent_runner.start_agent(current_user.id)
+                agent_status = "started" if success else "failed_to_start"
+                if success:
+                    logger.info(f"✅ Autonomous agent started for user {current_user.id}")
+                else:
+                    logger.warning(f"⚠️ Failed to start autonomous agent for user {current_user.id}")
+            else:
+                # Autonomy disabled - stop the agent
+                logger.info(f"⏹️ Stopping autonomous agent for user {current_user.id}")
+                success = await agent_runner.stop_agent(current_user.id)
+                agent_status = "stopped" if success else "was_not_running"
+                if success:
+                    logger.info(f"✅ Autonomous agent stopped for user {current_user.id}")
+        else:
+            logger.warning("⚠️ Agent runner not available - autonomous mode won't work")
+            agent_status = "runner_not_available"
+    
     # Return updated config
     updated_user = await db.users.find_one({"id": current_user.id}, {"_id": 0})
     
-    return {
+    response = {
         "message": "Avatar configuration updated",
         "config": {
             "avatar_autonomous": updated_user.get('avatar_autonomous'),
@@ -247,6 +279,12 @@ async def update_avatar_config(
             "archetype": updated_user.get('archetype')
         }
     }
+    
+    # Include agent status if autonomy was toggled
+    if agent_status:
+        response["agent_status"] = agent_status
+    
+    return response
 
 
 @router.get("/avatar/activity")
@@ -314,6 +352,7 @@ async def get_avatar_activity(request: Request, limit: int = 20):
 async def get_avatar_status(request: Request):
     """Get current status of avatar (active, last seen, etc.)"""
     current_user = await require_auth(request)
+    from app.globals import get_agent_runner
     
     # Get full user document from database
     user_doc = await db.users.find_one({"id": current_user.id}, {"_id": 0})
@@ -329,6 +368,15 @@ async def get_avatar_status(request: Request):
     # Check if autonomous
     is_autonomous = user_doc.get('avatar_autonomous', False)
     
+    # Check if agent is actually running
+    agent_runner = get_agent_runner()
+    is_agent_running = False
+    agent_details = None
+    if agent_runner:
+        is_agent_running = agent_runner.is_agent_running(current_user.id)
+        if is_agent_running:
+            agent_details = await agent_runner.get_agent_status(current_user.id)
+    
     # Get last activity
     last_activity = user_doc.get('last_activity')
     
@@ -340,14 +388,24 @@ async def get_avatar_status(request: Request):
         "timestamp": {"$gte": one_hour_ago}
     })
     
+    # Determine actual status
+    if is_autonomous and is_agent_running:
+        status = "running"  # Autonomy enabled AND agent is actively running
+    elif is_autonomous and not is_agent_running:
+        status = "enabled_not_running"  # Autonomy enabled but agent not running (needs restart)
+    else:
+        status = "inactive"  # Autonomy disabled
+    
     return {
         "has_avatar": has_avatar,
         "is_autonomous": is_autonomous,
+        "is_agent_running": is_agent_running,
         "archetype": user_doc.get('archetype', 'Not set'),
         "activity_level": user_doc.get('avatar_activity_level', 'Not set'),
         "last_activity": last_activity,
         "actions_last_hour": recent_actions,
-        "status": "active" if is_autonomous else "inactive"
+        "status": status,
+        "agent_details": agent_details
     }
 
 
@@ -512,4 +570,112 @@ async def get_avatar_full_memory(request: Request):
             "episodic_memory": {"total_experiences": 0, "emotional_trend": "stable"},
             "recent_activities": []
         }
+
+
+@router.post("/avatar/run-autonomous-cycle")
+async def run_autonomous_cycle(request: Request, api_key: str = None):
+    """
+    Run one autonomous cycle for all enabled avatars.
+    This endpoint is called by AWS EventBridge on a schedule.
+    
+    Security: Requires either valid auth or a secret API key for EventBridge.
+    """
+    import os
+    
+    # Check for EventBridge secret key (for scheduled invocations)
+    eventbridge_key = os.environ.get('EVENTBRIDGE_API_KEY', 'neurallinks-autonomous-trigger-2024')
+    
+    # Allow either authenticated user or EventBridge API key
+    is_eventbridge = api_key == eventbridge_key
+    
+    if not is_eventbridge:
+        try:
+            # Try to authenticate as a user (for manual testing)
+            await require_auth(request)
+        except:
+            logger.warning("Unauthorized autonomous cycle attempt")
+            raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    logger.info("🤖 Starting autonomous cycle triggered by EventBridge")
+    
+    try:
+        from domain.avatar.state_aware_agent import StateAwareAgent
+        from domain.avatar.intelligent import IntelligentAvatar
+        from domain.graph.rag import GraphRAG
+        from app.globals import openai_client, OPENAI_MODEL, graph_rag, intelligent_avatar
+        
+        # Find all users with autonomy enabled
+        query = {
+            "avatar_autonomous": True,
+            "avatar_name": {"$exists": True, "$ne": None},
+            "avatar_picture": {"$exists": True, "$ne": None},
+            "is_bot": {"$ne": True}  # Only real users, not bots
+        }
+        
+        users = await db.users.find(query, {"_id": 0}).to_list(100)
+        
+        if not users:
+            logger.info("ℹ️ No users with autonomy enabled")
+            return {
+                "success": True,
+                "message": "No users with autonomy enabled",
+                "processed": 0
+            }
+        
+        logger.info(f"📊 Found {len(users)} user(s) with autonomy enabled")
+        
+        # Process each avatar
+        results = []
+        processed = 0
+        errors = 0
+        
+        for user in users:
+            user_id = user.get('id')
+            avatar_name = user.get('avatar_name', 'Unknown')
+            
+            try:
+                # Create agent for this user
+                agent = StateAwareAgent(
+                    bot=user,
+                    db=db,
+                    intelligent_avatar=intelligent_avatar
+                )
+                
+                # Initialize the agent
+                await agent.initialize()
+                
+                # Run ONE cycle (not continuous)
+                await agent._run_single_cycle()
+                
+                results.append({
+                    "user_id": user_id,
+                    "avatar_name": avatar_name,
+                    "status": "success"
+                })
+                processed += 1
+                logger.info(f"✅ Processed {avatar_name}")
+                
+            except Exception as e:
+                logger.error(f"❌ Error processing {avatar_name}: {e}")
+                results.append({
+                    "user_id": user_id,
+                    "avatar_name": avatar_name,
+                    "status": "error",
+                    "error": str(e)
+                })
+                errors += 1
+        
+        logger.info(f"✅ Autonomous cycle complete: {processed} processed, {errors} errors")
+        
+        return {
+            "success": True,
+            "message": f"Processed {processed} avatars",
+            "processed": processed,
+            "errors": errors,
+            "results": results
+        }
+        
+    except Exception as e:
+        logger.error(f"❌ Autonomous cycle failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
 

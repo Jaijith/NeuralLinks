@@ -25,16 +25,24 @@ router = APIRouter(prefix="/api", tags=["integrations"])
 logger = logging.getLogger(__name__)
 
 
-def get_azure_client():
-    """Get Azure OpenAI client"""
-    from app.globals import azure_client
-    return azure_client
+def get_openai_client():
+    """Get OpenAI client"""
+    from app.globals import openai_client
+    return openai_client
 
+def get_azure_client():
+    """Get OpenAI client (alias for backwards compatibility)"""
+    return get_openai_client()
+
+
+def get_openai_model():
+    """Get OpenAI model name"""
+    from app.globals import OPENAI_MODEL
+    return OPENAI_MODEL or "gpt-4o-mini"
 
 def get_azure_deployment():
-    """Get Azure OpenAI deployment name"""
-    from app.globals import AZURE_OPENAI_DEPLOYMENT
-    return AZURE_OPENAI_DEPLOYMENT
+    """Get OpenAI model name (alias for backwards compatibility)"""
+    return get_openai_model()
 
 
 def get_graph_builder():

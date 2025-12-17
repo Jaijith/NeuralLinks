@@ -8,6 +8,8 @@ import * as route53Targets from 'aws-cdk-lib/aws-route53-targets';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as ecr_assets from 'aws-cdk-lib/aws-ecr-assets';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as eventsTargets from 'aws-cdk-lib/aws-events-targets';
 import { Construct } from 'constructs';
 import * as path from 'path';
 
@@ -118,11 +120,21 @@ export class BackendStack extends cdk.Stack {
     );
     googleClientSecretSecret.grantRead(backendFunction);
 
+    // OpenAI API Key secret
+    const openaiApiKeySecret = secretsmanager.Secret.fromSecretNameV2(
+      this,
+      'OpenAIApiKeySecret',
+      '2n1/openai/api-key'
+    );
+    openaiApiKeySecret.grantRead(backendFunction);
+
     // Add secrets to Lambda environment (will be fetched at runtime)
     // Note: AWS_REGION is automatically set by Lambda runtime, don't set it manually
     backendFunction.addEnvironment('MONGODB_SECRET_NAME', mongodbSecret.secretName);
     backendFunction.addEnvironment('GOOGLE_CLIENT_ID_SECRET_NAME', googleClientIdSecret.secretName);
     backendFunction.addEnvironment('GOOGLE_CLIENT_SECRET_SECRET_NAME', googleClientSecretSecret.secretName);
+    backendFunction.addEnvironment('OPENAI_SECRET_NAME', openaiApiKeySecret.secretName);
+    backendFunction.addEnvironment('OPENAI_MODEL', 'gpt-4o-mini');
 
     // API Gateway
     const api = new apigateway.RestApi(this, 'Api', {
@@ -186,6 +198,35 @@ export class BackendStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'UploadsBucketName', {
       value: this.uploadsBucket.bucketName,
       description: 'S3 bucket for file uploads',
+    });
+
+    // EventBridge rule to trigger autonomous avatar cycles every 2 minutes
+    const autonomousCycleRule = new events.Rule(this, 'AutonomousCycleRule', {
+      ruleName: '2n1-autonomous-avatar-cycle',
+      description: 'Triggers autonomous avatar actions every 2 minutes',
+      schedule: events.Schedule.rate(cdk.Duration.minutes(2)),
+      enabled: true,
+    });
+
+    // Add Lambda as target with specific event payload
+    autonomousCycleRule.addTarget(new eventsTargets.LambdaFunction(backendFunction, {
+      event: events.RuleTargetInput.fromObject({
+        source: 'aws.events',
+        'detail-type': 'Autonomous Avatar Cycle',
+        detail: {
+          action: 'run_autonomous_cycle',
+          trigger: 'eventbridge_schedule'
+        }
+      }),
+      retryAttempts: 0, // Don't retry - next scheduled run will handle it
+    }));
+
+    // Add environment variable for EventBridge API key
+    backendFunction.addEnvironment('EVENTBRIDGE_API_KEY', 'neurallinks-autonomous-trigger-2024');
+
+    new cdk.CfnOutput(this, 'AutonomousCycleRuleArn', {
+      value: autonomousCycleRule.ruleArn,
+      description: 'EventBridge rule for autonomous avatar cycles',
     });
   }
 }

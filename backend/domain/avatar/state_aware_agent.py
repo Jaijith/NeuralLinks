@@ -7,12 +7,49 @@ Memory Integration:
 - Semantic Memory: Knowledge graph (interests, traits, values)
 - Procedural Memory: Action history (what works, what doesn't)
 - Episodic Memory: Experiences (relationships, significant events)
+
+Activity Levels:
+- hypo: 1 action/2 mins (Testing mode - very frequent)
+- low: 1-2 actions/day (Minimal activity)
+- medium: 5-10 actions/day (Moderate activity)
+- high: 15-20 actions/day (Active engagement)
 """
 import asyncio
+import random
 from datetime import datetime, timezone, timedelta
 from typing import Dict, Any, Optional
 from motor.motor_asyncio import AsyncIOMotorDatabase
 import logging
+
+
+# Activity level configuration
+# Maps activity level string to configuration
+ACTIVITY_LEVEL_CONFIG = {
+    "hypo": {
+        "name": "Hypo (Testing)",
+        "min_interval_minutes": 2,      # 1 action every 2 minutes (testing)
+        "max_actions_per_day": 720,     # Essentially unlimited for testing
+        "delay_multiplier": 0.1,        # Very short delays
+    },
+    "low": {
+        "name": "Low",
+        "min_interval_minutes": 720,    # 12 hours minimum between actions
+        "max_actions_per_day": 2,
+        "delay_multiplier": 5.0,        # Very long delays
+    },
+    "medium": {
+        "name": "Medium",
+        "min_interval_minutes": 144,    # ~2.4 hours between actions (10 actions/day)
+        "max_actions_per_day": 10,
+        "delay_multiplier": 1.0,        # Normal delays
+    },
+    "high": {
+        "name": "High", 
+        "min_interval_minutes": 72,     # ~1.2 hours between actions (20 actions/day)
+        "max_actions_per_day": 20,
+        "delay_multiplier": 0.5,        # Shorter delays
+    },
+}
 
 from domain.avatar.perception.engine import PerceptionEngine
 from domain.avatar.state import StateManager
@@ -64,10 +101,21 @@ class StateAwareAgent:
         # Track if this is a user avatar (not a bot)
         self.is_user_avatar = not bot.get('is_bot', False)
         
-        # Activity tracking
+        # Get activity level configuration
+        activity_level = bot.get('avatar_activity_level', 'medium')
+        self.activity_config = ACTIVITY_LEVEL_CONFIG.get(activity_level, ACTIVITY_LEVEL_CONFIG['medium'])
+        self.activity_level = activity_level
+        
+        # Activity tracking - now based on activity level
         self.last_action_time = datetime.now(timezone.utc)
+        self.actions_today = 0
+        self.actions_today_reset = datetime.now(timezone.utc).date()
+        self.max_actions_per_day = self.activity_config['max_actions_per_day']
+        self.min_action_interval = timedelta(minutes=self.activity_config['min_interval_minutes'])
+        
+        # Legacy compatibility
         self.actions_this_hour = 0
-        self.max_actions_per_hour = 10  # Rate limiting
+        self.max_actions_per_hour = min(30, self.max_actions_per_day)  # Cap at 30 for hourly limit
         
         # NEW: Memory Manager for memory-informed decisions
         self.memory_manager = MemoryManager(db)
@@ -109,6 +157,46 @@ class StateAwareAgent:
             
         except Exception as e:
             logger.error(f"Error initializing StateAwareAgent for {self.bot_id}: {e}", exc_info=True)
+    
+    def _can_take_action(self) -> tuple[bool, str]:
+        """
+        Check if the agent can take an action based on activity level constraints.
+        
+        Returns:
+            (can_act: bool, reason: str) - Whether action is allowed and why not if False
+        """
+        now = datetime.now(timezone.utc)
+        
+        # Reset daily counter if new day
+        today = now.date()
+        if today != self.actions_today_reset:
+            self.actions_today = 0
+            self.actions_today_reset = today
+            logger.info(f"Reset daily action counter for {self.bot.get('avatar_name')}")
+        
+        # Check daily limit
+        if self.actions_today >= self.max_actions_per_day:
+            return False, f"Daily limit reached ({self.actions_today}/{self.max_actions_per_day})"
+        
+        # Check minimum interval
+        time_since_last = now - self.last_action_time
+        if time_since_last < self.min_action_interval:
+            remaining = (self.min_action_interval - time_since_last).total_seconds()
+            return False, f"Too soon (wait {remaining/60:.1f} more minutes)"
+        
+        return True, "OK"
+    
+    def _record_action_taken(self):
+        """Record that an action was taken (for activity level tracking)"""
+        self.last_action_time = datetime.now(timezone.utc)
+        self.actions_today += 1
+        self.actions_this_hour += 1  # Legacy compatibility
+        
+        avatar_name = self.bot.get('avatar_name', 'Unknown')
+        logger.info(
+            f"📊 {avatar_name} action recorded: {self.actions_today}/{self.max_actions_per_day} today "
+            f"(activity level: {self.activity_level})"
+        )
     
     async def run_continuously(self):
         """
@@ -183,9 +271,10 @@ class StateAwareAgent:
                 
                 # Step 6: Select and execute action (only if not in RESTING state)
                 if current_state.value != "resting":
-                    # Check if we're at action limit
-                    if self.actions_this_hour >= self.max_actions_per_hour:
-                        logger.debug(f"{avatar_indicator} {avatar_name} - Action limit reached for this hour")
+                    # Check if we're allowed to take action (activity level constraints)
+                    can_act, reason = self._can_take_action()
+                    if not can_act:
+                        logger.debug(f"{avatar_indicator} {avatar_name} - Skipping action: {reason}")
                     else:
                         character_dict = self.character_profile.to_dict() if self.character_profile else None
                         
@@ -215,7 +304,7 @@ class StateAwareAgent:
                                 
                                 if result.get('success'):
                                     logger.info(f"{avatar_indicator} {avatar_name} - ✅ {action_type}")
-                                    self.actions_this_hour += 1
+                                    self._record_action_taken()  # Use activity level tracking
                                     
                                     # Log activity
                                     await self._log_activity(action_type, {
@@ -285,10 +374,16 @@ class StateAwareAgent:
     
     def _get_state_based_delay(self, current_state, internal_state) -> float:
         """
-        Get delay based on current state - state machine controls activity
+        Get delay based on current state AND activity level configuration.
         
         Returns delay in seconds. Shorter delay = more active, longer delay = less active.
         State machine transitions to RESTING/PASSIVE when appropriate.
+        
+        Activity level multipliers:
+        - hypo: 0.1x (very fast, testing mode)
+        - low: 5.0x (very slow, 1-2 actions/day)
+        - medium: 1.0x (normal, 5-10 actions/day)
+        - high: 0.5x (fast, 15-20 actions/day)
         """
         # Base delays (in seconds) - using state value strings
         delays = {
@@ -304,6 +399,10 @@ class StateAwareAgent:
         state_value = current_state.value if hasattr(current_state, 'value') else str(current_state)
         base_delay = delays.get(state_value, 60.0)
         
+        # Apply activity level multiplier
+        activity_multiplier = self.activity_config.get('delay_multiplier', 1.0)
+        base_delay *= activity_multiplier
+        
         # Adjust based on energy level
         if internal_state.energy_level < 0.3:
             base_delay *= 1.5  # Low energy = longer delay
@@ -311,7 +410,6 @@ class StateAwareAgent:
             base_delay *= 0.8  # High energy = shorter delay
         
         # Add small random variation to prevent synchronization
-        import random
         variation = random.uniform(0.9, 1.1)
         
         return base_delay * variation
@@ -399,6 +497,127 @@ class StateAwareAgent:
         except Exception as e:
             logger.warning(f"   ⚠️  Error checking autonomy: {e}")
             return True  # Continue anyway
+    
+    async def _run_single_cycle(self):
+        """
+        Run a single autonomous cycle (for EventBridge/scheduled invocations).
+        Unlike run_continuously(), this runs ONE iteration and returns.
+        """
+        avatar_name = self.bot.get('avatar_name', 'Unknown')
+        avatar_indicator = "✨ USER AVATAR" if self.is_user_avatar else "🤖"
+        
+        try:
+            # Check if autonomy is still enabled
+            if not await self._check_autonomy_enabled():
+                logger.info(f"{avatar_indicator} {avatar_name} - Autonomy disabled, skipping")
+                return
+            
+            # Get current state
+            current_state, _ = await self.state_machine.get_current_state(self.bot_id)
+            
+            # Step 1: Update perception
+            perception_data = await self.perception_engine.perceive_all(self.bot_id)
+            
+            # Step 2: Update states
+            internal_state, external_state = await self.state_manager.get_current_state(self.bot_id)
+            external_state.update_from_perception(perception_data)
+            await self.state_manager.update_external_state(self.bot_id, external_state)
+            internal_state = await self.state_manager.update_temporal_states(self.bot_id)
+            
+            # Update mood based on environment and internal state
+            self._update_mood_from_environment(internal_state, external_state)
+            
+            # Update mood from memory
+            memory_context = await self.memory_manager.get_full_memory_context(self.bot_id)
+            await self._update_mood_from_memory(internal_state, memory_context)
+            
+            await self.state_manager.update_internal_state(self.bot_id, internal_state)
+            
+            # Step 3: Evaluate state transitions
+            user = await self.db.users.find_one({"id": self.bot_id})
+            archetype = user.get("avatar_archetype") or user.get("archetype", "general") if user else "general"
+            
+            new_state = await self.state_machine.evaluate_transitions(self.bot_id, archetype)
+            
+            if new_state and new_state != current_state:
+                await self.state_machine.transition_to(
+                    self.bot_id,
+                    new_state,
+                    reason="State transition from scheduled cycle",
+                    triggered_by="eventbridge_scheduled"
+                )
+                logger.info(f"{avatar_indicator} {avatar_name} - 🔄 State: {current_state.value} -> {new_state.value}")
+                current_state = new_state
+            
+            # Step 4: Get character profile
+            if not self.character_profile or not self.character_profile.is_loaded():
+                self.character_profile = CharacterProfile(self.bot_id, self.db)
+                await self.character_profile.load()
+            
+            # Step 5: Select and execute action (only if not in RESTING state)
+            if current_state.value != "resting":
+                # Check if we're allowed to take action (activity level constraints)
+                can_act, reason = self._can_take_action()
+                if not can_act:
+                    logger.info(f"{avatar_indicator} {avatar_name} - Skipping action: {reason} (activity level: {self.activity_level})")
+                    return
+                
+                character_dict = self.character_profile.to_dict() if self.character_profile else None
+                
+                # Get permissions
+                permissions = user.get("avatar_actions_enabled", {}) if user else {}
+                
+                # Select action with memory context
+                selected_action = await self.decision_engine.select_action(
+                    self.bot_id,
+                    character_profile=character_dict,
+                    permissions=permissions,
+                    memory_context=memory_context
+                )
+                
+                if selected_action:
+                    # Execute action via MCP server
+                    action_type = selected_action.get("type")
+                    action_args = {k: v for k, v in selected_action.items() 
+                                  if k not in ["type", "description", "utility", "interest_aligned", "memory_penalty", "shared_interests"]}
+                    
+                    tool_name = self._map_action_to_tool(action_type)
+                    
+                    if tool_name:
+                        result = await self.mcp_server.call_tool(tool_name, self.bot_id, action_args)
+                        
+                        if result.get('success'):
+                            logger.info(f"{avatar_indicator} {avatar_name} - ✅ {action_type}")
+                            self._record_action_taken()  # Use activity level tracking
+                            
+                            # Log activity
+                            await self._log_activity(action_type, {
+                                "action": selected_action,
+                                "result": result
+                            })
+                            
+                            # Record in memory
+                            await self._record_action_in_memory(action_type, selected_action, result)
+                            
+                            # Update state after action
+                            await self._update_state_after_action(action_type, result)
+                        else:
+                            logger.debug(f"{avatar_indicator} {avatar_name} - ⚠️  Action failed: {result.get('error', 'Unknown')}")
+                            await self._record_action_in_memory(action_type, selected_action, result)
+                    else:
+                        logger.debug(f"{avatar_indicator} {avatar_name} - ⚠️  No MCP tool for: {action_type}")
+            else:
+                logger.info(f"{avatar_indicator} {avatar_name} - 💤 In RESTING state, skipping action")
+            
+            # Update last activity timestamp
+            await self.db.users.update_one(
+                {"id": self.bot_id},
+                {"$set": {"last_activity": datetime.now(timezone.utc).isoformat()}}
+            )
+            
+        except Exception as e:
+            logger.error(f"{avatar_indicator} {avatar_name} - Error in single cycle: {e}", exc_info=True)
+            raise
     
     async def _log_activity(self, activity_type: str, details: Dict):
         """Log avatar activity"""

@@ -13,7 +13,7 @@ sys.path.insert(0, backend_dir)
 
 from datetime import timedelta
 from motor.motor_asyncio import AsyncIOMotorClient
-from openai import AsyncAzureOpenAI
+from openai import AsyncOpenAI
 from dotenv import load_dotenv
 from domain.avatar.manager import SimpleAgentManager
 
@@ -23,16 +23,12 @@ load_dotenv(dotenv_path=env_path)
 
 # Configuration
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
-DB_NAME = "neurallinks_local"
+MONGODB_URI = os.getenv("MONGODB_URI")  # For production (MongoDB Atlas)
+DB_NAME = os.getenv("DB_NAME", "neurallinks_local")
 
-# Try multiple possible variable names for Azure OpenAI
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT") or os.getenv("AZURE_OPENAI_SERVICE")
-if AZURE_OPENAI_ENDPOINT and not AZURE_OPENAI_ENDPOINT.startswith('https://'):
-    AZURE_OPENAI_ENDPOINT = f"https://{AZURE_OPENAI_ENDPOINT}.openai.azure.com"
-
-AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
-AZURE_OPENAI_DEPLOYMENT = os.getenv("AZURE_OPENAI_CHATGPT_DEPLOYMENT") or os.getenv("AZURE_OPENAI_DEPLOYMENT")
-AZURE_API_VERSION = os.getenv("OPENAI_API_VERSION", "2024-02-15-preview")
+# OpenAI Configuration
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 # Note: Agents now run continuously (no cycle interval needed)
 # Each agent runs its own loop and decides when to be active/passive based on state
@@ -51,27 +47,28 @@ async def main():
 ╚══════════════════════════════════════════════════════════════╝
 """)
     
-    # Check Azure OpenAI configuration
-    if not all([AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_API_KEY, AZURE_OPENAI_DEPLOYMENT]):
-        print("❌ ERROR: Azure OpenAI configuration incomplete!")
+    # Check OpenAI configuration
+    if not OPENAI_API_KEY:
+        print("❌ ERROR: OpenAI configuration incomplete!")
         print("\nRequired environment variables:")
-        print("  - AZURE_OPENAI_SERVICE")
-        print("  - AZURE_OPENAI_API_KEY")
-        print("  - AZURE_OPENAI_CHATGPT_DEPLOYMENT")
+        print("  - OPENAI_API_KEY")
+        print("  - OPENAI_MODEL (optional, defaults to gpt-4o-mini)")
         print("\nPlease check your backend/.env file")
         sys.exit(1)
     
+    # Use MongoDB Atlas URI if available, otherwise local
+    mongo_connection = MONGODB_URI or MONGO_URL
+    
     print("📋 Configuration:")
-    print(f"   MongoDB: {MONGO_URL}")
+    print(f"   MongoDB: {'Atlas (production)' if MONGODB_URI else mongo_connection}")
     print(f"   Database: {DB_NAME}")
-    print(f"   Azure OpenAI: {AZURE_OPENAI_ENDPOINT}")
-    print(f"   Deployment: {AZURE_OPENAI_DEPLOYMENT}")
+    print(f"   OpenAI Model: {OPENAI_MODEL}")
     print(f"   Mode: Continuous (self-driven, no scheduler)")
     print()
     
     # Connect to MongoDB
     print("🔌 Connecting to MongoDB...")
-    client = AsyncIOMotorClient(MONGO_URL)
+    client = AsyncIOMotorClient(mongo_connection)
     db = client[DB_NAME]
     
     # Test connection
@@ -82,21 +79,17 @@ async def main():
         print(f"❌ MongoDB connection failed: {e}")
         sys.exit(1)
     
-    # Initialize Azure OpenAI client
-    print("\n🤖 Initializing Azure OpenAI...")
-    llm_client = AsyncAzureOpenAI(
-        azure_endpoint=AZURE_OPENAI_ENDPOINT,
-        api_key=AZURE_OPENAI_API_KEY,
-        api_version=AZURE_API_VERSION
-    )
-    print("✅ Azure OpenAI initialized")
+    # Initialize OpenAI client
+    print("\n🤖 Initializing OpenAI...")
+    llm_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
+    print(f"✅ OpenAI initialized (model: {OPENAI_MODEL})")
     
     # Initialize agent manager
     print("\n🚀 Initializing agent manager...")
     manager = SimpleAgentManager(
         db=db,
         llm_client=llm_client,
-        deployment=AZURE_OPENAI_DEPLOYMENT
+        deployment=OPENAI_MODEL  # Now model name instead of Azure deployment
     )
     
     # Initialize all bot agents
