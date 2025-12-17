@@ -80,12 +80,28 @@ class FriendService:
     
     async def accept_friend_request(self, friendship_id: str, user_id: str) -> Dict[str, Any]:
         """Accept a friend request"""
-        friendship = await self.db.friendships.find_one({
-            "$or": [
-                {"user_id": friendship_id, "friend_id": user_id},
-                {"user_id": user_id, "friend_id": friendship_id}
-            ]
-        })
+        from bson import ObjectId
+        
+        # First try to find by MongoDB _id
+        friendship = None
+        try:
+            friendship = await self.db.friendships.find_one({
+                "_id": ObjectId(friendship_id),
+                "friend_id": user_id,  # Ensure current user is the recipient
+                "status": "pending"
+            })
+        except Exception:
+            pass
+        
+        # Fallback: try finding by user_id/friend_id (for backwards compatibility)
+        if not friendship:
+            friendship = await self.db.friendships.find_one({
+                "$or": [
+                    {"user_id": friendship_id, "friend_id": user_id},
+                    {"user_id": user_id, "friend_id": friendship_id}
+                ],
+                "status": "pending"
+            })
         
         if not friendship:
             return {"success": False, "error": "Friend request not found"}
@@ -103,13 +119,28 @@ class FriendService:
     
     async def decline_friend_request(self, friendship_id: str, user_id: str) -> Dict[str, Any]:
         """Decline a friend request"""
-        result = await self.db.friendships.delete_one({
-            "$or": [
-                {"user_id": friendship_id, "friend_id": user_id},
-                {"user_id": user_id, "friend_id": friendship_id}
-            ],
-            "status": "pending"
-        })
+        from bson import ObjectId
+        
+        # First try to delete by MongoDB _id
+        result = None
+        try:
+            result = await self.db.friendships.delete_one({
+                "_id": ObjectId(friendship_id),
+                "friend_id": user_id,  # Ensure current user is the recipient
+                "status": "pending"
+            })
+        except Exception:
+            pass
+        
+        # Fallback if not found or invalid ObjectId
+        if not result or result.deleted_count == 0:
+            result = await self.db.friendships.delete_one({
+                "$or": [
+                    {"user_id": friendship_id, "friend_id": user_id},
+                    {"user_id": user_id, "friend_id": friendship_id}
+                ],
+                "status": "pending"
+            })
         
         if result.deleted_count == 0:
             return {"success": False, "error": "Friend request not found"}

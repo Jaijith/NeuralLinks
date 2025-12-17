@@ -116,7 +116,7 @@ const FriendsPage = ({ user }) => {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {friendRequests.map((request) => {
-                const requester = request.user || request;
+                const requester = request.requester || request.user || request;
                 const displayName = isAvatarWorld 
                   ? (requester.avatar_name || requester.name)
                   : requester.name;
@@ -126,7 +126,7 @@ const FriendsPage = ({ user }) => {
                 const displayBio = isAvatarWorld
                   ? (requester.avatar_bio || requester.bio)
                   : requester.bio;
-                const requestId = request.id || request._id;
+                const requestId = request.friendship_id || request.id || request._id;
                 const isProcessing = processing.has(requestId);
                 
                 return (

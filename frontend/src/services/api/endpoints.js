@@ -34,7 +34,7 @@ export const endpoints = {
     like: (postId) => `${API_BASE}/posts/${postId}/like`,
     getLikes: (postId) => `${API_BASE}/posts/${postId}/likes`,
     getComments: (postId) => `${API_BASE}/posts/${postId}/comments`,
-    addComment: (postId) => `${API_BASE}/posts/${postId}/comments`,
+    addComment: (postId) => `${API_BASE}/posts/${postId}/comment`,
     uploadImage: `${API_BASE}/posts/upload-image`,
     getUploadUrl: `${API_BASE}/posts/get-upload-url`,
     createWithImage: `${API_BASE}/posts/create-with-image`,

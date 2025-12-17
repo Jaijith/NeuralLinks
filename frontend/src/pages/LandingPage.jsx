@@ -7,7 +7,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const REDIRECT_URL = window.location.origin + "/home";
 
 // YouTube Video ID
-const YOUTUBE_VIDEO_ID = "fJMBK3odKxU";
+const YOUTUBE_VIDEO_ID = "q42j1qg3HNA";
 
 // Generate particles once at module level
 const generateParticles = () => {

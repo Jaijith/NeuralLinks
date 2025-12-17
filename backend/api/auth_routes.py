@@ -86,6 +86,7 @@ async def create_or_get_user(email: str, name: str, picture: str = None) -> str:
         )
         user_dict = user.model_dump()
         user_dict['created_at'] = user_dict['created_at'].isoformat()
+        user_dict['profile_completed'] = True  # Mark profile as completed so user appears in search
         await db.users.insert_one(user_dict)
         user_id = user.id
         
