@@ -26,8 +26,9 @@ AZURE_OPENAI_ENDPOINT = os.environ.get('AZURE_OPENAI_ENDPOINT', '')
 AZURE_OPENAI_DEPLOYMENT = os.environ.get('AZURE_OPENAI_DEPLOYMENT', OPENAI_MODEL)
 AZURE_OPENAI_API_VERSION = os.environ.get('AZURE_OPENAI_API_VERSION', '2024-10-21')
 
-# CORS Configuration
-CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*').split(',')
+# CORS Configuration - explicitly list allowed origins for credentials
+_default_origins = "https://2ness.com,https://www.2ness.com,https://api.2ness.com,http://localhost:3000,http://localhost:3001"
+CORS_ORIGINS = os.environ.get('CORS_ORIGINS', _default_origins).split(',')
 
 # Google OAuth Configuration
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
