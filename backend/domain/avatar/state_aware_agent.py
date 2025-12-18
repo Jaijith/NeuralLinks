@@ -107,7 +107,22 @@ class StateAwareAgent:
         self.activity_level = activity_level
         
         # Activity tracking - now based on activity level
-        self.last_action_time = datetime.now(timezone.utc)
+        # Initialize last_action_time from database or very old time (to allow first action)
+        last_activity_str = bot.get('last_activity')
+        if last_activity_str:
+            try:
+                # Parse ISO format timestamp
+                if isinstance(last_activity_str, str):
+                    self.last_action_time = datetime.fromisoformat(last_activity_str.replace('Z', '+00:00'))
+                else:
+                    self.last_action_time = last_activity_str
+            except (ValueError, TypeError):
+                # If parsing fails, allow action by setting old time
+                self.last_action_time = datetime.now(timezone.utc) - timedelta(hours=24)
+        else:
+            # No previous activity - allow first action
+            self.last_action_time = datetime.now(timezone.utc) - timedelta(hours=24)
+        
         self.actions_today = 0
         self.actions_today_reset = datetime.now(timezone.utc).date()
         self.max_actions_per_day = self.activity_config['max_actions_per_day']
@@ -186,7 +201,7 @@ class StateAwareAgent:
         
         return True, "OK"
     
-    def _record_action_taken(self):
+    async def _record_action_taken(self):
         """Record that an action was taken (for activity level tracking)"""
         self.last_action_time = datetime.now(timezone.utc)
         self.actions_today += 1
@@ -197,6 +212,15 @@ class StateAwareAgent:
             f"📊 {avatar_name} action recorded: {self.actions_today}/{self.max_actions_per_day} today "
             f"(activity level: {self.activity_level})"
         )
+        
+        # Persist last_activity to database (important for Lambda/stateless invocations)
+        try:
+            await self.db.users.update_one(
+                {"id": self.bot_id},
+                {"$set": {"last_activity": self.last_action_time.isoformat()}}
+            )
+        except Exception as e:
+            logger.warning(f"Failed to update last_activity in DB: {e}")
     
     async def run_continuously(self):
         """
@@ -304,7 +328,7 @@ class StateAwareAgent:
                                 
                                 if result.get('success'):
                                     logger.info(f"{avatar_indicator} {avatar_name} - ✅ {action_type}")
-                                    self._record_action_taken()  # Use activity level tracking
+                                    await self._record_action_taken()  # Use activity level tracking
                                     
                                     # Log activity
                                     await self._log_activity(action_type, {
@@ -588,7 +612,7 @@ class StateAwareAgent:
                         
                         if result.get('success'):
                             logger.info(f"{avatar_indicator} {avatar_name} - ✅ {action_type}")
-                            self._record_action_taken()  # Use activity level tracking
+                            await self._record_action_taken()  # Use activity level tracking
                             
                             # Log activity
                             await self._log_activity(action_type, {
@@ -609,11 +633,7 @@ class StateAwareAgent:
             else:
                 logger.info(f"{avatar_indicator} {avatar_name} - 💤 In RESTING state, skipping action")
             
-            # Update last activity timestamp
-            await self.db.users.update_one(
-                {"id": self.bot_id},
-                {"$set": {"last_activity": datetime.now(timezone.utc).isoformat()}}
-            )
+            # Note: last_activity is now updated by _record_action_taken() only when an action succeeds
             
         except Exception as e:
             logger.error(f"{avatar_indicator} {avatar_name} - Error in single cycle: {e}", exc_info=True)
