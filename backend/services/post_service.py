@@ -201,17 +201,15 @@ class PostService:
         })
         
         # Get posts from friends
-        # CRITICAL: MongoDB sorts datetime objects before strings, so newer string dates get pushed down
-        # Solution: Fetch ALL posts (or a very large batch), then sort in Python by actual datetime
-        # This ensures we get the newest posts regardless of storage format
-        fetch_limit = min(total_count, 5000)  # Fetch up to 5000 to ensure we get all posts including newest
+        # OPTIMIZED: Limit fetch to reasonable amount to avoid timeouts
+        # We fetch more than needed to account for sorting issues with mixed date formats
+        fetch_limit = min(skip + limit + 100, 300)  # Fetch at most 300 posts
         
-        # Fetch all posts without MongoDB sort (since it doesn't work with mixed types)
-        # We'll sort properly in Python after converting all dates to datetime objects
+        # Try MongoDB sort first, then fall back to Python sort if needed
         posts_cursor = self.db.posts.find({
             "user_id": {"$in": friend_ids},
             "post_type": post_type
-        }).limit(fetch_limit)
+        }).sort("created_at", -1).limit(fetch_limit)
         
         all_posts = await posts_cursor.to_list(fetch_limit)
         
