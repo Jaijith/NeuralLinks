@@ -156,6 +156,7 @@ export class BackendStack extends cdk.Stack {
     );
 
     // Grant Lambda permissions to add permissions to itself (for EventBridge to invoke it)
+    // Use function name pattern to avoid circular dependency
     backendFunction.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
@@ -163,12 +164,25 @@ export class BackendStack extends cdk.Stack {
           'lambda:AddPermission',
           'lambda:RemovePermission',
         ],
-        resources: [backendFunction.functionArn],
+        resources: [
+          `arn:aws:lambda:${this.region}:${this.account}:function:${cdk.Stack.of(this).stackName}-BackendFunction*`,
+        ],
       })
     );
 
-    // Add Lambda function ARN to environment so cycle_manager can find it
-    backendFunction.addEnvironment('LAMBDA_FUNCTION_ARN', backendFunction.functionArn);
+    // Grant Lambda permission to list functions (so cycle_manager can find its own ARN)
+    backendFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: [
+          'lambda:ListFunctions',
+        ],
+        resources: ['*'],
+      })
+    );
+
+    // Note: LAMBDA_FUNCTION_ARN will be found at runtime by listing functions
+    // This avoids circular dependency issues
     backendFunction.addEnvironment('STACK_NAME', 'BackendStack');
 
     // API Gateway
