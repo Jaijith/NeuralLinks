@@ -291,8 +291,14 @@ try:
         detail = event.get('detail', {})
         source = event.get('source', '')
         
-        # New format: single avatar cycle
-        if source == 'avatar.cycle' or detail.get('action') == 'run_single_avatar_cycle':
+        # EventBridge puts custom Input JSON in the detail field
+        # Check if detail contains avatar cycle info
+        detail_source = detail.get('source', '')
+        detail_action = detail.get('action', '')
+        
+        # New format: single avatar cycle (check both event source and detail source)
+        if (source == 'avatar.cycle' or detail_source == 'avatar.cycle' or 
+            detail_action == 'run_single_avatar_cycle'):
             avatar_id = detail.get('avatar_id')
             if avatar_id:
                 logger.info(f"🎯 Processing single avatar cycle for: {avatar_id}")
@@ -369,9 +375,18 @@ try:
         print(f"[DEBUG] Lambda invoked. Event keys: {list(event.keys())}")
         print(f"[DEBUG] source={event.get('source')}, detail-type={event.get('detail-type')}")
         
-        # Check if this is an EventBridge event
+        # Check if this is a per-avatar cycle event (new format)
+        # EventBridge puts custom Input in detail field
+        detail = event.get('detail', {})
+        if (detail.get('source') == 'avatar.cycle' or 
+            detail.get('action') == 'run_single_avatar_cycle' or
+            event.get('source') == 'avatar.cycle'):
+            print("[DEBUG] Routing to EventBridge handler (per-avatar cycle)")
+            return eventbridge_handler(event, context)
+        
+        # Check if this is an EventBridge event (legacy batch mode)
         if event.get('source') == 'aws.events' or event.get('detail-type') == 'Autonomous Avatar Cycle':
-            print("[DEBUG] Routing to EventBridge handler")
+            print("[DEBUG] Routing to EventBridge handler (batch mode)")
             return eventbridge_handler(event, context)
         
         # Check if this is an EventBridge scheduled event (different format)
