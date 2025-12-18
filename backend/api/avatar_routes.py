@@ -223,8 +223,9 @@ async def update_avatar_config(
     
     # Update activity level
     if avatar_activity_level:
-        if avatar_activity_level not in ['hypo', 'low', 'medium', 'high']:
-            raise HTTPException(status_code=400, detail="Invalid activity level")
+        valid_levels = ['hypo', 'user_active', 'bot_hourly', 'low', 'medium', 'high']
+        if avatar_activity_level not in valid_levels:
+            raise HTTPException(status_code=400, detail=f"Invalid activity level. Must be one of: {valid_levels}")
         update_fields['avatar_activity_level'] = avatar_activity_level
     
     # Update archetype
@@ -243,7 +244,47 @@ async def update_avatar_config(
             {"$set": update_fields}
         )
     
-    # Start or stop autonomous agent based on autonomy toggle
+    # Manage EventBridge rule for per-avatar cycles
+    from domain.avatar.cycle_manager import AvatarCycleManager
+    cycle_manager = AvatarCycleManager()
+    
+    if autonomy_changed:
+        if new_autonomy_state:
+            # Autonomy enabled - create EventBridge rule
+            # Get activity level from update or database
+            activity_level = avatar_activity_level
+            if not activity_level:
+                user_doc = await db.users.find_one({"id": current_user.id})
+                activity_level = user_doc.get('avatar_activity_level', 'medium') if user_doc else 'medium'
+            
+            logger.info(f"📅 Creating EventBridge rule for user {current_user.id} (activity: {activity_level})")
+            rule_created = await cycle_manager.create_rule(current_user.id, activity_level)
+            if rule_created:
+                logger.info(f"✅ EventBridge rule created for user {current_user.id}")
+            else:
+                logger.error(f"❌ Failed to create EventBridge rule for user {current_user.id}")
+        else:
+            # Autonomy disabled - delete EventBridge rule
+            logger.info(f"🗑️ Deleting EventBridge rule for user {current_user.id}")
+            rule_deleted = await cycle_manager.delete_rule(current_user.id)
+            if rule_deleted:
+                logger.info(f"✅ EventBridge rule deleted for user {current_user.id}")
+            else:
+                logger.warning(f"⚠️ Failed to delete EventBridge rule for user {current_user.id}")
+    
+    # Update EventBridge rule if activity level changed
+    if avatar_activity_level and not autonomy_changed:
+        # Activity level changed but autonomy wasn't toggled - update existing rule
+        user_doc = await db.users.find_one({"id": current_user.id})
+        if user_doc and user_doc.get('avatar_autonomous', False):
+            logger.info(f"🔄 Updating EventBridge rule schedule for user {current_user.id} (new activity: {avatar_activity_level})")
+            rule_updated = await cycle_manager.update_rule(current_user.id, avatar_activity_level)
+            if rule_updated:
+                logger.info(f"✅ EventBridge rule updated for user {current_user.id}")
+            else:
+                logger.error(f"❌ Failed to update EventBridge rule for user {current_user.id}")
+    
+    # Start or stop autonomous agent based on autonomy toggle (legacy - for real-time runner)
     agent_status = None
     if autonomy_changed:
         agent_runner = get_agent_runner()

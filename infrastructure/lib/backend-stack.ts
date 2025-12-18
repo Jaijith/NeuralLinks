@@ -136,6 +136,41 @@ export class BackendStack extends cdk.Stack {
     backendFunction.addEnvironment('OPENAI_SECRET_NAME', openaiApiKeySecret.secretName);
     backendFunction.addEnvironment('OPENAI_MODEL', 'gpt-4o-mini');
 
+    // Grant Lambda permissions to manage EventBridge rules (for per-avatar cycles)
+    backendFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: [
+          'events:PutRule',
+          'events:DeleteRule',
+          'events:DescribeRule',
+          'events:PutTargets',
+          'events:RemoveTargets',
+          'events:ListTargetsByRule',
+          'events:TagResource',
+        ],
+        resources: [
+          `arn:aws:events:${this.region}:${this.account}:rule/avatar-cycle-*`,
+        ],
+      })
+    );
+
+    // Grant Lambda permissions to add permissions to itself (for EventBridge to invoke it)
+    backendFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: [
+          'lambda:AddPermission',
+          'lambda:RemovePermission',
+        ],
+        resources: [backendFunction.functionArn],
+      })
+    );
+
+    // Add Lambda function ARN to environment so cycle_manager can find it
+    backendFunction.addEnvironment('LAMBDA_FUNCTION_ARN', backendFunction.functionArn);
+    backendFunction.addEnvironment('STACK_NAME', 'BackendStack');
+
     // API Gateway
     const api = new apigateway.RestApi(this, 'Api', {
       restApiName: '2N1 API',

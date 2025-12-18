@@ -115,9 +115,86 @@ try:
     # This is recommended for Lambda to avoid issues with connection pooling
     mangum_adapter = Mangum(app, lifespan="off")
     
+    async def run_single_avatar_cycle(avatar_id: str):
+        """Run autonomous cycle for a single avatar"""
+        print(f"📍 run_single_avatar_cycle() started for avatar: {avatar_id}")
+        from motor.motor_asyncio import AsyncIOMotorClient
+        from domain.avatar.state_aware_agent import StateAwareAgent
+        from domain.avatar.intelligent import IntelligentAvatar
+        from domain.graph.rag import GraphRAG
+        from openai import AsyncOpenAI
+        
+        # Create fresh database connection for this invocation
+        mongodb_uri = os.environ.get('MONGODB_URI')
+        print(f"📍 MongoDB URI present: {bool(mongodb_uri)}")
+        if not mongodb_uri:
+            logger.error("❌ MONGODB_URI not set")
+            return {"processed": 0, "errors": 1, "error": "MONGODB_URI not set"}
+        
+        client = AsyncIOMotorClient(mongodb_uri)
+        db = client.neurallinks_local
+        
+        # Create fresh OpenAI client
+        openai_api_key = os.environ.get('OPENAI_API_KEY')
+        openai_model = os.environ.get('OPENAI_MODEL', 'gpt-4o-mini')
+        
+        openai_client = None
+        if openai_api_key:
+            openai_client = AsyncOpenAI(api_key=openai_api_key)
+        
+        # Create intelligent avatar for this invocation
+        graph_rag = GraphRAG(db)
+        local_intelligent_avatar = None
+        if openai_client:
+            local_intelligent_avatar = IntelligentAvatar(db, openai_client, openai_model, graph_rag)
+        
+        try:
+            # Find the specific user
+            user = await db.users.find_one(
+                {"id": avatar_id},
+                {"_id": 0}
+            )
+            
+            if not user:
+                logger.error(f"❌ User {avatar_id} not found")
+                return {"processed": 0, "errors": 1, "error": "User not found"}
+            
+            # Verify autonomy is still enabled
+            if not user.get('avatar_autonomous', False):
+                logger.info(f"ℹ️ Autonomy disabled for {avatar_id}, skipping")
+                return {"processed": 0, "errors": 0, "skipped": True}
+            
+            avatar_name = user.get('avatar_name', 'Unknown')
+            activity_level = user.get('avatar_activity_level', 'medium')
+            
+            agent = StateAwareAgent(
+                bot=user,
+                db=db,
+                intelligent_avatar=local_intelligent_avatar
+            )
+            await agent.initialize()
+            
+            # Log activity level info
+            logger.info(
+                f"🎯 {avatar_name}: Activity={activity_level}, "
+                f"Max={agent.max_actions_per_day}/day, "
+                f"Interval={agent.min_action_interval.total_seconds()/60:.0f}min"
+            )
+            
+            await agent._run_single_cycle()
+            logger.info(f"✅ Processed {avatar_name}")
+            return {"processed": 1, "errors": 0, "avatar_name": avatar_name}
+            
+        except Exception as e:
+            logger.error(f"❌ Error processing avatar {avatar_id}: {e}", exc_info=True)
+            return {"processed": 0, "errors": 1, "error": str(e)}
+        finally:
+            # Close the database connection
+            client.close()
+    
     async def run_autonomous_cycle():
-        """Run autonomous cycle for all enabled avatars"""
-        print("📍 run_autonomous_cycle() started")
+        """Run autonomous cycle for all enabled avatars (legacy - for backward compatibility)"""
+        print("📍 run_autonomous_cycle() started (legacy batch mode)")
         from motor.motor_asyncio import AsyncIOMotorClient
         from domain.avatar.state_aware_agent import StateAwareAgent
         from domain.avatar.intelligent import IntelligentAvatar
@@ -205,14 +282,57 @@ try:
     def eventbridge_handler(event, context):
         """Handle EventBridge scheduled events for autonomous cycles"""
         import asyncio
+        import json
         
         print(f"🤖 EventBridge handler invoked!")
-        print(f"🤖 Event detail-type: {event.get('detail-type', 'Unknown')}")
-        logger.info(f"🤖 EventBridge trigger received: {event.get('detail-type', 'Unknown')}")
+        print(f"🤖 Event: {json.dumps(event, default=str)}")
         
+        # Check if this is a single avatar cycle or batch cycle
+        detail = event.get('detail', {})
+        source = event.get('source', '')
+        
+        # New format: single avatar cycle
+        if source == 'avatar.cycle' or detail.get('action') == 'run_single_avatar_cycle':
+            avatar_id = detail.get('avatar_id')
+            if avatar_id:
+                logger.info(f"🎯 Processing single avatar cycle for: {avatar_id}")
+                try:
+                    # For Lambda, we need to handle the event loop carefully
+                    try:
+                        loop = asyncio.get_event_loop()
+                        if loop.is_closed():
+                            loop = asyncio.new_event_loop()
+                            asyncio.set_event_loop(loop)
+                    except RuntimeError:
+                        loop = asyncio.new_event_loop()
+                        asyncio.set_event_loop(loop)
+                    
+                    # Run single avatar cycle
+                    result = loop.run_until_complete(run_single_avatar_cycle(avatar_id))
+                    
+                    logger.info(f"✅ Single avatar cycle complete: {result}")
+                    return {
+                        'statusCode': 200,
+                        'body': json.dumps({
+                            'success': True,
+                            'processed': result.get('processed', 0),
+                            'errors': result.get('errors', 0),
+                            'avatar_id': avatar_id
+                        })
+                    }
+                except Exception as e:
+                    logger.error(f"❌ Single avatar cycle failed for {avatar_id}: {e}")
+                    import traceback
+                    logger.error(traceback.format_exc())
+                    return {
+                        'statusCode': 500,
+                        'body': json.dumps({'success': False, 'error': str(e), 'avatar_id': avatar_id})
+                    }
+        
+        # Legacy format: batch cycle (all avatars)
+        logger.info(f"🤖 EventBridge trigger received: {event.get('detail-type', 'Unknown')} (batch mode)")
         try:
             # For Lambda, we need to handle the event loop carefully
-            # Try to get existing loop, if closed or doesn't exist, create new one
             try:
                 loop = asyncio.get_event_loop()
                 if loop.is_closed():
@@ -222,13 +342,17 @@ try:
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
             
-            # Run the autonomous cycle
+            # Run the autonomous cycle (legacy batch mode)
             result = loop.run_until_complete(run_autonomous_cycle())
             
             logger.info(f"✅ Autonomous cycle complete: {result}")
             return {
                 'statusCode': 200,
-                'body': f'{{"success": true, "processed": {result["processed"]}, "errors": {result["errors"]}}}'
+                'body': json.dumps({
+                    'success': True,
+                    'processed': result.get('processed', 0),
+                    'errors': result.get('errors', 0)
+                })
             }
         except Exception as e:
             logger.error(f"❌ Autonomous cycle failed: {e}")
@@ -236,7 +360,7 @@ try:
             logger.error(traceback.format_exc())
             return {
                 'statusCode': 500,
-                'body': f'{{"success": false, "error": "{str(e)}"}}'
+                'body': json.dumps({'success': False, 'error': str(e)})
             }
     
     def combined_handler(event, context):
