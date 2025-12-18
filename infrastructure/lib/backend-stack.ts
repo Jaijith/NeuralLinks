@@ -82,7 +82,7 @@ export class BackendStack extends cdk.Stack {
       // Set Lambda architecture to x86_64
       architecture: lambda.Architecture.X86_64,
       memorySize: 2048, // Increased for container image
-      timeout: cdk.Duration.seconds(60), // Increased for OAuth callbacks
+      timeout: cdk.Duration.seconds(120), // Increased for autonomous avatar cycles
       environment: {
         AWS_S3_BUCKET: this.uploadsBucket.bucketName,
         AWS_S3_REGION: this.region, // Set S3 region to match bucket region
