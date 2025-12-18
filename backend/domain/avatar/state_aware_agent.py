@@ -31,6 +31,18 @@ ACTIVITY_LEVEL_CONFIG = {
         "max_actions_per_day": 720,     # Essentially unlimited for testing
         "delay_multiplier": 0.1,        # Very short delays
     },
+    "user_active": {
+        "name": "User Active",
+        "min_interval_minutes": 7,      # 1 action every 7 minutes
+        "max_actions_per_day": 200,     # ~200 actions/day
+        "delay_multiplier": 0.2,        # Short delays
+    },
+    "bot_hourly": {
+        "name": "Bot Hourly",
+        "min_interval_minutes": 60,     # 1 action every hour
+        "max_actions_per_day": 24,      # 24 actions/day
+        "delay_multiplier": 0.8,        # Normal delays
+    },
     "low": {
         "name": "Low",
         "min_interval_minutes": 720,    # 12 hours minimum between actions
