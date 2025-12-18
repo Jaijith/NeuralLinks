@@ -26,9 +26,22 @@ def handler(event, context):
 
 import os
 import logging
+import sys
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging for Lambda - must use root logger and set format
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.INFO)
+
+# Remove default handlers and add our own
+for h in root_logger.handlers[:]:
+    root_logger.removeHandler(h)
+
+handler_stdout = logging.StreamHandler(sys.stdout)
+handler_stdout.setLevel(logging.INFO)
+formatter = logging.Formatter('%(levelname)s - %(name)s - %(message)s')
+handler_stdout.setFormatter(formatter)
+root_logger.addHandler(handler_stdout)
+
 logger = logging.getLogger(__name__)
 
 def get_secret(secret_name: str) -> str:
@@ -104,6 +117,7 @@ try:
     
     async def run_autonomous_cycle():
         """Run autonomous cycle for all enabled avatars"""
+        print("📍 run_autonomous_cycle() started")
         from motor.motor_asyncio import AsyncIOMotorClient
         from domain.avatar.state_aware_agent import StateAwareAgent
         from domain.avatar.intelligent import IntelligentAvatar
@@ -112,6 +126,7 @@ try:
         
         # Create fresh database connection for this invocation
         mongodb_uri = os.environ.get('MONGODB_URI')
+        print(f"📍 MongoDB URI present: {bool(mongodb_uri)}")
         if not mongodb_uri:
             logger.error("❌ MONGODB_URI not set")
             return {"processed": 0, "errors": 0, "error": "MONGODB_URI not set"}
@@ -191,6 +206,8 @@ try:
         """Handle EventBridge scheduled events for autonomous cycles"""
         import asyncio
         
+        print(f"🤖 EventBridge handler invoked!")
+        print(f"🤖 Event detail-type: {event.get('detail-type', 'Unknown')}")
         logger.info(f"🤖 EventBridge trigger received: {event.get('detail-type', 'Unknown')}")
         
         try:
@@ -224,12 +241,18 @@ try:
     
     def combined_handler(event, context):
         """Route to appropriate handler based on event type"""
+        # Debug: print event type for troubleshooting
+        print(f"[DEBUG] Lambda invoked. Event keys: {list(event.keys())}")
+        print(f"[DEBUG] source={event.get('source')}, detail-type={event.get('detail-type')}")
+        
         # Check if this is an EventBridge event
         if event.get('source') == 'aws.events' or event.get('detail-type') == 'Autonomous Avatar Cycle':
+            print("[DEBUG] Routing to EventBridge handler")
             return eventbridge_handler(event, context)
         
         # Check if this is an EventBridge scheduled event (different format)
         if 'detail' in event and event.get('detail', {}).get('action') == 'run_autonomous_cycle':
+            print("[DEBUG] Routing to EventBridge handler (alternate format)")
             return eventbridge_handler(event, context)
         
         # Otherwise, treat as HTTP request via API Gateway
