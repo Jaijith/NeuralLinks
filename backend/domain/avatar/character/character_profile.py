@@ -93,18 +93,19 @@ class CharacterProfile:
     def _calculate_action_preferences(self):
         """Calculate action preferences based on archetype and personality"""
         # Base preferences from archetype
+        # INCREASED probabilities for create_post and message_friend across all archetypes
         archetype_prefs = {
             "social_butterfly": {
-                "message_friend": 0.9,
+                "message_friend": 0.95,  # Increased from 0.9
                 "like_post": 0.8,
                 "comment_on_post": 0.8,
                 "send_friend_request": 0.7,
-                "create_post": 0.6
+                "create_post": 0.85  # Increased from 0.6
             },
             "thoughtful_contributor": {
-                "create_post": 0.8,
+                "create_post": 0.95,  # Increased from 0.8
                 "comment_on_post": 0.9,
-                "message_friend": 0.7,
+                "message_friend": 0.85,  # Increased from 0.7
                 "like_post": 0.6,
                 "send_friend_request": 0.5
             },
@@ -112,20 +113,20 @@ class CharacterProfile:
                 "like_post": 0.7,
                 "browse_feed": 0.8,
                 "read_messages": 0.7,
-                "create_post": 0.5,
-                "message_friend": 0.5
+                "create_post": 0.75,  # Increased from 0.5
+                "message_friend": 0.75  # Increased from 0.5
             },
             "niche_expert": {
-                "create_post": 0.8,
+                "create_post": 0.95,  # Increased from 0.8
                 "comment_on_post": 0.7,
                 "like_post": 0.6,
-                "message_friend": 0.5
+                "message_friend": 0.75  # Increased from 0.5
             },
             "enthusiastic_newcomer": {
                 "send_friend_request": 0.8,
-                "message_friend": 0.8,
+                "message_friend": 0.9,  # Increased from 0.8
                 "like_post": 0.7,
-                "create_post": 0.6,
+                "create_post": 0.85,  # Increased from 0.6
                 "discover_profiles": 0.9
             }
         }

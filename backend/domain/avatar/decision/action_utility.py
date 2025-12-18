@@ -99,6 +99,10 @@ class ActionUtility:
             if action.get("interest_aligned"):
                 utility *= 1.15  # 15% boost for interest-aligned actions
             
+            # Boost for posts and messages to increase their probability
+            if action_type in ["create_post", "message_friend"]:
+                utility *= 1.25  # 25% boost for posts and messages
+            
             # Store in history
             if action_type not in self.action_history:
                 self.action_history[action_type] = []
