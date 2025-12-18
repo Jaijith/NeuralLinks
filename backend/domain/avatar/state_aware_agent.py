@@ -113,9 +113,19 @@ class StateAwareAgent:
             try:
                 # Parse ISO format timestamp
                 if isinstance(last_activity_str, str):
-                    self.last_action_time = datetime.fromisoformat(last_activity_str.replace('Z', '+00:00'))
+                    parsed_time = datetime.fromisoformat(last_activity_str.replace('Z', '+00:00'))
+                    # Ensure timezone-aware
+                    if parsed_time.tzinfo is None:
+                        parsed_time = parsed_time.replace(tzinfo=timezone.utc)
+                    self.last_action_time = parsed_time
+                elif isinstance(last_activity_str, datetime):
+                    # Ensure timezone-aware
+                    if last_activity_str.tzinfo is None:
+                        self.last_action_time = last_activity_str.replace(tzinfo=timezone.utc)
+                    else:
+                        self.last_action_time = last_activity_str
                 else:
-                    self.last_action_time = last_activity_str
+                    self.last_action_time = datetime.now(timezone.utc) - timedelta(hours=24)
             except (ValueError, TypeError):
                 # If parsing fails, allow action by setting old time
                 self.last_action_time = datetime.now(timezone.utc) - timedelta(hours=24)
