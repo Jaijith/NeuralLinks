@@ -149,12 +149,12 @@ try:
             local_intelligent_avatar = IntelligentAvatar(db, openai_client, openai_model, graph_rag)
         
         try:
-            # Find all users with autonomy enabled
+            # Find all users with autonomy enabled (including bots for testing)
             query = {
                 "avatar_autonomous": True,
                 "avatar_name": {"$exists": True, "$ne": None},
-                "avatar_picture": {"$exists": True, "$ne": None},
-                "is_bot": {"$ne": True}
+                "avatar_picture": {"$exists": True, "$ne": None}
+                # Note: Removed is_bot filter to include bot avatars
             }
             
             users = await db.users.find(query, {"_id": 0}).to_list(100)
