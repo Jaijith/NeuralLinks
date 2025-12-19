@@ -152,14 +152,12 @@ DB_NAME=neurallinks_local
 # CORS - Allow frontend
 CORS_ORIGINS=http://localhost:3000
 
-# Azure OpenAI Configuration
-# ⚠️ IMPORTANT: Add your Azure OpenAI credentials below!
-AZURE_OPENAI_API_KEY=your_api_key_here
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
-AZURE_OPENAI_DEPLOYMENT=your-deployment-name
-AZURE_OPENAI_API_VERSION=2024-10-21
+# OpenAI Configuration
+# ⚠️ IMPORTANT: Add your OpenAI API key below!
+OPENAI_API_KEY=your_api_key_here
+OPENAI_MODEL=gpt-5-nano-2025-08-07
 EOF
-    print_warning "Backend .env created - PLEASE UPDATE WITH YOUR AZURE OPENAI CREDENTIALS!"
+    print_warning "Backend .env created - PLEASE UPDATE WITH YOUR OPENAI API KEY!"
 else
     print_status "Backend .env already exists"
 fi

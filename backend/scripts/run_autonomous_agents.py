@@ -28,7 +28,7 @@ DB_NAME = os.getenv("DB_NAME", "neurallinks_local")
 
 # OpenAI Configuration
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5-nano-2025-08-07")
 
 # Note: Agents now run continuously (no cycle interval needed)
 # Each agent runs its own loop and decides when to be active/passive based on state
@@ -52,7 +52,7 @@ async def main():
         print("❌ ERROR: OpenAI configuration incomplete!")
         print("\nRequired environment variables:")
         print("  - OPENAI_API_KEY")
-        print("  - OPENAI_MODEL (optional, defaults to gpt-4o-mini)")
+        print("  - OPENAI_MODEL (optional, defaults to gpt-5-nano-2025-08-07)")
         print("\nPlease check your backend/.env file")
         sys.exit(1)
     

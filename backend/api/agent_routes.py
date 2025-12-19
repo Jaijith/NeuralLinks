@@ -27,11 +27,48 @@ def get_azure_client():
 def get_openai_model():
     """Get OpenAI model name"""
     from app.globals import OPENAI_MODEL
-    return OPENAI_MODEL or "gpt-4o-mini"
+    return OPENAI_MODEL  # Has default in config.py
 
-def get_azure_deployment():
-    """Get OpenAI model name (alias for backwards compatibility)"""
-    return get_openai_model()
+
+def is_responses_api_model(model: str) -> bool:
+    """Check if model uses the new Responses API (gpt-5 models)"""
+    return "gpt-5" in model.lower()
+
+
+async def call_openai_with_system(client, model: str, system_prompt: str, user_message: str = "") -> str:
+    """
+    Call OpenAI with appropriate API based on model type.
+    For gpt-5 models, combines system and user into single input.
+    """
+    if is_responses_api_model(model):
+        # For gpt-5 models, combine system and user into single input
+        if user_message:
+            combined_prompt = f"""System Instructions:
+{system_prompt}
+
+User Message:
+{user_message}"""
+        else:
+            combined_prompt = system_prompt
+        
+        response = await client.responses.create(
+            model=model,
+            input=combined_prompt
+        )
+        return response.output_text.strip() if response.output_text else ""
+    else:
+        # Use traditional Chat Completions API
+        messages = [{"role": "system", "content": system_prompt}]
+        if user_message:
+            messages.append({"role": "user", "content": user_message})
+        
+        response = await client.chat.completions.create(
+            model=model,
+            messages=messages,
+            temperature=0.8,
+            max_tokens=150
+        )
+        return response.choices[0].message.content.strip() if response.choices[0].message.content else ""
 
 
 @router.post("/agent/create")
@@ -63,11 +100,11 @@ async def start_agent_conversation(target_user_id: str, request: Request):
     """Start AI agent conversation with another user"""
     user = await require_auth(request)
     
-    azure_client = get_azure_client()
-    AZURE_OPENAI_DEPLOYMENT = get_azure_deployment()
+    openai_client = get_openai_client()
+    openai_model = get_openai_model()
     
-    if not azure_client:
-        raise HTTPException(status_code=500, detail="Azure OpenAI not configured")
+    if not openai_client:
+        raise HTTPException(status_code=500, detail="OpenAI not configured")
     
     # Get both users' profiles and graphs
     user1_doc = await db.users.find_one({"id": user.id})
@@ -93,31 +130,14 @@ async def start_agent_conversation(target_user_id: str, request: Request):
     agent1_context = f"""You are {user1_doc['name']}'s AI dating agent. Your personality: {', '.join(user1_doc.get('interests', []))}.
 Introduce yourself briefly and ask an interesting question."""
     
-    response1 = await azure_client.chat.completions.create(
-        model=AZURE_OPENAI_DEPLOYMENT,
-        messages=[{"role": "system", "content": agent1_context}],
-        temperature=0.8,
-        max_tokens=150
-    )
-    
-    agent1_msg = response1.choices[0].message.content
+    agent1_msg = await call_openai_with_system(openai_client, openai_model, agent1_context)
     messages.append({"sender": user.id, "message": agent1_msg, "timestamp": datetime.now(timezone.utc).isoformat()})
     
     # Agent 2 responds
     agent2_context = f"""You are {user2_doc['name']}'s AI dating agent. Your personality: {', '.join(user2_doc.get('interests', []))}.
 Respond to the introduction and share something interesting about yourself."""
     
-    response2 = await azure_client.chat.completions.create(
-        model=AZURE_OPENAI_DEPLOYMENT,
-        messages=[
-            {"role": "system", "content": agent2_context},
-            {"role": "user", "content": agent1_msg}
-        ],
-        temperature=0.8,
-        max_tokens=150
-    )
-    
-    agent2_msg = response2.choices[0].message.content
+    agent2_msg = await call_openai_with_system(openai_client, openai_model, agent2_context, agent1_msg)
     messages.append({"sender": target_user_id, "message": agent2_msg, "timestamp": datetime.now(timezone.utc).isoformat()})
     
     conversation.messages = messages

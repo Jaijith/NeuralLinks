@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
-from core.config import CORS_ORIGINS, get_openai_client, OPENAI_MODEL, AZURE_OPENAI_DEPLOYMENT
+from core.config import CORS_ORIGINS, get_openai_client, OPENAI_MODEL
 from core.database import get_database, close_database
 from domain.graph import GraphBuilder, GraphRAG
 from domain.avatar import IntelligentAvatar
@@ -33,7 +33,7 @@ azure_client = openai_client  # Alias for backwards compatibility
 
 # Initialize Graph RAG modules
 graph_rag = GraphRAG(db)
-model_name = OPENAI_MODEL or AZURE_OPENAI_DEPLOYMENT or "gpt-4o-mini"
+model_name = OPENAI_MODEL  # Has default in config.py
 graph_builder = GraphBuilder(db, openai_client, model_name)
 intelligent_avatar = IntelligentAvatar(db, openai_client, model_name, graph_rag)
 
@@ -63,8 +63,8 @@ else:
 from app.globals import initialize_globals
 initialize_globals(
     db_instance=db,
-    azure_client_instance=azure_client,
-    deployment_name=AZURE_OPENAI_DEPLOYMENT,
+    azure_client_instance=openai_client,  # Parameter name kept for backwards compatibility
+    deployment_name=model_name,  # Parameter name kept for backwards compatibility
     graph_rag_instance=graph_rag,
     graph_builder_instance=graph_builder,
     intelligent_avatar_instance=intelligent_avatar,

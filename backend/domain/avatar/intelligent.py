@@ -20,6 +20,31 @@ class IntelligentAvatar:
         self.llm_client = llm_client
         self.model = model  # Model name for OpenAI
         self.graph_rag = graph_rag
+        # Check if using gpt-5-nano which requires responses API
+        self._use_responses_api = "gpt-5" in self.model.lower() or "gpt-5-nano" in self.model.lower()
+    
+    async def _call_llm(self, prompt: str) -> str:
+        """
+        Call LLM with appropriate API based on model type.
+        - For gpt-5-nano models: uses responses.create() API
+        - For other models: uses chat.completions.create() API
+        """
+        if self._use_responses_api:
+            # Use new responses API for gpt-5-nano models
+            response = await self.llm_client.responses.create(
+                model=self.model,
+                input=prompt
+            )
+            return response.output_text.strip() if response.output_text else ""
+        else:
+            # Use traditional chat completions API
+            response = await self.llm_client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.8,
+                max_tokens=250
+            )
+            return response.choices[0].message.content.strip() if response.choices[0].message.content else ""
     
     async def generate_avatar_post(self, user_id: str, post_type: str = "general") -> Dict[str, Any]:
         """
@@ -75,14 +100,12 @@ Generate an engaging social media post (80-150 words) from the avatar's perspect
 Return ONLY the post text, no quotes or explanations."""
         
         try:
-            response = await self.llm_client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.8,
-                max_tokens=250
-            )
+            post_content = await self._call_llm(prompt)
             
-            post_content = response.choices[0].message.content.strip()
+            if not post_content:
+                return {"error": "Empty response from OpenAI"}
+            
+            print(f"✅ Generated post content (length: {len(post_content)}): {post_content[:100]}...")
             
             # Remove quotes if present
             if post_content.startswith('"') and post_content.endswith('"'):
@@ -138,14 +161,10 @@ Generate a natural, engaging response (30-80 words) that:
 Return ONLY the response text, no labels or quotes."""
         
         try:
-            response = await self.llm_client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.8,
-                max_tokens=150
-            )
+            response_content = await self._call_llm(prompt)
             
-            response_content = response.choices[0].message.content.strip()
+            if not response_content:
+                return {"error": "Empty response from OpenAI"}
             
             # Remove "You:" prefix if present
             if response_content.startswith("You:"):
@@ -189,14 +208,10 @@ The bio should be:
 Return ONLY the bio text, no quotes."""
         
         try:
-            response = await self.llm_client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.8,
-                max_tokens=200
-            )
+            bio = await self._call_llm(prompt)
             
-            bio = response.choices[0].message.content.strip()
+            if not bio:
+                return {"error": "Empty response from OpenAI"}
             
             if bio.startswith('"') and bio.endswith('"'):
                 bio = bio[1:-1]
@@ -239,14 +254,12 @@ Each starter should:
 Return ONLY the conversation starters, one per line, no numbering or quotes."""
         
         try:
-            response = await self.llm_client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.9,
-                max_tokens=150
-            )
+            response_text = await self._call_llm(prompt)
             
-            starters = response.choices[0].message.content.strip().split('\n')
+            if not response_text:
+                return ["Hey! What are you up to?"]
+            
+            starters = response_text.split('\n')
             starters = [s.strip() for s in starters if s.strip()][:count]
             
             return starters if starters else ["Hey! What are you up to?"]

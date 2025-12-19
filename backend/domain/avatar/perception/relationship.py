@@ -85,7 +85,7 @@ class RelationshipPerception:
             avatar_posts = await self.db.posts.find({
                 "user_id": avatar_id,
                 "created_at": {"$gte": since_time.isoformat()}
-            }).to_list(100)
+            }).sort([("created_at", -1)]).limit(10).to_list(10)  # Reduced for performance
             
             for post in avatar_posts:
                 # Check if friend liked
@@ -107,7 +107,7 @@ class RelationshipPerception:
             friend_posts = await self.db.posts.find({
                 "user_id": friend_id,
                 "created_at": {"$gte": since_time.isoformat()}
-            }).to_list(100)
+            }).sort([("created_at", -1)]).limit(10).to_list(10)  # Reduced for performance
             
             for post in friend_posts:
                 # Check if avatar liked
@@ -389,7 +389,7 @@ class RelationshipPerception:
             avatar_posts = await self.db.posts.find({
                 "user_id": avatar_id,
                 "created_at": {"$gte": since_time.isoformat()}
-            }).to_list(1000)
+            }).sort([("created_at", -1)]).limit(10).to_list(10)  # Reduced for performance
             
             # Calculate engagement metrics
             total_likes = sum(post.get('likes', 0) for post in avatar_posts)

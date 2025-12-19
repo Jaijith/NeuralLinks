@@ -18,10 +18,10 @@ class SimpleAgentManager:
     Phase 1: Simple scheduler, runs all bots in cycles
     """
     
-    def __init__(self, db: AsyncIOMotorDatabase, llm_client, deployment: str):
+    def __init__(self, db: AsyncIOMotorDatabase, llm_client, model: str):
         self.db = db
         self.llm_client = llm_client
-        self.deployment = deployment
+        self.model = model
         self.agents: List[StateAwareAgent] = []
         self.running = False
         
@@ -32,7 +32,7 @@ class SimpleAgentManager:
         self.intelligent_avatar = IntelligentAvatar(
             db=db,
             llm_client=llm_client,
-            deployment=deployment,
+            model=model,
             graph_rag=self.graph_rag
         )
         

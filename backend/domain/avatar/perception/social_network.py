@@ -65,16 +65,21 @@ class SocialNetworkPerception:
             
             # Get posts from friends in last 24 hours
             since_time = datetime.now(timezone.utc) - timedelta(hours=24)
+            since_time_str = since_time.isoformat()
             
-            # Query posts from friends - fetch all and filter by date in Python
-            # (MongoDB date comparison can be tricky with mixed formats)
+            # Query posts from friends with date filter - limit to 10 posts for performance
+            # Use both string and datetime comparison for compatibility
             posts_cursor = self.db.posts.find({
-                "user_id": {"$in": friend_ids}
-            }).sort([("created_at", -1)])
+                "user_id": {"$in": friend_ids},
+                "$or": [
+                    {"created_at": {"$gte": since_time_str}},
+                    {"created_at": {"$gte": since_time}}
+                ]
+            }).sort([("created_at", -1)]).limit(10)  # Reduced to 10 posts for performance testing
             
-            all_posts = await posts_cursor.to_list(1000)  # Limit to 1000 posts
+            all_posts = await posts_cursor.to_list(10)
             
-            # Filter posts by date in Python (handles mixed date formats)
+            # Filter posts by date in Python (handles mixed date formats) - but most should already be filtered
             recent_posts = []
             for post in all_posts:
                 post_time = self._parse_post_time(post)
@@ -200,7 +205,7 @@ class SocialNetworkPerception:
                 "user_id": {"$in": extended_friend_ids}
             }).sort([("created_at", -1)])
             
-            all_extended_posts = await posts_cursor.to_list(500)
+            all_extended_posts = await posts_cursor.to_list(10)  # Reduced for performance
             
             # Filter by date
             extended_posts = []
@@ -289,7 +294,7 @@ class SocialNetworkPerception:
                     {"user1_id": avatar_id},
                     {"user2_id": avatar_id}
                 ]
-            }).to_list(100)
+            }).sort([("updated_at", -1)]).limit(10).to_list(10)  # Reduced for performance
             
             for conv in conversations:
                 messages = conv.get('messages', [])
@@ -307,7 +312,7 @@ class SocialNetworkPerception:
                     {"agent1_user_id": avatar_id},
                     {"agent2_user_id": avatar_id}
                 ]
-            }).to_list(100)
+            }).sort([("updated_at", -1)]).limit(10).to_list(10)  # Reduced for performance
             
             for conv in agent_conversations:
                 messages = conv.get('messages', [])
@@ -331,7 +336,7 @@ class SocialNetworkPerception:
             # Fetch all avatar posts and filter by date
             all_avatar_posts = await self.db.posts.find({
                 "user_id": avatar_id
-            }).to_list(1000)
+            }).sort([("created_at", -1)]).limit(10).to_list(10)  # Reduced for performance
             
             avatar_posts = []
             for post in all_avatar_posts:

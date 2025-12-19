@@ -134,7 +134,7 @@ export class BackendStack extends cdk.Stack {
     backendFunction.addEnvironment('GOOGLE_CLIENT_ID_SECRET_NAME', googleClientIdSecret.secretName);
     backendFunction.addEnvironment('GOOGLE_CLIENT_SECRET_SECRET_NAME', googleClientSecretSecret.secretName);
     backendFunction.addEnvironment('OPENAI_SECRET_NAME', openaiApiKeySecret.secretName);
-    backendFunction.addEnvironment('OPENAI_MODEL', 'gpt-4o-mini');
+    backendFunction.addEnvironment('OPENAI_MODEL', 'gpt-5-nano-2025-08-07');
 
     // Grant Lambda permissions to manage EventBridge rules (for per-avatar cycles)
     backendFunction.addToRolePolicy(

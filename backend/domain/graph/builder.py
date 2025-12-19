@@ -18,11 +18,36 @@ logger = logging.getLogger(__name__)
 class GraphBuilder:
     """Builds and enriches knowledge graphs from user data"""
     
-    def __init__(self, db: AsyncIOMotorDatabase, llm_client: Union[AsyncOpenAI, AsyncAzureOpenAI, None], model: str = "gpt-4o-mini"):
+    def __init__(self, db: AsyncIOMotorDatabase, llm_client: Union[AsyncOpenAI, AsyncAzureOpenAI, None], model: str = "gpt-5-nano-2025-08-07"):
         self.db = db
         self.llm_client = llm_client
         self.model = model  # Model name for OpenAI or deployment name for Azure
         self.deployment = model  # Alias for backwards compatibility
+        # Check if using gpt-5 models which require responses API
+        self._use_responses_api = "gpt-5" in self.model.lower()
+    
+    async def _call_llm(self, prompt: str) -> str:
+        """
+        Call LLM with appropriate API based on model type.
+        - For gpt-5 models: uses responses.create() API
+        - For other models: uses chat.completions.create() API
+        """
+        if self._use_responses_api:
+            # Use new responses API for gpt-5 models
+            response = await self.llm_client.responses.create(
+                model=self.model,
+                input=prompt
+            )
+            return response.output_text.strip() if response.output_text else ""
+        else:
+            # Use traditional chat completions API
+            response = await self.llm_client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.3,
+                max_tokens=500
+            )
+            return response.choices[0].message.content.strip() if response.choices[0].message.content else ""
     
     async def extract_entities_from_text(self, text: str, user_id: str) -> List[Dict[str, Any]]:
         """
@@ -45,15 +70,8 @@ Text: {text}
 
 Return ONLY the JSON array, no explanation."""
 
-            response = await self.llm_client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.3,
-                max_tokens=500
-            )
+            content = await self._call_llm(prompt)
             logger.info(f"Successfully extracted entities using {self.model}")
-            
-            content = response.choices[0].message.content.strip()
             
             # Extract JSON from response
             if "```json" in content:

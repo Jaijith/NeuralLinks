@@ -24,17 +24,20 @@ class ActionEligibility:
     """
     
     def __init__(self):
-        # Define action cooldowns (minimum time between actions)
+        # Define action cooldowns (minimum time between SAME action type)
+        # Note: These are per-action cooldowns, separate from activity level rate limiting
+        # The effective cooldown is MAX(activity_level_interval, action_cooldown)
         self.cooldowns = {
-            "create_post": timedelta(hours=6),
-            "like_post": timedelta(minutes=5),
-            "comment_on_post": timedelta(minutes=10),
-            "message_friend": timedelta(hours=1),
-            "send_friend_request": timedelta(hours=24),
-            "discover_profiles": timedelta(hours=12)
+            "create_post": timedelta(minutes=15),     # Can post every 15 mins
+            "like_post": timedelta(minutes=1),        # Can like every 1 min
+            "comment_on_post": timedelta(minutes=5),  # Can comment every 5 mins
+            "message_friend": timedelta(minutes=7),   # Can message every 7 mins
+            "send_friend_request": timedelta(minutes=30),  # Friend request every 30 mins
+            "discover_profiles": timedelta(minutes=10)     # Discover every 10 mins
         }
         
         # Define state-based action availability
+        # Note: Action names should match what comes from the decision engine
         self.state_action_map = {
             TopLevelState.ACTIVE: [
                 "like_post", "comment_on_post", "react_to_post",
@@ -42,10 +45,10 @@ class ActionEligibility:
             ],
             TopLevelState.SOCIAL: [
                 "message_friend", "read_messages", "respond_to_messages",
-                "send_friend_request", "review_friend_requests"
+                "send_friend_request", "review_friend_requests", "accept_friend_request"
             ],
             TopLevelState.CREATIVE: [
-                "create_post", "share_content", "create_topic_post"
+                "create_post"  # share_post and share_content not yet implemented in MCP
             ],
             TopLevelState.EXPLORING: [
                 "discover_profiles", "discover_content", "browse_feed"
@@ -82,21 +85,26 @@ class ActionEligibility:
             
             for action in available_actions:
                 action_type = action.get("type", "unknown")
+                logger.info(f"Checking eligibility for action: {action_type}")
                 
                 # Check 1: State-based eligibility
                 if not self._is_eligible_for_state(action_type, current_state):
+                    logger.info(f"Action {action_type} filtered: not eligible for state {current_state.value}")
                     continue
                 
                 # Check 2: Permissions
                 if permissions and not permissions.get(action_type, True):
+                    logger.info(f"Action {action_type} filtered: permission denied")
                     continue
                 
                 # Check 3: Cooldowns
                 if not self._is_off_cooldown(action_type, internal_state):
+                    logger.info(f"Action {action_type} filtered: on cooldown (cooldown={self.cooldowns.get(action_type)})")
                     continue
                 
                 # Check 4: Prerequisites
                 if not self._has_prerequisites(action_type, external_state):
+                    logger.info(f"Action {action_type} filtered: missing prerequisites")
                     continue
                 
                 # Check 5: Context availability

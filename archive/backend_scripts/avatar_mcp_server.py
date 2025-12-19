@@ -752,23 +752,19 @@ async def initialize_intelligent_avatar():
     """Initialize IntelligentAvatar for the MCP server"""
     global intelligent_avatar
     
-    from openai import AsyncAzureOpenAI
+    from openai import AsyncOpenAI
     from graph_rag import GraphRAG
     
-    azure_client = None
-    azure_key = os.getenv('AZURE_OPENAI_API_KEY', '')
-    azure_endpoint = os.getenv('AZURE_OPENAI_ENDPOINT', '')
-    azure_deployment = os.getenv('AZURE_OPENAI_DEPLOYMENT', '')
+    # Use OpenAI instead of Azure OpenAI
+    openai_key = os.getenv('OPENAI_API_KEY', '')
+    openai_model = os.getenv('OPENAI_MODEL', 'gpt-5-nano-2025-08-07')
     
-    if azure_key and azure_endpoint:
-        azure_client = AsyncAzureOpenAI(
-            api_key=azure_key,
-            api_version=os.getenv('AZURE_OPENAI_API_VERSION', '2024-10-21'),
-            azure_endpoint=azure_endpoint
-        )
+    openai_client = None
+    if openai_key:
+        openai_client = AsyncOpenAI(api_key=openai_key)
     
     graph_rag = GraphRAG(db)
-    intelligent_avatar = IntelligentAvatar(db, azure_client, azure_deployment, graph_rag)
+    intelligent_avatar = IntelligentAvatar(db, openai_client, openai_model, graph_rag)
 
 
 # Initialize on import

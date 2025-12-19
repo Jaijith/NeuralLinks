@@ -18,13 +18,11 @@ load_dotenv(ROOT_DIR / '.env')
 
 # OpenAI Configuration
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
-OPENAI_MODEL = os.environ.get('OPENAI_MODEL', 'gpt-4o-mini')  # Default to gpt-4o-mini
+OPENAI_MODEL = os.environ.get('OPENAI_MODEL', 'gpt-5-nano-2025-08-07')  # Default to gpt-5-nano-2025-08-07
 
-# Legacy Azure OpenAI Configuration (for backwards compatibility)
-AZURE_OPENAI_API_KEY = os.environ.get('AZURE_OPENAI_API_KEY', '')
-AZURE_OPENAI_ENDPOINT = os.environ.get('AZURE_OPENAI_ENDPOINT', '')
-AZURE_OPENAI_DEPLOYMENT = os.environ.get('AZURE_OPENAI_DEPLOYMENT', OPENAI_MODEL)
-AZURE_OPENAI_API_VERSION = os.environ.get('AZURE_OPENAI_API_VERSION', '2024-10-21')
+# Legacy Azure OpenAI Configuration - DEPRECATED: Use OPENAI_API_KEY and OPENAI_MODEL instead
+# These are kept as aliases for backwards compatibility only
+AZURE_OPENAI_DEPLOYMENT = OPENAI_MODEL  # Alias for backwards compatibility
 
 # CORS Configuration - explicitly list allowed origins for credentials
 _default_origins = "https://2ness.com,https://www.2ness.com,https://api.2ness.com,http://localhost:3000,http://localhost:3001"
@@ -69,6 +67,100 @@ def get_openai_client() -> Optional[AsyncOpenAI]:
 def get_azure_client() -> Optional[AsyncOpenAI]:
     """Get OpenAI client (alias for backwards compatibility)"""
     return get_openai_client()
+
+
+def is_responses_api_model(model: str) -> bool:
+    """Check if model uses the new Responses API (gpt-5 models)"""
+    model_lower = model.lower()
+    return "gpt-5" in model_lower or "gpt-5-nano" in model_lower
+
+
+async def call_openai(prompt: str, client: Optional[AsyncOpenAI] = None, model: Optional[str] = None) -> str:
+    """
+    Call OpenAI with the appropriate API based on model type.
+    - For gpt-5 models: uses responses.create() API
+    - For other models: uses chat.completions.create() API
+    
+    Args:
+        prompt: The prompt to send to the model
+        client: Optional OpenAI client (uses global if not provided)
+        model: Optional model name (uses OPENAI_MODEL if not provided)
+    
+    Returns:
+        The generated text response
+    """
+    if client is None:
+        client = get_openai_client()
+    if model is None:
+        model = OPENAI_MODEL
+    
+    if client is None:
+        raise ValueError("OpenAI client not configured")
+    
+    if is_responses_api_model(model):
+        # Use new Responses API for gpt-5 models
+        response = await client.responses.create(
+            model=model,
+            input=prompt
+        )
+        return response.output_text.strip() if response.output_text else ""
+    else:
+        # Use traditional Chat Completions API for legacy models
+        response = await client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7,
+            max_tokens=500
+        )
+        return response.choices[0].message.content.strip() if response.choices[0].message.content else ""
+
+
+async def call_openai_with_system(system_prompt: str, user_message: str, client: Optional[AsyncOpenAI] = None, model: Optional[str] = None) -> str:
+    """
+    Call OpenAI with a system prompt and user message.
+    For gpt-5 models, combines system and user into single input.
+    
+    Args:
+        system_prompt: The system context/instructions
+        user_message: The user's message
+        client: Optional OpenAI client (uses global if not provided)
+        model: Optional model name (uses OPENAI_MODEL if not provided)
+    
+    Returns:
+        The generated text response
+    """
+    if client is None:
+        client = get_openai_client()
+    if model is None:
+        model = OPENAI_MODEL
+    
+    if client is None:
+        raise ValueError("OpenAI client not configured")
+    
+    if is_responses_api_model(model):
+        # For gpt-5 models, combine system and user into single input
+        combined_prompt = f"""System Instructions:
+{system_prompt}
+
+User Message:
+{user_message}"""
+        response = await client.responses.create(
+            model=model,
+            input=combined_prompt
+        )
+        return response.output_text.strip() if response.output_text else ""
+    else:
+        # Use traditional Chat Completions API with separate messages
+        response = await client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            temperature=0.7,
+            max_tokens=500
+        )
+        return response.choices[0].message.content.strip() if response.choices[0].message.content else ""
 
 
 # Initialize client on import

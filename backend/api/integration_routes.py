@@ -38,11 +38,38 @@ def get_azure_client():
 def get_openai_model():
     """Get OpenAI model name"""
     from app.globals import OPENAI_MODEL
-    return OPENAI_MODEL or "gpt-4o-mini"
+    return OPENAI_MODEL  # Has default in config.py
 
 def get_azure_deployment():
     """Get OpenAI model name (alias for backwards compatibility)"""
     return get_openai_model()
+
+
+def is_responses_api_model(model: str) -> bool:
+    """Check if model uses the new Responses API (gpt-5 models)"""
+    return "gpt-5" in model.lower()
+
+
+async def call_openai(client, model: str, prompt: str) -> str:
+    """
+    Call OpenAI with appropriate API based on model type.
+    """
+    if is_responses_api_model(model):
+        # Use new responses API for gpt-5 models
+        response = await client.responses.create(
+            model=model,
+            input=prompt
+        )
+        return response.output_text.strip() if response.output_text else ""
+    else:
+        # Use traditional Chat Completions API
+        response = await client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3,
+            max_tokens=2000
+        )
+        return response.choices[0].message.content.strip() if response.choices[0].message.content else ""
 
 
 def get_graph_builder():
@@ -1237,13 +1264,13 @@ async def sync_youtube_data(user_id: str, youtube_data: Dict[str, Any], access_t
         
         # ========== STEP 1: Use LLM to analyze watch history and derive character traits ==========
         character_traits_from_llm = []
-        logger.info(f"LLM Analysis Check - get_azure_client() available: {get_azure_client() is not None}, watch_history_summary length: {len(watch_history_summary)}")
+        logger.info(f"LLM Analysis Check - get_openai_client() available: {get_openai_client() is not None}, watch_history_summary length: {len(watch_history_summary)}")
         logger.info(f"Watch history summary sample (first 3): {watch_history_summary[:3] if watch_history_summary else 'NONE'}")
         
-        if not get_azure_client():
-            logger.warning("Azure OpenAI client not available - LLM analysis will be skipped. Check AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT environment variables.")
+        if not get_openai_client():
+            logger.warning("OpenAI client not available - LLM analysis will be skipped. Check OPENAI_API_KEY environment variable.")
         
-        if get_azure_client() and watch_history_summary:
+        if get_openai_client() and watch_history_summary:
             try:
                 # Prepare comprehensive watch history text for LLM analysis
                 # Use up to 200 items for LLM (to stay within token limits) but analyze all patterns
@@ -1306,14 +1333,7 @@ Entity types: trait, value, interest
 Return ONLY the JSON array, no explanation."""
 
                 logger.info("Sending YouTube watch history to LLM for character analysis")
-                response = await get_azure_client().chat.completions.create(
-                    model=get_azure_deployment(),
-                    messages=[{"role": "user", "content": llm_prompt}],
-                    temperature=0.3,
-                    max_tokens=2000  # Increased to allow more traits/values/interests
-                )
-                
-                content = response.choices[0].message.content.strip()
+                content = await call_openai(get_azure_client(), get_azure_deployment(), llm_prompt)
                 
                 # Extract JSON from response
                 if "```json" in content:

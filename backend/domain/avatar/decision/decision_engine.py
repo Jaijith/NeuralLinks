@@ -117,7 +117,10 @@ class DecisionEngine:
                 memory_context=memory_context  # NEW: Pass memory for context-aware actions
             )
             
+            logger.info(f"Decision Engine for {avatar_id}: {len(available_actions) if available_actions else 0} available actions in state {current_state.value}")
+            
             if not available_actions:
+                logger.warning(f"No available actions for {avatar_id} in state {current_state.value}")
                 return None
             
             # Filter eligible actions (with memory-based filtering)
@@ -131,7 +134,10 @@ class DecisionEngine:
                 memory_context
             )
             
+            logger.info(f"Decision Engine for {avatar_id}: {len(eligible_actions) if eligible_actions else 0} eligible actions after filtering")
+            
             if not eligible_actions:
+                logger.warning(f"No eligible actions for {avatar_id} after filtering (available: {len(available_actions) if available_actions else 0})")
                 return None
             
             # Convert CharacterProfile to dict if needed

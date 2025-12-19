@@ -28,7 +28,7 @@ def get_azure_client():
 def get_openai_model():
     """Get OpenAI model name"""
     from app.globals import OPENAI_MODEL
-    return OPENAI_MODEL or "gpt-4o-mini"
+    return OPENAI_MODEL  # Has default in config.py
 
 def get_azure_deployment():
     """Get OpenAI model name (alias for backwards compatibility)"""

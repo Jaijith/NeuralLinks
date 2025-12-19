@@ -134,13 +134,11 @@ try:
         client = AsyncIOMotorClient(mongodb_uri)
         db = client.neurallinks_local
         
-        # Create fresh OpenAI client
-        openai_api_key = os.environ.get('OPENAI_API_KEY')
-        openai_model = os.environ.get('OPENAI_MODEL', 'gpt-4o-mini')
+        # Create fresh OpenAI client using config
+        from core.config import get_openai_client, OPENAI_MODEL
         
-        openai_client = None
-        if openai_api_key:
-            openai_client = AsyncOpenAI(api_key=openai_api_key)
+        openai_client = get_openai_client()
+        openai_model = OPENAI_MODEL
         
         # Create intelligent avatar for this invocation
         graph_rag = GraphRAG(db)
@@ -211,13 +209,11 @@ try:
         client = AsyncIOMotorClient(mongodb_uri)
         db = client.neurallinks_local
         
-        # Create fresh OpenAI client
-        openai_api_key = os.environ.get('OPENAI_API_KEY')
-        openai_model = os.environ.get('OPENAI_MODEL', 'gpt-4o-mini')
+        # Create fresh OpenAI client using config
+        from core.config import get_openai_client, OPENAI_MODEL
         
-        openai_client = None
-        if openai_api_key:
-            openai_client = AsyncOpenAI(api_key=openai_api_key)
+        openai_client = get_openai_client()
+        openai_model = OPENAI_MODEL
         
         # Create intelligent avatar for this invocation
         graph_rag = GraphRAG(db)

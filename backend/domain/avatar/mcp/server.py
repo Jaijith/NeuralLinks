@@ -6,6 +6,7 @@ Exposes all avatar actions as MCP tools with permission-based access control
 import asyncio
 import json
 import sys
+import logging
 from typing import Dict, List, Any, Optional
 from datetime import datetime, timezone
 from motor.motor_asyncio import AsyncIOMotorDatabase
@@ -14,13 +15,16 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
+logger = logging.getLogger(__name__)
+
 # Load environment
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection - use core database module
-from core.database import get_database
+from core.database import get_database, DB_NAME, MONGODB_URI
 db = get_database()
+print(f"🔧 MCP Server DB initialized: name={DB_NAME}, uri_set={bool(MONGODB_URI)}")
 
 # Initialize IntelligentAvatar (will be set when server starts)
 intelligent_avatar: Optional[IntelligentAvatar] = None
@@ -52,12 +56,38 @@ class AvatarMCPTool:
     
     async def check_permission(self, avatar_id: str) -> bool:
         """Check if avatar has permission to use this tool"""
-        user = await db.users.find_one({"id": avatar_id})
+        print(f"🔍 Checking permission: action_key={self.action_key}, avatar_id={avatar_id}")
+        print(f"   DB name: {getattr(db, 'name', 'unknown')}, DB type: {type(db)}")
+        
+        # Try the query
+        try:
+            user = await db.users.find_one({"id": avatar_id})
+            print(f"   Query result: {user is not None}")
+            if user:
+                print(f"   Found user: {user.get('avatar_name', 'N/A')}")
+        except Exception as e:
+            print(f"   ❌ Query error: {e}")
+            return False
+        
         if not user:
+            # Try to find by avatar_name as fallback
+            print(f"❌ User not found by ID: {avatar_id[:8]}...")
+            # Count total users to see if db is working
+            try:
+                total_users = await db.users.count_documents({})
+                print(f"📊 Total users in DB: {total_users}")
+                # Try to find any user with similar ID
+                sample_user = await db.users.find_one({}, {"id": 1, "avatar_name": 1})
+                if sample_user:
+                    print(f"📋 Sample user ID format: {sample_user.get('id', 'N/A')[:20]}...")
+            except Exception as e:
+                print(f"   ❌ Count error: {e}")
             return False
         
         actions_enabled = user.get('avatar_actions_enabled', {})
-        return actions_enabled.get(self.action_key, True)  # Default to True
+        permission_value = actions_enabled.get(self.action_key, True)  # Default to True
+        print(f"🔐 Permission check for {self.action_key}: {permission_value} (avatar_id: {avatar_id[:8]}..., actions_enabled: {actions_enabled})")
+        return permission_value
     
     async def execute(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
         """Execute the tool action"""
@@ -274,20 +304,32 @@ class CreatePostTool(AvatarMCPTool):
         }
     
     async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        global intelligent_avatar
+        
         post_type = kwargs.get('post_type', 'general')
         post_text = kwargs.get('post_text')
         
+        # Initialize intelligent_avatar if not already initialized
+        if intelligent_avatar is None:
+            logger.info("🔄 intelligent_avatar is None, initializing now...")
+            print("🔄 intelligent_avatar is None, initializing now...")
+            await initialize_intelligent_avatar()
+        
         # Generate post if not provided
+        print(f"📝 Creating post: post_text provided={bool(post_text)}, intelligent_avatar={intelligent_avatar is not None}")
         if not post_text and intelligent_avatar:
+            print(f"   Generating post content...")
             result = await intelligent_avatar.generate_avatar_post(
                 user_id=avatar_id,
                 post_type=post_type
             )
+            print(f"   Generation result: {result}")
             
             if 'error' in result:
                 return {"success": False, "error": result['error']}
             
             post_text = result.get('content', '')
+            print(f"   Generated post_text length: {len(post_text) if post_text else 0}")
         
         if not post_text:
             return {"success": False, "error": "Failed to generate post content"}
@@ -957,6 +999,7 @@ class AvatarMCPServer:
     
     async def call_tool(self, tool_name: str, avatar_id: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
         """Call a tool for a specific avatar"""
+        print(f"🔧 MCP call_tool: tool_name={tool_name}, avatar_id={avatar_id}, avatar_id_len={len(avatar_id) if avatar_id else 0}")
         if tool_name not in self.tools:
             return {
                 "success": False,
@@ -985,13 +1028,26 @@ async def initialize_intelligent_avatar():
     """Initialize IntelligentAvatar for the MCP server"""
     global intelligent_avatar
     
-    from domain.graph.rag import GraphRAG
-    from core.config import get_openai_client, OPENAI_MODEL
-    
-    openai_client = get_openai_client()
-    model_name = OPENAI_MODEL or "gpt-4o-mini"
-    graph_rag = GraphRAG(db)
-    intelligent_avatar = IntelligentAvatar(db, openai_client, model_name, graph_rag)
+    try:
+        from domain.graph.rag import GraphRAG
+        from core.config import get_openai_client, OPENAI_MODEL
+        
+        openai_client = get_openai_client()
+        if not openai_client:
+            logger.warning("⚠️ OpenAI client not available - intelligent_avatar will not be initialized")
+            print("⚠️ OpenAI client not available - intelligent_avatar will not be initialized")
+            intelligent_avatar = None
+            return
+        
+        model_name = OPENAI_MODEL  # OPENAI_MODEL has a default in config.py
+        graph_rag = GraphRAG(db)
+        intelligent_avatar = IntelligentAvatar(db, openai_client, model_name, graph_rag)
+        logger.info(f"✅ IntelligentAvatar initialized for MCP server with model: {model_name}")
+        print(f"✅ IntelligentAvatar initialized for MCP server with model: {model_name}")
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize IntelligentAvatar: {e}", exc_info=True)
+        print(f"❌ Failed to initialize IntelligentAvatar: {e}")
+        intelligent_avatar = None
 
 
 # Initialize on import (only if event loop is running)

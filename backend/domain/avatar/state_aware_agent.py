@@ -27,8 +27,8 @@ import logging
 ACTIVITY_LEVEL_CONFIG = {
     "hypo": {
         "name": "Hypo (Testing)",
-        "min_interval_minutes": 2,      # 1 action every 2 minutes (testing)
-        "max_actions_per_day": 720,     # Essentially unlimited for testing
+        "min_interval_minutes": 7,      # 1 action every 7 minutes (testing)
+        "max_actions_per_day": 200,     # ~200 actions/day for testing
         "delay_multiplier": 0.1,        # Very short delays
     },
     "user_active": {
@@ -617,12 +617,16 @@ class StateAwareAgent:
                 permissions = user.get("avatar_actions_enabled", {}) if user else {}
                 
                 # Select action with memory context
+                logger.debug(f"{avatar_indicator} {avatar_name} - 🔍 Selecting action with permissions: {permissions}")
                 selected_action = await self.decision_engine.select_action(
                     self.bot_id,
                     character_profile=character_dict,
                     permissions=permissions,
                     memory_context=memory_context
                 )
+                
+                if not selected_action:
+                    logger.info(f"{avatar_indicator} {avatar_name} - ⚠️ No action selected by decision engine")
                 
                 if selected_action:
                     # Execute action via MCP server
@@ -631,9 +635,12 @@ class StateAwareAgent:
                                   if k not in ["type", "description", "utility", "interest_aligned", "memory_penalty", "shared_interests"]}
                     
                     tool_name = self._map_action_to_tool(action_type)
+                    logger.info(f"{avatar_indicator} {avatar_name} - 🔧 Executing {action_type} via MCP tool: {tool_name}")
+                    logger.info(f"{avatar_indicator} {avatar_name} - 🔍 Calling MCP with bot_id: {self.bot_id}")
                     
                     if tool_name:
                         result = await self.mcp_server.call_tool(tool_name, self.bot_id, action_args)
+                        logger.info(f"{avatar_indicator} {avatar_name} - 📋 Action result: success={result.get('success')}, error={result.get('error', 'None')}")
                         
                         if result.get('success'):
                             logger.info(f"{avatar_indicator} {avatar_name} - ✅ {action_type}")
@@ -651,10 +658,10 @@ class StateAwareAgent:
                             # Update state after action
                             await self._update_state_after_action(action_type, result)
                         else:
-                            logger.debug(f"{avatar_indicator} {avatar_name} - ⚠️  Action failed: {result.get('error', 'Unknown')}")
+                            logger.warning(f"{avatar_indicator} {avatar_name} - ⚠️  Action failed: {result.get('error', 'Unknown')}")
                             await self._record_action_in_memory(action_type, selected_action, result)
                     else:
-                        logger.debug(f"{avatar_indicator} {avatar_name} - ⚠️  No MCP tool for: {action_type}")
+                        logger.warning(f"{avatar_indicator} {avatar_name} - ⚠️  No MCP tool mapped for: {action_type}")
             else:
                 logger.info(f"{avatar_indicator} {avatar_name} - 💤 In RESTING state, skipping action")
             

@@ -113,7 +113,7 @@ class EnvironmentPerception:
                 "created_at": {"$gte": since_time.isoformat()}
             }).sort([("created_at", -1)])
             
-            recent_posts = await posts_cursor.to_list(500)
+            recent_posts = await posts_cursor.limit(10).to_list(10)  # Reduced for performance
             
             # Extract trending topics
             trending_topics = self._extract_trending_topics(recent_posts)
@@ -226,7 +226,7 @@ class EnvironmentPerception:
             # Calculate average engagement
             recent_posts = await db.posts.find({
                 "created_at": {"$gte": since_time.isoformat()}
-            }).limit(1000).to_list(1000)
+            }).sort([("created_at", -1)]).limit(10).to_list(10)  # Reduced for performance
             
             if recent_posts:
                 avg_engagement = sum(

@@ -6,9 +6,10 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from motor.motor_asyncio import AsyncIOMotorClient
-from openai import AsyncAzureOpenAI
+from openai import AsyncOpenAI
 from dotenv import load_dotenv
 from domain.avatar.manager import SimpleAgentManager
+from core.config import get_openai_client, OPENAI_MODEL
 
 load_dotenv('.env')
 
@@ -16,13 +17,12 @@ async def main():
     client = AsyncIOMotorClient(os.getenv("MONGO_URL", "mongodb://localhost:27017"))
     db = client[os.getenv("DB_NAME", "neurallinks_local")]
     
-    llm_client = AsyncAzureOpenAI(
-        azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT") or f"https://{os.getenv('AZURE_OPENAI_SERVICE')}.openai.azure.com",
-        api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-        api_version=os.getenv("OPENAI_API_VERSION", "2024-02-15-preview")
-    )
+    llm_client = get_openai_client()
+    if not llm_client:
+        print("❌ OpenAI not configured. Set OPENAI_API_KEY environment variable.")
+        return
     
-    manager = SimpleAgentManager(db=db, llm_client=llm_client, deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT"))
+    manager = SimpleAgentManager(db=db, llm_client=llm_client, deployment=OPENAI_MODEL)
     await manager.initialize_agents()
     
     print(f"\n✅ Starting continuous mode with {len(manager.agents)} agents")

@@ -28,11 +28,48 @@ def get_azure_client():
 def get_openai_model():
     """Get OpenAI model name"""
     from app.globals import OPENAI_MODEL
-    return OPENAI_MODEL or "gpt-4o-mini"
+    return OPENAI_MODEL  # Has default in config.py
 
 def get_azure_deployment():
     """Get OpenAI model name (alias for backwards compatibility)"""
     return get_openai_model()
+
+
+def is_responses_api_model(model: str) -> bool:
+    """Check if model uses the new Responses API (gpt-5 models)"""
+    return "gpt-5" in model.lower()
+
+
+async def call_openai_with_system(client, model: str, system_prompt: str, user_message: str) -> str:
+    """
+    Call OpenAI with appropriate API based on model type.
+    For gpt-5 models, combines system and user into single input.
+    """
+    if is_responses_api_model(model):
+        # For gpt-5 models, combine system and user into single input
+        combined_prompt = f"""System Instructions:
+{system_prompt}
+
+User Message:
+{user_message}"""
+        
+        response = await client.responses.create(
+            model=model,
+            input=combined_prompt
+        )
+        return response.output_text.strip() if response.output_text else ""
+    else:
+        # Use traditional Chat Completions API
+        response = await client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            temperature=0.7,
+            max_tokens=500
+        )
+        return response.choices[0].message.content.strip() if response.choices[0].message.content else ""
 
 
 def get_intelligent_avatar():
@@ -379,11 +416,11 @@ async def onboarding_chat(message: Dict[str, str], request: Request):
     """Chat with AI agent during onboarding"""
     user = await require_auth(request)
     
-    azure_client = get_azure_client()
-    if not azure_client:
-        raise HTTPException(status_code=500, detail="Azure OpenAI not configured")
+    openai_client = get_openai_client()
+    if not openai_client:
+        raise HTTPException(status_code=500, detail="OpenAI not configured")
     
-    AZURE_OPENAI_DEPLOYMENT = get_azure_deployment()
+    openai_model = get_openai_model()
     user_message = message.get("message", "")
     
     # Get user's current profile
@@ -411,17 +448,7 @@ Be warm, engaging, and conversational.
 """
     
     try:
-        response = await azure_client.chat.completions.create(
-            model=AZURE_OPENAI_DEPLOYMENT,
-            messages=[
-                {"role": "system", "content": context},
-                {"role": "user", "content": user_message}
-            ],
-            temperature=0.7,
-            max_tokens=500
-        )
-        
-        ai_response = response.choices[0].message.content
+        ai_response = await call_openai_with_system(openai_client, openai_model, context, user_message)
         
         # Store conversation in graph for future learning
         # Extract insights and update graph
