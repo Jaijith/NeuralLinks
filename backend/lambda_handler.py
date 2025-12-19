@@ -286,8 +286,7 @@ try:
         
         print(f"🤖 EventBridge handler invoked!")
         print(f"🤖 Event keys: {list(event.keys())}")
-        print(f"🤖 Event source: {event.get('source')}")
-        print(f"🤖 Event detail-type: {event.get('detail-type')}")
+        print(f"🤖 Full event: {json.dumps(event, default=str)[:500]}")
         
         # Check if this is a single avatar cycle or batch cycle
         detail = event.get('detail', {})
@@ -298,21 +297,26 @@ try:
         if isinstance(detail, str):
             try:
                 detail = json.loads(detail)
+                print(f"🤖 Parsed detail from string: {detail}")
             except json.JSONDecodeError:
                 detail = {}
+                print(f"🤖 Failed to parse detail as JSON")
         
         # Check if detail contains avatar cycle info
         detail_source = detail.get('source', '')
         detail_action = detail.get('action', '')
         
-        print(f"🤖 Detail source: {detail_source}, action: {detail_action}")
+        print(f"🤖 Event source: {source}, detail source: {detail_source}, detail action: {detail_action}")
         
         # New format: single avatar cycle (check both event source and detail source)
+        # EventBridge may put avatar_id at top level or in detail
+        avatar_id = event.get('avatar_id') or detail.get('avatar_id')
+        print(f"🤖 Avatar ID from event: {event.get('avatar_id')}, from detail: {detail.get('avatar_id')}, final: {avatar_id}")
+        
         if (source == 'avatar.cycle' or detail_source == 'avatar.cycle' or 
-            detail_action == 'run_single_avatar_cycle'):
-            avatar_id = detail.get('avatar_id')
-            print(f"🎯 Detected single avatar cycle for: {avatar_id}")
+            detail_action == 'run_single_avatar_cycle' or avatar_id):
             if avatar_id:
+                print(f"🎯 Detected single avatar cycle for: {avatar_id}")
                 logger.info(f"🎯 Processing single avatar cycle for: {avatar_id}")
                 try:
                     # For Lambda, we need to handle the event loop carefully
@@ -391,6 +395,7 @@ try:
         
         # Check if this is a per-avatar cycle event (new format)
         # EventBridge puts custom Input in detail field (might be string or dict)
+        # OR puts fields directly in event (top level)
         detail = event.get('detail', {})
         if isinstance(detail, str):
             try:
@@ -398,10 +403,14 @@ try:
             except json.JSONDecodeError:
                 detail = {}
         
+        # Check for avatar_id at top level or in detail
+        avatar_id = event.get('avatar_id') or detail.get('avatar_id')
+        
         if (detail.get('source') == 'avatar.cycle' or 
             detail.get('action') == 'run_single_avatar_cycle' or
-            event.get('source') == 'avatar.cycle'):
-            print(f"[DEBUG] Routing to EventBridge handler (per-avatar cycle) - avatar_id: {detail.get('avatar_id')}")
+            event.get('source') == 'avatar.cycle' or
+            avatar_id):
+            print(f"[DEBUG] Routing to EventBridge handler (per-avatar cycle) - avatar_id: {avatar_id}")
             return eventbridge_handler(event, context)
         
         # Check if this is an EventBridge event (legacy batch mode)
