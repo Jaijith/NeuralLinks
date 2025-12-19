@@ -144,17 +144,15 @@ def create_transition_rules() -> List[StateTransitionRule]:
     ))
     
     # Transition: PASSIVE -> ACTIVE (Regular - when conditions fully met)
-    # Condition: High friend activity, high social desire, sufficient energy
+    # Condition: High social desire, sufficient energy (friend activity no longer required)
     rules.append(StateTransitionRule(
         from_state=TopLevelState.PASSIVE,
         to_state=TopLevelState.ACTIVE,
         conditions=[
-            "friend_activity_level > 0.5",
             "social_desire > 0.6",
             "energy_level > 0.4"
         ],
         condition_functions=[
-            lambda i, e: e.friend_activity_level > 0.5,
             lambda i, e: i.social_desire > 0.6,
             lambda i, e: i.energy_level > 0.4
         ],
@@ -214,17 +212,15 @@ def create_transition_rules() -> List[StateTransitionRule]:
     ))
     
     # Transition: ACTIVE -> EXPLORING
-    # Condition: Low activity, high curiosity, sufficient energy
+    # Condition: High curiosity, sufficient energy (friend activity no longer required)
     rules.append(StateTransitionRule(
         from_state=TopLevelState.ACTIVE,
         to_state=TopLevelState.EXPLORING,
         conditions=[
-            "friend_activity_level < 0.3",
             "energy_level > 0.5",
             "time_since_last_action > 2 hours"
         ],
         condition_functions=[
-            lambda i, e: e.friend_activity_level < 0.3,
             lambda i, e: i.energy_level > 0.5,
             lambda i, e: i.time_since_last_action > timedelta(hours=2)
         ],
@@ -302,12 +298,10 @@ def create_transition_rules() -> List[StateTransitionRule]:
         from_state=TopLevelState.EXPLORING,
         to_state=TopLevelState.ACTIVE,
         conditions=[
-            "time_since_last_action < 30 minutes",
-            "friend_activity_level > 0.3 OR epsilon_probability"
+            "time_since_last_action < 30 minutes OR epsilon_probability"
         ],
         condition_functions=[
-            lambda i, e: i.time_since_last_action < timedelta(minutes=30),
-            lambda i, e: e.friend_activity_level > 0.3
+            lambda i, e: i.time_since_last_action < timedelta(minutes=30)
         ],
         probability_modifiers={},  # Universal transition
         epsilon_probability=0.2,  # 20% chance to become active anyway if exploring finds something
@@ -382,14 +376,12 @@ def create_transition_rules() -> List[StateTransitionRule]:
         from_state=TopLevelState.ACTIVE,  # Can transition from any state
         to_state=TopLevelState.PASSIVE,
         conditions=[
-            "friend_activity_level < 0.3",
             "energy_level < 0.4",
             "social_desire < 0.4",
             "creative_urge < 0.4",
             "no_unread_interactions"
         ],
         condition_functions=[
-            lambda i, e: e.friend_activity_level < 0.3,
             lambda i, e: i.energy_level < 0.4,
             lambda i, e: i.social_desire < 0.4,
             lambda i, e: i.creative_urge < 0.4,
