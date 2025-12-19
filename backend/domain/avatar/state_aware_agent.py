@@ -552,6 +552,8 @@ class StateAwareAgent:
         avatar_name = self.bot.get('avatar_name', 'Unknown')
         avatar_indicator = "✨ USER AVATAR" if self.is_user_avatar else "🤖"
         
+        logger.info(f"{avatar_indicator} {avatar_name} - 🔄 Starting single cycle")
+        
         try:
             # Check if autonomy is still enabled
             if not await self._check_autonomy_enabled():
@@ -604,6 +606,7 @@ class StateAwareAgent:
             if current_state.value != "resting":
                 # Check if we're allowed to take action (activity level constraints)
                 can_act, reason = self._can_take_action()
+                logger.info(f"{avatar_indicator} {avatar_name} - Can take action: {can_act} ({reason})")
                 if not can_act:
                     logger.info(f"{avatar_indicator} {avatar_name} - Skipping action: {reason} (activity level: {self.activity_level})")
                     return
@@ -656,9 +659,10 @@ class StateAwareAgent:
                 logger.info(f"{avatar_indicator} {avatar_name} - 💤 In RESTING state, skipping action")
             
             # Note: last_activity is now updated by _record_action_taken() only when an action succeeds
+            logger.info(f"{avatar_indicator} {avatar_name} - ✅ Single cycle completed")
             
         except Exception as e:
-            logger.error(f"{avatar_indicator} {avatar_name} - Error in single cycle: {e}", exc_info=True)
+            logger.error(f"{avatar_indicator} {avatar_name} - ❌ Error in single cycle: {e}", exc_info=True)
             raise
     
     async def _log_activity(self, activity_type: str, details: Dict):
