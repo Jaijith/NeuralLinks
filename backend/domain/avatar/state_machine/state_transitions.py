@@ -166,24 +166,33 @@ def create_transition_rules() -> List[StateTransitionRule]:
     ))
     
     # Transition: ACTIVE -> CREATIVE
-    # Condition: High creative urge, sufficient time since last post, content opportunities
+    # Condition: High creative urge, sufficient time since last post
+    # Now with epsilon-greedy for random creative bursts
     rules.append(StateTransitionRule(
         from_state=TopLevelState.ACTIVE,
         to_state=TopLevelState.CREATIVE,
         conditions=[
-            "creative_urge > 0.7",
-            "time_since_last_post > 6 hours",
-            "content_opportunities exist"
+            "creative_urge > 0.55",  # LOWERED from 0.7 - more achievable
+            "time_since_last_post > 2 hours"  # LOWERED from 6 hours for hypo mode
         ],
         condition_functions=[
-            lambda i, e: i.creative_urge > 0.7,
-            lambda i, e: i.time_since_last_post > timedelta(hours=6),
-            lambda i, e: len(e.get_content_opportunities()) > 0
+            lambda i, e: i.creative_urge > 0.55,  # LOWERED threshold
+            lambda i, e: i.time_since_last_post > timedelta(hours=2)  # LOWERED
+            # Removed content_opportunities requirement - can always create
         ],
         probability_modifiers={
             "creative": 1.5,
             "thinker": 1.2,
             "social_butterfly": 0.8
+        },
+        epsilon_probability=0.12,  # NEW: 12% chance to become creative even if conditions not fully met
+        epsilon_mood_modifiers={
+            "creative": 2.0,          # Creative mood: very likely to post
+            "curious": 1.4,           # Curious: might want to share discoveries
+            "excited": 1.6,           # Excited: wants to share enthusiasm
+            "happy": 1.3,             # Happy: might post positive content
+            "neutral": 1.0,           # Base probability
+            "bored": 0.7,             # Bored: less likely to create
         },
         on_enter_actions=["set_creative_focus"],
         priority=4
@@ -336,20 +345,79 @@ def create_transition_rules() -> List[StateTransitionRule]:
         from_state=TopLevelState.EXPLORING,
         to_state=TopLevelState.CREATIVE,
         conditions=[
-            "creative_urge > 0.6",
-            "energy_level > 0.5"
+            "creative_urge > 0.5",  # LOWERED from 0.6
+            "energy_level > 0.4"    # LOWERED from 0.5
         ],
         condition_functions=[
-            lambda i, e: i.creative_urge > 0.6,
-            lambda i, e: i.energy_level > 0.5
+            lambda i, e: i.creative_urge > 0.5,
+            lambda i, e: i.energy_level > 0.4
         ],
         probability_modifiers={
             "creative": 1.4,
             "thinker": 1.2
         },
-        epsilon_probability=0.1, # Random inspiration
+        epsilon_probability=0.15, # Increased from 0.1 - more likely to get inspired
         on_enter_actions=["set_creative_focus"],
         priority=3
+    ))
+    
+    # NEW: Transition: PASSIVE -> CREATIVE (direct path to posting)
+    # Avatars can become creative directly from passive mode
+    rules.append(StateTransitionRule(
+        from_state=TopLevelState.PASSIVE,
+        to_state=TopLevelState.CREATIVE,
+        conditions=[
+            "creative_urge > 0.6",
+            "time_since_last_post > 3 hours",
+            "energy_level > 0.35"
+        ],
+        condition_functions=[
+            lambda i, e: i.creative_urge > 0.6,
+            lambda i, e: i.time_since_last_post > timedelta(hours=3),
+            lambda i, e: i.energy_level > 0.35
+        ],
+        probability_modifiers={
+            "creative": 1.6,
+            "thinker": 1.3,
+            "introvert": 1.2  # Introverts may prefer creating over socializing
+        },
+        epsilon_probability=0.1,  # 10% chance for spontaneous creativity
+        epsilon_mood_modifiers={
+            "creative": 2.0,
+            "curious": 1.5,
+            "bored": 1.3,  # Bored might create something
+            "neutral": 1.0
+        },
+        on_enter_actions=["set_creative_focus"],
+        priority=4  # Same priority as PASSIVE -> ACTIVE
+    ))
+    
+    # NEW: Transition: PASSIVE -> SOCIAL (direct path to messaging)
+    # Avatars can become social directly without going through ACTIVE
+    rules.append(StateTransitionRule(
+        from_state=TopLevelState.PASSIVE,
+        to_state=TopLevelState.SOCIAL,
+        conditions=[
+            "social_desire > 0.55",
+            "has_friends OR pending_requests"
+        ],
+        condition_functions=[
+            lambda i, e: i.social_desire > 0.55,
+            lambda i, e: len(e.get_relationship_map()) > 0 or e.pending_friend_requests > 0
+        ],
+        probability_modifiers={
+            "social_butterfly": 1.8,
+            "introvert": 0.5
+        },
+        epsilon_probability=0.1,  # 10% chance to reach out
+        epsilon_mood_modifiers={
+            "social": 2.0,
+            "happy": 1.4,
+            "curious": 1.2,
+            "neutral": 1.0
+        },
+        on_enter_actions=["check_unread_interactions"],
+        priority=4
     ))
     
     # Transition: RESTING -> ACTIVE

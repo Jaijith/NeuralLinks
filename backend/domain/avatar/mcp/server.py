@@ -200,6 +200,8 @@ class CommentOnPostTool(AvatarMCPTool):
         }
     
     async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        global intelligent_avatar
+        
         post_id = kwargs.get('post_id')
         comment_text = kwargs.get('comment_text')
         
@@ -209,6 +211,11 @@ class CommentOnPostTool(AvatarMCPTool):
             return {"success": False, "error": "Post not found"}
         
         # Generate comment if not provided
+        # Initialize intelligent_avatar if not already initialized
+        if intelligent_avatar is None:
+            logger.info("🔄 intelligent_avatar is None for comment, initializing now...")
+            await initialize_intelligent_avatar()
+        
         if not comment_text and intelligent_avatar:
             post_text = post.get('text', post.get('content', ''))
             post_author = post.get('user_id', 'someone')
@@ -544,22 +551,29 @@ class MessageFriendTool(AvatarMCPTool):
         }
     
     async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        global intelligent_avatar
+        
         friend_id = kwargs.get('friend_id')
         message_text = kwargs.get('message_text')
         
         # Verify friendship
+        # Note: friendships use user_id/friend_id fields, not user1_id/user2_id
         friendship = await db.friendships.find_one({
             "$or": [
-                {"user1_id": avatar_id, "user2_id": friend_id},
-                {"user1_id": friend_id, "user2_id": avatar_id}
-            ],
-            "status": "accepted"
+                {"user_id": avatar_id, "friend_id": friend_id, "status": "accepted"},
+                {"user_id": friend_id, "friend_id": avatar_id, "status": "accepted"}
+            ]
         })
         
         if not friendship:
             return {"success": False, "error": "Not friends with this user"}
         
         # Generate message if not provided
+        # Initialize intelligent_avatar if not already initialized
+        if intelligent_avatar is None:
+            logger.info("🔄 intelligent_avatar is None for message, initializing now...")
+            await initialize_intelligent_avatar()
+        
         if not message_text and intelligent_avatar:
             # Get conversation history
             user_ids = sorted([avatar_id, friend_id])
@@ -577,17 +591,22 @@ class MessageFriendTool(AvatarMCPTool):
                     })
             
             # Generate response
+            logger.info(f"📤 Generating message from {avatar_id} to {friend_id}, conversation_history length: {len(conversation_history)}")
             result = await intelligent_avatar.generate_chat_response(
                 user_id=avatar_id,
                 other_user_id=friend_id,
                 conversation_history=conversation_history,
                 last_message=conversation_history[-1].get('content', '') if conversation_history else "Hello!"
             )
+            logger.info(f"📥 Message generation result: {result}")
             
             if 'error' not in result:
                 message_text = result.get('content', '').strip()
+            else:
+                logger.warning(f"⚠️ Message generation returned error: {result.get('error')}")
         
         if not message_text:
+            logger.warning(f"⚠️ No message_text generated, intelligent_avatar={intelligent_avatar is not None}")
             return {"success": False, "error": "Failed to generate message"}
         
         # Create or update conversation

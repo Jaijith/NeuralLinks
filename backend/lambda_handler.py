@@ -115,9 +115,14 @@ try:
     # This is recommended for Lambda to avoid issues with connection pooling
     mangum_adapter = Mangum(app, lifespan="off")
     
-    async def run_single_avatar_cycle(avatar_id: str):
-        """Run autonomous cycle for a single avatar"""
-        print(f"📍 run_single_avatar_cycle() started for avatar: {avatar_id}")
+    async def run_single_avatar_cycle(avatar_id: str, force_action: str = None):
+        """Run autonomous cycle for a single avatar
+        
+        Args:
+            avatar_id: The avatar's user ID
+            force_action: Optional action to force (bypasses cooldown), e.g., 'create_post'
+        """
+        print(f"📍 run_single_avatar_cycle() started for avatar: {avatar_id}, force_action: {force_action}")
         from motor.motor_asyncio import AsyncIOMotorClient
         from domain.avatar.state_aware_agent import StateAwareAgent
         from domain.avatar.intelligent import IntelligentAvatar
@@ -179,7 +184,8 @@ try:
                 f"Interval={agent.min_action_interval.total_seconds()/60:.0f}min"
             )
             
-            await agent._run_single_cycle()
+            # Run cycle with optional forced action
+            await agent._run_single_cycle(force_action=force_action)
             logger.info(f"✅ Processed {avatar_name}")
             return {"processed": 1, "errors": 0, "avatar_name": avatar_name}
             
@@ -192,6 +198,11 @@ try:
     
     async def run_autonomous_cycle():
         """Run autonomous cycle for all enabled avatars (legacy - for backward compatibility)"""
+        import time
+        start_time = time.time()
+        MAX_EXECUTION_TIME = 90  # Stop processing after 90 seconds to avoid timeout
+        MAX_AVATARS_PER_CYCLE = 5  # Process max 5 avatars per cycle to reduce costs
+        
         print("📍 run_autonomous_cycle() started (legacy batch mode)")
         from motor.motor_asyncio import AsyncIOMotorClient
         from domain.avatar.state_aware_agent import StateAwareAgent
@@ -238,11 +249,44 @@ try:
             
             logger.info(f"📊 Found {len(users)} user(s) with autonomy enabled")
             
+            # ROTATION: Calculate offset based on current time to rotate through avatars
+            # Each cycle will start from a different position in the list
+            from datetime import datetime, timezone
+            import random
+            
+            # Get or create a cycle counter from the database
+            cycle_doc = await db.system_config.find_one({"key": "avatar_cycle_offset"})
+            current_offset = cycle_doc.get("value", 0) if cycle_doc else 0
+            
+            # Rotate the list: start from the offset position
+            total_users = len(users)
+            rotated_users = users[current_offset:] + users[:current_offset]
+            
+            # Update the offset for next cycle (wrap around)
+            next_offset = (current_offset + MAX_AVATARS_PER_CYCLE) % total_users
+            await db.system_config.update_one(
+                {"key": "avatar_cycle_offset"},
+                {"$set": {"value": next_offset, "updated_at": datetime.now(timezone.utc)}},
+                upsert=True
+            )
+            
+            logger.info(f"🔄 Rotation: offset={current_offset}, next_offset={next_offset}, processing from index {current_offset}")
+            
             processed = 0
             errors = 0
             skipped = 0
             
-            for user in users:
+            for user in rotated_users:
+                # Check time limit to avoid Lambda timeout
+                elapsed = time.time() - start_time
+                if elapsed > MAX_EXECUTION_TIME:
+                    logger.warning(f"⏱️ Time limit reached ({elapsed:.1f}s), stopping cycle")
+                    break
+                
+                # Limit avatars per cycle to reduce costs
+                if processed >= MAX_AVATARS_PER_CYCLE:
+                    logger.info(f"📊 Avatar limit reached ({MAX_AVATARS_PER_CYCLE}), stopping cycle")
+                    break
                 user_id = user.get('id')
                 avatar_name = user.get('avatar_name', 'Unknown')
                 activity_level = user.get('avatar_activity_level', 'medium')
@@ -309,10 +353,13 @@ try:
         avatar_id = event.get('avatar_id') or detail.get('avatar_id')
         print(f"🤖 Avatar ID from event: {event.get('avatar_id')}, from detail: {detail.get('avatar_id')}, final: {avatar_id}")
         
+        # Check for force_action parameter
+        force_action = event.get('force_action') or detail.get('force_action')
+        
         if (source == 'avatar.cycle' or detail_source == 'avatar.cycle' or 
-            detail_action == 'run_single_avatar_cycle' or avatar_id):
+            detail_action == 'run_single_avatar_cycle' or detail_action == 'run_single_avatar' or avatar_id):
             if avatar_id:
-                print(f"🎯 Detected single avatar cycle for: {avatar_id}")
+                print(f"🎯 Detected single avatar cycle for: {avatar_id}, force_action: {force_action}")
                 logger.info(f"🎯 Processing single avatar cycle for: {avatar_id}")
                 try:
                     # For Lambda, we need to handle the event loop carefully
@@ -325,8 +372,8 @@ try:
                         loop = asyncio.new_event_loop()
                         asyncio.set_event_loop(loop)
                     
-                    # Run single avatar cycle
-                    result = loop.run_until_complete(run_single_avatar_cycle(avatar_id))
+                    # Run single avatar cycle with optional force_action
+                    result = loop.run_until_complete(run_single_avatar_cycle(avatar_id, force_action=force_action))
                     
                     logger.info(f"✅ Single avatar cycle complete: {result}")
                     return {

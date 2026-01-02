@@ -1004,7 +1004,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                       <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                      <SelectItem value="hypo">Hypo (1 action/2 mins - Testing)</SelectItem>
+                                      <SelectItem value="hypo">Hypo (1 action/30 mins - Testing)</SelectItem>
                                       <SelectItem value="low">Low (1-2 actions/day)</SelectItem>
                                       <SelectItem value="medium">Medium (5-10 actions/day)</SelectItem>
                                       <SelectItem value="high">High (15-20 actions/day)</SelectItem>
@@ -1441,7 +1441,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="hypo">Hypo (1 action/2 mins - Testing)</SelectItem>
+                                    <SelectItem value="hypo">Hypo (1 action/30 mins - Testing)</SelectItem>
                                     <SelectItem value="low">Low (1-2 actions/day)</SelectItem>
                                     <SelectItem value="medium">Medium (5-10 actions/day)</SelectItem>
                                     <SelectItem value="high">High (15-20 actions/day)</SelectItem>

@@ -84,10 +84,15 @@ class MemoryManager:
                         for a in recent_actions
                     ],
                     "best_performing_action": action_patterns.get("best_performing"),
+                    # Only avoid actions that CONSISTENTLY fail (< 5% success) and aren't core social actions
+                    # Core actions like message_friend, create_post should never be avoided
                     "actions_to_avoid": [
                         action_type for action_type, rate 
                         in action_patterns.get("success_rates", {}).items()
-                        if rate < 0.2
+                        if rate < 0.05 and action_type not in [
+                            "message_friend", "create_post", "like_post", 
+                            "comment_on_post", "discover_profiles"
+                        ]
                     ]
                 }
             

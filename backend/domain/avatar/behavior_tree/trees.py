@@ -263,18 +263,20 @@ def create_create_post_bt() -> Sequence:
     """
     
     # Condition: Check if creative urge is high
+    # LOWERED threshold from 0.6 to 0.45 to make posting more likely
     def creative_urge_high(context: dict) -> bool:
         internal_state = context.get("internal_state")
         if not internal_state:
             return False
-        return internal_state.creative_urge > 0.6
+        return internal_state.creative_urge > 0.45
     
     # Condition: Check if enough time has passed since last post
+    # LOWERED threshold from 6 hours to 2 hours for hypo mode compatibility
     def time_since_last_post_sufficient(context: dict) -> bool:
         internal_state = context.get("internal_state")
         if not internal_state:
             return False
-        return internal_state.time_since_last_post > timedelta(hours=6)
+        return internal_state.time_since_last_post > timedelta(hours=2)
     
     # Action: Create a post
     async def create_post(context: dict):

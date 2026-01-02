@@ -9,7 +9,7 @@ Memory Integration:
 - Episodic Memory: Experiences (relationships, significant events)
 
 Activity Levels:
-- hypo: 1 action/2 mins (Testing mode - very frequent)
+- hypo: 1 action/30 mins (Testing mode)
 - low: 1-2 actions/day (Minimal activity)
 - medium: 5-10 actions/day (Moderate activity)
 - high: 15-20 actions/day (Active engagement)
@@ -27,14 +27,14 @@ import logging
 ACTIVITY_LEVEL_CONFIG = {
     "hypo": {
         "name": "Hypo (Testing)",
-        "min_interval_minutes": 7,      # 1 action every 7 minutes (testing)
-        "max_actions_per_day": 200,     # ~200 actions/day for testing
+        "min_interval_minutes": 30,     # 1 action every 30 minutes
+        "max_actions_per_day": 48,      # ~48 actions/day (30 min intervals)
         "delay_multiplier": 0.1,        # Very short delays
     },
     "user_active": {
         "name": "User Active",
-        "min_interval_minutes": 7,      # 1 action every 7 minutes
-        "max_actions_per_day": 200,     # ~200 actions/day
+        "min_interval_minutes": 30,     # 1 action every 30 minutes
+        "max_actions_per_day": 48,      # ~48 actions/day
         "delay_multiplier": 0.2,        # Short delays
     },
     "bot_hourly": {
@@ -544,44 +544,62 @@ class StateAwareAgent:
             logger.warning(f"   ⚠️  Error checking autonomy: {e}")
             return True  # Continue anyway
     
-    async def _run_single_cycle(self):
+    async def _run_single_cycle(self, force_action: str = None):
         """
         Run a single autonomous cycle (for EventBridge/scheduled invocations).
         Unlike run_continuously(), this runs ONE iteration and returns.
+        
+        Args:
+            force_action: Optional action to force (bypasses cooldown), e.g., 'create_post'
         """
+        import time
         avatar_name = self.bot.get('avatar_name', 'Unknown')
         avatar_indicator = "✨ USER AVATAR" if self.is_user_avatar else "🤖"
         
-        logger.info(f"{avatar_indicator} {avatar_name} - 🔄 Starting single cycle")
+        cycle_start = time.time()
+        logger.info(f"{avatar_indicator} {avatar_name} - 🔄 Starting single cycle (force_action={force_action})")
         
         try:
             # Check if autonomy is still enabled
+            step_start = time.time()
             if not await self._check_autonomy_enabled():
                 logger.info(f"{avatar_indicator} {avatar_name} - Autonomy disabled, skipping")
                 return
+            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Autonomy check: {time.time() - step_start:.2f}s")
             
             # Get current state
+            step_start = time.time()
             current_state, _ = await self.state_machine.get_current_state(self.bot_id)
+            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Get state: {time.time() - step_start:.2f}s (state={current_state.value})")
             
-            # Step 1: Update perception
-            perception_data = await self.perception_engine.perceive_all(self.bot_id)
+            # Step 1: Update perception (SKIP for now - too slow, not critical for action selection)
+            step_start = time.time()
+            # perception_data = await self.perception_engine.perceive_all(self.bot_id)
+            perception_data = {}  # Skip perception to save time
+            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Perception: {time.time() - step_start:.2f}s (SKIPPED)")
             
             # Step 2: Update states
+            step_start = time.time()
             internal_state, external_state = await self.state_manager.get_current_state(self.bot_id)
-            external_state.update_from_perception(perception_data)
+            # external_state.update_from_perception(perception_data)  # Skip since no perception
             await self.state_manager.update_external_state(self.bot_id, external_state)
             internal_state = await self.state_manager.update_temporal_states(self.bot_id)
+            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ State update: {time.time() - step_start:.2f}s")
             
             # Update mood based on environment and internal state
             self._update_mood_from_environment(internal_state, external_state)
             
-            # Update mood from memory
-            memory_context = await self.memory_manager.get_full_memory_context(self.bot_id)
-            await self._update_mood_from_memory(internal_state, memory_context)
+            # Update mood from memory (simplified - skip full memory context for speed)
+            step_start = time.time()
+            # memory_context = await self.memory_manager.get_full_memory_context(self.bot_id)
+            memory_context = {"avatar_id": self.bot_id}  # Minimal context for speed
+            # await self._update_mood_from_memory(internal_state, memory_context)
+            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Memory context: {time.time() - step_start:.2f}s (SIMPLIFIED)")
             
             await self.state_manager.update_internal_state(self.bot_id, internal_state)
             
             # Step 3: Evaluate state transitions
+            step_start = time.time()
             user = await self.db.users.find_one({"id": self.bot_id})
             archetype = user.get("avatar_archetype") or user.get("archetype", "general") if user else "general"
             
@@ -596,34 +614,48 @@ class StateAwareAgent:
                 )
                 logger.info(f"{avatar_indicator} {avatar_name} - 🔄 State: {current_state.value} -> {new_state.value}")
                 current_state = new_state
+            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ State transitions: {time.time() - step_start:.2f}s")
             
             # Step 4: Get character profile
+            step_start = time.time()
             if not self.character_profile or not self.character_profile.is_loaded():
                 self.character_profile = CharacterProfile(self.bot_id, self.db)
                 await self.character_profile.load()
+            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Character profile: {time.time() - step_start:.2f}s")
             
-            # Step 5: Select and execute action (only if not in RESTING state)
-            if current_state.value != "resting":
+            # Step 5: Select and execute action (only if not in RESTING state, unless force_action)
+            if current_state.value != "resting" or force_action:
                 # Check if we're allowed to take action (activity level constraints)
-                can_act, reason = self._can_take_action()
-                logger.info(f"{avatar_indicator} {avatar_name} - Can take action: {can_act} ({reason})")
-                if not can_act:
-                    logger.info(f"{avatar_indicator} {avatar_name} - Skipping action: {reason} (activity level: {self.activity_level})")
-                    return
+                # Skip cooldown check if force_action is specified
+                if force_action:
+                    logger.info(f"{avatar_indicator} {avatar_name} - ⚡ FORCE ACTION: {force_action} (bypassing cooldown and state)")
+                else:
+                    can_act, reason = self._can_take_action()
+                    logger.info(f"{avatar_indicator} {avatar_name} - Can take action: {can_act} ({reason})")
+                    if not can_act:
+                        logger.info(f"{avatar_indicator} {avatar_name} - Skipping action: {reason} (activity level: {self.activity_level})")
+                        return
                 
                 character_dict = self.character_profile.to_dict() if self.character_profile else None
                 
                 # Get permissions
                 permissions = user.get("avatar_actions_enabled", {}) if user else {}
                 
-                # Select action with memory context
-                logger.debug(f"{avatar_indicator} {avatar_name} - 🔍 Selecting action with permissions: {permissions}")
-                selected_action = await self.decision_engine.select_action(
-                    self.bot_id,
-                    character_profile=character_dict,
-                    permissions=permissions,
-                    memory_context=memory_context
-                )
+                # If force_action is specified, use it directly
+                if force_action:
+                    logger.info(f"{avatar_indicator} {avatar_name} - ⚡ Using forced action: {force_action}")
+                    selected_action = {"type": force_action}
+                else:
+                    # Select action with memory context
+                    step_start = time.time()
+                    logger.info(f"{avatar_indicator} {avatar_name} - 🔍 Selecting action with permissions: {permissions}")
+                    selected_action = await self.decision_engine.select_action(
+                        self.bot_id,
+                        character_profile=character_dict,
+                        permissions=permissions,
+                        memory_context=memory_context
+                    )
+                    logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Action selection: {time.time() - step_start:.2f}s")
                 
                 if not selected_action:
                     logger.info(f"{avatar_indicator} {avatar_name} - ⚠️ No action selected by decision engine")
@@ -636,10 +668,12 @@ class StateAwareAgent:
                     
                     tool_name = self._map_action_to_tool(action_type)
                     logger.info(f"{avatar_indicator} {avatar_name} - 🔧 Executing {action_type} via MCP tool: {tool_name}")
-                    logger.info(f"{avatar_indicator} {avatar_name} - 🔍 Calling MCP with bot_id: {self.bot_id}")
+                    logger.info(f"{avatar_indicator} {avatar_name} - 🔍 Calling MCP with avatar_id: {self.bot_id}, action_args: {action_args}")
                     
                     if tool_name:
+                        step_start = time.time()
                         result = await self.mcp_server.call_tool(tool_name, self.bot_id, action_args)
+                        logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Action execution: {time.time() - step_start:.2f}s")
                         logger.info(f"{avatar_indicator} {avatar_name} - 📋 Action result: success={result.get('success')}, error={result.get('error', 'None')}")
                         
                         if result.get('success'):
@@ -666,7 +700,8 @@ class StateAwareAgent:
                 logger.info(f"{avatar_indicator} {avatar_name} - 💤 In RESTING state, skipping action")
             
             # Note: last_activity is now updated by _record_action_taken() only when an action succeeds
-            logger.info(f"{avatar_indicator} {avatar_name} - ✅ Single cycle completed")
+            total_time = time.time() - cycle_start
+            logger.info(f"{avatar_indicator} {avatar_name} - ✅ Single cycle completed in {total_time:.2f}s")
             
         except Exception as e:
             logger.error(f"{avatar_indicator} {avatar_name} - ❌ Error in single cycle: {e}", exc_info=True)

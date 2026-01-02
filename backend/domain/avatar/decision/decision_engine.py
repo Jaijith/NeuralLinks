@@ -117,7 +117,11 @@ class DecisionEngine:
                 memory_context=memory_context  # NEW: Pass memory for context-aware actions
             )
             
+            # Log available actions by type for debugging
+            action_types_available = [a.get("type") for a in available_actions] if available_actions else []
+            unique_action_types = list(set(action_types_available))
             logger.info(f"Decision Engine for {avatar_id}: {len(available_actions) if available_actions else 0} available actions in state {current_state.value}")
+            logger.info(f"Decision Engine for {avatar_id}: Action types available: {unique_action_types}")
             
             if not available_actions:
                 logger.warning(f"No available actions for {avatar_id} in state {current_state.value}")
@@ -134,10 +138,15 @@ class DecisionEngine:
                 memory_context
             )
             
+            # Log eligible actions by type for debugging
+            eligible_action_types = [a.get("type") for a in eligible_actions] if eligible_actions else []
+            unique_eligible_types = list(set(eligible_action_types))
             logger.info(f"Decision Engine for {avatar_id}: {len(eligible_actions) if eligible_actions else 0} eligible actions after filtering")
+            logger.info(f"Decision Engine for {avatar_id}: Eligible action types: {unique_eligible_types}")
             
             if not eligible_actions:
                 logger.warning(f"No eligible actions for {avatar_id} after filtering (available: {len(available_actions) if available_actions else 0})")
+                logger.warning(f"Decision Engine for {avatar_id}: Available action types were: {unique_action_types}")
                 return None
             
             # Convert CharacterProfile to dict if needed
@@ -163,6 +172,9 @@ class DecisionEngine:
             # Return highest utility action
             if action_scores:
                 best_action, utility = action_scores[0]
+                # Log top 3 actions for debugging
+                top_3 = [(a.get("type"), u) for a, u in action_scores[:3]]
+                logger.info(f"Decision Engine for {avatar_id}: Top 3 actions by utility: {top_3}")
                 logger.info(f"Selected action for {avatar_id}: {best_action.get('type')} (utility: {utility:.3f})")
                 return best_action
             
@@ -194,8 +206,11 @@ class DecisionEngine:
             permissions
         )
         
+        logger.info(f"📝 Memory filter for {avatar_id}: {len(eligible_actions)} actions passed eligibility")
+        
         # If no memory context or memory manager, return standard filtered actions
         if not memory_context or not self.memory_manager:
+            logger.info(f"📝 No memory context/manager, returning {len(eligible_actions)} eligible actions")
             return eligible_actions
         
         # Apply memory-based filtering
@@ -204,12 +219,14 @@ class DecisionEngine:
         actions_to_avoid = procedural_memory.get("actions_to_avoid", [])
         recent_repetition = procedural_memory.get("action_patterns", {}).get("recent_repetition", {})
         
+        logger.info(f"📝 Memory context: actions_to_avoid={actions_to_avoid}, recent_repetition keys={list(recent_repetition.keys())}")
+        
         for action in eligible_actions:
             action_type = action.get("type")
             
             # Skip actions that have been failing
             if action_type in actions_to_avoid:
-                logger.debug(f"Skipping {action_type} - in actions_to_avoid list")
+                logger.warning(f"📝 Skipping {action_type} - in actions_to_avoid list")
                 continue
             
             # Reduce priority of recently repeated actions (but don't skip entirely)
@@ -217,9 +234,11 @@ class DecisionEngine:
             if repetition_count >= 3:
                 # Mark as lower priority but don't skip
                 action["memory_penalty"] = 0.3 * repetition_count
+                logger.info(f"📝 Action {action_type} penalized by {action['memory_penalty']} for repetition")
             
             memory_filtered.append(action)
         
+        logger.info(f"📝 After memory filter: {len(memory_filtered)} actions remain (types: {[a.get('type') for a in memory_filtered]})")
         return memory_filtered if memory_filtered else eligible_actions
     
     async def select_and_execute_action(
@@ -410,6 +429,43 @@ class DecisionEngine:
                     "interest_aligned": True
                 })
             
+            # ============================================================
+            # NEW: PROACTIVE MESSAGING - message friends even without unread
+            # This ensures avatars initiate conversations, not just respond
+            # ============================================================
+            relationship_map = external_state.get_relationship_map()
+            if relationship_map and internal_state.social_desire > 0.5:
+                # Pick friends to message proactively (prioritize weaker relationships)
+                friend_list = list(relationship_map.items())
+                # Sort by relationship strength (weak first - need nurturing)
+                friend_list.sort(key=lambda x: x[1].get("strength_score", 0.5))
+                
+                for friend_id, rel_data in friend_list[:3]:
+                    # Skip if already added via aligned_users
+                    aligned_user_ids = {u.get("user_id") for u in aligned_users}
+                    if friend_id not in aligned_user_ids:
+                        actions.append({
+                            "type": "message_friend",
+                            "description": f"Reach out to friend",
+                            "friend_id": friend_id,
+                            "relationship_strength": rel_data.get("strength_score", 0.5),
+                            "proactive": True  # Mark as proactive outreach
+                        })
+            
+            # ============================================================
+            # NEW: CREATE POST IN ACTIVE STATE - when creative urge is building
+            # This allows posting without needing to transition to CREATIVE
+            # ============================================================
+            if internal_state.creative_urge > 0.5 and internal_state.time_since_last_post > timedelta(hours=2):
+                most_active_interest = interest_perception.get("most_active_interest")
+                actions.append({
+                    "type": "create_post",
+                    "description": "Share a thought or update",
+                    "post_type": "spontaneous",
+                    "topic": most_active_interest,
+                    "interest_aligned": bool(most_active_interest)
+                })
+            
             # Discover profiles
             actions.append({
                 "type": "discover_profiles",
@@ -490,8 +546,8 @@ class DecisionEngine:
             })
 
             # If we found something interesting, we might want to share it (Create Post)
-            # This allows transition to CREATIVE or ACTIVE indirectly by changing internal state/needs
-            if internal_state.creative_urge > 0.5:
+            # LOWERED threshold from 0.5 to 0.4 to make posting more likely
+            if internal_state.creative_urge > 0.4:
                 # Use most active interest for the post topic
                 most_active_interest = interest_perception.get("most_active_interest")
                 actions.append({
@@ -508,6 +564,21 @@ class DecisionEngine:
                     "type": "accept_friend_request",
                     "description": "Accept friend request found while exploring"
                 })
+            
+            # ============================================================
+            # NEW: PROACTIVE MESSAGING while exploring
+            # Sometimes want to share discoveries with friends
+            # ============================================================
+            relationship_map = external_state.get_relationship_map()
+            if relationship_map and internal_state.social_desire > 0.4:
+                friend_list = list(relationship_map.keys())[:2]  # Just a couple friends
+                for friend_id in friend_list:
+                    actions.append({
+                        "type": "message_friend",
+                        "description": "Share discovery with friend",
+                        "friend_id": friend_id,
+                        "proactive": True
+                    })
 
         
         return base_actions + actions
@@ -575,6 +646,6 @@ class DecisionEngine:
 
 
 # Import required modules
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from domain.avatar.behavior_tree import NodeStatus
 

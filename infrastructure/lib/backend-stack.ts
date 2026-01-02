@@ -28,44 +28,17 @@ export class BackendStack extends cdk.Stack {
 
     const { domainName, certificate, hostedZone } = props;
 
-    // S3 bucket for file uploads (public read for images)
-    this.uploadsBucket = new s3.Bucket(this, 'UploadsBucket', {
-      bucketName: `2n1-uploads-${this.account}`,
-      versioned: false,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      // Allow public read access for uploaded images
-      blockPublicAccess: new s3.BlockPublicAccess({
-        blockPublicAcls: false,
-        ignorePublicAcls: false,
-        blockPublicPolicy: false,
-        restrictPublicBuckets: false,
-      }),
-      publicReadAccess: true, // Allow public read
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
-      cors: [
-        {
-          allowedMethods: [s3.HttpMethods.GET],
-          allowedOrigins: ['*'],
-          allowedHeaders: ['*'],
-        },
-      ],
-      lifecycleRules: [
-        {
-          id: 'DeleteIncompleteUploads',
-          abortIncompleteMultipartUploadAfter: cdk.Duration.days(7),
-        },
-        {
-          id: 'ArchiveOldFiles',
-          enabled: true,
-          transitions: [
-            {
-              storageClass: s3.StorageClass.GLACIER,
-              transitionAfter: cdk.Duration.days(90),
-            },
-          ],
-        },
-      ],
-    });
+    // S3 bucket for file uploads - use existing bucket
+    // The bucket was created previously and exists outside of CloudFormation
+    const bucketName = `2n1-uploads-${this.account}`;
+    
+    // Try to use existing bucket, or create new if it doesn't exist
+    // Using fromBucketName to reference the existing bucket
+    this.uploadsBucket = s3.Bucket.fromBucketName(
+      this,
+      'UploadsBucket',
+      bucketName
+    ) as s3.Bucket;
 
     // Lambda function for FastAPI backend (using container image for large dependencies)
     const backendFunction = new lambda.DockerImageFunction(this, 'BackendFunction', {
@@ -81,8 +54,8 @@ export class BackendStack extends cdk.Stack {
       }),
       // Set Lambda architecture to x86_64
       architecture: lambda.Architecture.X86_64,
-      memorySize: 2048, // Increased for container image
-      timeout: cdk.Duration.seconds(120), // Increased for autonomous avatar cycles
+      memorySize: 1024, // Reduced from 2048 to save costs
+      timeout: cdk.Duration.minutes(2), // 2 minutes max - reduced from 5 to save costs
       environment: {
         AWS_S3_BUCKET: this.uploadsBucket.bucketName,
         AWS_S3_REGION: this.region, // Set S3 region to match bucket region
@@ -135,6 +108,7 @@ export class BackendStack extends cdk.Stack {
     backendFunction.addEnvironment('GOOGLE_CLIENT_SECRET_SECRET_NAME', googleClientSecretSecret.secretName);
     backendFunction.addEnvironment('OPENAI_SECRET_NAME', openaiApiKeySecret.secretName);
     backendFunction.addEnvironment('OPENAI_MODEL', 'gpt-5-nano-2025-08-07');
+    backendFunction.addEnvironment('CDK_DEPLOY_TIME', new Date().toISOString());
 
     // Grant Lambda permissions to manage EventBridge rules (for per-avatar cycles)
     backendFunction.addToRolePolicy(
@@ -249,11 +223,12 @@ export class BackendStack extends cdk.Stack {
       description: 'S3 bucket for file uploads',
     });
 
-    // EventBridge rule to trigger autonomous avatar cycles every 2 minutes
+    // EventBridge rule to trigger autonomous avatar cycles every 30 minutes
+    // Matches avatar activity interval to minimize Lambda invocations
     const autonomousCycleRule = new events.Rule(this, 'AutonomousCycleRule', {
       ruleName: '2n1-autonomous-avatar-cycle',
-      description: 'Triggers autonomous avatar actions every 2 minutes',
-      schedule: events.Schedule.rate(cdk.Duration.minutes(2)),
+      description: 'Triggers autonomous avatar actions every 30 minutes',
+      schedule: events.Schedule.rate(cdk.Duration.minutes(30)),
       enabled: true,
     });
 

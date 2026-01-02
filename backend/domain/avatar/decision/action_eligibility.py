@@ -27,34 +27,42 @@ class ActionEligibility:
         # Define action cooldowns (minimum time between SAME action type)
         # Note: These are per-action cooldowns, separate from activity level rate limiting
         # The effective cooldown is MAX(activity_level_interval, action_cooldown)
+        # UPDATED: LOWERED cooldowns to allow more frequent posting/messaging
         self.cooldowns = {
-            "create_post": timedelta(minutes=15),     # Can post every 15 mins
+            "create_post": timedelta(minutes=8),      # Can post every 8 mins (was 10)
             "like_post": timedelta(minutes=1),        # Can like every 1 min
-            "comment_on_post": timedelta(minutes=5),  # Can comment every 5 mins
-            "message_friend": timedelta(minutes=7),   # Can message every 7 mins
-            "send_friend_request": timedelta(minutes=30),  # Friend request every 30 mins
-            "discover_profiles": timedelta(minutes=10)     # Discover every 10 mins
+            "comment_on_post": timedelta(minutes=3),  # Can comment every 3 mins (was 5)
+            "message_friend": timedelta(minutes=3),   # Can message every 3 mins (was 5) - now tracking SENT messages only
+            "send_friend_request": timedelta(minutes=20),  # Friend request every 20 mins (was 30)
+            "discover_profiles": timedelta(minutes=15)     # Discover every 15 mins (was 10 - INCREASED to reduce spam)
         }
         
         # Define state-based action availability
         # Note: Action names should match what comes from the decision engine
+        # UPDATED: Added create_post to ACTIVE state - avatars can post without 
+        # needing to be in CREATIVE state. Also added message_friend to more states.
         self.state_action_map = {
             TopLevelState.ACTIVE: [
                 "like_post", "comment_on_post", "react_to_post",
-                "message_friend", "read_messages", "discover_profiles"
+                "message_friend", "read_messages", "discover_profiles",
+                "create_post"  # NEW: Allow posting from ACTIVE state too
             ],
             TopLevelState.SOCIAL: [
                 "message_friend", "read_messages", "respond_to_messages",
-                "send_friend_request", "review_friend_requests", "accept_friend_request"
+                "send_friend_request", "review_friend_requests", "accept_friend_request",
+                "create_post"  # NEW: Can share thoughts while social
             ],
             TopLevelState.CREATIVE: [
-                "create_post"  # share_post and share_content not yet implemented in MCP
+                "create_post",  # Primary action for CREATIVE
+                "message_friend"  # NEW: Can message to share creations
             ],
             TopLevelState.EXPLORING: [
-                "discover_profiles", "discover_content", "browse_feed"
+                "discover_profiles", "discover_content", "browse_feed",
+                "create_post"  # NEW: Share discoveries
             ],
             TopLevelState.PASSIVE: [
-                "read_messages", "browse_feed"  # Passive actions only
+                "read_messages", "browse_feed",
+                "message_friend"  # NEW: Can reach out even when passive
             ],
             TopLevelState.RESTING: []  # No actions during rest
         }
@@ -83,35 +91,42 @@ class ActionEligibility:
         try:
             eligible = []
             
+            # Log temporal state for debugging cooldowns
+            logger.info(f"⏱️ Temporal states - last_action: {internal_state.time_since_last_action}, last_post: {internal_state.time_since_last_post}, last_conversation: {internal_state.time_since_last_conversation}")
+            
             for action in available_actions:
                 action_type = action.get("type", "unknown")
                 logger.info(f"Checking eligibility for action: {action_type}")
                 
                 # Check 1: State-based eligibility
                 if not self._is_eligible_for_state(action_type, current_state):
-                    logger.info(f"Action {action_type} filtered: not eligible for state {current_state.value}")
+                    logger.warning(f"❌ Action {action_type} filtered: not eligible for state {current_state.value}")
                     continue
                 
                 # Check 2: Permissions
                 if permissions and not permissions.get(action_type, True):
-                    logger.info(f"Action {action_type} filtered: permission denied")
+                    logger.warning(f"❌ Action {action_type} filtered: permission denied")
                     continue
                 
                 # Check 3: Cooldowns
                 if not self._is_off_cooldown(action_type, internal_state):
-                    logger.info(f"Action {action_type} filtered: on cooldown (cooldown={self.cooldowns.get(action_type)})")
+                    cooldown = self.cooldowns.get(action_type)
+                    remaining = self.get_cooldown_remaining(action_type, internal_state)
+                    logger.warning(f"❌ Action {action_type} filtered: on cooldown (required={cooldown}, remaining={remaining})")
                     continue
                 
                 # Check 4: Prerequisites
                 if not self._has_prerequisites(action_type, external_state):
-                    logger.info(f"Action {action_type} filtered: missing prerequisites")
+                    logger.warning(f"❌ Action {action_type} filtered: missing prerequisites")
                     continue
                 
                 # Check 5: Context availability
                 if not self._has_context(action_type, external_state):
+                    logger.warning(f"❌ Action {action_type} filtered: missing context")
                     continue
                 
                 # Action is eligible
+                logger.info(f"✅ Action {action_type} is eligible")
                 eligible.append(action)
             
             return eligible

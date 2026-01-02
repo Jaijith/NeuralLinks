@@ -326,35 +326,44 @@ class ActionUtility:
         action_type: str,
         internal_state: InternalState
     ) -> float:
-        """Calculate utility based on recent action history"""
+        """
+        Calculate utility based on recent action history
+        
+        NOTE: These thresholds have been LOWERED to work better with hypo mode
+        and to ensure avatars actually post/message instead of just discovering.
+        """
         # Check temporal states
         if action_type == "create_post":
-            # Prefer if enough time has passed
+            # Prefer if enough time has passed - LOWERED thresholds
             hours_since = internal_state.time_since_last_post.total_seconds() / 3600
-            if hours_since > 12:
-                return 0.8  # Good time to post
-            elif hours_since > 6:
-                return 0.6
+            if hours_since > 4:
+                return 0.85  # Good time to post (was 12)
+            elif hours_since > 2:
+                return 0.7   # Reasonable time (was 6)
+            elif hours_since > 1:
+                return 0.5   # Can still post (was 0.3 for < 6)
             else:
-                return 0.3  # Too soon
+                return 0.35  # Too soon but not forbidden
         
         elif action_type == "message_friend":
             hours_since = internal_state.time_since_last_conversation.total_seconds() / 3600
-            if hours_since > 24:
-                return 0.7  # Good time to message
-            elif hours_since > 6:
-                return 0.5
+            if hours_since > 8:
+                return 0.8   # Good time to message (was 24)
+            elif hours_since > 2:
+                return 0.65  # Reasonable time (was 6)
+            elif hours_since > 0.5:
+                return 0.5   # Can still message
             else:
-                return 0.3  # Too soon
+                return 0.35  # Too soon but not forbidden
         
         elif action_type in ["like_post", "comment_on_post"]:
             hours_since = internal_state.time_since_last_reaction.total_seconds() / 3600
-            if hours_since > 2:
+            if hours_since > 1:
                 return 0.7  # Good time to react
-            elif hours_since > 1:
-                return 0.5
+            elif hours_since > 0.25:  # 15 minutes
+                return 0.55
             else:
-                return 0.4  # Can react more frequently
+                return 0.4  # Can react frequently
         
         elif action_type == "browse_feed":
             # Heavy penalty if browsed recently to prevent spamming
@@ -363,6 +372,13 @@ class ActionUtility:
                 # If we just did it, utility drops significantly
                 return 0.1
             return 0.4
+        
+        elif action_type == "discover_profiles":
+            # PENALTY for discover_profiles to prevent discovery spam
+            # This action has been dominating - reduce its priority
+            if action_type in self.action_history and len(self.action_history[action_type]) > 2:
+                return 0.2  # Strong penalty if done recently
+            return 0.45  # Lower base utility
         
         return 0.5
     

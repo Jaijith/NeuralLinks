@@ -234,6 +234,9 @@ class StateManager:
         """
         Update temporal states (time since last actions) based on database
         
+        Also updates drives (creative_urge, social_desire) based on time since last actions.
+        This ensures avatars naturally build up desire to post/message over time.
+        
         Args:
             avatar_id: Avatar user ID
         
@@ -255,19 +258,37 @@ class StateManager:
                 sort=[("created_at", -1)]
             )
             
-            # Get last conversation time (from messages)
-            last_message = None
+            # Get last conversation time - specifically when THIS AVATAR sent a message
+            # This ensures the cooldown is based on when the avatar SENT, not received
+            last_message_sent = None
+            
+            # Find all conversations involving this avatar
             conversations = await self.db.direct_messages.find({
                 "$or": [
                     {"user1_id": avatar_id},
                     {"user2_id": avatar_id}
                 ]
-            }).sort([("updated_at", -1)]).limit(1).to_list(1)
+            }).sort([("updated_at", -1)]).limit(5).to_list(5)
             
-            if conversations:
-                messages = conversations[0].get("messages", [])
-                if messages:
-                    last_message = messages[-1]
+            # Find the most recent message SENT by this avatar
+            for conv in conversations:
+                messages = conv.get("messages", [])
+                # Iterate backwards to find most recent message from this avatar
+                for msg in reversed(messages):
+                    sender_id = msg.get("sender_id") or msg.get("from_user_id") or msg.get("user_id")
+                    if sender_id == avatar_id:
+                        if last_message_sent is None:
+                            last_message_sent = msg
+                        else:
+                            # Compare timestamps to keep the most recent
+                            current_ts = msg.get("timestamp") or msg.get("created_at")
+                            existing_ts = last_message_sent.get("timestamp") or last_message_sent.get("created_at")
+                            if current_ts and existing_ts:
+                                if str(current_ts) > str(existing_ts):
+                                    last_message_sent = msg
+                        break  # Found most recent in this conversation, move to next
+            
+            last_message = last_message_sent
             
             # Get last reaction time (from likes/comments)
             last_reaction = None
@@ -344,6 +365,38 @@ class StateManager:
                 last_conversation_time=last_conversation_time,
                 last_reaction_time=last_reaction_time
             )
+            
+            # ============================================================
+            # NATURAL DRIVE BUILDUP: Increase creative_urge and social_desire
+            # based on time since last post/conversation
+            # This ensures avatars naturally want to post/message over time
+            # ============================================================
+            
+            # Creative urge builds up based on time since last post
+            # Formula: urge increases ~0.1 per hour of not posting, capped at 1.0
+            if internal_state.time_since_last_post > timedelta(hours=1):
+                hours_since_post = internal_state.time_since_last_post.total_seconds() / 3600
+                # Build up creative urge: faster for first 6 hours, then slower
+                if hours_since_post <= 6:
+                    urge_boost = min(0.4, hours_since_post * 0.05)  # Up to +0.3 in first 6 hours
+                else:
+                    urge_boost = 0.3 + min(0.4, (hours_since_post - 6) * 0.02)  # Additional +0.4 over next 20 hours
+                
+                internal_state.creative_urge = min(1.0, 0.3 + urge_boost)  # Base of 0.3 + boost
+                logger.debug(f"Creative urge for {avatar_id}: {internal_state.creative_urge:.2f} (hours since post: {hours_since_post:.1f})")
+            
+            # Social desire builds up based on time since last conversation
+            # Formula: desire increases ~0.1 per hour of no messaging, capped at 1.0
+            if internal_state.time_since_last_conversation > timedelta(hours=1):
+                hours_since_msg = internal_state.time_since_last_conversation.total_seconds() / 3600
+                # Build up social desire
+                if hours_since_msg <= 4:
+                    desire_boost = min(0.3, hours_since_msg * 0.06)  # Up to +0.24 in first 4 hours
+                else:
+                    desire_boost = 0.24 + min(0.4, (hours_since_msg - 4) * 0.03)  # Additional over time
+                
+                internal_state.social_desire = min(1.0, 0.35 + desire_boost)  # Base of 0.35 + boost
+                logger.debug(f"Social desire for {avatar_id}: {internal_state.social_desire:.2f} (hours since msg: {hours_since_msg:.1f})")
             
             # Persist updated state
             await self.update_internal_state(avatar_id, internal_state)
