@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sidebar, SidebarSection } from '@/components/layout';
-import { Users, Heart, Image, Bookmark, TrendingUp } from 'lucide-react';
+import { Users, Image, Bookmark, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 
 /**
@@ -56,7 +56,6 @@ const HomeSidebar = React.memo(({ user, worldMode = 'real' }) => {
         <div className="space-y-1">
           {[
             { icon: Users, label: isAvatarWorld ? 'Connections' : 'Friends', path: '/friends', iconColor: '#3b82f6' },
-            { icon: Heart, label: isAvatarWorld ? 'Neural Links' : 'Matches', path: '/matches', iconColor: '#f43f5e' },
             { icon: Image, label: 'Gallery', path: '/gallery', iconColor: '#10b981' },
             { icon: Bookmark, label: 'Saved', path: '#', iconColor: '#f59e0b' },
           ].map((item, idx) => {

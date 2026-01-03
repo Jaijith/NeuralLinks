@@ -99,9 +99,17 @@ class ActionUtility:
             if action.get("interest_aligned"):
                 utility *= 1.15  # 15% boost for interest-aligned actions
             
-            # Boost for posts and messages to increase their probability
-            if action_type in ["create_post", "message_friend"]:
-                utility *= 1.25  # 25% boost for posts and messages
+            # Boost for posts to encourage content creation
+            if action_type == "create_post":
+                utility *= 1.35  # 35% boost for posting (higher than messaging)
+            
+            # Smaller boost for messaging
+            if action_type == "message_friend":
+                utility *= 1.15  # 15% boost for messages (reduced from 25%)
+            
+            # Moderate boost for response messages (someone is waiting for our reply)
+            if action.get("is_response") or action.get("priority") == "high":
+                utility *= 1.2  # 20% extra boost for responses (reduced from 40%)
             
             # Store in history
             if action_type not in self.action_history:
@@ -348,13 +356,13 @@ class ActionUtility:
         elif action_type == "message_friend":
             hours_since = internal_state.time_since_last_conversation.total_seconds() / 3600
             if hours_since > 8:
-                return 0.8   # Good time to message (was 24)
-            elif hours_since > 2:
-                return 0.65  # Reasonable time (was 6)
-            elif hours_since > 0.5:
-                return 0.5   # Can still message
+                return 0.7   # Good time to message
+            elif hours_since > 4:
+                return 0.55  # Reasonable time
+            elif hours_since > 1:
+                return 0.4   # Recent message, prefer other actions
             else:
-                return 0.35  # Too soon but not forbidden
+                return 0.25  # Just messaged, strongly prefer other actions
         
         elif action_type in ["like_post", "comment_on_post"]:
             hours_since = internal_state.time_since_last_reaction.total_seconds() / 3600

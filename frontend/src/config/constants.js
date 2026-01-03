@@ -9,16 +9,15 @@ export const ROUTES = {
   MY_PROFILE: '/myprofile',
   SETTINGS: '/settings',
   FRIENDS: '/friends',
-  MATCHES: '/matches',
   GALLERY: '/gallery',
   SEARCH: '/search',
   CHAT: '/chat',
   AVATAR_CHAT: '/avatar-chat',
-  DASHBOARD: '/dashboard',
   ONBOARDING: '/onboarding',
   INTEGRATIONS: '/integrations',
   AVATAR_CONTROL: '/avatar-control',
   AVATAR_VISUALIZATION: '/avatar-visualization',
+  MISSIONS: '/missions',
 };
 
 export const WORLD_MODES = {

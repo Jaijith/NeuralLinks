@@ -12,9 +12,8 @@ import ErrorBoundary from "./components/common/ErrorBoundary";
 // Lazy load all pages for code splitting
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const FacebookStyleHome = lazy(() => import("./pages/FacebookStyleHome"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
 const OnboardingChat = lazy(() => import("./pages/OnboardingChat"));
-const Matches = lazy(() => import("./pages/Matches"));
+const Missions = lazy(() => import("./pages/Missions"));
 const Chat = lazy(() => import("./pages/Chat"));
 const AvatarChat = lazy(() => import("./pages/AvatarChat"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -115,18 +114,6 @@ function App() {
                 }
               />
               <Route
-                path="/dashboard"
-                element={
-                  user ? (
-                    <LazyPage>
-                      <Dashboard user={user} setUser={setUser} />
-                    </LazyPage>
-                  ) : (
-                    <Navigate to="/" />
-                  )
-                }
-              />
-              <Route
                 path="/search"
                 element={
                   user ? (
@@ -211,11 +198,11 @@ function App() {
                 }
               />
               <Route
-                path="/matches"
+                path="/missions"
                 element={
                   user ? (
                     <LazyPage>
-                      <Matches user={user} setUser={setUser} />
+                      <Missions user={user} setUser={setUser} />
                     </LazyPage>
                   ) : (
                     <Navigate to="/" />

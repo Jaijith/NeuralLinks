@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   Home, Users, Heart, Search, Settings as SettingsIcon, 
-  Image, LogOut
+  Image, LogOut, Rocket
 } from "lucide-react";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import WorldModeToggle from "./WorldModeToggle";
@@ -121,16 +121,16 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
             </Button>
             <Button
               variant="ghost"
-              onClick={() => navigate('/matches')}
+              onClick={() => navigate('/missions')}
               className={`px-8 py-2 rounded-lg ${
-                currentPage === 'matches'
+                currentPage === 'missions'
                   ? worldMode === 'avatar'
                     ? 'border-b-4 border-blue-400'
                     : 'border-b-4 border-blue-500'
                   : ''
               }`}
             >
-              <Heart className={`w-6 h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
+              <Rocket className={`w-6 h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
             </Button>
             <Button
               variant="ghost"

@@ -411,46 +411,43 @@ class DecisionEngine:
                     "interest_aligned": is_relevant  # NEW: Mark interest alignment
                 })
             
-            # Message friends - prioritize interest-aligned friends
-            if external_state.has_unread_interactions():
-                actions.append({
-                    "type": "message_friend",
-                    "description": "Respond to messages"
-                })
-            
-            # Message interest-aligned friends proactively
-            aligned_users = interest_perception.get("interest_aligned_users", [])
-            for user in aligned_users[:3]:
-                actions.append({
-                    "type": "message_friend",
-                    "description": f"Message friend with shared interests",
-                    "friend_id": user.get("user_id"),
-                    "shared_interests": user.get("shared_interests", []),
-                    "interest_aligned": True
-                })
-            
             # ============================================================
-            # NEW: PROACTIVE MESSAGING - message friends even without unread
-            # This ensures avatars initiate conversations, not just respond
+            # MESSAGING: Prioritize responses, then rotate through friends
             # ============================================================
             relationship_map = external_state.get_relationship_map()
-            if relationship_map and internal_state.social_desire > 0.5:
-                # Pick friends to message proactively (prioritize weaker relationships)
-                friend_list = list(relationship_map.items())
-                # Sort by relationship strength (weak first - need nurturing)
-                friend_list.sort(key=lambda x: x[1].get("strength_score", 0.5))
+            
+            # 1. PRIORITY: Respond to friends who messaged us (check unread)
+            friends_who_messaged = await self._get_friends_awaiting_response(avatar_id, relationship_map)
+            for friend_id in friends_who_messaged[:2]:  # Respond to up to 2 friends
+                actions.append({
+                    "type": "message_friend",
+                    "description": f"Respond to {friend_id}'s message",
+                    "friend_id": friend_id,
+                    "is_response": True,  # Mark as response (higher priority)
+                    "priority": "high"
+                })
+            
+            # 2. Proactive messaging - rotate through friends (not always the same one)
+            if relationship_map and internal_state.social_desire > 0.4:
+                # Get recently messaged friends to avoid
+                recently_messaged = await self._get_recently_messaged_friends(avatar_id, hours=24)
                 
-                for friend_id, rel_data in friend_list[:3]:
-                    # Skip if already added via aligned_users
-                    aligned_user_ids = {u.get("user_id") for u in aligned_users}
-                    if friend_id not in aligned_user_ids:
+                # Get all friends and shuffle for variety
+                import random
+                friend_list = list(relationship_map.items())
+                random.shuffle(friend_list)  # Randomize to avoid always picking same friend
+                
+                # Pick a friend we haven't messaged recently
+                for friend_id, rel_data in friend_list:
+                    if friend_id not in recently_messaged and friend_id not in friends_who_messaged:
                         actions.append({
                             "type": "message_friend",
                             "description": f"Reach out to friend",
                             "friend_id": friend_id,
                             "relationship_strength": rel_data.get("strength_score", 0.5),
-                            "proactive": True  # Mark as proactive outreach
+                            "proactive": True
                         })
+                        break  # Only add one proactive message action
             
             # ============================================================
             # NEW: CREATE POST IN ACTIVE STATE - when creative urge is building
@@ -473,25 +470,76 @@ class DecisionEngine:
             })
         
         elif current_state == TopLevelState.SOCIAL:
-            # Message friends - prioritize interest-aligned ones
+            # ============================================================
+            # SOCIAL STATE: Prioritize responses, then rotate through friends
+            # ============================================================
             relationship_map = external_state.get_relationship_map()
             aligned_users = interest_perception.get("interest_aligned_users", [])
             aligned_user_ids = {u.get("user_id") for u in aligned_users}
             
-            for friend_id in list(relationship_map.keys())[:5]:
-                is_aligned = friend_id in aligned_user_ids
+            # 1. PRIORITY: Respond to friends who messaged us
+            friends_who_messaged = await self._get_friends_awaiting_response(avatar_id, relationship_map)
+            for friend_id in friends_who_messaged[:2]:
                 actions.append({
                     "type": "message_friend",
-                    "description": f"Message {friend_id}",
+                    "description": f"Respond to {friend_id}'s message",
                     "friend_id": friend_id,
-                    "interest_aligned": is_aligned
+                    "is_response": True,
+                    "priority": "high"
                 })
+            
+            # 2. Proactive messaging - rotate through friends
+            recently_messaged = await self._get_recently_messaged_friends(avatar_id, hours=12)
+            import random
+            friend_list = list(relationship_map.keys())
+            random.shuffle(friend_list)
+            
+            proactive_count = 0
+            for friend_id in friend_list:
+                if friend_id not in recently_messaged and friend_id not in friends_who_messaged:
+                    is_aligned = friend_id in aligned_user_ids
+                    actions.append({
+                        "type": "message_friend",
+                        "description": f"Message {friend_id}",
+                        "friend_id": friend_id,
+                        "interest_aligned": is_aligned
+                    })
+                    proactive_count += 1
+                    if proactive_count >= 2:  # Limit to 2 proactive messages
+                        break
             
             # Review friend requests
             if external_state.pending_friend_requests > 0:
                 actions.append({
                     "type": "accept_friend_request",
                     "description": "Review friend requests"
+                })
+            
+            # NEW: Add create_post to SOCIAL state - share thoughts with friends
+            most_active_interest = interest_perception.get("most_active_interest")
+            actions.append({
+                "type": "create_post",
+                "description": "Share a thought with friends",
+                "post_type": "social",
+                "topic": most_active_interest,
+                "interest_aligned": bool(most_active_interest)
+            })
+            
+            # NEW: Add like/comment actions for SOCIAL state
+            recent_posts = external_state.get_recent_posts(limit=5)
+            for post in recent_posts[:2]:
+                post_id = post.get("id")
+                actions.append({
+                    "type": "like_post",
+                    "description": f"Like friend's post",
+                    "post_id": post_id,
+                    "target_friend_id": post.get("user_id")
+                })
+                actions.append({
+                    "type": "comment_on_post",
+                    "description": f"Comment on friend's post",
+                    "post_id": post_id,
+                    "target_friend_id": post.get("user_id")
                 })
         
         elif current_state == TopLevelState.CREATIVE:
@@ -571,17 +619,106 @@ class DecisionEngine:
             # ============================================================
             relationship_map = external_state.get_relationship_map()
             if relationship_map and internal_state.social_desire > 0.4:
-                friend_list = list(relationship_map.keys())[:2]  # Just a couple friends
+                # Rotate through friends instead of always picking the same ones
+                import random
+                recently_messaged = await self._get_recently_messaged_friends(avatar_id, hours=12)
+                friend_list = list(relationship_map.keys())
+                random.shuffle(friend_list)
+                
                 for friend_id in friend_list:
-                    actions.append({
-                        "type": "message_friend",
-                        "description": "Share discovery with friend",
-                        "friend_id": friend_id,
-                        "proactive": True
-                    })
+                    if friend_id not in recently_messaged:
+                        actions.append({
+                            "type": "message_friend",
+                            "description": "Share discovery with friend",
+                            "friend_id": friend_id,
+                            "proactive": True
+                        })
+                        break  # Only share with one friend at a time
 
         
         return base_actions + actions
+    
+    async def _get_friends_awaiting_response(
+        self,
+        avatar_id: str,
+        relationship_map: Dict[str, Any]
+    ) -> List[str]:
+        """
+        Get list of friends who have sent messages we haven't responded to.
+        These friends should be prioritized for messaging.
+        """
+        friends_awaiting = []
+        
+        try:
+            from core.database import get_database
+            db = get_database()
+            
+            for friend_id in relationship_map.keys():
+                # Get the conversation between avatar and friend
+                user_ids = sorted([avatar_id, friend_id])
+                conversation = await db.agent_conversations.find_one({
+                    "agent1_user_id": user_ids[0],
+                    "agent2_user_id": user_ids[1]
+                })
+                
+                if conversation and conversation.get("messages"):
+                    messages = conversation["messages"]
+                    if messages:
+                        last_message = messages[-1]
+                        # If the last message was from the friend (not us), we should respond
+                        if last_message.get("sender") == friend_id:
+                            friends_awaiting.append(friend_id)
+        except Exception as e:
+            logger.warning(f"Error getting friends awaiting response: {e}")
+        
+        return friends_awaiting
+    
+    async def _get_recently_messaged_friends(
+        self,
+        avatar_id: str,
+        hours: int = 24
+    ) -> set:
+        """
+        Get set of friend IDs we've messaged recently (to avoid messaging same person)
+        """
+        recently_messaged = set()
+        
+        try:
+            from core.database import get_database
+            from datetime import timedelta
+            db = get_database()
+            
+            cutoff_time = datetime.now(timezone.utc) - timedelta(hours=hours)
+            
+            # Find all conversations where we sent a message recently
+            conversations = await db.agent_conversations.find({
+                "$or": [
+                    {"agent1_user_id": avatar_id},
+                    {"agent2_user_id": avatar_id}
+                ]
+            }).to_list(100)
+            
+            for conv in conversations:
+                # Get the friend's ID
+                if conv.get("agent1_user_id") == avatar_id:
+                    friend_id = conv.get("agent2_user_id")
+                else:
+                    friend_id = conv.get("agent1_user_id")
+                
+                # Check if we sent a message recently
+                for msg in reversed(conv.get("messages", [])):
+                    if msg.get("sender") == avatar_id:
+                        msg_time = msg.get("timestamp")
+                        if msg_time:
+                            if isinstance(msg_time, str):
+                                msg_time = datetime.fromisoformat(msg_time.replace('Z', '+00:00'))
+                            if msg_time > cutoff_time:
+                                recently_messaged.add(friend_id)
+                        break  # Only check the most recent message from us
+        except Exception as e:
+            logger.warning(f"Error getting recently messaged friends: {e}")
+        
+        return recently_messaged
     
     async def get_action_recommendations(
         self,

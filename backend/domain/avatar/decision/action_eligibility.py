@@ -50,7 +50,8 @@ class ActionEligibility:
             TopLevelState.SOCIAL: [
                 "message_friend", "read_messages", "respond_to_messages",
                 "send_friend_request", "review_friend_requests", "accept_friend_request",
-                "create_post"  # NEW: Can share thoughts while social
+                "create_post",  # Can share thoughts while social
+                "like_post", "comment_on_post"  # Can engage with friends' posts
             ],
             TopLevelState.CREATIVE: [
                 "create_post",  # Primary action for CREATIVE
@@ -65,6 +66,19 @@ class ActionEligibility:
                 "message_friend"  # NEW: Can reach out even when passive
             ],
             TopLevelState.RESTING: []  # No actions during rest
+        }
+        
+        # Map action types to permission keys
+        # Action names are singular (message_friend) but permission keys are plural (message_friends)
+        self.action_to_permission = {
+            "message_friend": "message_friends",
+            "create_post": "create_posts",
+            "like_post": "like_posts",
+            "comment_on_post": "comment_posts",
+            "send_friend_request": "send_friend_requests",
+            "accept_friend_request": "accept_friend_requests",
+            "discover_profiles": "discover_profiles",
+            "share_post": "share_posts",
         }
     
     async def get_eligible_actions(
@@ -103,9 +117,10 @@ class ActionEligibility:
                     logger.warning(f"❌ Action {action_type} filtered: not eligible for state {current_state.value}")
                     continue
                 
-                # Check 2: Permissions
-                if permissions and not permissions.get(action_type, True):
-                    logger.warning(f"❌ Action {action_type} filtered: permission denied")
+                # Check 2: Permissions (map action type to permission key)
+                permission_key = self.action_to_permission.get(action_type, action_type)
+                if permissions and not permissions.get(permission_key, True):
+                    logger.warning(f"❌ Action {action_type} filtered: permission '{permission_key}' denied")
                     continue
                 
                 # Check 3: Cooldowns

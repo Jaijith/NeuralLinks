@@ -58,11 +58,32 @@ export class BackendStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(2), // 2 minutes max - reduced from 5 to save costs
       environment: {
         AWS_S3_BUCKET: this.uploadsBucket.bucketName,
-        AWS_S3_REGION: this.region, // Set S3 region to match bucket region
+        AWS_S3_REGION: 'us-west-2', // Bucket is in us-west-2 (created before stack migration)
         STORAGE_TYPE: 's3',
         CORS_ORIGINS: `https://${domainName},https://www.${domainName}`,
         GOOGLE_REDIRECT_URI: `https://api.${domainName}/api/auth/google/callback`,
         YOUTUBE_REDIRECT_URI: `https://api.${domainName}/api/integrations/oauth/callback/youtube`,
+        BACKEND_URL: `https://api.${domainName}`,
+        FRONTEND_URL: `https://${domainName}`,
+      },
+    });
+
+    // ============================================================================
+    // WORKFLOW ENGINE LAMBDA - Separate Lambda for workflow orchestration
+    // ============================================================================
+    const workflowFunction = new lambda.DockerImageFunction(this, 'WorkflowFunction', {
+      code: lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../../backend'), {
+        file: 'Dockerfile.workflow',
+        buildArgs: {
+          BUILD_DATE: new Date().toISOString(),
+        },
+        platform: ecr_assets.Platform.LINUX_AMD64,
+      }),
+      architecture: lambda.Architecture.X86_64,
+      memorySize: 1024,
+      timeout: cdk.Duration.minutes(5), // Workflows can take longer
+      environment: {
+        CORS_ORIGINS: `https://${domainName},https://www.${domainName}`,
         BACKEND_URL: `https://api.${domainName}`,
         FRONTEND_URL: `https://${domainName}`,
       },
@@ -109,6 +130,22 @@ export class BackendStack extends cdk.Stack {
     backendFunction.addEnvironment('OPENAI_SECRET_NAME', openaiApiKeySecret.secretName);
     backendFunction.addEnvironment('OPENAI_MODEL', 'gpt-5-nano-2025-08-07');
     backendFunction.addEnvironment('CDK_DEPLOY_TIME', new Date().toISOString());
+
+    // ============================================================================
+    // WORKFLOW FUNCTION PERMISSIONS
+    // ============================================================================
+    // Grant workflow function permissions to read secrets
+    mongodbSecret.grantRead(workflowFunction);
+    openaiApiKeySecret.grantRead(workflowFunction);
+    
+    // Add secrets to workflow Lambda environment
+    workflowFunction.addEnvironment('MONGODB_SECRET_NAME', mongodbSecret.secretName);
+    workflowFunction.addEnvironment('OPENAI_SECRET_NAME', openaiApiKeySecret.secretName);
+    workflowFunction.addEnvironment('OPENAI_MODEL', 'gpt-5-nano-2025-08-07');
+    workflowFunction.addEnvironment('CDK_DEPLOY_TIME', new Date().toISOString());
+    workflowFunction.addEnvironment('AWS_S3_BUCKET', this.uploadsBucket.bucketName);
+    workflowFunction.addEnvironment('AWS_S3_REGION', 'us-west-2');
+    workflowFunction.addEnvironment('STORAGE_TYPE', 's3');
 
     // Grant Lambda permissions to manage EventBridge rules (for per-avatar cycles)
     backendFunction.addToRolePolicy(
@@ -195,7 +232,31 @@ export class BackendStack extends cdk.Stack {
       proxy: true,
     });
 
-    // Proxy all requests to Lambda
+    // Workflow Lambda integration
+    const workflowIntegration = new apigateway.LambdaIntegration(workflowFunction, {
+      proxy: true,
+    });
+
+    // ============================================================================
+    // WORKFLOW ROUTES - Route /api/workflow/* to Workflow Lambda
+    // ============================================================================
+    // Create /api resource with Lambda integration (not Mock)
+    const apiResource = api.root.addResource('api');
+    // Route /api/* to main backend (except /api/workflow which goes to workflow lambda)
+    apiResource.addMethod('ANY', lambdaIntegration);
+    
+    const workflowResource = apiResource.addResource('workflow');
+    
+    // Add proxy for all workflow sub-routes
+    workflowResource.addProxy({
+      defaultIntegration: workflowIntegration,
+      anyMethod: true,
+    });
+    
+    // Also handle direct /api/workflow requests
+    workflowResource.addMethod('ANY', workflowIntegration);
+
+    // Proxy all OTHER requests to main Backend Lambda (for non /api/* routes)
     api.root.addProxy({
       defaultIntegration: lambdaIntegration,
       anyMethod: true,
@@ -223,12 +284,12 @@ export class BackendStack extends cdk.Stack {
       description: 'S3 bucket for file uploads',
     });
 
-    // EventBridge rule to trigger autonomous avatar cycles every 30 minutes
+    // EventBridge rule to trigger autonomous avatar cycles every 1 hour
     // Matches avatar activity interval to minimize Lambda invocations
     const autonomousCycleRule = new events.Rule(this, 'AutonomousCycleRule', {
       ruleName: '2n1-autonomous-avatar-cycle',
-      description: 'Triggers autonomous avatar actions every 30 minutes',
-      schedule: events.Schedule.rate(cdk.Duration.minutes(30)),
+      description: 'Triggers autonomous avatar actions every 1 hour',
+      schedule: events.Schedule.rate(cdk.Duration.hours(1)),
       enabled: true,
     });
 
@@ -251,6 +312,12 @@ export class BackendStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'AutonomousCycleRuleArn', {
       value: autonomousCycleRule.ruleArn,
       description: 'EventBridge rule for autonomous avatar cycles',
+    });
+
+    // Workflow Lambda output
+    new cdk.CfnOutput(this, 'WorkflowFunctionArn', {
+      value: workflowFunction.functionArn,
+      description: 'Workflow Engine Lambda function ARN',
     });
   }
 }

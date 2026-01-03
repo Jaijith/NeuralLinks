@@ -106,6 +106,9 @@ from api.search_routes import router as search_router
 from api.match_routes import router as match_router
 from api.agent_routes import router as agent_router
 
+# NOTE: Workflow router is now in a SEPARATE Lambda function
+# Requests to /api/workflow/* are routed to WorkflowFunction by API Gateway
+
 app.include_router(auth_router)
 app.include_router(signup_router)
 app.include_router(profile_router)
@@ -119,6 +122,7 @@ app.include_router(integration_router)
 app.include_router(search_router)
 app.include_router(match_router)
 app.include_router(agent_router)
+# NOTE: Workflow routes are handled by separate WorkflowFunction Lambda
 
 # Serve static files (uploads)
 # Use absolute path to ensure consistency - handle Lambda read-only filesystem

@@ -21,17 +21,12 @@ export class FrontendStack extends cdk.Stack {
     const { domainName, certificate, hostedZone, apiGatewayUrl } = props;
 
     // S3 bucket for frontend static files
-    // NOTE: Don't use websiteIndexDocument - it conflicts with OAI
-    // CloudFront's defaultRootObject and error responses handle SPA routing
-    const frontendBucket = new s3.Bucket(this, 'FrontendBucket', {
-      bucketName: `2n1-frontend-${this.account}`,
-      publicReadAccess: false, // CloudFront will handle access via OAI
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
-      versioned: true,
-    });
+    // Import existing bucket (retained from previous deployment)
+    const bucketName = `2n1-frontend-${this.account}`;
+    const frontendBucket = s3.Bucket.fromBucketName(this, 'FrontendBucket', bucketName);
 
-    // CloudFront Origin Access Identity
+    // CloudFront Origin Access Identity (OAI)
+    // The bucket policy was already configured for OAI access from previous deployment
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(
       this,
       'OriginAccessIdentity',
@@ -39,9 +34,6 @@ export class FrontendStack extends cdk.Stack {
         comment: 'OAI for 2N1 frontend',
       }
     );
-
-    // Grant CloudFront access to S3 bucket
-    frontendBucket.grantRead(originAccessIdentity);
 
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'Distribution', {

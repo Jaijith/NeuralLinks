@@ -27,14 +27,14 @@ import logging
 ACTIVITY_LEVEL_CONFIG = {
     "hypo": {
         "name": "Hypo (Testing)",
-        "min_interval_minutes": 30,     # 1 action every 30 minutes
-        "max_actions_per_day": 48,      # ~48 actions/day (30 min intervals)
+        "min_interval_minutes": 60,     # 1 action every hour
+        "max_actions_per_day": 24,      # ~24 actions/day (hourly)
         "delay_multiplier": 0.1,        # Very short delays
     },
     "user_active": {
         "name": "User Active",
-        "min_interval_minutes": 30,     # 1 action every 30 minutes
-        "max_actions_per_day": 48,      # ~48 actions/day
+        "min_interval_minutes": 60,     # 1 action every hour
+        "max_actions_per_day": 24,      # ~24 actions/day
         "delay_multiplier": 0.2,        # Short delays
     },
     "bot_hourly": {

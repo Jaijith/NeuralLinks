@@ -58,13 +58,6 @@ export const endpoints = {
     getConversation: (userId) => `${API_BASE}/avatar/conversations/${userId}`,
   },
 
-  // Matches
-  matches: {
-    list: `${API_BASE}/matches`,
-    discover: `${API_BASE}/matches/discover`,
-    getConversation: (matchId) => `${API_BASE}/matches/${matchId}/conversation`,
-  },
-
   // Chat
   chat: {
     getMessages: (matchId) => `${API_BASE}/chat/${matchId}/messages`,
