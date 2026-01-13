@@ -160,6 +160,13 @@ class PostService:
                 post['author_picture'] = user.get('picture')
                 post['author_avatar_picture'] = user.get('avatar_picture', user.get('picture'))
                 post['author_is_bot'] = user.get('is_bot', False)
+            
+            # Normalize likes field to always be a number for display
+            likes = post.get('likes', 0)
+            if isinstance(likes, list):
+                post['likes'] = len(likes)
+            elif not isinstance(likes, (int, float)):
+                post['likes'] = 0
         
         # Convert datetime objects back to ISO strings
         for post in posts:
@@ -349,6 +356,23 @@ class PostService:
         post = await self.db.posts.find_one({"id": post_id})
         if not post:
             return {"success": False, "error": "Post not found"}
+        
+        # Normalize likes field if it's an array (legacy data)
+        likes_field = post.get('likes', 0)
+        if isinstance(likes_field, list):
+            # Fix the schema: convert array to count, use liked_by for user IDs
+            likes_count = len(likes_field)
+            await self.db.posts.update_one(
+                {"id": post_id},
+                {
+                    "$set": {
+                        "likes": likes_count,
+                        "liked_by": likes_field
+                    }
+                }
+            )
+            post['likes'] = likes_count
+            post['liked_by'] = likes_field
         
         liked_by = post.get('liked_by', [])
         is_liked = user_id in liked_by

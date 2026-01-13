@@ -503,7 +503,7 @@ class DecisionEngine:
                         "description": f"Message {friend_id}",
                         "friend_id": friend_id,
                         "interest_aligned": is_aligned
-                    })
+                })
                     proactive_count += 1
                     if proactive_count >= 2:  # Limit to 2 proactive messages
                         break

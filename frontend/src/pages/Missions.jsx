@@ -1,439 +1,568 @@
 /**
- * Missions Page
- * View and manage workflow missions
+ * Missions Page - World Simulation & Command Interface
+ * A living canvas where the user's avatar operates in a social world
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
-  Target, Rocket, Pause, Play, XCircle, Clock, CheckCircle,
-  AlertCircle, Users, MessageCircle, TrendingUp, ChevronRight,
-  Plus, Bot, Loader2, Heart
+  MessageCircle, Send, Loader2, Maximize2, Minimize2
 } from 'lucide-react';
-import { missionService, leadService } from '@/services/api/workflowService';
+import { missionService, leadService, chatService } from '@/services/api/workflowService';
 import { toast } from 'sonner';
 import AppHeader from '@/components/AppHeader';
-import AvatarChatInterface from '@/components/workflow/AvatarChatInterface';
+import WorldCanvas from '@/components/workflow/WorldCanvas';
+import AvatarStatusStrip from '@/components/workflow/AvatarStatusStrip';
+import MissionTimeline from '@/components/workflow/MissionTimeline';
+import MissionBriefing from '@/components/workflow/MissionBriefing';
 
 const Missions = ({ user, setUser }) => {
   const navigate = useNavigate();
+  
+  // Core state
   const [missions, setMissions] = useState([]);
   const [selectedMission, setSelectedMission] = useState(null);
   const [missionStatus, setMissionStatus] = useState(null);
   const [leads, setLeads] = useState([]);
-  const [leadStats, setLeadStats] = useState(null);
+  const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('all');
+  
+  // World canvas state
+  const [worldEntities, setWorldEntities] = useState([]);
+  const [worldInteractions, setWorldInteractions] = useState([]);
+  const [worldPhase, setWorldPhase] = useState('idle');
+  const [focusedEntity, setFocusedEntity] = useState(null);
+  
+  // Avatar state
+  const [avatarStatus, setAvatarStatus] = useState('idle');
+  const [currentAction, setCurrentAction] = useState(null);
+  const [lastAction, setLastAction] = useState(null);
+  
+  // Chat state
+  const [chatSession, setChatSession] = useState(null);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [chatExpanded, setChatExpanded] = useState(false);
+  const chatEndRef = useRef(null);
+  
+  // Polling ref
+  const pollingRef = useRef(null);
 
+  // Initialize
   useEffect(() => {
     if (user?.id) {
       loadMissions();
-      loadLeadStats();
+      initializeChatSession();
+      initializeWorld();
     }
-  }, [user?.id, activeTab]);
+    
+    return () => {
+      if (pollingRef.current) clearInterval(pollingRef.current);
+    };
+  }, [user?.id]);
+
+  // Poll for updates when mission is running
+  useEffect(() => {
+    if (selectedMission?.status === 'running') {
+      pollingRef.current = setInterval(() => {
+        refreshMissionStatus(selectedMission.id);
+      }, 3000);
+    } else {
+      if (pollingRef.current) clearInterval(pollingRef.current);
+    }
+    
+    return () => {
+      if (pollingRef.current) clearInterval(pollingRef.current);
+    };
+  }, [selectedMission?.id, selectedMission?.status]);
+
+  // Scroll chat to bottom
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
 
   const loadMissions = async () => {
     setLoading(true);
     try {
-      const statusFilter = activeTab === 'all' ? null : activeTab;
-      const response = await missionService.list(user.id, { status: statusFilter });
+      const response = await missionService.list(user.id);
       if (response.success) {
         setMissions(response.missions || []);
+        
+        // If there's a running mission, select it
+        const runningMission = response.missions?.find(m => m.status === 'running');
+        if (runningMission) {
+          selectMission(runningMission);
+        }
       }
     } catch (error) {
       console.error('Failed to load missions:', error);
-      toast.error('Failed to load missions');
     } finally {
       setLoading(false);
     }
   };
 
-  const loadLeadStats = async () => {
+  const initializeChatSession = async () => {
     try {
-      const response = await leadService.getStats(user.id);
+      const response = await chatService.initSession(user.id, user.id);
       if (response.success) {
-        setLeadStats(response.stats);
+        // Store the full response which includes session_id
+        setChatSession({
+          id: response.session_id,
+          user_id: response.user_id,
+          avatar_id: response.avatar_id,
+          messages: []
+        });
+        setChatMessages([]);
       }
     } catch (error) {
-      console.error('Failed to load lead stats:', error);
+      console.error('Failed to init chat session:', error);
+      toast.error('Failed to initialize chat');
     }
+  };
+
+  const initializeWorld = () => {
+    // Add user's avatar as the central entity
+    setWorldEntities([{
+      id: user.id,
+      name: user.avatar_name || user.name,
+      picture: user.avatar_picture || user.picture,
+      isUserAvatar: true,
+      signal: 1.0,
+      type: 'avatar',
+    }]);
   };
 
   const selectMission = async (mission) => {
     setSelectedMission(mission);
+    updateWorldForMission(mission);
     
     // Load mission status
     try {
       const statusResponse = await missionService.getStatus(mission.id);
       if (statusResponse.success) {
         setMissionStatus(statusResponse);
+        updateAvatarStatus(statusResponse);
       }
     } catch (error) {
       console.error('Failed to load mission status:', error);
     }
 
-    // Load leads for this mission
+    // Load leads
     try {
       const leadsResponse = await leadService.listForMission(mission.id);
       if (leadsResponse.success) {
         setLeads(leadsResponse.leads || []);
+        updateWorldWithLeads(leadsResponse.leads || []);
       }
     } catch (error) {
       console.error('Failed to load leads:', error);
+    }
+
+    // Load activities (for marketing campaigns)
+    try {
+      const activitiesResponse = await missionService.getActivities(mission.id);
+      if (activitiesResponse.success) {
+        setActivities(activitiesResponse.activities || []);
+      }
+    } catch (error) {
+      console.error('Failed to load activities:', error);
+    }
+  };
+
+  const refreshMissionStatus = async (missionId) => {
+    try {
+      const statusResponse = await missionService.getStatus(missionId);
+      if (statusResponse.success) {
+        setMissionStatus(statusResponse);
+        updateAvatarStatus(statusResponse);
+        
+        // Update mission in list
+        setMissions(prev => prev.map(m => 
+          m.id === missionId 
+            ? { ...m, status: statusResponse.status, progress: statusResponse.progress, phase: statusResponse.phase }
+            : m
+        ));
+        
+        // Update selected mission if it's the same
+        if (selectedMission?.id === missionId) {
+          setSelectedMission(prev => ({
+            ...prev,
+            status: statusResponse.status,
+            progress: statusResponse.progress,
+            phase: statusResponse.phase,
+          }));
+        }
+        
+        // Refresh leads if mission completed
+        if (statusResponse.status === 'completed' && selectedMission?.status === 'running') {
+          const leadsResponse = await leadService.listForMission(missionId);
+          if (leadsResponse.success) {
+            setLeads(leadsResponse.leads || []);
+            updateWorldWithLeads(leadsResponse.leads || []);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to refresh mission status:', error);
+    }
+  };
+
+  const updateAvatarStatus = (statusResponse) => {
+    const phase = statusResponse.phase;
+    const status = statusResponse.status;
+    
+    if (status === 'completed') {
+      setAvatarStatus('completed');
+      setCurrentAction('Mission completed');
+      setWorldPhase('stabilizing');
+    } else if (status === 'paused') {
+      setAvatarStatus('paused');
+      setCurrentAction('Mission paused');
+    } else if (status === 'running') {
+      switch (phase) {
+        case 'discovering':
+          setAvatarStatus('searching');
+          setCurrentAction('Exploring the world...');
+          setWorldPhase('exploring');
+          break;
+        case 'evaluating':
+          setAvatarStatus('analyzing');
+          setCurrentAction('Evaluating profiles...');
+          setWorldPhase('detecting');
+          break;
+        case 'engaging':
+          setAvatarStatus('messaging');
+          setCurrentAction('Engaging with matches...');
+          setWorldPhase('interacting');
+          break;
+        case 'analyzing':
+          setAvatarStatus('thinking');
+          setCurrentAction('Generating insights...');
+          setWorldPhase('stabilizing');
+          break;
+        default:
+          setAvatarStatus('thinking');
+          setCurrentAction('Initializing...');
+          setWorldPhase('initializing');
+      }
+    } else {
+      setAvatarStatus('idle');
+      setCurrentAction(null);
+      setWorldPhase('idle');
+    }
+  };
+
+  const updateWorldForMission = (mission) => {
+    // Keep user avatar, add placeholder entities for exploration effect
+    const userEntity = {
+      id: user.id,
+      name: user.avatar_name || user.name,
+      picture: user.avatar_picture || user.picture,
+      isUserAvatar: true,
+      signal: 1.0,
+      type: 'avatar',
+    };
+    
+    // Add discovered profiles as entities (from mission progress)
+    const discoveredCount = mission.progress?.stats?.profiles_discovered || 0;
+    const placeholders = Array.from({ length: Math.min(discoveredCount, 10) }, (_, i) => ({
+      id: `discovered-${i}`,
+      name: `Profile ${i + 1}`,
+      signal: 0.3 + Math.random() * 0.3,
+      type: 'discovered',
+    }));
+    
+    setWorldEntities([userEntity, ...placeholders]);
+  };
+
+  const updateWorldWithLeads = (newLeads) => {
+    const userEntity = {
+      id: user.id,
+      name: user.avatar_name || user.name,
+      picture: user.avatar_picture || user.picture,
+      isUserAvatar: true,
+      signal: 1.0,
+      type: 'avatar',
+    };
+    
+    const leadEntities = newLeads.map(lead => ({
+      id: lead.target_user_id,
+      name: lead.target_avatar_name || 'Unknown',
+      picture: lead.target_picture,
+      signal: (lead.score || 50) / 100,
+      type: 'lead',
+      priority: lead.priority,
+      score: lead.score,
+    }));
+    
+    // Create interactions from user to high-signal leads
+    const interactions = leadEntities
+      .filter(e => e.signal > 0.6)
+      .map(e => ({
+        from: user.id,
+        to: e.id,
+        active: selectedMission?.status === 'running',
+      }));
+    
+    setWorldEntities([userEntity, ...leadEntities]);
+    setWorldInteractions(interactions);
+    setWorldPhase(selectedMission?.status === 'completed' ? 'stabilizing' : 'detecting');
+  };
+
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim() || isSending) return;
+    
+    // Ensure we have a chat session
+    if (!chatSession || !chatSession.id) {
+      toast.error('Chat session not initialized. Please refresh the page.');
+      return;
+    }
+    
+    const message = inputMessage.trim();
+    setInputMessage('');
+    setIsSending(true);
+    setAvatarStatus('thinking');
+    
+    // Add user message to chat
+    const userMessage = {
+      role: 'user',
+      content: message,
+      timestamp: new Date().toISOString(),
+    };
+    setChatMessages(prev => [...prev, userMessage]);
+    
+    try {
+      const response = await chatService.sendMessage(chatSession.id, message);
+      
+      if (response.success) {
+        // Add avatar response
+        const avatarMessage = {
+          role: 'assistant',
+          content: response.avatar_response,
+          timestamp: new Date().toISOString(),
+        };
+        setChatMessages(prev => [...prev, avatarMessage]);
+        setLastAction(message);
+        
+        // Handle mission creation
+        if (response.mission_created) {
+          toast.success(`Mission started: ${response.mission_created.mission_name}`);
+          
+          // Auto-start the mission if requested
+          if (response.mission_created.auto_start) {
+            try {
+              await missionService.start(response.mission_created.mission_id);
+              console.log(`Auto-started mission: ${response.mission_created.mission_id}`);
+            } catch (error) {
+              console.error('Failed to auto-start mission:', error);
+              toast.error('Mission created but failed to start automatically');
+            }
+          }
+          
+          loadMissions();
+          setWorldPhase('initializing');
+        }
+      }
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      toast.error('Failed to send message');
+    } finally {
+      setIsSending(false);
+      setAvatarStatus(selectedMission?.status === 'running' ? 'searching' : 'idle');
     }
   };
 
   const handleMissionAction = async (missionId, action) => {
     try {
-      let response;
       switch (action) {
         case 'pause':
-          response = await missionService.pause(missionId);
+          await missionService.pause(missionId);
           toast.success('Mission paused');
           break;
         case 'resume':
-          response = await missionService.resume(missionId);
+          await missionService.resume(missionId);
           toast.success('Mission resumed');
           break;
         case 'cancel':
-          response = await missionService.cancel(missionId);
+          await missionService.cancel(missionId);
           toast.success('Mission cancelled');
-          break;
-        default:
           break;
       }
       loadMissions();
-      if (selectedMission?.id === missionId) {
-        selectMission({ id: missionId });
-      }
     } catch (error) {
-      console.error(`Failed to ${action} mission:`, error);
       toast.error(`Failed to ${action} mission`);
     }
   };
 
-  const handleMissionCreated = (missionInfo) => {
-    toast.success(`Mission started: ${missionInfo.mission_name}`);
-    loadMissions();
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'running':
-        return <Rocket className="w-4 h-4 text-blue-500 animate-pulse" />;
-      case 'completed':
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case 'paused':
-        return <Pause className="w-4 h-4 text-yellow-500" />;
-      case 'failed':
-        return <AlertCircle className="w-4 h-4 text-red-500" />;
-      case 'cancelled':
-        return <XCircle className="w-4 h-4 text-gray-500" />;
-      default:
-        return <Clock className="w-4 h-4 text-gray-400" />;
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'running':
-        return 'bg-blue-100 text-blue-700';
-      case 'completed':
-        return 'bg-green-100 text-green-700';
-      case 'paused':
-        return 'bg-yellow-100 text-yellow-700';
-      case 'failed':
-        return 'bg-red-100 text-red-700';
-      case 'cancelled':
-        return 'bg-gray-100 text-gray-700';
-      default:
-        return 'bg-gray-100 text-gray-600';
-    }
-  };
-
-  const getMissionTypeIcon = (type) => {
-    switch (type) {
-      case 'matchmaking':
-        return '💕';
-      case 'networking':
-        return '🤝';
-      case 'sales_leads':
-        return '💼';
-      case 'job_finder':
-        return '🎯';
-      default:
-        return '🚀';
+  const handleEntityClick = (entity) => {
+    if (entity.isUserAvatar) return;
+    setFocusedEntity(entity.id);
+    
+    if (entity.type === 'lead') {
+      // Force full page navigation to profile
+      window.location.href = `/profile/${entity.id}`;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
       <AppHeader user={user} setUser={setUser} currentPage="missions" />
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Stats Bar */}
-        {leadStats && (
-          <div className="grid grid-cols-4 gap-4 mb-8">
-            <Card className="p-4 text-center">
-              <Target className="w-6 h-6 mx-auto text-purple-500 mb-2" />
-              <p className="text-2xl font-bold">{leadStats.total}</p>
-              <p className="text-sm text-gray-500">Total Leads</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <TrendingUp className="w-6 h-6 mx-auto text-blue-500 mb-2" />
-              <p className="text-2xl font-bold">{leadStats.avg_score}%</p>
-              <p className="text-sm text-gray-500">Avg Score</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Users className="w-6 h-6 mx-auto text-green-500 mb-2" />
-              <p className="text-2xl font-bold">{leadStats.high_priority}</p>
-              <p className="text-sm text-gray-500">High Priority</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <CheckCircle className="w-6 h-6 mx-auto text-orange-500 mb-2" />
-              <p className="text-2xl font-bold">{leadStats.conversion_rate}%</p>
-              <p className="text-sm text-gray-500">Conversion</p>
-            </Card>
-          </div>
-        )}
-
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left Column - Chat & Missions List */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Avatar Chat */}
-            <AvatarChatInterface
-              user={user}
-              avatarName={user?.avatar_name}
-              avatarPicture={user?.avatar_picture}
-              onMissionCreated={handleMissionCreated}
+      <main className="h-[calc(100vh-56px)] flex overflow-hidden">
+        {/* Left Panel - Timeline & Chat */}
+        <div className="w-80 flex flex-col border-r border-gray-200 bg-white shadow-sm">
+          {/* Mission Timeline */}
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <MissionTimeline
+              missions={missions}
+              selectedMission={selectedMission}
+              onSelectMission={selectMission}
+              onReplayMission={(m) => toast.info('Replay coming soon')}
+              onResumeMission={(m) => handleMissionAction(m.id, 'resume')}
+              loading={loading}
+              className="h-full"
             />
-
-            {/* Missions List */}
-            <Card className="overflow-hidden">
-              <div className="p-4 border-b">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <Rocket className="w-5 h-5 text-purple-500" />
-                  Your Missions
-                </h3>
-              </div>
-
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="p-2">
-                <TabsList className="w-full">
-                  <TabsTrigger value="all" className="flex-1">All</TabsTrigger>
-                  <TabsTrigger value="running" className="flex-1">Active</TabsTrigger>
-                  <TabsTrigger value="completed" className="flex-1">Done</TabsTrigger>
-                </TabsList>
-              </Tabs>
-
-              <ScrollArea className="h-[300px]">
-                {loading ? (
-                  <div className="p-4 text-center">
-                    <Loader2 className="w-6 h-6 animate-spin mx-auto text-purple-500" />
-                  </div>
-                ) : missions.length === 0 ? (
-                  <div className="p-4 text-center text-gray-500">
-                    <Target className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                    <p>No missions yet</p>
-                    <p className="text-sm">Chat with your avatar to start one</p>
-                  </div>
-                ) : (
-                  <div className="p-2 space-y-2">
-                    {missions.map((mission) => (
-                      <Card
-                        key={mission.id}
-                        className={`p-3 cursor-pointer hover:bg-gray-50 transition-colors ${
-                          selectedMission?.id === mission.id ? 'ring-2 ring-purple-500' : ''
-                        }`}
-                        onClick={() => selectMission(mission)}
-                      >
-                        <div className="flex items-start gap-3">
-                          <span className="text-2xl">{getMissionTypeIcon(mission.type)}</span>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-sm truncate">{mission.name}</span>
-                              {getStatusIcon(mission.status)}
-                            </div>
-                            <Badge variant="outline" className={`text-xs mt-1 ${getStatusColor(mission.status)}`}>
-                              {mission.status}
-                            </Badge>
-                            {mission.progress && (
-                              <Progress 
-                                value={mission.progress.percentage} 
-                                className="h-1 mt-2" 
-                              />
-                            )}
-                          </div>
-                          <ChevronRight className="w-4 h-4 text-gray-400" />
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-              </ScrollArea>
-            </Card>
           </div>
-
-          {/* Right Column - Mission Details & Leads */}
-          <div className="lg:col-span-2 space-y-6">
-            {selectedMission ? (
-              <>
-                {/* Mission Details */}
-                <Card className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-4">
-                      <span className="text-4xl">{getMissionTypeIcon(selectedMission.type)}</span>
-                      <div>
-                        <h2 className="text-xl font-bold">{selectedMission.name}</h2>
-                        <p className="text-gray-500">{selectedMission.description}</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      {selectedMission.status === 'running' && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleMissionAction(selectedMission.id, 'pause')}
+          
+          {/* Chat Interface - Fixed height container */}
+          <div 
+            className="flex-shrink-0 border-t border-gray-200 bg-white"
+            style={{ height: chatExpanded ? '280px' : '180px', transition: 'height 0.2s ease' }}
+          >
+            <div className="h-full flex flex-col">
+              {/* Chat Header */}
+              <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b border-gray-100">
+                <span className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <MessageCircle className="w-4 h-4 text-purple-500" />
+                  Command Center
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0 text-gray-500 hover:text-gray-700"
+                  onClick={() => setChatExpanded(!chatExpanded)}
+                >
+                  {chatExpanded ? <Minimize2 className="w-3 h-3" /> : <Maximize2 className="w-3 h-3" />}
+                </Button>
+              </div>
+              
+              {/* Chat Messages */}
+              <div className="flex-1 min-h-0 overflow-y-auto">
+                <div className="p-3 space-y-2">
+                  {chatMessages.length === 0 ? (
+                    <p className="text-xs text-gray-400 text-center py-4">
+                      Tell me what you're looking for...
+                    </p>
+                  ) : (
+                    chatMessages.map((msg, i) => (
+                      <div
+                        key={i}
+                        className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div
+                          className={`max-w-[85%] px-3 py-2 rounded-lg text-sm ${
+                            msg.role === 'user'
+                              ? 'bg-purple-500 text-white'
+                              : 'bg-gray-100 text-gray-700'
+                          }`}
                         >
-                          <Pause className="w-4 h-4 mr-1" /> Pause
-                        </Button>
-                      )}
-                      {selectedMission.status === 'paused' && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleMissionAction(selectedMission.id, 'resume')}
-                        >
-                          <Play className="w-4 h-4 mr-1" /> Resume
-                        </Button>
-                      )}
-                      {['running', 'paused', 'queued'].includes(selectedMission.status) && (
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleMissionAction(selectedMission.id, 'cancel')}
-                        >
-                          <XCircle className="w-4 h-4 mr-1" /> Cancel
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Progress */}
-                  {missionStatus && (
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-500">{missionStatus.progress?.current_action}</span>
-                        <span className="font-medium">{missionStatus.progress?.percentage}%</span>
-                      </div>
-                      <Progress value={missionStatus.progress?.percentage || 0} />
-                      
-                      <div className="grid grid-cols-4 gap-4 mt-4">
-                        <div className="text-center">
-                          <p className="text-lg font-bold">{missionStatus.progress?.stats?.profiles_discovered || 0}</p>
-                          <p className="text-xs text-gray-500">Discovered</p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-lg font-bold">{missionStatus.progress?.stats?.profiles_evaluated || 0}</p>
-                          <p className="text-xs text-gray-500">Evaluated</p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-lg font-bold">{missionStatus.progress?.stats?.conversations_started || 0}</p>
-                          <p className="text-xs text-gray-500">Conversations</p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-lg font-bold text-green-600">{missionStatus.lead_count || 0}</p>
-                          <p className="text-xs text-gray-500">Leads</p>
+                          {msg.content}
                         </div>
                       </div>
-                    </div>
+                    ))
                   )}
-                </Card>
-
-                {/* Leads */}
-                <Card className="overflow-hidden">
-                  <div className="p-4 border-b flex items-center justify-between">
-                    <h3 className="font-semibold flex items-center gap-2">
-                      <Heart className="w-5 h-5 text-pink-500" />
-                      Leads Found ({leads.length})
-                    </h3>
-                  </div>
-
-                  <ScrollArea className="h-[400px]">
-                    {leads.length === 0 ? (
-                      <div className="p-8 text-center text-gray-500">
-                        <Users className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                        <p>No leads yet</p>
-                        <p className="text-sm">Leads will appear here as your avatar finds matches</p>
-                      </div>
-                    ) : (
-                      <div className="divide-y">
-                        {leads.map((lead) => (
-                          <div
-                            key={lead.id}
-                            className="p-4 hover:bg-gray-50 cursor-pointer"
-                            onClick={() => navigate(`/profile/${lead.target_user_id}`)}
-                          >
-                            <div className="flex items-start gap-4">
-                              <Avatar className="w-12 h-12">
-                                <AvatarImage src={lead.target_picture} />
-                                <AvatarFallback className="bg-gradient-to-br from-purple-400 to-pink-400 text-white">
-                                  {lead.target_avatar_name?.charAt(0) || '?'}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2">
-                                  <span className="font-medium">{lead.target_avatar_name}</span>
-                                  <Badge variant={lead.priority === 'high' ? 'default' : 'outline'}>
-                                    {lead.score}% match
-                                  </Badge>
-                                </div>
-                                <p className="text-sm text-gray-500 mt-1">
-                                  {lead.target_real_name}
-                                </p>
-                                {lead.match_details?.shared_interests?.length > 0 && (
-                                  <div className="flex flex-wrap gap-1 mt-2">
-                                    {lead.match_details.shared_interests.slice(0, 3).map((interest, idx) => (
-                                      <Badge key={idx} variant="secondary" className="text-xs">
-                                        {interest}
-                                      </Badge>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                              <Button variant="outline" size="sm">
-                                <MessageCircle className="w-4 h-4 mr-1" />
-                                Connect
-                              </Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </ScrollArea>
-                </Card>
-              </>
-            ) : (
-              <Card className="p-12 text-center">
-                <Target className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">Select a mission</h3>
-                <p className="text-gray-500">
-                  Choose a mission from the list or chat with your avatar to start a new one
-                </p>
-              </Card>
-            )}
+                  <div ref={chatEndRef} />
+                </div>
+              </div>
+              
+              {/* Chat Input - Fixed at bottom */}
+              <div className="flex-shrink-0 p-3 border-t border-gray-100 bg-gray-50/50">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                    placeholder="Find people who..."
+                    className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                    disabled={isSending}
+                  />
+                  <Button
+                    size="sm"
+                    onClick={handleSendMessage}
+                    disabled={isSending || !inputMessage.trim()}
+                    className="bg-purple-500 hover:bg-purple-600 px-3"
+                  >
+                    {isSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Center Panel - World Canvas */}
+        <div className="flex-1 flex flex-col">
+          {/* Avatar Status Strip */}
+          <div className="p-4">
+            <AvatarStatusStrip
+              avatarName={user?.avatar_name || user?.name}
+              avatarPicture={user?.avatar_picture || user?.picture}
+              status={avatarStatus}
+              currentAction={currentAction}
+              activeMission={selectedMission?.status === 'running' ? selectedMission : null}
+              lastAction={lastAction}
+            />
+          </div>
+          
+          {/* World Canvas */}
+          <div className="flex-1 p-4 pt-0">
+            <WorldCanvas
+              entities={worldEntities}
+              interactions={worldInteractions}
+              phase={worldPhase}
+              focusedEntity={focusedEntity}
+              onEntityClick={handleEntityClick}
+              onEntityHover={(e) => e && setFocusedEntity(e.id)}
+              missionActive={selectedMission?.status === 'running'}
+              className="h-full"
+            />
+          </div>
+        </div>
+
+        {/* Right Panel - Briefing (when mission selected) */}
+        <AnimatePresence>
+          {selectedMission?.status === 'completed' && (
+            <motion.div
+              className="w-96 border-l border-gray-200 bg-white/80 backdrop-blur-sm"
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 384, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+            >
+              <MissionBriefing
+                mission={selectedMission}
+                leads={leads}
+                activities={activities}
+                summary={missionStatus?.results_summary}
+                avatarName={user?.avatar_name || user?.name}
+                avatarPicture={user?.avatar_picture || user?.picture}
+                onFollowUp={() => toast.info('Follow-up coming soon')}
+                onRefineScope={() => toast.info('Refine scope coming soon')}
+                onNewMission={() => setChatExpanded(true)}
+                onViewLead={(lead) => navigate(`/profile/${lead.target_user_id}`)}
+                className="h-full"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );
 };
 
 export default Missions;
-

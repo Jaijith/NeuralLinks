@@ -1,6 +1,7 @@
 """
 Mission Service
 Handles mission CRUD and execution
+Uses modular workflow engines for different mission types
 """
 
 import logging
@@ -14,6 +15,7 @@ from ..models.mission import Mission, MissionCriteria, MissionStrategy
 from ..models.enums import MissionType, MissionStatus, MissionPhase
 from ..mcp.tools import WorkflowMCPServer
 from ..agents.orchestrator import OrchestratorAgent
+from ..engines.engine_registry import WorkflowEngineRegistry
 
 logger = logging.getLogger(__name__)
 
@@ -33,11 +35,13 @@ class MissionService:
         self,
         db: AsyncIOMotorDatabase,
         mcp_server: WorkflowMCPServer,
-        openai_client=None
+        openai_client=None,
+        intelligent_avatar=None
     ):
         self.db = db
         self.mcp_server = mcp_server
         self.openai_client = openai_client
+        self.intelligent_avatar = intelligent_avatar
         self._running_missions: Dict[str, asyncio.Task] = {}
     
     async def create_mission(
@@ -73,25 +77,26 @@ class MissionService:
         # Save to database
         await self.db.missions.insert_one(mission.to_dict())
         
-        logger.info(f"📋 Created mission: {mission.id} ({mission.type})")
+        logger.info(f"📋 Created mission: {mission.id} ({mission.type}), auto_start={auto_start}")
         
-        # Auto-start if requested - run synchronously
-        if auto_start:
-            # Don't await here - let the caller decide
-            # The mission will be started via the start endpoint
-            logger.info(f"📋 Mission created, auto_start=True but deferring start")
-        
+        # Return mission object with auto_start flag for frontend to handle
         return mission
     
-    async def start_mission(self, mission_id: str) -> Dict[str, Any]:
-        """Start executing a mission"""
+    async def start_mission(self, mission_id: str, force: bool = False) -> Dict[str, Any]:
+        """Start executing a mission using the appropriate workflow engine"""
         
         mission_doc = await self.db.missions.find_one({"id": mission_id})
         if not mission_doc:
             return {"success": False, "error": "Mission not found"}
         
-        if mission_doc.get("status") == MissionStatus.RUNNING.value:
+        if mission_doc.get("status") == MissionStatus.RUNNING.value and not force:
             return {"success": False, "error": "Mission already running"}
+        
+        mission_type = mission_doc.get("type", "matchmaking")
+        avatar_id = mission_doc.get("avatar_id")
+        
+        logger.info(f"🚀 Starting mission {mission_id} of type {mission_type} (force={force})")
+        print(f"[WORKFLOW] Starting mission {mission_id} of type {mission_type}", flush=True)
         
         # Update status to running
         now = datetime.now(timezone.utc)
@@ -106,18 +111,37 @@ class MissionService:
             }
         )
         
-        # Create orchestrator
-        orchestrator = OrchestratorAgent(
+        # Try to get a specialized workflow engine
+        engine = WorkflowEngineRegistry.get_engine(
+            mission_type=mission_type,
             db=self.db,
             mcp_server=self.mcp_server,
-            openai_client=self.openai_client
+            openai_client=self.openai_client,
+            intelligent_avatar=self.intelligent_avatar
         )
+        
+        print(f"[WORKFLOW] Engine lookup result: {engine.engine_name if engine else 'None'}", flush=True)
+        
+        # Fallback to generic orchestrator if no specialized engine
+        if engine:
+            logger.info(f"🔧 Using {engine.engine_name} workflow engine")
+            print(f"[WORKFLOW] Using {engine.engine_name} workflow engine", flush=True)
+            executor = engine.execute
+        else:
+            logger.info(f"🔧 Using generic orchestrator (no engine for {mission_type})")
+            print(f"[WORKFLOW] Using generic orchestrator (no engine found for {mission_type})", flush=True)
+            orchestrator = OrchestratorAgent(
+                db=self.db,
+                mcp_server=self.mcp_server,
+                openai_client=self.openai_client
+            )
+            executor = orchestrator.execute
         
         # Execute mission synchronously with timeout
         # Lambda has limited execution time, so we run a limited number of steps
         try:
             result = await asyncio.wait_for(
-                orchestrator.execute(mission_id, mission_doc["avatar_id"]),
+                executor(mission_id, avatar_id),
                 timeout=240.0  # 4 minute timeout (Lambda max is 5 min for workflows)
             )
             logger.info(f"✅ Mission completed: {mission_id}")
@@ -136,7 +160,7 @@ class MissionService:
             )
             return {"success": True, "mission_id": mission_id, "status": "timeout", "message": "Mission in progress, will continue"}
         except Exception as e:
-            logger.error(f"❌ Mission failed: {mission_id} - {e}")
+            logger.error(f"❌ Mission failed: {mission_id} - {e}", exc_info=True)
             await self.db.missions.update_one(
                 {"id": mission_id},
                 {

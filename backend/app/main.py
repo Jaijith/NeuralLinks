@@ -105,6 +105,7 @@ from api.integration_routes import router as integration_router
 from api.search_routes import router as search_router
 from api.match_routes import router as match_router
 from api.agent_routes import router as agent_router
+from app.routers.debug import router as debug_router
 
 # NOTE: Workflow router is now in a SEPARATE Lambda function
 # Requests to /api/workflow/* are routed to WorkflowFunction by API Gateway
@@ -122,6 +123,7 @@ app.include_router(integration_router)
 app.include_router(search_router)
 app.include_router(match_router)
 app.include_router(agent_router)
+app.include_router(debug_router)
 # NOTE: Workflow routes are handled by separate WorkflowFunction Lambda
 
 # Serve static files (uploads)

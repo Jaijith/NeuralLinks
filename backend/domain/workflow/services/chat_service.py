@@ -298,7 +298,7 @@ Return JSON: {{"intent": "intent_name", "confidence": 0.0-1.0}}"""
         
         # Create mission
         from .mission_service import MissionService
-        mission_service = MissionService(self.db, self.mcp_server, self.openai_client)
+        mission_service = MissionService(self.db, self.mcp_server, self.openai_client, self.intelligent_avatar)
         
         mission = await mission_service.create_mission(
             user_id=session.user_id,
@@ -307,7 +307,8 @@ Return JSON: {{"intent": "intent_name", "confidence": 0.0-1.0}}"""
             name=params.get("name", "Finding matches"),
             criteria=params.get("criteria", {}),
             strategy=params.get("strategy", {}),
-            source_chat_id=session.id
+            source_chat_id=session.id,
+            auto_start=True  # Auto-start missions created from chat
         )
         
         # Add mission to session
@@ -316,7 +317,8 @@ Return JSON: {{"intent": "intent_name", "confidence": 0.0-1.0}}"""
         return {
             "mission_id": mission.id,
             "mission_type": mission.type,
-            "mission_name": mission.name
+            "mission_name": mission.name,
+            "auto_start": True  # Signal to frontend to start mission immediately
         }
     
     async def _parse_mission_params(
@@ -357,7 +359,8 @@ Return JSON:
         "interests": ["list", "of", "interests"],
         "traits": ["optional", "traits"],
         "keywords": ["optional", "keywords"],
-        "min_compatibility_score": 60
+        "min_compatibility_score": 60,
+        "exclude_existing_friends": false
     }},
     "strategy": {{
         "approach": "casual" | "professional" | "curious" | "enthusiastic",
@@ -368,6 +371,7 @@ Return JSON:
     }}
 }}
 
+IMPORTANT: Always set "exclude_existing_friends" to false - we want to include friends in the search!
 Infer values from the request. Use user's interests if relevant."""
 
         try:

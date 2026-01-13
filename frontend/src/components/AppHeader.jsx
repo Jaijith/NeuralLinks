@@ -95,7 +95,13 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
           <div className="flex items-center space-x-1">
             <Button
               variant="ghost"
-              onClick={() => navigate('/home')}
+              onClick={() => {
+                if (currentPage === 'missions') {
+                  window.location.href = '/home';
+                } else {
+                  navigate('/home');
+                }
+              }}
               className={`px-8 py-2 rounded-lg ${
                 currentPage === 'home' 
                   ? worldMode === 'avatar'
@@ -108,7 +114,13 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
             </Button>
             <Button
               variant="ghost"
-              onClick={() => navigate('/friends')}
+              onClick={() => {
+                if (currentPage === 'missions') {
+                  window.location.href = '/friends';
+                } else {
+                  navigate('/friends');
+                }
+              }}
               className={`px-8 py-2 rounded-lg ${
                 currentPage === 'friends'
                   ? worldMode === 'avatar'
@@ -121,7 +133,13 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
             </Button>
             <Button
               variant="ghost"
-              onClick={() => navigate('/missions')}
+              onClick={() => {
+                if (currentPage === 'missions') {
+                  window.location.href = '/missions';
+                } else {
+                  navigate('/missions');
+                }
+              }}
               className={`px-8 py-2 rounded-lg ${
                 currentPage === 'missions'
                   ? worldMode === 'avatar'
@@ -134,7 +152,13 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
             </Button>
             <Button
               variant="ghost"
-              onClick={() => navigate('/gallery')}
+              onClick={() => {
+                if (currentPage === 'missions') {
+                  window.location.href = '/gallery';
+                } else {
+                  navigate('/gallery');
+                }
+              }}
               className={`px-8 py-2 rounded-lg ${
                 currentPage === 'gallery'
                   ? worldMode === 'avatar'

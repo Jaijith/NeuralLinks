@@ -680,6 +680,10 @@ class StateAwareAgent:
                             logger.info(f"{avatar_indicator} {avatar_name} - ✅ {action_type}")
                             await self._record_action_taken()  # Use activity level tracking
                             
+                            # Record action for diversity tracking
+                            if hasattr(self.decision_engine, 'action_utility'):
+                                self.decision_engine.action_utility.record_executed_action(action_type)
+                            
                             # Log activity
                             await self._log_activity(action_type, {
                                 "action": selected_action,

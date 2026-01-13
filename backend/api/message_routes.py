@@ -339,7 +339,7 @@ async def get_conversation_messages(other_user_id: str, request: Request):
         for msg in conversation.get("messages", []):
             messages.append({
                 "sender_id": msg.get("sender"),
-                "content": msg.get("message", ""),
+                "content": msg.get("content", msg.get("message", "")),
                 "timestamp": msg.get("timestamp"),
                 "is_ai": msg.get("is_ai", False)
             })

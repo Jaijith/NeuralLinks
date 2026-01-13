@@ -86,6 +86,11 @@ export class BackendStack extends cdk.Stack {
         CORS_ORIGINS: `https://${domainName},https://www.${domainName}`,
         BACKEND_URL: `https://api.${domainName}`,
         FRONTEND_URL: `https://${domainName}`,
+        MONGODB_SECRET_NAME: '2n1/mongodb/uri',
+        OPENAI_SECRET_NAME: '2n1/openai/api-key',
+        STORAGE_TYPE: 's3',
+        AWS_S3_BUCKET: this.uploadsBucket.bucketName,
+        AWS_S3_REGION: 'us-west-1',
       },
     });
 
@@ -138,14 +143,12 @@ export class BackendStack extends cdk.Stack {
     mongodbSecret.grantRead(workflowFunction);
     openaiApiKeySecret.grantRead(workflowFunction);
     
-    // Add secrets to workflow Lambda environment
-    workflowFunction.addEnvironment('MONGODB_SECRET_NAME', mongodbSecret.secretName);
-    workflowFunction.addEnvironment('OPENAI_SECRET_NAME', openaiApiKeySecret.secretName);
+    // Grant S3 access to workflow Lambda
+    this.uploadsBucket.grantReadWrite(workflowFunction);
+    
+    // Add runtime environment variables
     workflowFunction.addEnvironment('OPENAI_MODEL', 'gpt-5-nano-2025-08-07');
     workflowFunction.addEnvironment('CDK_DEPLOY_TIME', new Date().toISOString());
-    workflowFunction.addEnvironment('AWS_S3_BUCKET', this.uploadsBucket.bucketName);
-    workflowFunction.addEnvironment('AWS_S3_REGION', 'us-west-2');
-    workflowFunction.addEnvironment('STORAGE_TYPE', 's3');
 
     // Grant Lambda permissions to manage EventBridge rules (for per-avatar cycles)
     backendFunction.addToRolePolicy(

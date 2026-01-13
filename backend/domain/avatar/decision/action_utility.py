@@ -1,9 +1,10 @@
 """
 Action Utility Calculator
-Calculates utility scores for potential actions with MEMORY integration
+Calculates utility scores for potential actions with MEMORY integration and activity diversity
 """
 from typing import Dict, Any, Optional, List
 from domain.avatar.state import InternalState, ExternalState
+from domain.avatar.decision.activity_diversity import ActivityDiversityManager
 import logging
 
 logger = logging.getLogger(__name__)
@@ -23,8 +24,9 @@ class ActionUtility:
     7. MEMORY alignment (does action align with interests/past success?) [NEW]
     """
     
-    def __init__(self):
+    def __init__(self, diversity_window: int = 5):
         self.action_history: Dict[str, List[float]] = {}  # action_type -> [recent utilities]
+        self.diversity_manager = ActivityDiversityManager(window_size=diversity_window)
     
     async def calculate_utility(
         self,
@@ -80,15 +82,19 @@ class ActionUtility:
                 action, memory_context
             )
             
-            # Weighted combination (adjusted weights to include memory)
+            # NEW: Activity diversity score
+            diversity_score = self.diversity_manager.get_combined_diversity_score(action_type)
+            
+            # Weighted combination (adjusted weights to include memory and diversity)
             utility = (
-                character_alignment * 0.20 +
-                state_alignment * 0.15 +
-                relationship_context * 0.15 +
+                character_alignment * 0.18 +
+                state_alignment * 0.14 +
+                relationship_context * 0.14 +
                 opportunity_cost * 0.10 +
-                recent_history * 0.10 +
+                recent_history * 0.08 +
                 expected_outcome * 0.10 +
-                memory_alignment * 0.20  # NEW: Memory has significant weight
+                memory_alignment * 0.18 +  # Memory has significant weight
+                diversity_score * 0.08      # NEW: Diversity encourages variety
             )
             
             # Apply memory penalty if action was marked as repetitive
@@ -110,6 +116,10 @@ class ActionUtility:
             # Moderate boost for response messages (someone is waiting for our reply)
             if action.get("is_response") or action.get("priority") == "high":
                 utility *= 1.2  # 20% extra boost for responses (reduced from 40%)
+            
+            # NEW: Boost like/comment actions to encourage engagement
+            if action_type in ["like_post", "comment_on_post"]:
+                utility *= 1.25  # 25% boost for engagement actions
             
             # Store in history
             if action_type not in self.action_history:
@@ -428,4 +438,15 @@ class ActionUtility:
         
         utilities = self.action_history[action_type]
         return sum(utilities) / len(utilities)
+    
+    def record_executed_action(self, action_type: str):
+        """
+        Record that an action was executed for diversity tracking.
+        Should be called after an action is successfully executed.
+        """
+        self.diversity_manager.record_action(action_type)
+    
+    def get_diversity_summary(self) -> Dict:
+        """Get diversity manager summary for logging"""
+        return self.diversity_manager.get_summary()
 

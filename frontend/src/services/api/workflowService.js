@@ -24,6 +24,14 @@ export const chatService = {
   },
 
   /**
+   * Initialize chat session (alias for createSession)
+   */
+  async initSession(userId, avatarId) {
+    const response = await axios.post(`${API}/chat/${userId}/session`, { avatar_id: avatarId }, config);
+    return response.data;
+  },
+
+  /**
    * Send a message in a chat session
    */
   async sendMessage(sessionId, content) {

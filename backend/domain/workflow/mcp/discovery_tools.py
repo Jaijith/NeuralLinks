@@ -51,39 +51,27 @@ class SearchProfilesTool(WorkflowBaseTool):
     async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
         interests = kwargs.get("interests", [])
         traits = kwargs.get("traits", [])
-        exclude_friends = kwargs.get("exclude_friends", True)
+        exclude_friends = kwargs.get("exclude_friends", False)  # Changed default to False - include friends!
         limit = kwargs.get("limit", 50)
         
-        logger.info(f"🔍 Searching profiles: interests={interests}, traits={traits}, limit={limit}")
+        logger.info(f"🔍 Searching profiles: interests={interests}, traits={traits}, exclude_friends={exclude_friends}, limit={limit}")
         
-        # Build query - find users with avatars
+        # Build query - find ALL users (not just those with avatar_name)
+        # This ensures we don't miss profiles like VoidSeeker68
         query = {
-            "id": {"$ne": avatar_id},
-            "$or": [
-                {"avatar_name": {"$exists": True, "$ne": None, "$ne": ""}},
-                {"display_name": {"$exists": True, "$ne": None}}
-            ]
+            "id": {"$ne": avatar_id}
         }
         
         # Exclude friends if requested
         if exclude_friends:
             friend_ids = await self._get_friend_ids(avatar_id)
             if friend_ids:
-                if "$nin" not in query.get("id", {}):
-                    query["id"] = {"$ne": avatar_id, "$nin": friend_ids}
-                else:
-                    query["id"]["$nin"] = friend_ids
+                query["id"]["$nin"] = friend_ids
+                logger.info(f"🚫 Excluding {len(friend_ids)} friends from search")
         
-        # Get candidates
-        candidates = await self.db.users.find(query).limit(limit * 3).to_list(limit * 3)
+        # Get candidates (increased multiplier to ensure we get enough)
+        candidates = await self.db.users.find(query).limit(limit * 5).to_list(limit * 5)
         logger.info(f"📋 Found {len(candidates)} initial candidates")
-        
-        # If no candidates, try without avatar_name filter
-        if len(candidates) == 0:
-            logger.info("📋 No candidates with avatar_name, trying all users...")
-            simple_query = {"id": {"$ne": avatar_id}}
-            candidates = await self.db.users.find(simple_query).limit(limit).to_list(limit)
-            logger.info(f"📋 Found {len(candidates)} users without avatar filter")
         
         # Score and filter by interests
         scored_candidates = []

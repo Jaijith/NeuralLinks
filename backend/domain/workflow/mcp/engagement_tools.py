@@ -98,23 +98,47 @@ class SendMissionMessageTool(WorkflowBaseTool):
         if conversation_id:
             # Add to existing conversation
             await self.db.agent_conversations.update_one(
-                {"id": conversation_id},
+                {"$or": [
+                    {"id": conversation_id},
+                    {"agent1_user_id": min(avatar_id, recipient_id), "agent2_user_id": max(avatar_id, recipient_id)}
+                ]},
                 {
                     "$push": {"messages": message},
                     "$set": {"updated_at": now.isoformat()}
                 }
             )
         else:
-            # Create new conversation
+            # Create new conversation with correct schema
+            user_ids = sorted([avatar_id, recipient_id])
             conversation_id = str(uuid.uuid4())
-            await self.db.agent_conversations.insert_one({
-                "id": conversation_id,
-                "participants": [avatar_id, recipient_id],
-                "messages": [message],
-                "created_at": now.isoformat(),
-                "updated_at": now.isoformat(),
-                "source": "mission"
+            
+            # Check if conversation already exists
+            existing = await self.db.agent_conversations.find_one({
+                "agent1_user_id": user_ids[0],
+                "agent2_user_id": user_ids[1]
             })
+            
+            if existing:
+                # Add to existing conversation
+                await self.db.agent_conversations.update_one(
+                    {"agent1_user_id": user_ids[0], "agent2_user_id": user_ids[1]},
+                    {
+                        "$push": {"messages": message},
+                        "$set": {"updated_at": now.isoformat()}
+                    }
+                )
+                conversation_id = existing.get("id", conversation_id)
+            else:
+                # Create new conversation with agent1/agent2 schema
+                await self.db.agent_conversations.insert_one({
+                    "id": conversation_id,
+                    "agent1_user_id": user_ids[0],
+                    "agent2_user_id": user_ids[1],
+                    "messages": [message],
+                    "created_at": now.isoformat(),
+                    "updated_at": now.isoformat(),
+                    "source": "mission"
+                })
         
         # Log activity
         await self._log_activity(avatar_id, "mission_message", {
@@ -197,24 +221,46 @@ class StartConversationTool(WorkflowBaseTool):
             else:
                 opener = f"Hey {target_name}! I came across your profile and thought it would be great to connect. How's it going?"
         
-        # Create conversation
+        # Create conversation with correct schema
         now = datetime.now(timezone.utc)
-        conversation_id = str(uuid.uuid4())
+        user_ids = sorted([avatar_id, target_id])
         
-        await self.db.agent_conversations.insert_one({
-            "id": conversation_id,
-            "participants": [avatar_id, target_id],
-            "messages": [{
-                "id": str(uuid.uuid4()),
-                "sender": avatar_id,
-                "content": opener,
-                "timestamp": now.isoformat()
-            }],
-            "created_at": now.isoformat(),
-            "updated_at": now.isoformat(),
-            "source": "mission",
-            "mission_type": mission_type
+        # Check if conversation already exists
+        existing = await self.db.agent_conversations.find_one({
+            "agent1_user_id": user_ids[0],
+            "agent2_user_id": user_ids[1]
         })
+        
+        message = {
+            "id": str(uuid.uuid4()),
+            "sender": avatar_id,
+            "content": opener,
+            "timestamp": now.isoformat()
+        }
+        
+        if existing:
+            # Add to existing conversation
+            await self.db.agent_conversations.update_one(
+                {"agent1_user_id": user_ids[0], "agent2_user_id": user_ids[1]},
+                {
+                    "$push": {"messages": message},
+                    "$set": {"updated_at": now.isoformat()}
+                }
+            )
+            conversation_id = existing.get("id", str(uuid.uuid4()))
+        else:
+            # Create new conversation with agent1/agent2 schema
+            conversation_id = str(uuid.uuid4())
+            await self.db.agent_conversations.insert_one({
+                "id": conversation_id,
+                "agent1_user_id": user_ids[0],
+                "agent2_user_id": user_ids[1],
+                "messages": [message],
+                "created_at": now.isoformat(),
+                "updated_at": now.isoformat(),
+                "source": "mission",
+                "mission_type": mission_type
+            })
         
         # Log activity
         await self._log_activity(avatar_id, "start_conversation", {

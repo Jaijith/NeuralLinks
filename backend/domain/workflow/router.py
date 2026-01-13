@@ -68,9 +68,9 @@ def get_services():
     # Initialize MCP server
     mcp_server = WorkflowMCPServer(db, intelligent_avatar, azure_client)
     
-    # Initialize services
+    # Initialize services (pass intelligent_avatar to mission_service)
     chat_service = ChatService(db, mcp_server, azure_client, intelligent_avatar)
-    mission_service = MissionService(db, mcp_server, azure_client)
+    mission_service = MissionService(db, mcp_server, azure_client, intelligent_avatar)
     lead_service = LeadService(db)
     
     return {
@@ -78,7 +78,8 @@ def get_services():
         "chat_service": chat_service,
         "mission_service": mission_service,
         "lead_service": lead_service,
-        "mcp_server": mcp_server
+        "mcp_server": mcp_server,
+        "intelligent_avatar": intelligent_avatar
     }
 
 
@@ -183,9 +184,11 @@ async def create_mission(user_id: str, request: CreateMissionRequest):
         "matchmaking": MissionType.MATCHMAKING,
         "networking": MissionType.NETWORKING,
         "sales_leads": MissionType.SALES_LEADS,
+        "marketing_campaign": MissionType.MARKETING_CAMPAIGN,
         "job_finder": MissionType.JOB_FINDER,
         "market_research": MissionType.MARKET_RESEARCH,
-        "content_discovery": MissionType.CONTENT_DISCOVERY
+        "content_discovery": MissionType.CONTENT_DISCOVERY,
+        "content_promotion": MissionType.CONTENT_PROMOTION
     }
     mission_type = type_map.get(request.type, MissionType.MATCHMAKING)
     
@@ -259,11 +262,11 @@ async def get_mission_status(mission_id: str):
 
 
 @router.post("/missions/detail/{mission_id}/start")
-async def start_mission(mission_id: str):
+async def start_mission(mission_id: str, force: bool = False):
     """Start a mission"""
     services = get_services()
     
-    result = await services["mission_service"].start_mission(mission_id)
+    result = await services["mission_service"].start_mission(mission_id, force=force)
     if not result.get("success"):
         raise HTTPException(status_code=400, detail=result.get("error"))
     
@@ -490,11 +493,12 @@ async def get_workflow_types():
             {
                 "id": "matchmaking",
                 "name": "Find Matches",
-                "description": "Find people with similar interests and compatible personalities",
+                "description": "Find people with similar interests and compatible personalities based on conversations, posts, and profiles",
                 "icon": "💕",
+                "engine": "matchfinding",
                 "default_criteria": {
                     "min_compatibility_score": 60,
-                    "exclude_existing_friends": True
+                    "exclude_existing_friends": False
                 },
                 "default_strategy": {
                     "approach": "casual",
@@ -507,9 +511,10 @@ async def get_workflow_types():
                 "name": "Networking",
                 "description": "Connect with professionals in your field of interest",
                 "icon": "🤝",
+                "engine": "matchfinding",
                 "default_criteria": {
                     "min_compatibility_score": 50,
-                    "exclude_existing_friends": True
+                    "exclude_existing_friends": False
                 },
                 "default_strategy": {
                     "approach": "professional",
@@ -519,16 +524,37 @@ async def get_workflow_types():
             },
             {
                 "id": "sales_leads",
-                "name": "Find Sales Leads",
-                "description": "Identify potential customers or business opportunities",
-                "icon": "💼",
+                "name": "Marketing Campaign",
+                "description": "Run a marketing campaign - post content, message contacts, and gather leads",
+                "icon": "📢",
+                "engine": "marketing_campaign",
                 "default_criteria": {
-                    "min_compatibility_score": 40
+                    "min_compatibility_score": 40,
+                    "campaign_header": ""
                 },
                 "default_strategy": {
                     "approach": "professional",
-                    "max_targets": 100,
-                    "max_conversations": 0
+                    "max_targets": 50,
+                    "max_conversations": 15,
+                    "custom_instructions": ""
+                }
+            },
+            {
+                "id": "marketing_campaign",
+                "name": "Marketing Campaign",
+                "description": "Post an ad, message your network, and track engagement",
+                "icon": "📢",
+                "engine": "marketing_campaign",
+                "default_criteria": {
+                    "campaign_header": "",
+                    "target_interests": []
+                },
+                "default_strategy": {
+                    "approach": "professional",
+                    "max_targets": 50,
+                    "max_conversations": 15,
+                    "custom_instructions": "",
+                    "talking_points": []
                 }
             },
             {
@@ -536,6 +562,7 @@ async def get_workflow_types():
                 "name": "Job Opportunities",
                 "description": "Find people who might help with job opportunities",
                 "icon": "💼",
+                "engine": "matchfinding",
                 "default_criteria": {
                     "min_compatibility_score": 50
                 },
@@ -546,5 +573,18 @@ async def get_workflow_types():
                 }
             }
         ]
+    }
+
+
+@router.get("/engines")
+async def get_workflow_engines():
+    """Get available workflow engines"""
+    from .engines.engine_registry import WorkflowEngineRegistry
+    
+    engines = WorkflowEngineRegistry.list_engines()
+    
+    return {
+        "success": True,
+        "engines": engines
     }
 

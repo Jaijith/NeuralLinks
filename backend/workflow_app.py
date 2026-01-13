@@ -12,6 +12,9 @@ from core.database import get_database
 from domain.graph import GraphBuilder, GraphRAG
 from domain.avatar import IntelligentAvatar
 
+# Import engine registry to ensure engines are registered
+from domain.workflow.engines.engine_registry import WorkflowEngineRegistry
+
 logger = logging.getLogger(__name__)
 
 
@@ -31,6 +34,10 @@ def create_workflow_app() -> FastAPI:
     intelligent_avatar = IntelligentAvatar(db, openai_client, model_name, graph_rag)
     
     logger.info(f"Workflow engine initialized with OpenAI model: {model_name}")
+    
+    # Log registered engines
+    engines = WorkflowEngineRegistry.list_engines()
+    logger.info(f"📦 Registered {len(engines)} workflow engines: {[e['name'] for e in engines]}")
     
     # Initialize workflow globals
     from app.globals import initialize_globals

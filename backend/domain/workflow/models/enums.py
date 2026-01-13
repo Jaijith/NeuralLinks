@@ -11,9 +11,11 @@ class MissionType(str, Enum):
     MATCHMAKING = "matchmaking"
     NETWORKING = "networking"
     SALES_LEADS = "sales_leads"
+    MARKETING_CAMPAIGN = "marketing_campaign"
     JOB_FINDER = "job_finder"
     MARKET_RESEARCH = "market_research"
     CONTENT_DISCOVERY = "content_discovery"
+    CONTENT_PROMOTION = "content_promotion"
     CUSTOM = "custom"
 
 
