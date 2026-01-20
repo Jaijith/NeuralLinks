@@ -236,10 +236,73 @@ export const workflowTypesService = {
   }
 };
 
+// ============================================================================
+// Bonding Service - Relationship deepening conversations
+// ============================================================================
+
+const bondingService = {
+  /**
+   * Trigger a bonding workflow conversation
+   */
+  async trigger(userId, avatarId, message, sessionId = null) {
+    const response = await api.post('/workflow/bonding/trigger', {
+      user_id: userId,
+      avatar_id: avatarId,
+      message: message,
+      session_id: sessionId
+    });
+    return response.data;
+  },
+
+  /**
+   * Submit feedback on a bonding interaction
+   */
+  async submitFeedback(sessionId, rating, helpful, comments = null) {
+    const response = await api.post('/workflow/bonding/feedback', {
+      session_id: sessionId,
+      rating: rating,
+      helpful: helpful,
+      comments: comments
+    });
+    return response.data;
+  },
+
+  /**
+   * Get bonding state for user-avatar relationship
+   */
+  async getState(userId, avatarId) {
+    const response = await api.get(`/workflow/bonding/state/${avatarId}`, {
+      params: { user_id: userId }
+    });
+    return response.data;
+  },
+
+  /**
+   * Get details of a specific bonding session
+   */
+  async getSession(sessionId) {
+    const response = await api.get(`/workflow/bonding/session/${sessionId}`);
+    return response.data;
+  },
+
+  /**
+   * List bonding sessions for a user
+   */
+  async listSessions(userId, avatarId = null, limit = 10) {
+    const params = { user_id: userId, limit: limit };
+    if (avatarId) {
+      params.avatar_id = avatarId;
+    }
+    const response = await api.get('/workflow/bonding/sessions', { params });
+    return response.data;
+  }
+};
+
 export default {
   chat: chatService,
   mission: missionService,
   lead: leadService,
-  types: workflowTypesService
+  types: workflowTypesService,
+  bonding: bondingService
 };
 

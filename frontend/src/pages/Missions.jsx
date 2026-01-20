@@ -12,9 +12,10 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   MessageCircle, Send, Loader2, Maximize2, Minimize2
 } from 'lucide-react';
-import { missionService, leadService, chatService } from '@/services/api/workflowService';
+import workflowService, { missionService, leadService, chatService } from '@/services/api/workflowService';
 import { toast } from 'sonner';
 import AppHeader from '@/components/AppHeader';
+import BondingResponse from '@/components/bonding/BondingResponse';
 import WorldCanvas from '@/components/workflow/WorldCanvas';
 import AvatarStatusStrip from '@/components/workflow/AvatarStatusStrip';
 import MissionTimeline from '@/components/workflow/MissionTimeline';
@@ -48,6 +49,7 @@ const Missions = ({ user, setUser }) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [chatExpanded, setChatExpanded] = useState(false);
+  const [bondingResponse, setBondingResponse] = useState(null);
   const chatEndRef = useRef(null);
   
   // Polling ref
@@ -340,13 +342,54 @@ const Missions = ({ user, setUser }) => {
       const response = await chatService.sendMessage(chatSession.id, message);
       
       if (response.success) {
-        // Add avatar response
-        const avatarMessage = {
-          role: 'assistant',
-          content: response.avatar_response,
-          timestamp: new Date().toISOString(),
-        };
-        setChatMessages(prev => [...prev, avatarMessage]);
+        // Check if this is a bonding conversation (detected by intent)
+        const bondingIntents = ['check_in', 'venting', 'reflection', 'celebration', 'general_chat'];
+        const isBondingConversation = response.intent && bondingIntents.includes(response.intent);
+        
+        if (isBondingConversation && !response.mission_created) {
+          // This is a bonding conversation - use bonding API
+          try {
+            const bondingResult = await workflowService.bonding.trigger(
+              user.id,
+              user.id, // avatar_id = user_id for now
+              message
+            );
+            
+            if (bondingResult.success) {
+              // Display bonding response
+              setBondingResponse(bondingResult);
+              
+              // Add a brief avatar acknowledgment to chat
+              const avatarMessage = {
+                role: 'assistant',
+                content: bondingResult.response?.cards?.[0]?.content || 'I hear you! 💙',
+                timestamp: new Date().toISOString(),
+              };
+              setChatMessages(prev => [...prev, avatarMessage]);
+            }
+          } catch (bondingError) {
+            console.error('Bonding API error:', bondingError);
+            // Fall back to regular response
+            const avatarMessage = {
+              role: 'assistant',
+              content: response.avatar_response,
+              timestamp: new Date().toISOString(),
+            };
+            setChatMessages(prev => [...prev, avatarMessage]);
+          }
+        } else {
+          // Regular mission/workflow response
+          const avatarMessage = {
+            role: 'assistant',
+            content: response.avatar_response,
+            timestamp: new Date().toISOString(),
+          };
+          setChatMessages(prev => [...prev, avatarMessage]);
+          
+          // Clear bonding response when switching to missions
+          setBondingResponse(null);
+        }
+        
         setLastAction(message);
         
         // Handle mission creation
@@ -477,6 +520,25 @@ const Missions = ({ user, setUser }) => {
                     ))
                   )}
                   <div ref={chatEndRef} />
+                  
+                  {/* Bonding Response */}
+                  {bondingResponse && (
+                    <BondingResponse 
+                      response={bondingResponse}
+                      onFeedback={async (feedback) => {
+                        try {
+                          await workflowService.bonding.submitFeedback(
+                            feedback.session_id,
+                            feedback.rating,
+                            feedback.helpful
+                          );
+                          toast.success('Thanks for your feedback!');
+                        } catch (error) {
+                          console.error('Failed to submit feedback:', error);
+                        }
+                      }}
+                    />
+                  )}
                 </div>
               </div>
               

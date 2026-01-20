@@ -75,7 +75,12 @@ def create_workflow_app() -> FastAPI:
     from domain.workflow.router import router as workflow_router
     app.include_router(workflow_router)
     
+    # Import and include bonding router
+    from domain.workflow.bonding_routes import router as bonding_router
+    app.include_router(bonding_router)
+    
     logger.info(f"✅ Workflow router registered with {len(workflow_router.routes)} routes")
+    logger.info(f"✅ Bonding router registered with {len(bonding_router.routes)} routes")
     
     # Health check endpoint
     @app.get("/health")

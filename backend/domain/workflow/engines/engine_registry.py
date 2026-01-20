@@ -99,3 +99,11 @@ class WorkflowEngineRegistry:
 WorkflowEngineRegistry.register_engine(MatchFindingEngine)
 WorkflowEngineRegistry.register_engine(MarketingCampaignEngine)
 
+# Lazy import to avoid circular dependency
+def register_bonding_engine():
+    """Register bonding engine (lazy to avoid circular imports)"""
+    from .bonding_engine import BondingWorkflowEngine
+    WorkflowEngineRegistry.register_engine(BondingWorkflowEngine)
+
+# Register bonding engine
+register_bonding_engine()

@@ -127,12 +127,21 @@ export class BackendStack extends cdk.Stack {
     );
     openaiApiKeySecret.grantRead(backendFunction);
 
+    // SMTP Email Configuration Secret (for sending admin notifications)
+    const smtpSecret = secretsmanager.Secret.fromSecretNameV2(
+      this,
+      'SMTPSecret',
+      '2n1/smtp/credentials'
+    );
+    smtpSecret.grantRead(backendFunction);
+
     // Add secrets to Lambda environment (will be fetched at runtime)
     // Note: AWS_REGION is automatically set by Lambda runtime, don't set it manually
     backendFunction.addEnvironment('MONGODB_SECRET_NAME', mongodbSecret.secretName);
     backendFunction.addEnvironment('GOOGLE_CLIENT_ID_SECRET_NAME', googleClientIdSecret.secretName);
     backendFunction.addEnvironment('GOOGLE_CLIENT_SECRET_SECRET_NAME', googleClientSecretSecret.secretName);
     backendFunction.addEnvironment('OPENAI_SECRET_NAME', openaiApiKeySecret.secretName);
+    backendFunction.addEnvironment('SMTP_SECRET_NAME', smtpSecret.secretName);
     backendFunction.addEnvironment('OPENAI_MODEL', 'gpt-5-nano-2025-08-07');
     backendFunction.addEnvironment('CDK_DEPLOY_TIME', new Date().toISOString());
 

@@ -12,6 +12,7 @@ class MissionType(str, Enum):
     NETWORKING = "networking"
     SALES_LEADS = "sales_leads"
     MARKETING_CAMPAIGN = "marketing_campaign"
+    BONDING = "bonding"               # Relationship deepening conversations
     JOB_FINDER = "job_finder"
     MARKET_RESEARCH = "market_research"
     CONTENT_DISCOVERY = "content_discovery"
@@ -82,4 +83,69 @@ class AgentType(str, Enum):
     ENGAGEMENT = "engagement"
     ANALYSIS = "analysis"
     MEMORY = "memory"
+
+
+# ============================================================================
+# BONDING WORKFLOW ENUMS
+# ============================================================================
+
+class UserIntent(str, Enum):
+    """User's intent in bonding conversations"""
+    CHECK_IN = "check_in"                 # "How's it going?" - casual status check
+    VENTING = "venting"                   # "I'm so frustrated with..." - emotional release
+    PLANNING = "planning"                 # "I want to achieve..." - goal setting
+    REFLECTION = "reflection"             # "Looking back on..." - retrospective thinking
+    SEEKING_ADVICE = "seeking_advice"     # "What should I do about..." - guidance request
+    CELEBRATION = "celebration"           # "I did it!" - sharing success
+    EXPLORATION = "exploration"           # "I'm curious about..." - discovery mode
+    GENERAL_CHAT = "general_chat"         # Casual conversation
+
+
+class UserMood(str, Enum):
+    """Estimated user mood from conversation"""
+    STRESSED = "stressed"                 # High pressure, overwhelmed
+    EXCITED = "excited"                   # High energy, positive
+    BORED = "bored"                       # Low energy, looking for stimulation
+    REFLECTIVE = "reflective"             # Thoughtful, contemplative
+    FRUSTRATED = "frustrated"             # Blocked, annoyed
+    CONTENT = "content"                   # Satisfied, peaceful
+    NEUTRAL = "neutral"                   # Default state
+
+
+class BondingMode(str, Enum):
+    """How the avatar should respond in bonding conversations"""
+    CHECK_IN = "check_in"                 # Warm presence + curated recap
+    COACH = "coach"                       # Guidance + reflection prompts
+    PLAY = "play"                         # Fun + serendipity
+    DEEP_TALK = "deep_talk"               # Reflection + identity exploration
+    PLANNING = "planning"                 # Goal setting + micro-missions
+    CELEBRATION = "celebration"           # Acknowledge wins + growth
+
+
+class UserEmotion(str, Enum):
+    """Specific emotional states detected"""
+    HAPPY = "happy"
+    SAD = "sad"
+    ANGRY = "angry"
+    ANXIOUS = "anxious"
+    CALM = "calm"
+    CONFUSED = "confused"
+    CONFIDENT = "confident"
+    DISAPPOINTED = "disappointed"
+    GRATEFUL = "grateful"
+    CURIOUS = "curious"
+    OVERWHELMED = "overwhelmed"
+    RELIEVED = "relieved"
+
+
+class BondingCardType(str, Enum):
+    """Types of cards in a bonding response"""
+    WARM_PRESENCE = "warm_presence"       # Opening acknowledgment
+    RECAP = "recap"                       # Avatar activity summary
+    SERENDIPITY = "serendipity"           # Surprising discovery
+    REFLECTION = "reflection"             # Deeper insight
+    GROWTH = "growth"                     # Avatar learning/skill
+    GUIDANCE = "guidance"                 # Avatar asking for direction
+    MICRO_MISSION = "micro_mission"       # Small task proposal
+    CELEBRATION = "celebration"           # Acknowledge user win
 

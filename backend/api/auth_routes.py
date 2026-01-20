@@ -98,6 +98,17 @@ async def create_or_get_user(email: str, name: str, picture: str = None) -> str:
                 await graph_builder.build_graph_from_profile(user_doc)
         except Exception as e:
             logger.error(f"Initial graph build error: {str(e)}")
+        
+        # Initialize state-aware agent (8 layers of autonomous behavior)
+        try:
+            from domain.avatar.initialization import initialize_state_aware_agent
+            success = await initialize_state_aware_agent(db, user_id, name, email)
+            if success:
+                logger.info(f"✅ State-aware agent initialized for new user: {email}")
+            else:
+                logger.warning(f"⚠️  State-aware agent initialization failed for: {email}")
+        except Exception as e:
+            logger.error(f"State-aware agent initialization error: {str(e)}")
     else:
         user_id = existing_user['id']
         # Only update user picture if:
