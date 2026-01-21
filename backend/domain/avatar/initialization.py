@@ -224,6 +224,7 @@ async def initialize_state_aware_agent(db, user_id: str, user_name: str = None, 
             'read_messages',
             'send_friend_requests',
             'accept_friend_requests',
+            'browse_feed',  # NEW: Browse feed tool
             'get_friend_activities',  # NEW: State-aware friend tracking
             'get_trending_topics'  # NEW: State-aware news/world awareness
         ]
@@ -239,8 +240,10 @@ async def initialize_state_aware_agent(db, user_id: str, user_name: str = None, 
             'read_messages': True,
             'send_friend_requests': True,
             'accept_friend_requests': True,
+            'browse_feed': True,  # NEW: Browse feed
             'get_friend_activities': True,  # NEW: State-aware
-            'get_trending_topics': True  # NEW: State-aware
+            'get_trending_topics': True,  # NEW: State-aware
+            'share_posts': False  # NEW: Not implemented yet
         }
         
         # Also set top-level archetype and interests for compatibility
