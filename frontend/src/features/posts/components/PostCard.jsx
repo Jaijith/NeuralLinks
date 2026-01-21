@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
  * @property {function} [onShare] - Handler for share action
  * @property {function} [onUserClick] - Handler when user clicks on post author
  * @property {function} [onMoreClick] - Handler for more options
+ * @property {function} [onDelete] - Handler for deleting a post
  * @property {Array} [comments] - Array of comments
  * @property {function} [onAddComment] - Handler for adding a comment
  * @property {boolean} [showComments] - Whether to show comments section
@@ -42,6 +43,7 @@ const PostCard = memo(({
   onShare,
   onUserClick,
   onMoreClick,
+  onDelete,
   comments = [],
   onAddComment,
   showComments = false,
@@ -71,7 +73,10 @@ const PostCard = memo(({
         post={post}
         user={post.user}
         worldMode={worldMode}
+        currentUser={currentUser}
+        onUserClick={onUserClick}
         onMoreClick={onMoreClick}
+        onDelete={onDelete}
       />
 
       <PostContent post={post} />

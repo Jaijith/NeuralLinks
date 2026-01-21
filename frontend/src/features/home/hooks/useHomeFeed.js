@@ -136,6 +136,10 @@ const useHomeFeed = (worldMode = 'real', currentUser) => {
     setPosts(prev => [enrichedPost, ...prev]);
   }, [currentUser, worldMode]);
 
+  const removePost = useCallback((postId) => {
+    setPosts(prev => prev.filter(p => p.id !== postId));
+  }, []);
+
   return {
     posts,
     friends,
@@ -146,6 +150,7 @@ const useHomeFeed = (worldMode = 'real', currentUser) => {
     loadMore,
     refresh,
     addPost,
+    removePost,
     refetch: refresh
   };
 };

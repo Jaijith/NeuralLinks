@@ -14,13 +14,14 @@ import {
   Camera, MapPin, Briefcase, Heart, Users, MessageCircle, 
   Settings as SettingsIcon, Bot, User as UserIcon, Edit2, 
   X, Plus, Send, ThumbsUp, Trash2, MoreHorizontal, Palette,
-  FileText, Hand, Eye, Share2
+  FileText, Hand, Eye, Share2, Lock, Globe, UserCheck
 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import AppHeader from "@/components/AppHeader";
 import SideMessenger from "@/components/SideMessenger";
+import ProfilePictureCropper from "@/components/common/ProfilePictureCropper";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -171,6 +172,12 @@ const ProfilePageFull = ({ user: currentUser }) => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingProfilePicture, setUploadingProfilePicture] = useState(false);
   const [uploadingCoverPhoto, setUploadingCoverPhoto] = useState(false);
+  
+  // Image cropper states
+  const [profilePictureToCrop, setProfilePictureToCrop] = useState(null);
+  const [showProfilePictureCropper, setShowProfilePictureCropper] = useState(false);
+  const [coverPhotoToCrop, setCoverPhotoToCrop] = useState(null);
+  const [showCoverPhotoCropper, setShowCoverPhotoCropper] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
   const [editedPostText, setEditedPostText] = useState('');
   const [viewMode, setViewMode] = useState('single'); // 'single' or 'both'
@@ -188,6 +195,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
   const [showingCommentsFor, setShowingCommentsFor] = useState(null); // Post ID for showing comments
   const [commentsData, setCommentsData] = useState({}); // Comments by post ID
   const [commentText, setCommentText] = useState({}); // Comment input by post ID
+  const [profileError, setProfileError] = useState(null); // Error message when profile fails to load
   
   // Real Profile Edit
   const [showEditRealProfile, setShowEditRealProfile] = useState(false);
@@ -195,7 +203,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
     location: '',
     job_title: '',
     bio: '',
-    interests: []
+    interests: [],
+    profile_privacy: 'everyone' // everyone, friends, private
   });
   
   // Avatar Profile Edit
@@ -235,13 +244,15 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
   const fetchProfile = async (id) => {
     try {
+      setProfileError(null); // Clear any previous errors
       if (id === currentUser.id) {
         setProfileUser(currentUser);
         setEditRealProfileData({
           location: currentUser.location || '',
           job_title: currentUser.job_title || '',
           bio: currentUser.bio || '',
-          interests: currentUser.interests || []
+          interests: currentUser.interests || [],
+          profile_privacy: currentUser.profile_privacy || 'everyone'
         });
         setEditAvatarProfileData({
           name: currentUser.avatar_name || '',
@@ -273,7 +284,10 @@ const ProfilePageFull = ({ user: currentUser }) => {
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
-      toast.error("Profile not found");
+      // Display the actual error message from the backend (e.g., "Profile is in private mode")
+      const errorMessage = error.response?.data?.detail || "Profile not found";
+      setProfileError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -377,10 +391,20 @@ const ProfilePageFull = ({ user: currentUser }) => {
       return;
     }
 
+    // Show cropper instead of directly uploading
+    const imageUrl = URL.createObjectURL(file);
+    setProfilePictureToCrop(imageUrl);
+    setShowProfilePictureCropper(true);
+    
+    // Reset file input
+    e.target.value = '';
+  };
+
+  const handleProfilePictureCropComplete = async (croppedImageBlob) => {
     setUploadingProfilePicture(true);
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', croppedImageBlob, 'profile-picture.jpg');
       formData.append('world_mode', worldMode === 'avatar' ? 'avatar' : 'real');
 
       const response = await axios.post(`${API}/profile/upload-picture`, formData, {
@@ -390,11 +414,26 @@ const ProfilePageFull = ({ user: currentUser }) => {
         },
       });
 
+      const newImageUrl = response.data.image_url;
+      
+      // Immediately update the profile user state with new image
+      if (worldMode === 'avatar') {
+        setProfileUser(prev => ({
+          ...prev,
+          avatar_picture: newImageUrl
+        }));
+      } else {
+        setProfileUser(prev => ({
+          ...prev,
+          picture: newImageUrl
+        }));
+      }
+
       toast.success(worldMode === 'avatar' ? "Maya profile picture updated!" : "Profile picture updated!");
       
-      // Refresh profile to get updated data
-      const targetUserId = userId || currentUser.id;
-      await fetchProfile(targetUserId);
+      // Clean up
+      URL.revokeObjectURL(profilePictureToCrop);
+      setProfilePictureToCrop(null);
     } catch (error) {
       console.error("Error uploading profile picture:", error);
       toast.error("Failed to upload profile picture");
@@ -412,10 +451,20 @@ const ProfilePageFull = ({ user: currentUser }) => {
       return;
     }
 
+    // Show cropper instead of directly uploading
+    const imageUrl = URL.createObjectURL(file);
+    setCoverPhotoToCrop(imageUrl);
+    setShowCoverPhotoCropper(true);
+    
+    // Reset file input
+    e.target.value = '';
+  };
+
+  const handleCoverPhotoCropComplete = async (croppedImageBlob) => {
     setUploadingCoverPhoto(true);
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', croppedImageBlob, 'cover-photo.jpg');
       formData.append('world_mode', worldMode === 'avatar' ? 'avatar' : 'real');
 
       const response = await axios.post(`${API}/profile/upload-cover`, formData, {
@@ -425,11 +474,26 @@ const ProfilePageFull = ({ user: currentUser }) => {
         },
       });
 
+      const newImageUrl = response.data.image_url;
+      
+      // Immediately update the profile user state with new image
+      if (worldMode === 'avatar') {
+        setProfileUser(prev => ({
+          ...prev,
+          avatar_cover_photo: newImageUrl
+        }));
+      } else {
+        setProfileUser(prev => ({
+          ...prev,
+          cover_photo: newImageUrl
+        }));
+      }
+
       toast.success(worldMode === 'avatar' ? "Maya cover photo updated!" : "Cover photo updated!");
       
-      // Refresh profile to get updated data
-      const targetUserId = userId || currentUser.id;
-      await fetchProfile(targetUserId);
+      // Clean up
+      URL.revokeObjectURL(coverPhotoToCrop);
+      setCoverPhotoToCrop(null);
     } catch (error) {
       console.error("Error uploading cover photo:", error);
       toast.error("Failed to upload cover photo");
@@ -623,11 +687,11 @@ const ProfilePageFull = ({ user: currentUser }) => {
       await axios.put(`${API}/profile`, editRealProfileData, {
         withCredentials: true,
       });
+      // Update local state immediately
       setProfileUser({ ...profileUser, ...editRealProfileData });
       setShowEditRealProfile(false);
       toast.success("Sense profile updated!");
-      // Refresh
-      window.location.reload();
+      // No need to reload - graph enrichment happens in background
     } catch (error) {
       toast.error("Failed to update profile");
     }
@@ -640,8 +704,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
       });
       setShowEditAvatarProfile(false);
       toast.success("Maya profile updated!");
-      // Refresh
-      window.location.reload();
+      // No need to reload - updates are instant
     } catch (error) {
       toast.error("Failed to update maya profile");
     }
@@ -679,7 +742,10 @@ const ProfilePageFull = ({ user: currentUser }) => {
   if (!profileUser) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <p className="text-gray-600">Profile not found</p>
+        <div className="text-center">
+          <Lock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-600 text-lg">{profileError || "Profile not found"}</p>
+        </div>
       </div>
     );
   }
@@ -901,6 +967,48 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                   placeholder="Your location"
                                 />
                               </div>
+                              
+                              {/* Privacy Settings */}
+                              <div className="border-t pt-4">
+                                <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+                                  <Lock className="w-4 h-4" />
+                                  Who can see your profile?
+                                </label>
+                                <Select 
+                                  value={editRealProfileData.profile_privacy}
+                                  onValueChange={(value) => setEditRealProfileData({...editRealProfileData, profile_privacy: value})}
+                                >
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select privacy setting" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="everyone">
+                                      <div className="flex items-center gap-2">
+                                        <Globe className="w-4 h-4" />
+                                        <span>Everyone</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="friends">
+                                      <div className="flex items-center gap-2">
+                                        <UserCheck className="w-4 h-4" />
+                                        <span>Friends Only</span>
+                                      </div>
+                                    </SelectItem>
+                                    <SelectItem value="private">
+                                      <div className="flex items-center gap-2">
+                                        <Lock className="w-4 h-4" />
+                                        <span>Only Me (Private)</span>
+                                      </div>
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <p className="text-xs text-gray-500 mt-2">
+                                  {editRealProfileData.profile_privacy === 'everyone' && "Anyone can view your profile"}
+                                  {editRealProfileData.profile_privacy === 'friends' && "Only your friends can view your profile"}
+                                  {editRealProfileData.profile_privacy === 'private' && "Your profile is hidden from everyone"}
+                                </p>
+                              </div>
+                              
                               <Button onClick={updateRealProfile} className="w-full">
                                 Save Sense Profile
                               </Button>
@@ -1045,6 +1153,10 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                       { key: 'accept_friend_requests', label: 'Accept Friend Requests', icon: '✅', desc: 'Accept incoming friend requests' },
                                       { key: 'message_friends', label: 'Message Friends', icon: '💌', desc: 'Send messages to friends' },
                                       { key: 'discover_profiles', label: 'Discover Profiles', icon: '🔍', desc: 'Browse and view other profiles' },
+                                      { key: 'read_messages', label: 'Read Messages', icon: '📬', desc: 'Read and mark messages as read' },
+                                      { key: 'browse_feed', label: 'Browse Feed', icon: '📰', desc: 'Browse posts from friends and network' },
+                                      { key: 'get_friend_activities', label: 'Track Friend Activities', icon: '👫', desc: 'Get updates on friend posts (state-aware)' },
+                                      { key: 'get_trending_topics', label: 'Follow Trending Topics', icon: '🌍', desc: 'Get news and trending topics (state-aware)' },
                                       { key: 'share_posts', label: 'Share Posts', icon: '📤', desc: 'Share posts (coming soon)' }
                                     ].map((action) => (
                                       <div key={action.key} className="flex items-center justify-between p-3 rounded-lg border bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -1137,8 +1249,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
               </div>
             </div>
 
-            {/* Navigation Tabs */}
-            <div className="border-t border-gray-200 px-8">
+            {/* Navigation Tabs - Hidden for now */}
+            <div className="border-t border-gray-200 px-8" style={{ display: 'none' }}>
               <Tabs defaultValue="posts" className="w-full">
                 <TabsList className="bg-transparent border-none h-auto p-0 space-x-2">
                   <TabsTrigger
@@ -1314,6 +1426,48 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                 onChange={(e) => setEditRealProfileData({...editRealProfileData, location: e.target.value})}
                               />
                             </div>
+                            
+                            {/* Privacy Settings */}
+                            <div className="border-t pt-4">
+                              <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+                                <Lock className="w-4 h-4" />
+                                Who can see your profile?
+                              </label>
+                              <Select 
+                                value={editRealProfileData.profile_privacy}
+                                onValueChange={(value) => setEditRealProfileData({...editRealProfileData, profile_privacy: value})}
+                              >
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Select privacy setting" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="everyone">
+                                    <div className="flex items-center gap-2">
+                                      <Globe className="w-4 h-4" />
+                                      <span>Everyone</span>
+                                    </div>
+                                  </SelectItem>
+                                  <SelectItem value="friends">
+                                    <div className="flex items-center gap-2">
+                                      <UserCheck className="w-4 h-4" />
+                                      <span>Friends Only</span>
+                                    </div>
+                                  </SelectItem>
+                                  <SelectItem value="private">
+                                    <div className="flex items-center gap-2">
+                                      <Lock className="w-4 h-4" />
+                                      <span>Only Me (Private)</span>
+                                    </div>
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <p className="text-xs text-gray-500 mt-2">
+                                {editRealProfileData.profile_privacy === 'everyone' && "Anyone can view your profile"}
+                                {editRealProfileData.profile_privacy === 'friends' && "Only your friends can view your profile"}
+                                {editRealProfileData.profile_privacy === 'private' && "Your profile is hidden from everyone"}
+                              </p>
+                            </div>
+                            
                             <Button onClick={updateRealProfile} className="w-full">Save</Button>
                           </div>
                         </DialogContent>
@@ -1333,7 +1487,10 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   {/* Sense Posts */}
                   <h4 className="font-semibold text-gray-700">Sense Posts</h4>
                   {profileUser.posts && Array.isArray(profileUser.posts) && profileUser.posts.length > 0 ? (
-                    profileUser.posts.slice(0, 3).map((post) => {
+                    profileUser.posts
+                      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                      .slice(0, 3)
+                      .map((post) => {
                       // Ensure post is a valid object and extract only safe fields
                       if (!post || typeof post !== 'object') return null;
                       const { comments, ...safePost } = post;
@@ -1482,6 +1639,10 @@ const ProfilePageFull = ({ user: currentUser }) => {
                                     { key: 'accept_friend_requests', label: 'Accept Friend Requests', icon: '✅', desc: 'Accept incoming friend requests' },
                                     { key: 'message_friends', label: 'Message Friends', icon: '💌', desc: 'Send messages to friends' },
                                     { key: 'discover_profiles', label: 'Discover Profiles', icon: '🔍', desc: 'Browse and view other profiles' },
+                                    { key: 'read_messages', label: 'Read Messages', icon: '📬', desc: 'Read and mark messages as read' },
+                                    { key: 'browse_feed', label: 'Browse Feed', icon: '📰', desc: 'Browse posts from friends and network' },
+                                    { key: 'get_friend_activities', label: 'Track Friend Activities', icon: '👫', desc: 'Get updates on friend posts (state-aware)' },
+                                    { key: 'get_trending_topics', label: 'Follow Trending Topics', icon: '🌍', desc: 'Get news and trending topics (state-aware)' },
                                     { key: 'share_posts', label: 'Share Posts', icon: '📤', desc: 'Share posts (coming soon)' }
                                   ].map((action) => (
                                     <div key={action.key} className="flex items-center justify-between p-3 rounded-lg border bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -1549,7 +1710,10 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   {/* Maya Posts */}
                   <h4 className="font-semibold text-gray-700">Maya Posts</h4>
                   {profileUser.avatar_posts && Array.isArray(profileUser.avatar_posts) && profileUser.avatar_posts.length > 0 ? (
-                    profileUser.avatar_posts.slice(0, 3).map((post) => {
+                    profileUser.avatar_posts
+                      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                      .slice(0, 3)
+                      .map((post) => {
                       // Ensure post is a valid object and extract only safe fields
                       if (!post || typeof post !== 'object') return null;
                       const { comments, ...safePost } = post;
@@ -1925,6 +2089,40 @@ const ProfilePageFull = ({ user: currentUser }) => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Profile Picture Cropper */}
+      <ProfilePictureCropper
+        open={showProfilePictureCropper}
+        onOpenChange={(open) => {
+          setShowProfilePictureCropper(open);
+          if (!open && profilePictureToCrop) {
+            URL.revokeObjectURL(profilePictureToCrop);
+            setProfilePictureToCrop(null);
+          }
+        }}
+        imageSrc={profilePictureToCrop}
+        onCropComplete={handleProfilePictureCropComplete}
+        aspectRatio={1}
+        cropShape="round"
+        title={worldMode === 'avatar' ? 'Edit Maya Profile Picture' : 'Edit Profile Picture'}
+      />
+
+      {/* Cover Photo Cropper */}
+      <ProfilePictureCropper
+        open={showCoverPhotoCropper}
+        onOpenChange={(open) => {
+          setShowCoverPhotoCropper(open);
+          if (!open && coverPhotoToCrop) {
+            URL.revokeObjectURL(coverPhotoToCrop);
+            setCoverPhotoToCrop(null);
+          }
+        }}
+        imageSrc={coverPhotoToCrop}
+        onCropComplete={handleCoverPhotoCropComplete}
+        aspectRatio={16 / 9}
+        cropShape="rect"
+        title={worldMode === 'avatar' ? 'Edit Maya Cover Photo' : 'Edit Cover Photo'}
+      />
     </div>
   );
 };

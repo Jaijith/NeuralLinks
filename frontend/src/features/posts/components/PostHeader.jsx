@@ -3,20 +3,31 @@
  * Header section of a post with user info and timestamp
  */
 
-import { Clock, Globe, MoreHorizontal, Bot } from 'lucide-react';
+import { Clock, Globe, MoreHorizontal, Bot, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import UserAvatar from '@/components/common/UserAvatar';
 import { formatTimeAgo } from '@/utils/dateUtils';
 import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PostHeader = memo(({ 
   post, 
   user,
   worldMode = 'real',
+  currentUser,
+  onUserClick,
   onMoreClick,
+  onDelete,
   className = ''
 }) => {
+  const navigate = useNavigate();
   const displayName = worldMode === 'avatar'
     ? (post.author_avatar_name || post.user?.avatar_name || post.user?.name || 'Unknown')
     : (post.author_name || post.user?.name || 'Unknown');
@@ -26,6 +37,17 @@ const PostHeader = memo(({
     : (post.author_picture || post.user?.picture);
 
   const isBot = post.isBot || post.author_is_bot || post.user?.is_bot;
+  
+  const userId = post.user_id || post.user?.id;
+
+  const handleUserClick = (e) => {
+    e.stopPropagation();
+    if (onUserClick) {
+      onUserClick(userId);
+    } else if (userId) {
+      navigate(`/profile/${userId}`);
+    }
+  };
 
   return (
     <div className={`p-4 pb-2 ${className}`}>
@@ -45,7 +67,10 @@ const PostHeader = memo(({
           />
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-semibold cursor-pointer hover:underline text-gray-900">
+              <span 
+                className="font-semibold cursor-pointer hover:underline text-gray-900"
+                onClick={handleUserClick}
+              >
                 {displayName}
               </span>
               {isBot && (
@@ -63,16 +88,28 @@ const PostHeader = memo(({
             </div>
           </div>
         </div>
-        {onMoreClick && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="rounded-full p-1 h-8 w-8 hover:bg-gray-100 text-gray-600"
-            onClick={onMoreClick}
-            aria-label="More options"
-          >
-            <MoreHorizontal className="w-5 h-5" />
-          </Button>
+        {currentUser && currentUser.id === userId && onDelete && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full p-1 h-8 w-8 hover:bg-gray-100 text-gray-600"
+                aria-label="More options"
+              >
+                <MoreHorizontal className="w-5 h-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem
+                onClick={() => onDelete(post.id)}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer focus:text-red-700 focus:bg-red-50"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete Post
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </div>
     </div>

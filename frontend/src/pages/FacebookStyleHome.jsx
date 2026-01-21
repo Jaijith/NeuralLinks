@@ -5,8 +5,9 @@ import { PageContainer } from "@/components/layout";
 import { LoadingSpinner } from "@/components/common";
 import { CreatePostCard, CreatePostDialog } from "@/features/posts/components";
 import { HomeSidebar, HomeRightSidebar, PostsFeed, useHomeFeed, usePostInteractions, useCreatePost } from "@/features/home";
-import { friendService } from "@/services/api";
+import { friendService, postService } from "@/services/api";
 import { Sparkles } from "lucide-react";
+import { toast } from "sonner";
 
 // Custom CSS styles for the page - Light theme for avatar world
 const customStyles = `
@@ -65,7 +66,8 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     loadingMore,
     hasMore,
     loadMore,
-    addPost
+    addPost,
+    removePost
   } = useHomeFeed(worldMode, currentUser);
 
   const {
@@ -101,6 +103,19 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
       updateLikedPosts([...Array.from(likedPosts), newPost.id]);
     }
   });
+
+  // Handle delete post
+  const handleDeletePost = async (postId) => {
+    try {
+      await postService.deletePost(postId);
+      // Remove post from local state
+      removePost(postId);
+      toast.success("Post deleted successfully");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      toast.error("Failed to delete post");
+    }
+  };
 
   // Update liked posts when posts change
   useEffect(() => {
@@ -197,6 +212,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                 onShowLikes={showLikes}
                 onShowComments={showComments}
                 onAddComment={handleAddComment}
+                onDelete={handleDeletePost}
                 commentsData={commentsData}
                 showingCommentsFor={showingCommentsFor}
                 showingLikesFor={showingLikesFor}

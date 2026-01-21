@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,31 @@ const API = `${BACKEND_URL}/api`;
 const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
   const navigate = useNavigate();
   const { worldMode } = useWorldMode();
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
+
+  // Fetch pending friend requests count
+  useEffect(() => {
+    const fetchPendingRequests = async () => {
+      try {
+        const response = await axios.get(`${API}/friends/requests`, {
+          withCredentials: true,
+        });
+        // The API already filters for pending requests only
+        const pendingCount = Array.isArray(response.data) ? response.data.length : 0;
+        setPendingRequestsCount(pendingCount);
+      } catch (error) {
+        console.error('Error fetching friend requests:', error);
+      }
+    };
+
+    // Fetch immediately
+    fetchPendingRequests();
+
+    // Poll every 30 seconds for new requests
+    const interval = setInterval(fetchPendingRequests, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -121,7 +146,7 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                   navigate('/friends');
                 }
               }}
-              className={`px-8 py-2 rounded-lg ${
+              className={`px-8 py-2 rounded-lg relative ${
                 currentPage === 'friends'
                   ? worldMode === 'avatar'
                     ? 'border-b-4 border-blue-400'
@@ -130,6 +155,15 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
               }`}
             >
               <Users className={`w-6 h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
+              {pendingRequestsCount > 0 && (
+                <span className={`absolute top-1 right-1 flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold text-white rounded-full ${
+                  worldMode === 'avatar' 
+                    ? 'bg-blue-500 border-2 border-slate-900' 
+                    : 'bg-red-500 border-2 border-white'
+                }`}>
+                  {pendingRequestsCount > 99 ? '99+' : pendingRequestsCount}
+                </span>
+              )}
             </Button>
             <Button
               variant="ghost"
