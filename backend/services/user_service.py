@@ -9,6 +9,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from core.database import get_database
 from domain.graph.builder import GraphBuilder
 import logging
+import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -64,16 +65,21 @@ class UserService:
             {"$set": real_fields}
         )
         
-        # Rebuild/update knowledge graph from updated profile
+        # Rebuild/update knowledge graph from updated profile in background
         if self.graph_builder:
-            try:
-                user_doc = await self.db.users.find_one({"id": user_id})
-                if user_doc:
-                    await self.graph_builder.build_graph_from_profile(user_doc)
-            except Exception as e:
-                logger.error(f"Graph update error: {str(e)}")
+            asyncio.create_task(self._update_profile_graph_background(user_id))
         
         return {"message": "Profile updated"}
+    
+    async def _update_profile_graph_background(self, user_id: str):
+        """Background task to update knowledge graph from profile"""
+        try:
+            user_doc = await self.db.users.find_one({"id": user_id})
+            if user_doc:
+                await self.graph_builder.build_graph_from_profile(user_doc)
+                logger.info(f"Background graph update completed for user {user_id}")
+        except Exception as e:
+            logger.error(f"Background graph update error for user {user_id}: {str(e)}")
     
     async def update_avatar_profile(self, user_id: str, avatar_data: Dict[str, Any]) -> Dict[str, Any]:
         """Update user's avatar profile"""

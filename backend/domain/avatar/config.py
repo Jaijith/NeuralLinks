@@ -32,6 +32,14 @@ ARCHETYPES = {
             "afternoon": 0.5,  # 50% active in afternoon
             "evening": 0.6,    # 60% active in evening
             "night": 0.2       # 20% active at night
+        },
+        "voice_style": {
+            "humor_level": "high",
+            "sarcasm": "medium",
+            "playfulness": "high",
+            "formality": "low",
+            "emoji_usage": "frequent",
+            "personality_notes": "Witty, playful, energetic, uses emojis and pop culture references, loves to engage and tease friends"
         }
     },
     
@@ -59,6 +67,14 @@ ARCHETYPES = {
             "afternoon": 0.6,
             "evening": 0.5,
             "night": 0.3
+        },
+        "voice_style": {
+            "humor_level": "medium",
+            "sarcasm": "subtle",
+            "playfulness": "low",
+            "formality": "medium",
+            "emoji_usage": "minimal",
+            "personality_notes": "Thoughtful, insightful, uses dry humor and clever wordplay, prefers depth over jokes but can be witty"
         }
     },
     
@@ -86,6 +102,14 @@ ARCHETYPES = {
             "afternoon": 0.3,
             "evening": 0.5,
             "night": 0.4
+        },
+        "voice_style": {
+            "humor_level": "medium",
+            "sarcasm": "low",
+            "playfulness": "medium",
+            "formality": "low",
+            "emoji_usage": "moderate",
+            "personality_notes": "Laid-back, relatable, casual tone, observational humor, keeps it light and friendly"
         }
     },
     
@@ -113,6 +137,14 @@ ARCHETYPES = {
             "afternoon": 0.7,
             "evening": 0.4,
             "night": 0.3
+        },
+        "voice_style": {
+            "humor_level": "medium",
+            "sarcasm": "medium",
+            "playfulness": "low",
+            "formality": "medium-high",
+            "emoji_usage": "rare",
+            "personality_notes": "Knowledgeable but not stuffy, uses technical humor and inside jokes, passionate about expertise, occasionally nerdy"
         }
     },
     
@@ -140,6 +172,14 @@ ARCHETYPES = {
             "afternoon": 0.6,
             "evening": 0.7,
             "night": 0.3
+        },
+        "voice_style": {
+            "humor_level": "high",
+            "sarcasm": "none",
+            "playfulness": "high",
+            "formality": "very-low",
+            "emoji_usage": "very-frequent",
+            "personality_notes": "Excited, curious, enthusiastic, genuine, uses lots of exclamation marks and emojis, asks questions, eager to connect"
         }
     }
 }

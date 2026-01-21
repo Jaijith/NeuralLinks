@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from domain.graph.builder import GraphBuilder
 import logging
+import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -64,15 +65,25 @@ class PostService:
             )
         
         # Enrich knowledge graph from post content (for real posts only)
+        # Run in background to avoid blocking the response
         if post_type == 'real' and post_text and self.graph_builder:
-            try:
-                await self.graph_builder.enrich_graph_from_post(post_text, user_id)
-            except Exception as e:
-                logger.error(f"Graph enrichment error: {str(e)}")
+            asyncio.create_task(self._enrich_graph_background(post_text, user_id))
+            logger.info(f"Started background graph enrichment for post {post_id}")
         
         # Remove _id for response
         new_post.pop('_id', None)
         return new_post
+    
+    async def _enrich_graph_background(self, post_text: str, user_id: str):
+        """
+        Background task to enrich knowledge graph from post content.
+        This runs asynchronously without blocking the post creation response.
+        """
+        try:
+            await self.graph_builder.enrich_graph_from_post(post_text, user_id)
+            logger.info(f"Background graph enrichment completed for user {user_id}")
+        except Exception as e:
+            logger.error(f"Background graph enrichment error for user {user_id}: {str(e)}")
     
     async def get_user_posts(self, user_id: str, post_type: str = "real", limit: int = 20, skip: int = 0) -> Dict[str, Any]:
         """Get user's posts with pagination"""

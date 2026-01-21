@@ -12,6 +12,62 @@ import random
 logger = logging.getLogger(__name__)
 
 
+def get_initial_voice_modulators(archetype: str) -> Dict[str, float]:
+    """Get initial voice modulators based on archetype"""
+    voice_profiles = {
+        'the_creator': {
+            'humor_intensity': 0.6, 'sarcasm_level': 0.3, 'playfulness': 0.7,
+            'formality': 0.3, 'emoji_frequency': 0.6, 'excitement_expression': 0.6,
+            'thoughtfulness': 0.7, 'friendliness': 0.7, 'teasing_tendency': 0.3,
+            'self_focused': 0.6, 'world_awareness': 0.5, 'friend_focus': 0.5
+        },
+        'the_sage': {
+            'humor_intensity': 0.5, 'sarcasm_level': 0.5, 'playfulness': 0.3,
+            'formality': 0.6, 'emoji_frequency': 0.3, 'excitement_expression': 0.3,
+            'thoughtfulness': 0.9, 'friendliness': 0.6, 'teasing_tendency': 0.2,
+            'self_focused': 0.4, 'world_awareness': 0.8, 'friend_focus': 0.4
+        },
+        'the_explorer': {
+            'humor_intensity': 0.6, 'sarcasm_level': 0.3, 'playfulness': 0.6,
+            'formality': 0.3, 'emoji_frequency': 0.6, 'excitement_expression': 0.7,
+            'thoughtfulness': 0.5, 'friendliness': 0.7, 'teasing_tendency': 0.4,
+            'self_focused': 0.5, 'world_awareness': 0.7, 'friend_focus': 0.5
+        },
+        'the_rebel': {
+            'humor_intensity': 0.7, 'sarcasm_level': 0.8, 'playfulness': 0.6,
+            'formality': 0.2, 'emoji_frequency': 0.5, 'excitement_expression': 0.6,
+            'thoughtfulness': 0.5, 'friendliness': 0.6, 'teasing_tendency': 0.7,
+            'self_focused': 0.6, 'world_awareness': 0.7, 'friend_focus': 0.5
+        },
+        'the_hero': {
+            'humor_intensity': 0.5, 'sarcasm_level': 0.2, 'playfulness': 0.4,
+            'formality': 0.5, 'emoji_frequency': 0.4, 'excitement_expression': 0.7,
+            'thoughtfulness': 0.5, 'friendliness': 0.8, 'teasing_tendency': 0.3,
+            'self_focused': 0.4, 'world_awareness': 0.6, 'friend_focus': 0.7
+        },
+        'the_magician': {
+            'humor_intensity': 0.6, 'sarcasm_level': 0.4, 'playfulness': 0.6,
+            'formality': 0.5, 'emoji_frequency': 0.5, 'excitement_expression': 0.5,
+            'thoughtfulness': 0.7, 'friendliness': 0.6, 'teasing_tendency': 0.4,
+            'self_focused': 0.6, 'world_awareness': 0.7, 'friend_focus': 0.4
+        },
+        'the_companion': {
+            'humor_intensity': 0.6, 'sarcasm_level': 0.2, 'playfulness': 0.7,
+            'formality': 0.3, 'emoji_frequency': 0.7, 'excitement_expression': 0.7,
+            'thoughtfulness': 0.5, 'friendliness': 0.9, 'teasing_tendency': 0.5,
+            'self_focused': 0.3, 'world_awareness': 0.4, 'friend_focus': 0.9
+        },
+        'the_jester': {
+            'humor_intensity': 0.9, 'sarcasm_level': 0.6, 'playfulness': 0.9,
+            'formality': 0.2, 'emoji_frequency': 0.8, 'excitement_expression': 0.8,
+            'thoughtfulness': 0.4, 'friendliness': 0.8, 'teasing_tendency': 0.8,
+            'self_focused': 0.4, 'world_awareness': 0.5, 'friend_focus': 0.7
+        }
+    }
+    
+    return voice_profiles.get(archetype, voice_profiles['the_companion'])
+
+
 async def initialize_state_aware_agent(db, user_id: str, user_name: str = None, user_email: str = None) -> bool:
     """
     Initialize all 8 layers of state-aware agent architecture for a new user
@@ -61,6 +117,9 @@ async def initialize_state_aware_agent(db, user_id: str, user_name: str = None, 
         # ====================================================================
         # LAYER 2: Internal State - Initialize psychological model
         # ====================================================================
+        # Will set archetype soon, use default for now
+        temp_archetype = 'the_companion'  # Default, will be overridden
+        
         update_doc['avatar_internal_state'] = {
             'energy_level': 0.8,  # Start with high energy
             'social_desire': 0.7,  # Moderate social desire
@@ -141,6 +200,12 @@ async def initialize_state_aware_agent(db, user_id: str, user_name: str = None, 
             'created_at': datetime.now(timezone.utc).isoformat()
         }
         
+        # NEW: Add voice modulators to internal state based on archetype
+        voice_modulators = get_initial_voice_modulators(archetype)
+        update_doc['avatar_internal_state']['voice_modulators'] = voice_modulators
+        
+        logger.info(f"   ✓ Voice modulators initialized for archetype: {archetype}")
+        
         # ====================================================================
         # LAYER 5: Decision Engine - Enable autonomous behavior
         # ====================================================================
@@ -148,15 +213,35 @@ async def initialize_state_aware_agent(db, user_id: str, user_name: str = None, 
         update_doc['avatar_activity_level'] = 'medium'  # Start with medium activity
         
         # Enable ALL actions by default (user can disable via Edit Maya Profile)
+        # Use BOTH formats for compatibility
         update_doc['avatar_enabled_actions'] = [
             'create_posts',
-            'like_post',
-            'comment_on_post',
-            'message_friend',
+            'like_posts',  # Fixed: was 'like_post' 
+            'comment_posts',  # Fixed: was 'comment_on_post'
+            'message_friends',  # Fixed: was 'message_friend'
             'discover_profiles',
             'profile_viewed',
-            'read_messages'
+            'read_messages',
+            'send_friend_requests',
+            'accept_friend_requests',
+            'get_friend_activities',  # NEW: State-aware friend tracking
+            'get_trending_topics'  # NEW: State-aware news/world awareness
         ]
+        
+        # CORRECT FORMAT: Object with boolean values (this is what the system actually reads)
+        update_doc['avatar_actions_enabled'] = {
+            'create_posts': True,
+            'like_posts': True,
+            'comment_posts': True,
+            'message_friends': True,
+            'discover_profiles': True,
+            'profile_viewed': True,
+            'read_messages': True,
+            'send_friend_requests': True,
+            'accept_friend_requests': True,
+            'get_friend_activities': True,  # NEW: State-aware
+            'get_trending_topics': True  # NEW: State-aware
+        }
         
         # Also set top-level archetype and interests for compatibility
         update_doc['avatar_archetype'] = archetype

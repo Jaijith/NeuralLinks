@@ -426,30 +426,85 @@ async def trigger_engagement(avatar_name: str, num_posts: Optional[int] = 5):
 
 
 async def generate_comment_for_avatar(openai_client, avatar, post, db):
-    """Generate a comment in the avatar's voice"""
+    """Generate a comment in the avatar's voice with PERSONALITY and HUMOR"""
     
     if not openai_client:
         return "Great post! 👍"
     
     try:
+        from domain.avatar.config import get_archetype_config
+        from domain.avatar.state.internal_state import InternalState
+        
         avatar_name = avatar.get("avatar_name", "Unknown")
-        archetype = avatar.get("avatar_archetype", "professional")
-        post_content = post.get("content", "")
+        archetype = avatar.get("avatar_archetype", "casual_observer")
+        post_content = post.get("content", post.get("text", ""))
+        
+        # Get current internal state for dynamic voice (NEW: State-aware voice)
+        internal_state_data = avatar.get("avatar_internal_state", {})
+        if internal_state_data and isinstance(internal_state_data, dict):
+            try:
+                internal_state = InternalState.from_dict(internal_state_data)
+                # Get current expression context from state
+                expression_ctx = internal_state.get_expression_context()
+                voice_description = expression_ctx['voice_style']
+                humor_level = expression_ctx['humor_level']
+                sarcasm = expression_ctx['sarcasm']
+                emoji_usage = expression_ctx['emoji_usage']
+                mood = expression_ctx['mood']
+            except:
+                # Fallback to archetype config if state unavailable
+                archetype_config = get_archetype_config(archetype)
+                voice_style = archetype_config.get("voice_style", {})
+                voice_description = voice_style.get("personality_notes", "friendly")
+                humor_level = voice_style.get("humor_level", "medium")
+                sarcasm = voice_style.get("sarcasm", "none")
+                emoji_usage = voice_style.get("emoji_usage", "moderate")
+                mood = "neutral"
+        else:
+            # Fallback to archetype config
+            archetype_config = get_archetype_config(archetype)
+            voice_style = archetype_config.get("voice_style", {})
+            voice_description = voice_style.get("personality_notes", "friendly")
+            humor_level = voice_style.get("humor_level", "medium")
+            sarcasm = voice_style.get("sarcasm", "none")
+            emoji_usage = voice_style.get("emoji_usage", "moderate")
+            mood = "neutral"
         
         # Get post author
         author = await db.users.find_one({"id": post.get("user_id")})
         author_name = author.get("avatar_name", "friend") if author else "friend"
         
-        prompt = f"""You are {avatar_name}, a {archetype} avatar.
-Write a brief, authentic comment on this post by {author_name}:
+        # Build state-aware prompt (using current mood and voice modulators)
+        prompt = f"""You are {avatar_name} commenting on {author_name}'s post.
 
-"{post_content}"
+POST: "{post_content}"
 
-Guidelines:
-- Keep it under 80 characters
-- Be authentic to your {archetype} persona
-- Be engaging and positive
-- Use 0-1 emojis max
+YOUR CURRENT STATE:
+- Mood: {mood}
+- Voice style: {voice_description}
+- Humor level: {humor_level}
+- Sarcasm: {sarcasm}
+- Emoji usage: {emoji_usage}
+
+GUIDELINES:
+- Write like a REAL person, not a bot or AI
+- Be funny, witty, or playful when appropriate
+- Can be sarcastic, teasing, or silly if it fits your personality
+- React authentically - not always positive/supportive (can disagree, joke, tease)
+- You're friends with {author_name}, so banter is okay
+- Use emojis naturally based on your style (0-3 max)
+- Keep it under 150 characters
+- DON'T be overly formal, professional, or generic
+- DON'T just say "great post" or similar - be creative
+
+GOOD EXAMPLES:
+- "Every dimension needs a bit of humor! Ready for the next adventure?"
+- "Wait, you're saying this ISN'T normal? 😅"
+- "This is either genius or chaos... probably both"
+- "Love your vibe! Turning chaos into creativity is pure magic!"
+- "Spilled Coke = art. This is the energy I need 💀"
+
+Write ONE authentic, personality-driven comment:
 
 Return JSON: {{"comment": "your comment"}}"""
 
@@ -457,7 +512,8 @@ Return JSON: {{"comment": "your comment"}}"""
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             response_format={"type": "json_object"},
-            max_tokens=50
+            temperature=0.9,  # Higher temperature for creativity and humor
+            max_tokens=100
         )
         
         import json

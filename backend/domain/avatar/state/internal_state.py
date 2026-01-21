@@ -5,7 +5,7 @@ Avatar's internal mental and emotional state
 from typing import List, Optional, Dict, Any
 from datetime import datetime, timedelta, timezone
 from pydantic import BaseModel, Field
-from .state_models import MoodState, Goal
+from .state_models import MoodState, Goal, VoiceModulators
 
 
 class InternalState(BaseModel):
@@ -36,6 +36,9 @@ class InternalState(BaseModel):
     # Memory and context
     memory_summary: str = ""  # LLM-generated summary of recent memories/experiences
     recent_thoughts: List[str] = Field(default_factory=list)  # Recent thoughts/considerations
+    
+    # Voice and expression (NEW: Dynamic personality dimension)
+    voice_modulators: VoiceModulators = Field(default_factory=VoiceModulators)
     
     # State metadata
     last_updated: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -116,6 +119,40 @@ class InternalState(BaseModel):
             self.boost_energy(0.1)
         elif new_mood in [MoodState.BORED, MoodState.RESTLESS]:
             self.decay_energy(0.05)
+        
+        # NEW: Mood affects voice/expression style
+        self.voice_modulators.adjust_for_mood(new_mood)
+    
+    def update_voice_for_state(self):
+        """Update voice modulators based on current internal state"""
+        # Adjust voice based on energy, social desire, and creative urge
+        self.voice_modulators.adjust_for_energy(self.energy_level)
+        self.voice_modulators.adjust_for_social_context(self.social_desire)
+        
+        # Creative urge affects playfulness and humor
+        if self.creative_urge > 0.7:
+            self.voice_modulators.playfulness = min(1.0, self.voice_modulators.playfulness + 0.1)
+            self.voice_modulators.humor_intensity = min(1.0, self.voice_modulators.humor_intensity + 0.1)
+    
+    def get_voice_description(self) -> str:
+        """Get current voice/expression style as text description"""
+        return self.voice_modulators.to_description()
+    
+    def get_expression_context(self) -> Dict[str, Any]:
+        """Get context for how avatar should express itself right now"""
+        return {
+            "mood": self.mood.value,
+            "energy": self.energy_level,
+            "voice_style": self.voice_modulators.to_description(),
+            "humor_level": "high" if self.voice_modulators.humor_intensity > 0.6 else "medium" if self.voice_modulators.humor_intensity > 0.3 else "low",
+            "sarcasm": "high" if self.voice_modulators.sarcasm_level > 0.6 else "medium" if self.voice_modulators.sarcasm_level > 0.3 else "low",
+            "formality": "high" if self.voice_modulators.formality > 0.6 else "medium" if self.voice_modulators.formality > 0.3 else "low",
+            "emoji_usage": "frequent" if self.voice_modulators.emoji_frequency > 0.6 else "moderate" if self.voice_modulators.emoji_frequency > 0.3 else "rare",
+            "playfulness": self.voice_modulators.playfulness,
+            "friendliness": self.voice_modulators.friendliness,
+            "should_talk_about_friends": self.voice_modulators.friend_focus > 0.6,
+            "should_reference_world": self.voice_modulators.world_awareness > 0.5
+        }
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for storage"""
@@ -132,6 +169,7 @@ class InternalState(BaseModel):
             "goals": [goal.model_dump() for goal in self.goals],
             "memory_summary": self.memory_summary,
             "recent_thoughts": self.recent_thoughts,
+            "voice_modulators": self.voice_modulators.model_dump(),  # NEW
             "last_updated": self.last_updated.isoformat(),
             "state_version": self.state_version
         }
@@ -160,6 +198,12 @@ class InternalState(BaseModel):
         if "goals" in data:
             goals_data = data["goals"]
             data["goals"] = [Goal(**g) if isinstance(g, dict) else g for g in goals_data]
+        
+        # Convert voice_modulators (NEW)
+        if "voice_modulators" in data:
+            vm_data = data["voice_modulators"]
+            if isinstance(vm_data, dict):
+                data["voice_modulators"] = VoiceModulators(**vm_data)
         
         # Convert datetime strings
         if "last_updated" in data and isinstance(data["last_updated"], str):

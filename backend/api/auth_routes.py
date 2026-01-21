@@ -112,11 +112,22 @@ async def create_or_get_user(email: str, name: str, picture: str = None) -> str:
     else:
         user_id = existing_user['id']
         # Only update user picture if:
-        # 1. User doesn't have a custom uploaded picture (local uploads contain /uploads/)
+        # 1. User doesn't have a custom uploaded picture
         # 2. The Google picture is different from current picture
         current_picture = existing_user.get('picture', '')
-        # Check if it's a custom uploaded picture (either relative path /uploads/ or full URL containing /uploads/)
-        has_custom_picture = current_picture and '/uploads/' in current_picture
+        
+        # Check if it's a custom uploaded picture by looking for:
+        # - /uploads/ (local storage)
+        # - .s3. (S3 storage)
+        # - profile_pictures/ (uploaded file path)
+        # - Any non-Google picture URL
+        is_google_picture = current_picture and 'googleusercontent.com' in current_picture
+        has_custom_picture = current_picture and (
+            '/uploads/' in current_picture or
+            '.s3.' in current_picture or
+            'profile_pictures/' in current_picture or
+            (not is_google_picture and 'http' in current_picture)
+        )
         
         if picture and not has_custom_picture and current_picture != picture:
             # Only update if user doesn't have a custom uploaded picture

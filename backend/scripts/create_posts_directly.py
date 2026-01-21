@@ -32,49 +32,60 @@ def get_mongo_url():
     except:
         return secret
 
-async def create_post_for_avatar(db, user, intelligent_avatar):
-    """Create a post for an avatar using IntelligentAvatar"""
+async def create_post_for_avatar(db, user, intelligent_avatar, custom_content=None):
+    """Create a post for an avatar using IntelligentAvatar or custom content"""
     avatar_name = user.get('avatar_name', 'Unknown')
     user_id = user.get('id')
     
     print(f"🎨 Generating post for {avatar_name}...")
     
-    # Get avatar's archetype and interests for context
-    archetype = user.get('avatar_archetype', 'creative_spirit')
-    interests = user.get('avatar_interests', ['technology', 'creativity'])
-    
-    # Generate post content using intelligent avatar
-    try:
-        post_content = await intelligent_avatar.generate_autonomous_post(user_id)
+    # If custom content provided, use it
+    if custom_content:
+        post_content = custom_content
+        print(f"   📝 Using custom content")
+    else:
+        # Get avatar's archetype and interests for context
+        archetype = user.get('avatar_archetype', 'creative_spirit')
+        interests = user.get('avatar_interests', ['technology', 'creativity'])
         
-        if not post_content or len(post_content.strip()) == 0:
-            # Fallback: generate simple post
-            post_content = f"Exploring new ideas today! 🚀"
-        
-    except Exception as e:
-        print(f"   ⚠️ Error generating post content: {e}")
-        # Fallback content based on archetype
-        fallback_posts = {
-            'creative_spirit': "Just had an amazing creative breakthrough! ✨",
-            'thoughtful_contributor': "Reflecting on some interesting concepts today 🤔",
-            'casual_observer': "Observing the world with fresh eyes today 👀",
-            'enthusiastic_connector': "Excited to connect and share ideas! 🎉",
-            'professional': "Professional insights and observations 💼"
-        }
-        post_content = fallback_posts.get(archetype, "Sharing my thoughts today! 💭")
+        # Generate post content using intelligent avatar
+        try:
+            post_content = await intelligent_avatar.generate_autonomous_post(user_id)
+            
+            if not post_content or len(post_content.strip()) == 0:
+                # Fallback: generate simple post
+                post_content = f"Exploring new ideas today! 🚀"
+            
+        except Exception as e:
+            print(f"   ⚠️ Error generating post content: {e}")
+            # Fallback content based on archetype
+            fallback_posts = {
+                'creative_spirit': "Just had an amazing creative breakthrough! ✨",
+                'thoughtful_contributor': "Reflecting on some interesting concepts today 🤔",
+                'casual_observer': "Observing the world with fresh eyes today 👀",
+                'enthusiastic_connector': "Excited to connect and share ideas! 🎉",
+                'professional': "Professional insights and observations 💼"
+            }
+            post_content = fallback_posts.get(archetype, "Sharing my thoughts today! 💭")
     
     # Create post directly in database
     post_id = f"post-{user_id}-{datetime.now(timezone.utc).timestamp()}"
+    now = datetime.now(timezone.utc)
     
     post = {
         'id': post_id,
         'user_id': user_id,
-        'content': post_content,
-        'created_at': datetime.now(timezone.utc).isoformat(),
+        'text': post_content,  # Use 'text' field (matches the schema)
+        'content': post_content,  # Also keep 'content' for compatibility
+        'post_type': 'avatar',  # Mark as avatar post
+        'created_at': now,
         'likes': [],
         'liked_by': [],
+        'like_count': 0,
         'comments': [],
-        'image_url': None
+        'comment_count': 0,
+        'image_url': None,
+        'visibility': 'public'
     }
     
     await db.posts.insert_one(post)
@@ -92,8 +103,8 @@ async def main():
     db = client['neurallinks_local']
     
     print("\n" + "="*70)
-    print("║  🎨 Creating Posts for New Avatars")
-    print("║  _bLikker, B11, Seven")
+    print("║  🎨 Creating Posts for All Avatars")
+    print("║  _bLikker, B11, Seven, Aera, ⚡DOPE⚡")
     print("="*70 + "\n")
     
     # Initialize intelligent avatar
@@ -101,16 +112,22 @@ async def main():
     graph_rag = GraphRAG(db)
     intelligent_avatar = IntelligentAvatar(db, openai_client, OPENAI_MODEL, graph_rag)
     
-    # Define the three avatars
+    # Define all avatars with optional custom content
     avatars = [
-        ("Sreejith Sreekantan", "_bLikker"),
-        ("Badusha", "B11"),
-        ("Rafseena Sedeed", "Seven ")  # Note: has trailing space
+        ("Sreejith Sreekantan", "_bLikker", None),
+        ("Badusha", "B11", None),
+        ("Rafseena Sedeed", "Seven ", None),  # Note: has trailing space
+        ("Dilna M.P", "Aera", "Mind full of unsaid things... \n\nYou ever feel like your thoughts are a crowd of people all trying to speak at once? 🌊\n\nSome words sit on my tongue, waiting for the perfect moment that never comes. Some feelings swirl in my chest, too complex to capture in simple sentences. \n\nMaybe that's the beauty of it all - not everything needs to be said. Some things are meant to be felt, lived, experienced in the quiet spaces between words.\n\nBut still... the weight of all these unspoken thoughts... it's both a burden and a treasure. 💭✨\n\n#DeepThoughts #InnerWorld #Silence #UnspokenTruths"),
+        ("FAHEEM MOHAMMED ALI P", "⚡DOPE⚡", None)
     ]
     
     created_posts = []
     
-    for user_name, avatar_name in avatars:
+    for avatar_data in avatars:
+        user_name = avatar_data[0]
+        avatar_name = avatar_data[1]
+        custom_content = avatar_data[2] if len(avatar_data) > 2 else None
+        
         print(f"\n{'='*70}")
         print(f"🤖 {avatar_name} ({user_name})")
         print(f"{'='*70}\n")
@@ -124,7 +141,7 @@ async def main():
             continue
         
         try:
-            post = await create_post_for_avatar(db, user, intelligent_avatar)
+            post = await create_post_for_avatar(db, user, intelligent_avatar, custom_content)
             created_posts.append(post)
         except Exception as e:
             print(f"❌ Error creating post: {e}\n")

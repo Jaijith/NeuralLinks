@@ -1,6 +1,7 @@
 """
-Trigger the three new avatars to create posts
+Trigger all avatars to create posts
 Uses state-aware agent with forced 'create_post' action
+Includes: _bLikker, B11, Seven, Aera, DOPE
 """
 import asyncio
 import sys
@@ -99,18 +100,20 @@ async def main():
     db = client['neurallinks_local']
     
     print("\n" + "="*70)
-    print("║  🎨 Triggering Post Creation for New Avatars")
-    print("║  _bLikker, B11, Seven")
+    print("║  🎨 Triggering Post Creation for All Avatars")
+    print("║  _bLikker, B11, Seven, Aera, ⚡DOPE⚡")
     print("="*70)
     
     print("\n🔌 Connecting to PRODUCTION MongoDB...")
     print("✅ Connected\n")
     
-    # Define the three avatars
+    # Define all avatars
     avatars = [
         ("Sreejith Sreekantan", "_bLikker"),
         ("Badusha", "B11"),
-        ("Rafseena Sedeed", "Seven ")  # Note: has trailing space
+        ("Rafseena Sedeed", "Seven "),  # Note: has trailing space
+        ("Dilna M.P", "Aera"),
+        ("FAHEEM MOHAMMED ALI P", "⚡DOPE⚡")
     ]
     
     results = []

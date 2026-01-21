@@ -298,9 +298,10 @@ class CreatePostTool(AvatarMCPTool):
             "properties": {
                 "post_type": {
                     "type": "string",
-                    "enum": ["general", "interest", "thought", "experience"],
-                    "description": "Type of post to create",
-                    "default": "general"
+                    "enum": ["auto", "general", "interest", "thought", "experience", "friend_interaction", 
+                             "joke", "pleasantry", "current_events", "friendly_banter"],
+                    "description": "Type of post to create. Use 'auto' to let AI choose based on context.",
+                    "default": "auto"
                 },
                 "post_text": {
                     "type": "string",
@@ -325,11 +326,21 @@ class CreatePostTool(AvatarMCPTool):
         # Generate post if not provided
         print(f"📝 Creating post: post_text provided={bool(post_text)}, intelligent_avatar={intelligent_avatar is not None}")
         if not post_text and intelligent_avatar:
-            print(f"   Generating post content...")
-            result = await intelligent_avatar.generate_avatar_post(
-                user_id=avatar_id,
-                post_type=post_type
-            )
+            print(f"   Generating {post_type} post content...")
+            
+            # Use diverse post generation for more variety
+            if post_type in ["auto", "friend_interaction", "joke", "pleasantry", "current_events", "friendly_banter"]:
+                result = await intelligent_avatar.generate_diverse_post(
+                    user_id=avatar_id,
+                    post_type=post_type
+                )
+            else:
+                # Use traditional post generation for basic types
+                result = await intelligent_avatar.generate_avatar_post(
+                    user_id=avatar_id,
+                    post_type=post_type
+                )
+            
             print(f"   Generation result: {result}")
             
             if 'error' in result:
@@ -881,6 +892,128 @@ class ReadMessagesTool(AvatarMCPTool):
             }
 
 
+class GetFriendActivitiesTool(AvatarMCPTool):
+    """Tool for getting recent friend activities (state-aware: high friend_focus)"""
+    
+    def __init__(self):
+        super().__init__(
+            name="get_friend_activities",
+            description="Get recent activities from your friends (posts, interactions). Use when you want to know what friends are up to.",
+            action_key="get_friend_activities"  # New permission
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "hours_back": {
+                    "type": "number",
+                    "description": "How many hours back to look for activities (default: 24)",
+                    "default": 24
+                },
+                "limit": {
+                    "type": "number",
+                    "description": "Maximum number of activities to return (default: 10)",
+                    "default": 10
+                }
+            },
+            "required": []
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """Get recent friend activities"""
+        from services.friend_activity_service import FriendActivityService
+        
+        hours_back = kwargs.get('hours_back', 24)
+        limit = kwargs.get('limit', 10)
+        
+        service = FriendActivityService(db)
+        activities = await service.get_recent_friend_activities(avatar_id, hours=hours_back)
+        
+        # Limit results
+        activities = activities[:limit]
+        
+        # Format for readability
+        formatted_activities = []
+        for activity in activities:
+            formatted_activities.append({
+                "friend_name": activity.get("friend_name"),
+                "type": activity.get("type"),
+                "summary": activity.get("summary"),
+                "post_id": activity.get("post_id"),
+                "content_preview": activity.get("content", "")[:150],
+                "likes": activity.get("likes", 0),
+                "comments": activity.get("comments", 0),
+                "is_popular": activity.get("is_popular", False)
+            })
+        
+        return {
+            "success": True,
+            "activities": formatted_activities,
+            "count": len(formatted_activities),
+            "message": f"Found {len(formatted_activities)} recent friend activities"
+        }
+
+
+class GetTrendingTopicsTool(AvatarMCPTool):
+    """Tool for getting trending topics/news (state-aware: high world_awareness)"""
+    
+    def __init__(self):
+        super().__init__(
+            name="get_trending_topics",
+            description="Get trending topics and news relevant to your interests. Use when you want to know what's happening in the world.",
+            action_key="get_trending_topics"  # New permission
+        )
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "enum": ["general", "technology", "entertainment", "business", "science"],
+                    "description": "Category of topics to fetch",
+                    "default": "general"
+                },
+                "include_news_for_interests": {
+                    "type": "boolean",
+                    "description": "Whether to include news matching your personal interests",
+                    "default": True
+                }
+            },
+            "required": []
+        }
+    
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """Get trending topics and news"""
+        from services.content_awareness_service import ContentAwarenessService
+        
+        category = kwargs.get('category', 'general')
+        include_interests = kwargs.get('include_news_for_interests', True)
+        
+        service = ContentAwarenessService()
+        
+        # Get trending topics
+        trending = await service.get_trending_topics(category)
+        
+        # Get news for interests if requested
+        interest_news = []
+        if include_interests:
+            user = await db.users.find_one({"id": avatar_id})
+            if user:
+                interests = user.get('avatar_character_profile', {}).get('interests', [])
+                if interests:
+                    interest_news = await service.get_news_for_interests(interests)
+        
+        return {
+            "success": True,
+            "trending_topics": trending[:5],
+            "interest_news": interest_news[:3],
+            "total_items": len(trending) + len(interest_news),
+            "message": f"Found {len(trending)} trending topics and {len(interest_news)} news items matching your interests"
+        }
+
+
 class BrowseFeedTool(AvatarMCPTool):
     """Tool for browsing the feed to discover new content"""
 
@@ -1009,7 +1142,9 @@ class AvatarMCPServer:
             "discover_profiles": DiscoverProfilesTool(),
             "share_post": SharePostTool(),
             "read_messages": ReadMessagesTool(),
-            "browse_feed": BrowseFeedTool()
+            "browse_feed": BrowseFeedTool(),
+            "get_friend_activities": GetFriendActivitiesTool(),  # NEW: State-aware
+            "get_trending_topics": GetTrendingTopicsTool()  # NEW: State-aware
         }
     
     def get_tools_list(self) -> List[Dict[str, Any]]:

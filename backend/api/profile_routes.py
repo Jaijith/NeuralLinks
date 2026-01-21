@@ -50,6 +50,18 @@ async def get_user_profile(
     target_user['friendship_status'] = friendship_status
     target_user['is_friend'] = friendship_status == 'accepted'
     
+    # Check privacy settings - only if not viewing own profile
+    if user.id != user_id:
+        profile_privacy = target_user.get('profile_privacy', 'everyone')
+        
+        if profile_privacy == 'private':
+            # Profile is completely private
+            raise HTTPException(status_code=403, detail="Profile is in private mode")
+        elif profile_privacy == 'friends':
+            # Only friends can view
+            if friendship_status != 'accepted':
+                raise HTTPException(status_code=403, detail="Profile is in friends-only mode")
+    
     return target_user
 
 
