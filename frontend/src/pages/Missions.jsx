@@ -16,6 +16,7 @@ import workflowService, { missionService, leadService, chatService } from '@/ser
 import { toast } from 'sonner';
 import AppHeader from '@/components/AppHeader';
 import BondingResponse from '@/components/bonding/BondingResponse';
+import { ImmersivePageWrapper } from '@/components/ambient';
 import WorldCanvas from '@/components/workflow/WorldCanvas';
 import AvatarStatusStrip from '@/components/workflow/AvatarStatusStrip';
 import MissionTimeline from '@/components/workflow/MissionTimeline';
@@ -453,7 +454,7 @@ const Missions = ({ user, setUser }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
+    <ImmersivePageWrapper pageId="missions" user={user}>
       <AppHeader user={user} setUser={setUser} currentPage="missions" />
 
       <main className="h-[calc(100vh-56px)] flex overflow-hidden">
@@ -623,7 +624,7 @@ const Missions = ({ user, setUser }) => {
           )}
         </AnimatePresence>
       </main>
-    </div>
+    </ImmersivePageWrapper>
   );
 };
 

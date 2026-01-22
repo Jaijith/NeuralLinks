@@ -7,6 +7,7 @@ import { Sparkles, TrendingUp, MessageCircle, Heart, Users } from "lucide-react"
 import axios from "axios";
 import { toast } from "sonner";
 import AppHeader from "@/components/AppHeader";
+import { ImmersivePageWrapper } from "@/components/ambient";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -55,7 +56,7 @@ const Dashboard = ({ user, setUser }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <ImmersivePageWrapper pageId="dashboard" user={user}>
       <AppHeader user={user} setUser={setUser} currentPage="home" />
 
       {/* Main Content */}
@@ -249,7 +250,7 @@ const Dashboard = ({ user, setUser }) => {
           )}
         </div>
       </main>
-    </div>
+    </ImmersivePageWrapper>
   );
 };
 

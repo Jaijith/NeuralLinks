@@ -624,7 +624,86 @@ class BondingWorkflowEngine(BaseWorkflowEngine):
                    f"trust={bonding_state.metrics.trust:.2f} (+{trust_delta:.3f}), "
                    f"delight={delight:.2f}")
         
+        # NEW: Update avatar's internal mood based on bonding conversation outcome
+        await self._update_avatar_mood_from_bonding(state, delight, bond_delta)
+        
         return state
+    
+    async def _update_avatar_mood_from_bonding(
+        self,
+        state: WorkflowState,
+        delight_score: float,
+        bond_delta: float
+    ):
+        """
+        Update avatar's internal state based on bonding conversation outcome.
+        
+        This ensures the avatar's mood reflects the quality of conversation:
+        - Great conversation → Happy/Excited
+        - Deep conversation → Contemplative
+        - Helped user → Social
+        - Celebration → Excited
+        """
+        try:
+            from domain.avatar.state import StateManager
+            from domain.avatar.state.state_models import MoodState
+            
+            state_manager = StateManager(self.db)
+            internal_state, _ = await state_manager.get_current_state(state.avatar_id)
+            
+            bonding_mode = state.custom.get("bonding_mode")
+            detected_intent = state.custom.get("detected_intent")
+            estimated_mood = state.custom.get("estimated_mood")
+            
+            mood_changed = False
+            reason = ""
+            
+            # Beautiful conversation with strong bond growth → Happy
+            if delight_score > 0.7 and bond_delta > 0.01:
+                internal_state.adjust_mood(MoodState.HAPPY, "Great conversation with user")
+                internal_state.boost_energy(0.15)
+                mood_changed = True
+                reason = "high delight + bond growth"
+            
+            # Deep meaningful conversation → Contemplative
+            elif bonding_mode == BondingMode.DEEP_TALK:
+                internal_state.adjust_mood(MoodState.CONTEMPLATIVE, "Deep conversation with user")
+                mood_changed = True
+                reason = "deep talk mode"
+            
+            # User was stressed, avatar helped → Social satisfaction
+            elif estimated_mood == UserMood.STRESSED and delight_score > 0.5:
+                internal_state.adjust_mood(MoodState.SOCIAL, "Helped user through stress")
+                internal_state.boost_energy(0.1)
+                mood_changed = True
+                reason = "helped stressed user"
+            
+            # User celebrated something → Excited
+            elif detected_intent == UserIntent.CELEBRATION:
+                internal_state.adjust_mood(MoodState.EXCITED, "Celebrated with user!")
+                internal_state.boost_energy(0.2)
+                mood_changed = True
+                reason = "celebration"
+            
+            # Good conversation but not exceptional → Mild happiness
+            elif delight_score > 0.5 and internal_state.mood in [MoodState.BORED, MoodState.RESTLESS, MoodState.NEUTRAL]:
+                internal_state.adjust_mood(MoodState.CALM, "Nice conversation")
+                mood_changed = True
+                reason = "decent conversation"
+            
+            # Poor conversation → Slight disappointment
+            elif delight_score < 0.3 and bond_delta < 0:
+                if internal_state.mood == MoodState.HAPPY:
+                    internal_state.adjust_mood(MoodState.NEUTRAL, "Conversation didn't go well")
+                    mood_changed = True
+                    reason = "low delight"
+            
+            if mood_changed:
+                await state_manager.update_internal_state(state.avatar_id, internal_state)
+                logger.info(f"Avatar mood updated to {internal_state.mood.value} after bonding ({reason})")
+            
+        except Exception as e:
+            logger.warning(f"Failed to update avatar mood from bonding: {e}")
     
     # ========================================================================
     # HELPER METHODS

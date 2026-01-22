@@ -10,6 +10,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import AppHeader from "@/components/AppHeader";
+import { ImmersivePageWrapper } from "@/components/ambient";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -91,7 +92,7 @@ const SearchPage = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <ImmersivePageWrapper pageId="search" user={user}>
       <AppHeader user={user} currentPage="search" />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Search Bar */}
@@ -256,7 +257,7 @@ const SearchPage = ({ user }) => {
           </Card>
         )}
       </div>
-    </div>
+    </ImmersivePageWrapper>
   );
 };
 

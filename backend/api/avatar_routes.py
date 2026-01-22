@@ -613,6 +613,199 @@ async def get_avatar_full_memory(request: Request):
         }
 
 
+@router.post("/avatar/user-event")
+async def receive_user_event(request: Request, event_data: Dict[str, Any]):
+    """
+    Receive user activity events from frontend to influence avatar mood.
+    
+    This endpoint allows the frontend to communicate user behavior to the avatar,
+    enabling reactive mood changes based on user activity.
+    
+    Events:
+    - user_active: User is actively using the app
+    - user_idle: User has been idle for X minutes
+    - user_viewing_content: User looking at specific content
+    - user_scrolling: User browsing feed
+    - user_left: User closed app/tab
+    - user_returned: User came back after being away
+    - input_started: User started typing (avatar listens)
+    - input_cancelled: User cancelled input
+    """
+    current_user = await require_auth(request)
+    
+    try:
+        from domain.avatar.state import StateManager
+        from domain.avatar.state.state_models import MoodState
+        
+        event_type = event_data.get("event_type")
+        context = event_data.get("context", {})
+        
+        if not event_type:
+            return {"success": False, "error": "event_type required"}
+        
+        state_manager = StateManager(db)
+        internal_state, external_state = await state_manager.get_current_state(current_user.id)
+        
+        mood_changed = False
+        old_mood = internal_state.mood.value
+        
+        # React to user events
+        if event_type == "user_idle":
+            idle_minutes = context.get("idle_minutes", 0)
+            if idle_minutes >= 30 and internal_state.mood not in [MoodState.BORED, MoodState.CALM, MoodState.CONTEMPLATIVE]:
+                internal_state.adjust_mood(MoodState.BORED, f"User idle for {idle_minutes} minutes")
+                internal_state.decay_energy(0.1)
+                mood_changed = True
+            elif idle_minutes >= 10 and internal_state.mood == MoodState.EXCITED:
+                # Excitement fades when user is idle
+                internal_state.adjust_mood(MoodState.CALM, "User went quiet")
+                mood_changed = True
+        
+        elif event_type == "user_active":
+            if internal_state.mood == MoodState.BORED:
+                internal_state.adjust_mood(MoodState.CURIOUS, "User is back and active!")
+                internal_state.boost_energy(0.1)
+                mood_changed = True
+            elif internal_state.mood == MoodState.RESTLESS:
+                internal_state.adjust_mood(MoodState.NEUTRAL, "User activity detected")
+                mood_changed = True
+        
+        elif event_type == "user_returned":
+            # User came back after being away
+            away_minutes = context.get("away_minutes", 0)
+            if away_minutes > 60:
+                internal_state.adjust_mood(MoodState.HAPPY, "User returned after long absence!")
+                internal_state.boost_energy(0.15)
+                internal_state.social_desire = min(1.0, internal_state.social_desire + 0.2)
+                mood_changed = True
+            elif internal_state.mood == MoodState.BORED:
+                internal_state.adjust_mood(MoodState.CURIOUS, "User is back!")
+                mood_changed = True
+        
+        elif event_type == "user_left":
+            # User leaving - avatar might feel lonely
+            internal_state.social_desire = min(1.0, internal_state.social_desire + 0.15)
+            if internal_state.mood == MoodState.HAPPY:
+                internal_state.adjust_mood(MoodState.CALM, "User left")
+                mood_changed = True
+        
+        elif event_type == "input_started":
+            # User started typing - avatar is listening
+            if internal_state.mood in [MoodState.BORED, MoodState.RESTLESS]:
+                internal_state.adjust_mood(MoodState.CURIOUS, "User is typing...")
+                mood_changed = True
+            # Boost focus when user is communicating
+            internal_state.focus_level = min(1.0, internal_state.focus_level + 0.2)
+        
+        elif event_type == "input_cancelled":
+            # User cancelled their input - slight disappointment
+            if internal_state.focus_level > 0.7:
+                internal_state.focus_level = max(0.3, internal_state.focus_level - 0.2)
+        
+        elif event_type == "user_viewing_content":
+            content_type = context.get("content_type")
+            # This could be extended to check against avatar preferences
+            if content_type == "avatar_post":
+                # User viewing avatar's own post - avatar feels acknowledged
+                internal_state.boost_energy(0.05)
+        
+        elif event_type == "user_scrolling":
+            # User is browsing - avatar is curious what they're looking at
+            if internal_state.mood == MoodState.BORED:
+                internal_state.adjust_mood(MoodState.CURIOUS, "User is browsing")
+                mood_changed = True
+        
+        # Persist state if changed
+        if mood_changed or event_type in ["input_started", "input_cancelled", "user_viewing_content"]:
+            await state_manager.update_internal_state(current_user.id, internal_state)
+        
+        return {
+            "success": True,
+            "event_type": event_type,
+            "mood_changed": mood_changed,
+            "old_mood": old_mood if mood_changed else None,
+            "new_mood": internal_state.mood.value,
+            "energy_level": internal_state.energy_level,
+            "social_desire": internal_state.social_desire
+        }
+        
+    except Exception as e:
+        logger.error(f"Error processing user event: {e}")
+        return {"success": False, "error": str(e)}
+
+
+@router.post("/bonding/initiate")
+async def initiate_bonding_conversation(request: Request, data: Dict[str, Any]):
+    """
+    Initiate a bonding conversation with the avatar.
+    
+    This is called when the user sends a message through the VoidInput or other
+    direct communication channels. It triggers the bonding workflow to process
+    the message and potentially update the avatar's state.
+    
+    Args:
+        user_message: The message from the user
+        context: Optional context about where/how the message was sent
+    """
+    current_user = await require_auth(request)
+    
+    try:
+        user_message = data.get("user_message", "").strip()
+        context = data.get("context", {})
+        
+        if not user_message:
+            return {"success": False, "error": "Message is required"}
+        
+        logger.info(f"Bonding conversation initiated by {current_user.id}: {user_message[:50]}...")
+        
+        from domain.avatar.state import StateManager
+        from domain.avatar.state.state_models import MoodState
+        
+        # Get current avatar state
+        state_manager = StateManager(db)
+        internal_state, external_state = await state_manager.get_current_state(current_user.id)
+        
+        # Update mood - avatar is being communicated with
+        old_mood = internal_state.mood.value
+        if internal_state.mood in [MoodState.BORED, MoodState.RESTLESS]:
+            internal_state.adjust_mood(MoodState.CURIOUS, "User initiated conversation")
+        elif internal_state.mood == MoodState.NEUTRAL:
+            internal_state.adjust_mood(MoodState.HAPPY, "User reached out")
+        
+        # Boost social desire and focus
+        internal_state.social_desire = min(1.0, internal_state.social_desire + 0.1)
+        internal_state.focus_level = min(1.0, internal_state.focus_level + 0.2)
+        internal_state.boost_energy(0.1)
+        
+        await state_manager.update_internal_state(current_user.id, internal_state)
+        
+        # Store the message in memory/conversation history
+        # This can be extended to use the full bonding workflow
+        conversation_doc = {
+            "user_id": current_user.id,
+            "source": context.get("source", "void_input"),
+            "user_message": user_message,
+            "timestamp": datetime.utcnow(),
+            "avatar_mood_before": old_mood,
+            "avatar_mood_after": internal_state.mood.value,
+        }
+        await db.bonding_conversations.insert_one(conversation_doc)
+        
+        return {
+            "success": True,
+            "message_received": True,
+            "mood_changed": old_mood != internal_state.mood.value,
+            "old_mood": old_mood,
+            "new_mood": internal_state.mood.value,
+            "energy_level": internal_state.energy_level,
+            "social_desire": internal_state.social_desire
+        }
+        
+    except Exception as e:
+        logger.error(f"Error initiating bonding conversation: {e}")
+        return {"success": False, "error": str(e)}
+
+
 @router.post("/avatar/run-autonomous-cycle")
 async def run_autonomous_cycle(request: Request, api_key: str = None):
     """

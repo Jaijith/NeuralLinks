@@ -398,6 +398,44 @@ class StateManager:
                 internal_state.social_desire = min(1.0, 0.35 + desire_boost)  # Base of 0.35 + boost
                 logger.debug(f"Social desire for {avatar_id}: {internal_state.social_desire:.2f} (hours since msg: {hours_since_msg:.1f})")
             
+            # ============================================================
+            # MOOD DRIFT: Natural mood changes based on extended inactivity
+            # This makes the avatar feel "alive" even when nothing is happening
+            # ============================================================
+            
+            from .state_models import MoodState
+            
+            # User absence detection → Gradual mood shift
+            hours_since_conversation = internal_state.time_since_last_conversation.total_seconds() / 3600
+            
+            # After 24+ hours without conversation → Bored/Restless
+            if hours_since_conversation > 24:
+                if internal_state.mood not in [MoodState.BORED, MoodState.RESTLESS, MoodState.CONTEMPLATIVE]:
+                    internal_state.adjust_mood(MoodState.BORED, "User hasn't talked in over a day")
+                    logger.debug(f"Avatar {avatar_id} mood → BORED (user absent 24h+)")
+            
+            # After 12+ hours → Happiness fades to calm
+            elif hours_since_conversation > 12:
+                if internal_state.mood == MoodState.HAPPY:
+                    internal_state.adjust_mood(MoodState.CALM, "Happiness fading without interaction")
+                    logger.debug(f"Avatar {avatar_id} mood: HAPPY → CALM (user absent 12h+)")
+                elif internal_state.mood == MoodState.EXCITED:
+                    internal_state.adjust_mood(MoodState.NEUTRAL, "Excitement fading")
+                    logger.debug(f"Avatar {avatar_id} mood: EXCITED → NEUTRAL (user absent 12h+)")
+            
+            # After 6+ hours → Excitement cools down
+            elif hours_since_conversation > 6:
+                if internal_state.mood == MoodState.EXCITED:
+                    internal_state.adjust_mood(MoodState.HAPPY, "Excitement cooling to contentment")
+                    logger.debug(f"Avatar {avatar_id} mood: EXCITED → HAPPY (user absent 6h+)")
+            
+            # Energy naturally decays when no activity
+            hours_since_action = internal_state.time_since_last_action.total_seconds() / 3600
+            if hours_since_action > 4 and internal_state.energy_level > 0.3:
+                decay = min(0.1, hours_since_action * 0.01)  # Slow decay
+                internal_state.decay_energy(decay)
+                logger.debug(f"Avatar {avatar_id} energy decayed by {decay:.2f}")
+            
             # Persist updated state
             await self.update_internal_state(avatar_id, internal_state)
             

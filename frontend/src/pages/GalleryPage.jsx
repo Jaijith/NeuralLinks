@@ -9,6 +9,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import AppHeader from "@/components/AppHeader";
+import { ImmersivePageWrapper } from "@/components/ambient";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -114,7 +115,7 @@ const GalleryPage = ({ user, setUser }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
+      <ImmersivePageWrapper pageId="gallery" showToggle={false} user={user}>
         <AppHeader user={user} setUser={setUser} currentPage="gallery" />
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
@@ -122,12 +123,12 @@ const GalleryPage = ({ user, setUser }) => {
             <p className="text-gray-600">Loading gallery...</p>
           </div>
         </div>
-      </div>
+      </ImmersivePageWrapper>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
+    <ImmersivePageWrapper pageId="gallery" user={user}>
       <AppHeader user={user} setUser={setUser} currentPage="gallery" />
       
       <div className="max-w-7xl mx-auto px-4 py-6">
@@ -269,7 +270,7 @@ const GalleryPage = ({ user, setUser }) => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </ImmersivePageWrapper>
   );
 };
 

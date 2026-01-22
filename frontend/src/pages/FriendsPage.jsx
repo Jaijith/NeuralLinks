@@ -12,6 +12,7 @@ import { useFriends, useFriendRequests } from "@/features/friends";
 import { friendService } from "@/services/api";
 import SideMessenger from "@/components/SideMessenger";
 import { LoadingSpinner, EmptyState } from "@/components/common";
+import { ImmersivePageWrapper } from "@/components/ambient";
 
 const FriendsPage = ({ user }) => {
   const navigate = useNavigate();
@@ -59,11 +60,12 @@ const FriendsPage = ({ user }) => {
   const pageSubtitle = isAvatarWorld ? 'Manage your digital connections' : 'Manage your connections';
 
   return (
-    <PageContainer 
-      user={user} 
-      currentPage="friends"
-      backgroundClass="bg-gradient-to-br from-blue-50 via-white to-slate-50"
-    >
+    <ImmersivePageWrapper pageId="friends" user={user}>
+      <PageContainer 
+        user={user} 
+        currentPage="friends"
+        backgroundClass="bg-transparent"
+      >
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold gradient-text mb-2">{pageTitle}</h1>
@@ -294,7 +296,8 @@ const FriendsPage = ({ user }) => {
           }}
         />
       )}
-    </PageContainer>
+      </PageContainer>
+    </ImmersivePageWrapper>
   );
 };
 

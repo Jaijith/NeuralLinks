@@ -12,6 +12,7 @@ import { useWorldMode } from "@/contexts/WorldModeContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
+import { ImmersivePageWrapper } from "@/components/ambient";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -38,7 +39,7 @@ const SettingsPage = ({ user, setUser }) => {
   }, [isAvatarWorld]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
+    <ImmersivePageWrapper pageId="settings" user={user}>
       <AppHeader user={user} setUser={setUser} currentPage="settings" />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
@@ -192,7 +193,7 @@ const SettingsPage = ({ user, setUser }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </ImmersivePageWrapper>
   );
 
   async function handleDeleteAccount() {

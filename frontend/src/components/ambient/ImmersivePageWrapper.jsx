@@ -1,0 +1,477 @@
+/**
+ * ImmersivePageWrapper - Shared wrapper for immersive mode across all pages
+ * 
+ * Provides:
+ * - Automatic avatar state integration
+ * - View mode toggle (Classic/Immersive)
+ * - Background effects (ImmersiveBackground or Atmosphere)
+ * - Spirit trail, whisper text, anchor orb
+ * - Consistent styling across all pages
+ */
+
+import { useState, useCallback, useEffect } from "react";
+import { useWorldMode } from "@/contexts/WorldModeContext";
+import { 
+  Atmosphere, 
+  ImmersiveBackground,
+  WhisperText, 
+  SpiritTrail, 
+  AnchorOrb, 
+  VoidInput,
+  ViewModeToggle
+} from "@/components/ambient";
+import useAvatarState from "@/hooks/useAvatarState";
+import useViewMode from "@/hooks/useViewMode";
+import axios from "axios";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+
+// Generate aggressive CSS for the mode - using unique page container ID
+const getGlobalStyles = (isImmersive, containerId) => {
+  const id = containerId || 'maya-page-container';
+  
+  if (isImmersive) {
+    return `
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+      
+      /* IMMERSIVE MODE - Override CSS variables */
+      #${id} {
+        --card: 12 15 25;
+        --card-foreground: 255 255 255;
+        --background: transparent;
+        --foreground: 255 255 255;
+        --muted: 30 35 50;
+        --muted-foreground: 200 200 220;
+        --border: 255 255 255;
+      }
+      
+      #${id} * {
+        font-family: 'Inter', sans-serif !important;
+      }
+      
+      /* Target Card component and all card-like elements */
+      #${id} .bg-card,
+      #${id} [class*="bg-card"],
+      #${id} .glass-card,
+      #${id} .rounded-lg,
+      #${id} .rounded-xl,
+      #${id} .rounded-2xl,
+      #${id} .rounded-md,
+      #${id} .shadow,
+      #${id} .shadow-sm,
+      #${id} .shadow-md,
+      #${id} .shadow-lg,
+      #${id} .border,
+      #${id} [class*="shadow"],
+      #${id} .bg-white,
+      #${id} [class*="bg-white"] {
+        background: rgba(12, 15, 25, 0.88) !important;
+        backdrop-filter: blur(16px) saturate(1.3) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(1.3) !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+      }
+      
+      /* Text white - but EXCLUDE colored backgrounds and special components */
+      #${id},
+      #${id} div:not([class*="bg-yellow"]):not([class*="bg-green"]):not([class*="bg-red"]):not([class*="bg-blue"]):not([class*="bg-purple"]):not([class*="bg-pink"]):not([class*="bg-orange"]):not([class*="bg-gradient"]):not([class*="from-"]):not(.memory-orb-page):not(.memory-orb-page *),
+      #${id} p:not([class*="text-white"]):not(.memory-orb-page *),
+      #${id} span:not([class*="bg-"]):not([class*="text-white"]):not(.memory-orb-page *),
+      #${id} h1:not(.memory-orb-page *), #${id} h2:not(.memory-orb-page *), #${id} h3:not(.memory-orb-page *),
+      #${id} h4:not(.memory-orb-page *), #${id} h5:not(.memory-orb-page *), #${id} h6:not(.memory-orb-page *),
+      #${id} a:not([class*="bg-"]):not(.memory-orb-page *),
+      #${id} label:not(.memory-orb-page *),
+      #${id} li:not(.memory-orb-page *) {
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+      
+      /* PRESERVE MemoryOrb component's own styling */
+      #${id} .memory-orb-page,
+      #${id} .memory-orb-page * {
+        color: inherit !important;
+      }
+      
+      #${id} .memory-orb-page .stat-bars,
+      #${id} .memory-orb-page .memory-panel {
+        background: rgba(255, 255, 255, 0.95) !important;
+      }
+      
+      #${id} .memory-orb-page .stat-label {
+        color: #1f2937 !important;
+      }
+      
+      #${id} .memory-orb-page svg {
+        color: inherit !important;
+      }
+      
+      /* Buttons - only apply to non-colored buttons */
+      #${id} button:not([class*="bg-"]):not([class*="btn-"]) {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      
+      /* PRESERVE original colors on badges and colored elements */
+      #${id} [class*="bg-yellow"] *,
+      #${id} [class*="bg-green"] *,
+      #${id} [class*="bg-red"]:not(.bg-red-50) *,
+      #${id} [class*="bg-blue"]:not(.bg-blue-50) *,
+      #${id} [class*="bg-purple"]:not(.bg-purple-50) *,
+      #${id} [class*="bg-pink"] *,
+      #${id} [class*="bg-orange"] *,
+      #${id} [class*="bg-gradient"] *,
+      #${id} [class*="from-pink"] *,
+      #${id} [class*="from-purple"] *,
+      #${id} [class*="from-blue"] *,
+      #${id} [class*="from-green"] * {
+        color: inherit !important;
+      }
+      
+      /* Badges with colored backgrounds - keep dark text */
+      #${id} [class*="bg-yellow-100"],
+      #${id} [class*="bg-purple-100"],
+      #${id} [class*="bg-green-100"],
+      #${id} [class*="bg-blue-100"],
+      #${id} [class*="bg-pink-100"],
+      #${id} [class*="bg-red-100"],
+      #${id} [class*="bg-orange-100"] {
+        background-color: inherit !important;
+      }
+      
+      #${id} [class*="bg-yellow-100"] *,
+      #${id} [class*="bg-purple-100"] *,
+      #${id} [class*="bg-green-100"] *,
+      #${id} [class*="bg-blue-100"] *,
+      #${id} [class*="bg-red-100"] *,
+      #${id} .text-purple-700,
+      #${id} .text-yellow-700,
+      #${id} .text-green-700,
+      #${id} .text-blue-700,
+      #${id} .text-red-700 {
+        color: inherit !important;
+      }
+      
+      /* Muted text - only for non-colored elements */
+      #${id} .text-muted-foreground:not([class*="bg-"]),
+      #${id} .text-gray-400:not([class*="bg-"]),
+      #${id} .text-gray-500:not([class*="bg-"]),
+      #${id} .text-gray-600:not([class*="bg-"]) {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+      
+      /* Inputs */
+      #${id} input,
+      #${id} textarea,
+      #${id} select {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+      
+      #${id} input::placeholder,
+      #${id} textarea::placeholder {
+        color: rgba(255, 255, 255, 0.4) !important;
+      }
+      
+      /* Borders */
+      #${id} .border,
+      #${id} [class*="border-gray"],
+      #${id} [class*="divide-gray"] > * {
+        border-color: rgba(255, 255, 255, 0.1) !important;
+      }
+      
+      /* Background utilities */
+      #${id} .bg-gray-50,
+      #${id} .bg-gray-100,
+      #${id} [class*="bg-gray-"],
+      #${id} .bg-muted,
+      #${id} [class*="bg-muted"] {
+        background: rgba(255, 255, 255, 0.05) !important;
+      }
+      
+      /* SVG/Icons */
+      #${id} svg {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+      
+      /* Tabs styling */
+      #${id} [role="tablist"] {
+        background: rgba(255, 255, 255, 0.05) !important;
+      }
+      
+      #${id} [role="tab"] {
+        color: rgba(255, 255, 255, 0.6) !important;
+      }
+      
+      #${id} [role="tab"][data-state="active"] {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+      }
+      
+      /* Dialog/Modal styling */
+      #${id} [role="dialog"] {
+        background: rgba(12, 15, 25, 0.95) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+      
+      /* Animation */
+      .page-content-card {
+        animation: slideUp 0.5s ease-out forwards;
+        opacity: 0;
+      }
+      
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+  } else {
+    return `
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+      
+      /* CLASSIC MODE */
+      #${id} * {
+        font-family: 'Inter', sans-serif !important;
+      }
+      
+      /* Light glass cards */
+      #${id} .bg-card,
+      #${id} .glass-card,
+      #${id} .rounded-lg,
+      #${id} .rounded-xl,
+      #${id} .rounded-2xl,
+      #${id} .rounded-md,
+      #${id} .shadow,
+      #${id} [class*="shadow"],
+      #${id} .bg-white,
+      #${id} [class*="bg-white"] {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border-color: rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+      }
+      
+      /* Dark text */
+      #${id},
+      #${id} div,
+      #${id} p,
+      #${id} span,
+      #${id} h1, #${id} h2, #${id} h3,
+      #${id} h4, #${id} h5, #${id} h6,
+      #${id} a,
+      #${id} label,
+      #${id} li,
+      #${id} button,
+      #${id} .text-card-foreground,
+      #${id} .text-foreground {
+        color: rgba(0, 0, 0, 0.85) !important;
+      }
+      
+      /* Muted text */
+      #${id} .text-muted-foreground,
+      #${id} .text-gray-400,
+      #${id} .text-gray-500,
+      #${id} .text-gray-600 {
+        color: rgba(0, 0, 0, 0.55) !important;
+      }
+      
+      /* SVG/Icons */
+      #${id} svg {
+        color: rgba(0, 0, 0, 0.6) !important;
+      }
+      
+      /* Animation */
+      .page-content-card {
+        animation: slideUp 0.5s ease-out forwards;
+        opacity: 0;
+      }
+      
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+  }
+};
+
+/**
+ * ImmersivePageWrapper component
+ * 
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Page content
+ * @param {string} props.pageId - Unique page identifier for CSS targeting
+ * @param {boolean} props.showToggle - Whether to show view mode toggle (default: true)
+ * @param {boolean} props.showOrb - Whether to show anchor orb (default: true)
+ * @param {string} props.className - Additional classes for the wrapper
+ * @param {Object} props.user - User object (needed for avatar state)
+ */
+const ImmersivePageWrapper = ({ 
+  children, 
+  pageId = 'maya-page',
+  showToggle = true,
+  showOrb = true,
+  className = '',
+  user = null
+}) => {
+  const { worldMode } = useWorldMode();
+  const isAvatarWorld = worldMode === 'avatar';
+  
+  // Avatar state for ambient effects (pass userId when in avatar world)
+  const { 
+    mood, 
+    energy_level, 
+    colors, 
+    whisperText, 
+    presenceIntensity,
+    interests,
+    pulseSpeed
+  } = useAvatarState(isAvatarWorld ? user?.id : null);
+  
+  // View mode (classic vs immersive)
+  const { isImmersive, toggleViewMode } = useViewMode();
+  
+  // Void input state
+  const [showVoidInput, setShowVoidInput] = useState(false);
+  const [customWhisper, setCustomWhisper] = useState(null);
+  
+  // Handle orb activation
+  const handleOrbActivate = useCallback(() => {
+    setShowVoidInput(true);
+    setCustomWhisper("LISTENING...");
+  }, []);
+  
+  // Handle void input submission
+  const handleVoidSubmit = useCallback(async (message) => {
+    setCustomWhisper("PROCESSING...");
+    
+    try {
+      await axios.post(`${BACKEND_URL}/api/bonding/initiate`, {
+        user_message: message,
+        context: { source: 'void_input', page: pageId }
+      }, { withCredentials: true });
+      
+      setCustomWhisper("RECEIVED");
+      setTimeout(() => setCustomWhisper(null), 2000);
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      setCustomWhisper(null);
+    }
+  }, [pageId]);
+  
+  // Handle void input close
+  const handleVoidClose = useCallback(() => {
+    setShowVoidInput(false);
+    setCustomWhisper(null);
+  }, []);
+  
+  // Spacebar to open void input
+  useEffect(() => {
+    if (!isAvatarWorld) return;
+    
+    const handleKeyDown = (e) => {
+      if (e.code === 'Space' && !showVoidInput && 
+          !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
+        e.preventDefault();
+        setShowVoidInput(true);
+        setCustomWhisper("SPEAK...");
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAvatarWorld, showVoidInput]);
+  
+  const containerId = `${pageId}-container`;
+  const modeClass = isAvatarWorld 
+    ? (isImmersive ? 'immersive-mode' : 'classic-mode')
+    : '';
+  
+  // Determine background class for page container
+  const backgroundClass = isAvatarWorld && isImmersive 
+    ? "bg-transparent" 
+    : "bg-gradient-to-br from-blue-50 via-white to-slate-50";
+  
+  return (
+    <>
+      <style>{getGlobalStyles(isAvatarWorld && isImmersive, containerId)}</style>
+      <div id={containerId} className={`min-h-screen ${modeClass} ${className}`}>
+        {/* === BACKGROUND LAYERS (Avatar World Only) === */}
+        {isAvatarWorld && (
+          <>
+            {/* Immersive: Space/cosmic background */}
+            {isImmersive && (
+              <ImmersiveBackground 
+                colors={colors} 
+                energy={energy_level} 
+                presenceIntensity={presenceIntensity} 
+              />
+            )}
+            
+            {/* Classic: Subtle edge glows */}
+            {!isImmersive && (
+              <Atmosphere 
+                mood={mood} 
+                energy={energy_level} 
+                colors={colors} 
+                presenceIntensity={presenceIntensity} 
+              />
+            )}
+            
+            {/* Presence indicator (both modes) */}
+            <WhisperText 
+              text={customWhisper || whisperText}
+              mood={mood}
+              colors={colors}
+              isInputActive={showVoidInput}
+            />
+            
+            {/* Ghost mouse trail (both modes, subtle) */}
+            <SpiritTrail 
+              colors={colors}
+              energy={energy_level}
+              interests={interests}
+            />
+          </>
+        )}
+        
+        {/* === PAGE CONTENT === */}
+        <div className={`min-h-screen ${backgroundClass}`}>
+          {/* View Mode Toggle */}
+          {isAvatarWorld && showToggle && (
+            <div className="fixed top-20 right-6 z-50">
+              <ViewModeToggle 
+                isImmersive={isImmersive}
+                onToggle={toggleViewMode}
+                colors={colors}
+              />
+            </div>
+          )}
+          
+          {children}
+        </div>
+        
+        {/* === LIVING SPIRIT ORB (Avatar World Only) === */}
+        {isAvatarWorld && showOrb && (
+          <>
+            <AnchorOrb 
+              colors={colors}
+              energy={energy_level}
+              pulseSpeed={pulseSpeed}
+              presenceIntensity={presenceIntensity}
+              onActivate={handleOrbActivate}
+            />
+            
+            {/* Void Input Overlay */}
+            <VoidInput 
+              isActive={showVoidInput}
+              onClose={handleVoidClose}
+              onSubmit={handleVoidSubmit}
+              colors={colors}
+            />
+          </>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default ImmersivePageWrapper;

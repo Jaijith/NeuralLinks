@@ -22,6 +22,7 @@ import { useWorldMode } from "@/contexts/WorldModeContext";
 import AppHeader from "@/components/AppHeader";
 import SideMessenger from "@/components/SideMessenger";
 import ProfilePictureCropper from "@/components/common/ProfilePictureCropper";
+import { ImmersivePageWrapper } from "@/components/ambient";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -733,20 +734,24 @@ const ProfilePageFull = ({ user: currentUser }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
-      </div>
+      <ImmersivePageWrapper pageId="profile" showToggle={false} user={currentUser}>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </ImmersivePageWrapper>
     );
   }
 
   if (!profileUser) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <Lock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 text-lg">{profileError || "Profile not found"}</p>
+      <ImmersivePageWrapper pageId="profile" showToggle={false} user={currentUser}>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <Lock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600 text-lg">{profileError || "Profile not found"}</p>
+          </div>
         </div>
-      </div>
+      </ImmersivePageWrapper>
     );
   }
 
@@ -788,7 +793,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <ImmersivePageWrapper pageId="profile" user={currentUser}>
       <AppHeader user={currentUser} currentPage="profile" />
       
       {/* Cover Photo */}
@@ -2123,7 +2128,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
         cropShape="rect"
         title={worldMode === 'avatar' ? 'Edit Maya Cover Photo' : 'Edit Cover Photo'}
       />
-    </div>
+    </ImmersivePageWrapper>
   );
 };
 

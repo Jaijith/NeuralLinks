@@ -8,6 +8,7 @@ import { Heart, MessageCircle, Sparkles, TrendingUp, Brain } from "lucide-react"
 import axios from "axios";
 import { toast } from "sonner";
 import AppHeader from "@/components/AppHeader";
+import { ImmersivePageWrapper } from "@/components/ambient";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -50,7 +51,7 @@ const Matches = ({ user, setUser }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-slate-50">
+    <ImmersivePageWrapper pageId="matches" user={user}>
       <AppHeader user={user} setUser={setUser} currentPage="matches" />
 
       <main className="max-w-7xl mx-auto px-6 py-12">
@@ -272,7 +273,7 @@ const Matches = ({ user, setUser }) => {
           </div>
         )}
       </main>
-    </div>
+    </ImmersivePageWrapper>
   );
 };
 

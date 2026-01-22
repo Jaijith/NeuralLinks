@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, User as UserIcon, MapPin, Cake, Tag } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
+import { ImmersivePageWrapper } from "@/components/ambient";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -59,7 +60,7 @@ const Profile = ({ user, setUser }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <ImmersivePageWrapper pageId="profile-edit" user={user}>
       {/* Header */}
       <header className="bg-white/70 backdrop-blur-md border-b border-purple-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -268,7 +269,7 @@ const Profile = ({ user, setUser }) => {
           </p>
         </Card>
       </main>
-    </div>
+    </ImmersivePageWrapper>
   );
 };
 

@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, Send, Heart } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
+import { ImmersivePageWrapper } from "@/components/ambient";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -89,19 +90,22 @@ const Chat = ({ user }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading conversation...</p>
+      <ImmersivePageWrapper pageId="chat" showToggle={false} user={user}>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading conversation...</p>
+          </div>
         </div>
-      </div>
+      </ImmersivePageWrapper>
     );
   }
 
   if (!match) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 flex flex-col">
+    <ImmersivePageWrapper pageId="chat" user={user}>
+      <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="bg-white/70 backdrop-blur-md border-b border-purple-100 sticky top-0 z-50" data-testid="chat-header">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -235,7 +239,8 @@ const Chat = ({ user }) => {
           </Button>
         </div>
       </div>
-    </div>
+      </div>
+    </ImmersivePageWrapper>
   );
 };
 
