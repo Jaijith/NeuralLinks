@@ -245,12 +245,12 @@ const bondingService = {
    * Trigger a bonding workflow conversation
    */
   async trigger(userId, avatarId, message, sessionId = null) {
-    const response = await api.post('/workflow/bonding/trigger', {
+    const response = await axios.post(`${API}/bonding/trigger`, {
       user_id: userId,
       avatar_id: avatarId,
       message: message,
       session_id: sessionId
-    });
+    }, config);
     return response.data;
   },
 
@@ -258,12 +258,12 @@ const bondingService = {
    * Submit feedback on a bonding interaction
    */
   async submitFeedback(sessionId, rating, helpful, comments = null) {
-    const response = await api.post('/workflow/bonding/feedback', {
+    const response = await axios.post(`${API}/bonding/feedback`, {
       session_id: sessionId,
       rating: rating,
       helpful: helpful,
       comments: comments
-    });
+    }, config);
     return response.data;
   },
 
@@ -271,7 +271,8 @@ const bondingService = {
    * Get bonding state for user-avatar relationship
    */
   async getState(userId, avatarId) {
-    const response = await api.get(`/workflow/bonding/state/${avatarId}`, {
+    const response = await axios.get(`${API}/bonding/state/${avatarId}`, {
+      ...config,
       params: { user_id: userId }
     });
     return response.data;
@@ -281,7 +282,7 @@ const bondingService = {
    * Get details of a specific bonding session
    */
   async getSession(sessionId) {
-    const response = await api.get(`/workflow/bonding/session/${sessionId}`);
+    const response = await axios.get(`${API}/bonding/session/${sessionId}`, config);
     return response.data;
   },
 
@@ -293,7 +294,7 @@ const bondingService = {
     if (avatarId) {
       params.avatar_id = avatarId;
     }
-    const response = await api.get('/workflow/bonding/sessions', { params });
+    const response = await axios.get(`${API}/bonding/sessions`, { ...config, params });
     return response.data;
   }
 };

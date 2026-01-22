@@ -18,10 +18,12 @@ import {
   SpiritTrail, 
   AnchorOrb, 
   VoidInput,
-  ViewModeToggle
+  ViewModeToggle,
+  AvatarResponseOverlay
 } from "@/components/ambient";
 import useAvatarState from "@/hooks/useAvatarState";
 import useViewMode from "@/hooks/useViewMode";
+import { chatService } from "@/services/api/workflowService";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -276,6 +278,22 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   const [showVoidInput, setShowVoidInput] = useState(false);
   const [customWhisper, setCustomWhisper] = useState(null);
   const [interests, setInterests] = useState([]);
+  const [avatarResponse, setAvatarResponse] = useState(null);
+  const [showResponse, setShowResponse] = useState(false);
+  const [chatSessionId, setChatSessionId] = useState(null);
+  
+  // Initialize chat session when user is available
+  useEffect(() => {
+    if (isAvatarWorld && currentUser?.id && !chatSessionId) {
+      chatService.createSession(currentUser.id)
+        .then(session => {
+          setChatSessionId(session.session_id);
+        })
+        .catch(err => {
+          console.error('Failed to create chat session:', err);
+        });
+    }
+  }, [isAvatarWorld, currentUser?.id, chatSessionId]);
 
   // Fetch user interests for spirit trail text particles
   useEffect(() => {
@@ -317,26 +335,66 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showVoidInput, isAvatarWorld, sendUserEvent]);
 
-  // Handle void input submission
+  // Handle void input submission - use chatService for proper AI responses
   const handleVoidSubmit = useCallback(async (message) => {
     if (!message.trim()) return;
     
-    // Show feedback whisper
-    setCustomWhisper("SYNC COMPLETE");
-    setTimeout(() => setCustomWhisper(null), 3000);
+    // Show thinking whisper
+    setCustomWhisper("THINKING...");
+    setShowVoidInput(false);
     
-    // Send to bonding API
     try {
-      await axios.post(
-        `${BACKEND_URL}/api/bonding/initiate`,
-        { user_message: message, context: { source: 'void_input' } },
-        { withCredentials: true }
-      );
+      // Ensure we have a chat session
+      let sessionId = chatSessionId;
+      if (!sessionId && currentUser?.id) {
+        const session = await chatService.createSession(currentUser.id);
+        sessionId = session.session_id;
+        setChatSessionId(sessionId);
+      }
+      
+      if (!sessionId) {
+        throw new Error('No chat session available');
+      }
+      
+      // Use chatService for proper AI response
+      const response = await chatService.sendMessage(sessionId, message);
+      
+      if (response.success && response.avatar_response) {
+        setCustomWhisper("...");
+        
+        // Format response for overlay
+        const formattedResponse = {
+          success: true,
+          cards: [{
+            type: response.intent || 'general_chat',
+            content: response.avatar_response
+          }],
+          detected_intent: response.intent,
+          new_mood: response.mood_after || 'neutral',
+          metrics: response.metrics || {}
+        };
+        
+        // Short delay then show response
+        setTimeout(() => {
+          setAvatarResponse(formattedResponse);
+          setShowResponse(true);
+          setCustomWhisper(null);
+        }, 500);
+      } else {
+        setCustomWhisper("HEARD");
+        setTimeout(() => setCustomWhisper(null), 2000);
+      }
     } catch (err) {
       console.error('Failed to send void input:', err);
+      setCustomWhisper("...");
+      setTimeout(() => setCustomWhisper(null), 2000);
     }
-    
-    setShowVoidInput(false);
+  }, [currentUser?.id, chatSessionId]);
+  
+  // Handle response overlay close
+  const handleResponseClose = useCallback(() => {
+    setShowResponse(false);
+    setAvatarResponse(null);
   }, []);
 
   // Handle orb activation
@@ -627,6 +685,15 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                 sendUserEvent?.('input_cancelled');
               }}
               colors={colors}
+            />
+            
+            {/* Avatar Response Overlay */}
+            <AvatarResponseOverlay
+              isVisible={showResponse}
+              response={avatarResponse}
+              onClose={handleResponseClose}
+              colors={colors}
+              autoCloseDelay={10000}
             />
           </>
         )}

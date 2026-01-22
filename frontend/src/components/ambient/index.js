@@ -12,4 +12,5 @@ export { default as SpiritTrail } from './SpiritTrail';
 export { default as AnchorOrb } from './AnchorOrb';
 export { default as VoidInput } from './VoidInput';
 export { default as ViewModeToggle } from './ViewModeToggle';
+export { default as AvatarResponseOverlay } from './AvatarResponseOverlay';
 export { default as ImmersivePageWrapper } from './ImmersivePageWrapper';
