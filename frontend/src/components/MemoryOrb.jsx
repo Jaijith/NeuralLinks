@@ -343,17 +343,24 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
 
         .memory-orb-page .orb-container {
           position: relative;
-          width: 400px;
-          height: 400px;
+          width: min(300px, 80vw);
+          height: min(300px, 80vw);
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
+        @media (min-width: 640px) {
+          .memory-orb-page .orb-container {
+            width: 400px;
+            height: 400px;
+          }
+        }
+
         .memory-orb-page .orb {
           position: relative;
-          width: 300px;
-          height: 300px;
+          width: min(220px, 60vw);
+          height: min(220px, 60vw);
           border-radius: 50%;
           background: radial-gradient(
             circle at 50% 50%,
@@ -372,14 +379,21 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
             flicker 1.8s ease-in-out infinite;
         }
 
+        @media (min-width: 640px) {
+          .memory-orb-page .orb {
+            width: 300px;
+            height: 300px;
+          }
+        }
+
         .memory-orb-page .orb::before {
           content: "";
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 200px;
-          height: 200px;
+          width: min(150px, 45vw);
+          height: min(150px, 45vw);
           border-radius: 50%;
           border: 2px solid rgba(255, 255, 255, 0.9);
           box-shadow:
@@ -387,6 +401,13 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
             0 0 40px var(--inner-glow),
             inset 0 0 15px rgba(255, 255, 255, 0.4);
           animation: ringRotate 12s linear infinite;
+        }
+
+        @media (min-width: 640px) {
+          .memory-orb-page .orb::before {
+            width: 200px;
+            height: 200px;
+          }
         }
 
         .memory-orb-page .orb::after {
@@ -425,8 +446,8 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 360px;
-          height: 360px;
+          width: min(280px, 75vw);
+          height: min(280px, 75vw);
           border-radius: 50%;
           border: 1px solid transparent;
           background: conic-gradient(
@@ -437,6 +458,16 @@ const MemoryOrb = ({ user, hideHeader = false }) => {
           );
           mask: radial-gradient(transparent 90%, black 91%);
           -webkit-mask: radial-gradient(transparent 90%, black 91%);
+        }
+
+        @media (min-width: 640px) {
+          .memory-orb-page .energy-ring {
+            width: 360px;
+            height: 360px;
+          }
+        }
+        
+        .memory-orb-page .energy-ring {
           opacity: 0.6;
           animation: energyPulse 3s ease-in-out infinite;
         }

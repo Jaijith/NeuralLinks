@@ -2,6 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================
+   RESPONSIVE & MOBILE-FIRST FOUNDATION
+   ======================================== */
+
+/* CSS Custom Properties for responsive values */
+:root {
+    /* Safe area insets (for notched devices / PWA) */
+    --safe-area-inset-top: env(safe-area-inset-top, 0px);
+    --safe-area-inset-right: env(safe-area-inset-right, 0px);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-inset-left: env(safe-area-inset-left, 0px);
+    
+    /* Mobile viewport height fix - uses dvh with fallback */
+    --vh-full: 100vh;
+    --vh-full: 100dvh;
+    
+    /* Minimum touch target size (WCAG/Apple guidelines) */
+    --touch-target-min: 44px;
+    
+    /* Responsive spacing scale */
+    --space-page-x: clamp(1rem, 4vw, 1.5rem);
+    --space-page-y: clamp(1rem, 3vh, 1.5rem);
+    
+    /* Header height for offset calculations */
+    --header-height: 56px;
+    
+    /* Container max widths */
+    --container-sm: 640px;
+    --container-md: 768px;
+    --container-lg: 1024px;
+    --container-xl: 1280px;
+}
+
+/* Dynamic viewport height for mobile browsers */
+@supports (height: 100dvh) {
+    :root {
+        --vh-full: 100dvh;
+    }
+}
+
+/* Small viewport height (always excludes browser chrome) */
+@supports (height: 100svh) {
+    :root {
+        --vh-small: 100svh;
+    }
+}
+
 body {
     margin: 0;
     font-family:
@@ -10,11 +57,307 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal overflow */
+    overflow-x: hidden;
+    /* Enable smooth scrolling */
+    scroll-behavior: smooth;
+    /* Support for safe areas in PWA mode */
+    padding-top: var(--safe-area-inset-top);
+    padding-bottom: var(--safe-area-inset-bottom);
+    padding-left: var(--safe-area-inset-left);
+    padding-right: var(--safe-area-inset-right);
+}
+
+/* PWA standalone mode adjustments */
+@media all and (display-mode: standalone) {
+    body {
+        /* Additional padding for PWA mode where status bar overlaps */
+        padding-top: max(var(--safe-area-inset-top), 20px);
+    }
+    
+    /* Ensure header accounts for safe area */
+    header.sticky {
+        top: var(--safe-area-inset-top);
+    }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+    body {
+        /* Prevent elastic bounce on iOS */
+        overscroll-behavior-y: none;
+    }
+    
+    /* Fix 100vh on iOS Safari */
+    .min-h-screen {
+        min-height: var(--vh-full);
+        min-height: -webkit-fill-available;
+    }
 }
 
 code {
     font-family:
         source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* ========================================
+   RESPONSIVE UTILITIES
+   ======================================== */
+
+/* Utility class for full mobile viewport height */
+.h-screen-safe {
+    height: var(--vh-full);
+}
+
+.min-h-screen-safe {
+    min-height: var(--vh-full);
+}
+
+/* Content area that accounts for fixed header */
+.content-below-header {
+    padding-top: var(--header-height);
+}
+
+/* Touch-friendly interactive elements */
+.touch-target {
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+}
+
+/* Responsive container with safe area padding */
+.container-responsive {
+    width: 100%;
+    max-width: var(--container-xl);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-page-x);
+    padding-right: var(--space-page-x);
+}
+
+/* Prevent text overflow */
+.text-break-safe {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+}
+
+/* Responsive images/media */
+.media-responsive {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* ========================================
+   CHROME/WEBKIT SPECIFIC FIXES
+   ======================================== */
+
+/* Fix backdrop-filter rendering issues in Chrome */
+@supports (backdrop-filter: blur(1px)) {
+    .glass-morphism,
+    [class*="backdrop-blur"] {
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        /* Force GPU acceleration */
+        transform: translateZ(0);
+        will-change: backdrop-filter;
+    }
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(1px)) {
+    .glass-morphism {
+        background: rgba(255, 255, 255, 0.95) !important;
+    }
+}
+
+/* Fix sticky positioning inside transformed parents */
+.sticky-chrome-fix {
+    position: -webkit-sticky;
+    position: sticky;
+    /* Prevent issues with transform on parent */
+    transform: translateZ(0);
+}
+
+/* Smooth scrolling for Chrome Android */
+.scroll-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* Fix for font rendering in Chrome */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Preload critical fonts to prevent layout shift */
+@font-face {
+    font-family: 'Inter';
+    font-display: swap;
+    src: local('Inter');
+}
+
+@font-face {
+    font-family: 'Space Grotesk';
+    font-display: swap;
+    src: local('Space Grotesk');
+}
+
+/* ========================================
+   MOBILE-FIRST RESPONSIVE BREAKPOINTS
+   Tailwind default: sm:640 md:768 lg:1024 xl:1280
+   ======================================== */
+
+/* Extra small devices (320px and up) */
+@media (max-width: 359px) {
+    :root {
+        --space-page-x: 0.75rem;
+    }
+    
+    /* Smaller text for very small screens */
+    html {
+        font-size: 14px;
+    }
+}
+
+/* Small devices (360px - 639px) */
+@media (min-width: 360px) and (max-width: 639px) {
+    :root {
+        --space-page-x: 1rem;
+    }
+}
+
+/* Medium devices and up (640px+) */
+@media (min-width: 640px) {
+    :root {
+        --space-page-x: 1.5rem;
+        --header-height: 60px;
+    }
+}
+
+/* Large devices (1024px+) */
+@media (min-width: 1024px) {
+    :root {
+        --space-page-x: 2rem;
+    }
+}
+
+/* ========================================
+   FORM INPUT MOBILE FIXES
+   ======================================== */
+
+/* Prevent iOS zoom on input focus */
+@media (max-width: 767px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"],
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+}
+
+/* Ensure inputs are visible when keyboard opens */
+input:focus,
+textarea:focus {
+    scroll-margin-bottom: 100px;
+}
+
+/* Touch-friendly form elements */
+input,
+textarea,
+select,
+button {
+    min-height: var(--touch-target-min);
+}
+
+/* ========================================
+   MODAL/OVERLAY MOBILE FIXES
+   ======================================== */
+
+/* Ensure modals stay within viewport */
+[role="dialog"],
+.modal-content {
+    max-height: calc(var(--vh-full) - 2rem);
+    max-width: calc(100vw - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* Fixed bottom elements (like bottom nav, FAB) */
+.fixed-bottom-safe {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: max(var(--safe-area-inset-bottom), 1rem);
+}
+
+/* ========================================
+   SCROLLBAR STYLING (Cross-browser)
+   ======================================== */
+
+/* Thin scrollbars for Chrome/Safari/newer browsers */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.7);
+}
+
+/* Hide scrollbars on mobile for cleaner look, still scrollable */
+@media (max-width: 767px) {
+    .hide-scrollbar-mobile {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .hide-scrollbar-mobile::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* ========================================
+   MOBILE LAYOUT - HIDE SIDEBARS
+   Only applies to containers with data-sidebar elements
+   ======================================== */
+
+@media (max-width: 1023px) {
+    /* Hide explicitly marked sidebars on mobile/tablet */
+    [data-sidebar="left"],
+    [data-sidebar="right"] {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    /* Show sidebars on desktop */
+    [data-sidebar="left"],
+    [data-sidebar="right"] {
+        display: block !important;
+    }
 }
 
 @layer base {

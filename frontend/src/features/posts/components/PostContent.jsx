@@ -18,9 +18,9 @@ const PostContent = memo(({ post, className = '' }) => {
   };
 
   return (
-    <div className={`px-4 pb-3 ${className}`}>
+    <div className={`px-3 sm:px-4 pb-3 overflow-hidden ${className}`}>
       {text && (
-        <p className="text-sm leading-relaxed whitespace-pre-wrap text-gray-800 mb-3">
+        <p className="text-sm leading-relaxed whitespace-pre-wrap break-words text-gray-800 mb-3">
           {text}
         </p>
       )}

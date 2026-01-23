@@ -174,51 +174,43 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
           </div>
         )}
 
-        {/* Avatar Card */}
-        <Card className={`${isAvatarWorld ? 'card-avatar' : 'glass-morphism'} p-8 mb-6`}>
-          <div className="flex items-center space-x-6">
-            <Avatar className={`w-24 h-24 border-4 ${isAvatarWorld ? 'border-yellow-400 avatar-glow' : 'border-purple-300'}`}>
+        {/* Avatar Card - responsive layout */}
+        <Card className={`${isAvatarWorld ? 'card-avatar' : 'glass-morphism'} p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 overflow-hidden`}>
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+            <Avatar className={`w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 border-4 flex-shrink-0 ${isAvatarWorld ? 'border-yellow-400 avatar-glow' : 'border-purple-300'}`}>
               <AvatarImage src={avatar_info?.picture || null} alt={avatar_info?.name || "Avatar"} />
               <AvatarFallback className={isAvatarWorld ? 'bg-yellow-500 text-slate-900 font-bold' : ''}>
                 {(avatar_info?.name || "Avatar")[0]}
               </AvatarFallback>
             </Avatar>
-            <div className="flex-1">
-              <h2 className={`text-3xl font-bold mb-2 ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
+            <div className="flex-1 min-w-0 text-center sm:text-left">
+              <h2 className={`text-xl sm:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2 truncate ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
                 {avatar_info?.name || "Avatar"}
               </h2>
-              <p className={`mb-4 ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
+              <p className={`text-sm sm:text-base mb-3 sm:mb-4 line-clamp-2 ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
                 {avatar_info?.bio || "Your digital persona"}
               </p>
-              <div className="flex items-center space-x-4">
-                <Badge className={isAvatarWorld ? 'bg-yellow-400 text-slate-900 font-bold' : 'bg-purple-100 text-purple-700'}>
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <Badge className={`text-xs sm:text-sm ${isAvatarWorld ? 'bg-yellow-400 text-slate-900 font-bold' : 'bg-purple-100 text-purple-700'}`}>
                   <Brain className="w-3 h-3 mr-1" />
-                  {graph_stats.total_nodes} Graph Nodes
+                  {graph_stats.total_nodes} Nodes
                 </Badge>
-                <Badge className={isAvatarWorld ? 'bg-yellow-400 text-slate-900 font-bold' : 'bg-blue-100 text-blue-700'}>
+                <Badge className={`text-xs sm:text-sm ${isAvatarWorld ? 'bg-yellow-400 text-slate-900 font-bold' : 'bg-blue-100 text-blue-700'}`}>
                   <Sparkles className="w-3 h-3 mr-1" />
                   {(avatar_info?.archetype || "casual_observer").replace("_", " ")}
                 </Badge>
               </div>
             </div>
-            <Button 
-              onClick={fetchGraphData} 
-              variant="outline"
-              className={isAvatarWorld ? 'border-2 border-yellow-400 text-yellow-200 hover:bg-yellow-500/20 font-semibold' : ''}
-            >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Refresh
-            </Button>
           </div>
         </Card>
 
-        {/* Tabs */}
-        <div className="flex space-x-2 mb-6">
+        {/* Tabs - horizontally scrollable on mobile */}
+        <div className="flex gap-2 mb-4 sm:mb-6 overflow-x-auto pb-2 -mx-3 px-3 sm:mx-0 sm:px-0 hide-scrollbar-mobile">
           {[
             { id: "overview", label: "Overview", icon: Eye },
             { id: "interests", label: "Interests", icon: Star },
             { id: "personality", label: "Personality", icon: Brain },
-            { id: "sources", label: "Data Sources", icon: BarChart3 }
+            { id: "sources", label: "Sources", icon: BarChart3 }
           ].map((tab) => {
             const Icon = tab.icon;
             return (
@@ -226,7 +218,7 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 variant={activeTab === tab.id ? "default" : "outline"}
-                className={
+                className={`flex-shrink-0 text-xs sm:text-sm min-h-[44px] px-3 sm:px-4 ${
                   isAvatarWorld
                     ? activeTab === tab.id
                       ? "bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold"
@@ -234,9 +226,9 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
                     : activeTab === tab.id
                     ? "bg-purple-500"
                     : ""
-                }
+                }`}
               >
-                <Icon className="w-4 h-4 mr-2" />
+                <Icon className="w-4 h-4 mr-1 sm:mr-2" />
                 {tab.label}
               </Button>
             );

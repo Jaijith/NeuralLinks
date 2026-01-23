@@ -64,12 +64,20 @@ const AnchorOrb = ({
     window.addEventListener('mouseup', cleanup, { once: true });
   }, []);
   
-  // Orb size based on state
-  const orbSize = isHovered ? 80 : 56;
+  // Orb size based on state - smaller on mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+  const baseSize = isMobile ? 48 : 56;
+  const orbSize = isHovered ? (isMobile ? 64 : 80) : baseSize;
   const glowIntensity = 0.4 + presenceIntensity * 0.3 + (isCharging ? chargeProgress * 0.3 : 0);
   
   return (
-    <div className="fixed bottom-6 right-6 z-[100]">
+    // Position above mobile bottom nav (56px + safe area + spacing)
+    <div 
+      className="fixed z-[100] bottom-[72px] sm:bottom-6 right-4 sm:right-6"
+      style={{ 
+        bottom: isMobile ? 'calc(72px + env(safe-area-inset-bottom, 0px))' : undefined
+      }}
+    >
       {/* Ambient glow halo - always visible */}
       <motion.div
         className="absolute rounded-full"

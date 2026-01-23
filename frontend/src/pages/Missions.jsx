@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
-  MessageCircle, Send, Loader2, Maximize2, Minimize2
+  MessageCircle, Send, Loader2, Maximize2, Minimize2, Menu, X, ChevronUp, ChevronDown
 } from 'lucide-react';
 import workflowService, { missionService, leadService, chatService } from '@/services/api/workflowService';
 import { toast } from 'sonner';
@@ -52,6 +52,10 @@ const Missions = ({ user, setUser }) => {
   const [chatExpanded, setChatExpanded] = useState(false);
   const [bondingResponse, setBondingResponse] = useState(null);
   const chatEndRef = useRef(null);
+  
+  // Mobile UI state
+  const [mobileLeftPanelOpen, setMobileLeftPanelOpen] = useState(false);
+  const [mobileChatOpen, setMobileChatOpen] = useState(false);
   
   // Polling ref
   const pollingRef = useRef(null);
@@ -457,15 +461,65 @@ const Missions = ({ user, setUser }) => {
     <ImmersivePageWrapper pageId="missions" user={user}>
       <AppHeader user={user} setUser={setUser} currentPage="missions" />
 
-      <main className="h-[calc(100vh-56px)] flex overflow-hidden">
-        {/* Left Panel - Timeline & Chat */}
-        <div className="w-80 flex flex-col border-r border-gray-200 bg-white shadow-sm">
+      {/* Main content with dynamic height for mobile bottom nav */}
+      <main className="h-[calc(100vh-56px)] sm:h-[calc(100vh-56px)] flex overflow-hidden relative" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+        
+        {/* Mobile Top Bar with quick actions */}
+        <div className="lg:hidden absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-2 sm:p-3 bg-white/80 backdrop-blur-sm border-b border-gray-200">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMobileLeftPanelOpen(true)}
+            className="min-h-[44px] min-w-[44px] p-2"
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+          <span className="text-sm font-medium text-gray-700">
+            {selectedMission?.name || 'Missions'}
+          </span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMobileChatOpen(!mobileChatOpen)}
+            className="min-h-[44px] min-w-[44px] p-2 relative"
+          >
+            <MessageCircle className="w-5 h-5" />
+            {chatMessages.length > 0 && (
+              <span className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full" />
+            )}
+          </Button>
+        </div>
+        
+        {/* Left Panel - Timeline & Chat (hidden on mobile, slide out) */}
+        <div className={`
+          fixed lg:relative inset-y-0 left-0 z-30
+          w-[85vw] sm:w-80 flex flex-col 
+          border-r border-gray-200 bg-white shadow-lg lg:shadow-sm
+          transform transition-transform duration-300 ease-in-out
+          ${mobileLeftPanelOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
+          {/* Mobile close button */}
+          <div className="lg:hidden flex items-center justify-between p-3 border-b border-gray-200">
+            <span className="font-semibold text-gray-800">Missions</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setMobileLeftPanelOpen(false)}
+              className="min-h-[44px] min-w-[44px] p-2"
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+          
           {/* Mission Timeline */}
           <div className="flex-1 min-h-0 overflow-hidden">
             <MissionTimeline
               missions={missions}
               selectedMission={selectedMission}
-              onSelectMission={selectMission}
+              onSelectMission={(m) => {
+                selectMission(m);
+                setMobileLeftPanelOpen(false);
+              }}
               onReplayMission={(m) => toast.info('Replay coming soon')}
               onResumeMission={(m) => handleMissionAction(m.id, 'resume')}
               loading={loading}
@@ -473,9 +527,9 @@ const Missions = ({ user, setUser }) => {
             />
           </div>
           
-          {/* Chat Interface - Fixed height container */}
+          {/* Desktop Chat Interface - Fixed height container */}
           <div 
-            className="flex-shrink-0 border-t border-gray-200 bg-white"
+            className="hidden lg:flex flex-shrink-0 border-t border-gray-200 bg-white flex-col"
             style={{ height: chatExpanded ? '280px' : '180px', transition: 'height 0.2s ease' }}
           >
             <div className="h-full flex flex-col">
@@ -552,14 +606,14 @@ const Missions = ({ user, setUser }) => {
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                     placeholder="Find people who..."
-                    className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                    className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 min-h-[44px]"
                     disabled={isSending}
                   />
                   <Button
                     size="sm"
                     onClick={handleSendMessage}
                     disabled={isSending || !inputMessage.trim()}
-                    className="bg-purple-500 hover:bg-purple-600 px-3"
+                    className="bg-purple-500 hover:bg-purple-600 px-3 min-h-[44px] min-w-[44px]"
                   >
                     {isSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                   </Button>
@@ -569,10 +623,18 @@ const Missions = ({ user, setUser }) => {
           </div>
         </div>
 
+        {/* Overlay for mobile when left panel is open */}
+        {mobileLeftPanelOpen && (
+          <div 
+            className="lg:hidden fixed inset-0 bg-black/50 z-20"
+            onClick={() => setMobileLeftPanelOpen(false)}
+          />
+        )}
+
         {/* Center Panel - World Canvas */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col pt-14 lg:pt-0 pb-16 sm:pb-0">
           {/* Avatar Status Strip */}
-          <div className="p-4">
+          <div className="p-2 sm:p-4">
             <AvatarStatusStrip
               avatarName={user?.avatar_name || user?.name}
               avatarPicture={user?.avatar_picture || user?.picture}
@@ -584,7 +646,7 @@ const Missions = ({ user, setUser }) => {
           </div>
           
           {/* World Canvas */}
-          <div className="flex-1 p-4 pt-0">
+          <div className="flex-1 p-2 sm:p-4 pt-0">
             <WorldCanvas
               entities={worldEntities}
               interactions={worldInteractions}
@@ -598,11 +660,86 @@ const Missions = ({ user, setUser }) => {
           </div>
         </div>
 
-        {/* Right Panel - Briefing (when mission selected) */}
+        {/* Mobile Bottom Chat Panel */}
+        <AnimatePresence>
+          {mobileChatOpen && (
+            <motion.div
+              className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 shadow-lg"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+            >
+              {/* Handle bar */}
+              <div 
+                className="flex justify-center py-2 cursor-pointer"
+                onClick={() => setMobileChatOpen(false)}
+              >
+                <div className="w-10 h-1 bg-gray-300 rounded-full" />
+              </div>
+              
+              {/* Chat content */}
+              <div className="max-h-[50vh] flex flex-col">
+                {/* Chat Messages */}
+                <div className="flex-1 overflow-y-auto px-3 pb-2">
+                  <div className="space-y-2">
+                    {chatMessages.length === 0 ? (
+                      <p className="text-xs text-gray-400 text-center py-4">
+                        Tell me what you're looking for...
+                      </p>
+                    ) : (
+                      chatMessages.map((msg, i) => (
+                        <div
+                          key={i}
+                          className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                        >
+                          <div
+                            className={`max-w-[85%] px-3 py-2 rounded-lg text-sm ${
+                              msg.role === 'user'
+                                ? 'bg-purple-500 text-white'
+                                : 'bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            {msg.content}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+                
+                {/* Chat Input */}
+                <div className="flex-shrink-0 p-3 border-t border-gray-100 bg-gray-50/50">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={inputMessage}
+                      onChange={(e) => setInputMessage(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                      placeholder="Find people who..."
+                      className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 min-h-[44px]"
+                      disabled={isSending}
+                    />
+                    <Button
+                      size="sm"
+                      onClick={handleSendMessage}
+                      disabled={isSending || !inputMessage.trim()}
+                      className="bg-purple-500 hover:bg-purple-600 px-4 min-h-[44px] min-w-[44px]"
+                    >
+                      {isSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Right Panel - Briefing (when mission selected) - hidden on mobile */}
         <AnimatePresence>
           {selectedMission?.status === 'completed' && (
             <motion.div
-              className="w-96 border-l border-gray-200 bg-white/80 backdrop-blur-sm"
+              className="hidden lg:block w-96 border-l border-gray-200 bg-white/80 backdrop-blur-sm"
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 384, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}

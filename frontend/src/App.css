@@ -14,6 +14,155 @@ body {
   transition: background 0.5s ease;
 }
 
+/* ========================================
+   RESPONSIVE LAYOUT UTILITIES
+   ======================================== */
+
+/* Responsive grid that adapts to mobile */
+.responsive-grid-12 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .responsive-grid-12 {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Sidebar - hidden on mobile, shown on larger screens */
+.responsive-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .responsive-sidebar {
+    display: block;
+    grid-column: span 3;
+  }
+}
+
+/* Main content - full width on mobile, 6 cols on desktop */
+.responsive-main {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .responsive-main {
+    grid-column: span 8;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-main {
+    grid-column: span 6;
+  }
+}
+
+/* Right sidebar - hidden on mobile/tablet, shown on desktop */
+.responsive-right-sidebar {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .responsive-right-sidebar {
+    display: block;
+    grid-column: span 4;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-right-sidebar {
+    display: block;
+    grid-column: span 3;
+  }
+}
+
+/* Fluid typography */
+.text-fluid-sm {
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+}
+
+.text-fluid-base {
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
+
+.text-fluid-lg {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+}
+
+.text-fluid-xl {
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
+}
+
+.text-fluid-2xl {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.text-fluid-3xl {
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+}
+
+/* Responsive padding/margins */
+.px-responsive {
+  padding-left: var(--space-page-x);
+  padding-right: var(--space-page-x);
+}
+
+.py-responsive {
+  padding-top: var(--space-page-y);
+  padding-bottom: var(--space-page-y);
+}
+
+/* Mobile-friendly card grid */
+.card-grid-responsive {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .card-grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Stack on mobile, row on desktop */
+.stack-to-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .stack-to-row {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Two-column layout that stacks on mobile */
+.two-col-stack {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .two-col-stack {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
 /* Avatar World Styles */
 body.avatar-world {
   background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 25%, #ffffff 50%, #f8fafc 75%, #f1f5f9 100%);

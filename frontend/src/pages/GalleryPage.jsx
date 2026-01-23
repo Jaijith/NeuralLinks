@@ -131,13 +131,13 @@ const GalleryPage = ({ user, setUser }) => {
     <ImmersivePageWrapper pageId="gallery" user={user}>
       <AppHeader user={user} setUser={setUser} currentPage="gallery" />
       
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 pb-20 sm:pb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-2 text-gray-900">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-gray-900">
               Gallery
             </h1>
-            <p className="text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600">
               {galleryPhotos.length} {galleryPhotos.length === 1 ? 'photo' : 'photos'}
             </p>
           </div>
@@ -154,7 +154,7 @@ const GalleryPage = ({ user, setUser }) => {
                 e.preventDefault();
                 document.getElementById('gallery-upload')?.click();
               }}
-              className="bg-blue-500 hover:bg-blue-600 text-white"
+              className="bg-blue-500 hover:bg-blue-600 text-white min-h-[44px] w-full sm:w-auto"
             >
               <Camera className="w-4 h-4 mr-2" />
               Upload Photo
@@ -163,12 +163,12 @@ const GalleryPage = ({ user, setUser }) => {
         </div>
 
         {galleryPhotos.length === 0 ? (
-          <Card className="p-12 text-center glass-morphism">
-            <ImageIcon className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+          <Card className="p-6 sm:p-8 md:p-12 text-center glass-morphism">
+            <ImageIcon className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 text-gray-400" />
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-gray-900">
               No photos yet
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">
               Start building your gallery by uploading your first photo!
             </p>
             <label className="cursor-pointer inline-block">
@@ -184,7 +184,7 @@ const GalleryPage = ({ user, setUser }) => {
                   e.preventDefault();
                   document.getElementById('gallery-upload-empty')?.click();
                 }}
-                className="bg-blue-500 hover:bg-blue-600 text-white"
+                className="bg-blue-500 hover:bg-blue-600 text-white min-h-[44px]"
               >
                 <Camera className="w-4 h-4 mr-2" />
                 Upload Your First Photo
@@ -192,7 +192,7 @@ const GalleryPage = ({ user, setUser }) => {
             </label>
           </Card>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
             {galleryPhotos.map((photo) => (
               <div
                 key={photo.id}
@@ -210,8 +210,8 @@ const GalleryPage = ({ user, setUser }) => {
                   }}
                 />
                 {photo.caption && (
-                  <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 via-black/60 to-transparent">
-                    <p className="text-sm text-white font-medium line-clamp-2 break-words">
+                  <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3 bg-gradient-to-t from-black/80 via-black/60 to-transparent">
+                    <p className="text-xs sm:text-sm text-white font-medium line-clamp-2 break-words">
                       {photo.caption}
                     </p>
                   </div>
@@ -222,21 +222,21 @@ const GalleryPage = ({ user, setUser }) => {
         )}
       </div>
 
-      {/* Upload Image Dialog */}
+      {/* Upload Image Dialog - responsive for mobile */}
       <Dialog open={showUploadImage} onOpenChange={setShowUploadImage}>
-        <DialogContent className="max-w-md bg-white">
+        <DialogContent className="max-w-[95vw] sm:max-w-md bg-white mx-2 sm:mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-gray-900 font-bold">
+            <DialogTitle className="text-gray-900 font-bold text-lg sm:text-xl">
               Upload Photo
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {selectedImage && (
               <div className="w-full">
                 <img
                   src={URL.createObjectURL(selectedImage)}
                   alt="Preview"
-                  className="w-full h-64 object-cover rounded"
+                  className="w-full h-48 sm:h-64 object-cover rounded"
                 />
               </div>
             )}
@@ -245,9 +245,9 @@ const GalleryPage = ({ user, setUser }) => {
               value={imageCaption}
               onChange={(e) => setImageCaption(e.target.value)}
               rows={3}
-              className="resize-none"
+              className="resize-none min-h-[80px] text-base"
             />
-            <div className="flex justify-end space-x-2">
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-2">
               <Button
                 variant="ghost"
                 onClick={() => {
@@ -256,13 +256,14 @@ const GalleryPage = ({ user, setUser }) => {
                   setImageCaption('');
                 }}
                 disabled={uploadingImage}
+                className="min-h-[44px] w-full sm:w-auto"
               >
                 Cancel
               </Button>
               <Button
                 onClick={uploadImage}
                 disabled={uploadingImage || !selectedImage}
-                className="bg-blue-500 hover:bg-blue-600 text-white"
+                className="bg-blue-500 hover:bg-blue-600 text-white min-h-[44px] w-full sm:w-auto"
               >
                 {uploadingImage ? 'Uploading...' : 'Upload'}
               </Button>

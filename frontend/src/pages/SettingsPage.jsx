@@ -41,42 +41,44 @@ const SettingsPage = ({ user, setUser }) => {
   return (
     <ImmersivePageWrapper pageId="settings" user={user}>
       <AppHeader user={user} setUser={setUser} currentPage="settings" />
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 pb-20 sm:pb-8">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-2">
-            <Settings className={`w-8 h-8 ${isAvatarWorld ? 'text-slate-700' : 'text-purple-600'}`} />
-            <h1 className={`text-4xl font-bold ${isAvatarWorld ? 'text-slate-800' : 'gradient-text'}`}>
+        <div className="mb-4 sm:mb-6 md:mb-8">
+          <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+            <Settings className={`w-6 h-6 sm:w-8 sm:h-8 ${isAvatarWorld ? 'text-slate-700' : 'text-purple-600'}`} />
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold ${isAvatarWorld ? 'text-slate-800' : 'gradient-text'}`}>
               Settings
             </h1>
           </div>
-          <p className={isAvatarWorld ? 'text-slate-600' : 'text-gray-600'}>
+          <p className={`text-sm sm:text-base ${isAvatarWorld ? 'text-slate-600' : 'text-gray-600'}`}>
             Manage your integrations and view your avatar's knowledge graph
           </p>
         </div>
 
-        {/* Tabs */}
+        {/* Tabs - scrollable on mobile */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
+          <TabsList className="grid w-full grid-cols-3 mb-4 sm:mb-6 h-auto">
             <TabsTrigger 
               value="avatar" 
-              className="flex items-center justify-center space-x-2"
+              className="flex items-center justify-center gap-1 sm:gap-2 px-2 py-2 sm:py-3 text-xs sm:text-sm min-h-[44px]"
             >
-              <Eye className="w-4 h-4" />
-              <span>Avatar Visualization</span>
+              <Eye className="w-4 h-4 flex-shrink-0" />
+              <span className="hidden xs:inline">Avatar</span>
+              <span className="xs:hidden">Avatar</span>
             </TabsTrigger>
             <TabsTrigger 
               value="integrations" 
-              className="flex items-center justify-center space-x-2"
+              className="flex items-center justify-center gap-1 sm:gap-2 px-2 py-2 sm:py-3 text-xs sm:text-sm min-h-[44px]"
             >
-              <Link2 className="w-4 h-4" />
-              <span>Integrations</span>
+              <Link2 className="w-4 h-4 flex-shrink-0" />
+              <span className="hidden sm:inline">Integrations</span>
+              <span className="sm:hidden">Connect</span>
             </TabsTrigger>
             <TabsTrigger 
               value="profile" 
-              className="flex items-center justify-center space-x-2"
+              className="flex items-center justify-center gap-1 sm:gap-2 px-2 py-2 sm:py-3 text-xs sm:text-sm min-h-[44px]"
             >
-              <User className="w-4 h-4" />
+              <User className="w-4 h-4 flex-shrink-0" />
               <span>Profile</span>
             </TabsTrigger>
           </TabsList>

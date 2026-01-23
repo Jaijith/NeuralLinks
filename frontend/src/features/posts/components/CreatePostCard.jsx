@@ -60,17 +60,17 @@ const CreatePostCard = React.memo(({
   };
 
   return (
-    <Card className={cn("rounded-xl p-4 glass-card", className)}>
-      <div className="flex items-center gap-3">
-        <Avatar className="w-10 h-10">
+    <Card className={cn("rounded-xl p-3 sm:p-4 glass-card overflow-hidden", className)}>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <Avatar className="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
           <AvatarImage src={displayPicture} alt={displayName} />
-          <AvatarFallback className="bg-blue-500 text-white">
+          <AvatarFallback className="bg-blue-500 text-white text-sm">
             {displayName?.charAt(0) || '?'}
           </AvatarFallback>
         </Avatar>
         <button
           onClick={onCreateClick}
-          className="flex-1 text-left px-4 py-2.5 rounded-full transition-all bg-gray-100 hover:bg-gray-200 text-gray-600"
+          className="flex-1 text-left px-3 sm:px-4 py-2 sm:py-2.5 rounded-full transition-all bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm sm:text-base truncate min-h-[44px]"
         >
           {placeholder}
         </button>
@@ -87,10 +87,10 @@ const CreatePostCard = React.memo(({
             <button
               key={idx}
               onClick={() => handleFeatureClick(item.label)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:bg-gray-100"
+              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg transition-all hover:bg-gray-100 min-h-[44px]"
             >
-              <Icon className="w-5 h-5" style={{ color: item.iconColor }} />
-              <span className="font-medium text-sm text-gray-700">{item.label}</span>
+              <Icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" style={{ color: item.iconColor }} />
+              <span className="font-medium text-xs sm:text-sm text-gray-700">{item.label}</span>
             </button>
           );
         })}

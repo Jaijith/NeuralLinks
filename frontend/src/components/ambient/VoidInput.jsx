@@ -123,7 +123,7 @@ const VoidInput = ({
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              {/* The input itself - minimalist */}
+              {/* The input itself - minimalist, responsive font size */}
               <motion.input
                 ref={inputRef}
                 type="text"
@@ -131,16 +131,15 @@ const VoidInput = ({
                 onChange={(e) => setValue(e.target.value)}
                 placeholder={placeholder}
                 disabled={isSubmitting}
-                className="bg-transparent border-none outline-none text-center"
+                className="bg-transparent border-none outline-none text-center w-[90vw] sm:w-[80vw] max-w-[600px]"
                 style={{
-                  fontSize: '2rem',
+                  fontSize: 'clamp(1.25rem, 4vw, 2rem)',
                   fontWeight: 300,
                   letterSpacing: '0.05em',
                   color: 'rgba(255, 255, 255, 0.9)',
                   caretColor: colors.primary,
-                  width: '80vw',
-                  maxWidth: '600px',
-                  textShadow: `0 0 20px ${colors.glow}`
+                  textShadow: `0 0 20px ${colors.glow}`,
+                  minHeight: '44px'
                 }}
                 animate={isSubmitting ? { opacity: 0, scale: 1.1 } : {}}
               />
@@ -162,15 +161,16 @@ const VoidInput = ({
                 }}
               />
               
-              {/* Hint text */}
+              {/* Hint text - different for mobile/desktop */}
               <motion.p
-                className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-xs tracking-widest uppercase whitespace-nowrap"
+                className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs tracking-widest uppercase whitespace-nowrap"
                 style={{ color: 'rgba(255, 255, 255, 0.3)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                Enter to send • Esc to close
+                <span className="hidden sm:inline">Enter to send • Esc to close</span>
+                <span className="sm:hidden">Tap send • Tap outside to close</span>
               </motion.p>
             </motion.form>
             

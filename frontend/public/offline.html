@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a0f">
+  <title>Offline - 2ness</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      padding: 20px;
+    }
+    
+    .container {
+      text-align: center;
+      max-width: 400px;
+    }
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 24px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+    }
+    
+    .icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 24px;
+      opacity: 0.6;
+    }
+    
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    
+    .retry-btn {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+    
+    .retry-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
+    
+    .retry-btn:active {
+      transform: translateY(0);
+    }
+    
+    .status {
+      margin-top: 24px;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    
+    /* Decorative elements */
+    .glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    
+    .glow-1 {
+      background: #6366f1;
+      top: -100px;
+      left: -100px;
+    }
+    
+    .glow-2 {
+      background: #8b5cf6;
+      bottom: -100px;
+      right: -100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  
+  <div class="container">
+    <img src="/logo.png" alt="2ness" class="logo">
+    
+    <svg class="icon pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.58 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/>
+    </svg>
+    
+    <h1>You're Offline</h1>
+    
+    <p>
+      It looks like you've lost your internet connection. 
+      Don't worry, your data is safe. Check your connection and try again.
+    </p>
+    
+    <button class="retry-btn" onclick="handleRetry()">
+      Try Again
+    </button>
+    
+    <div class="status" id="status">
+      Waiting for connection...
+    </div>
+  </div>
+  
+  <script>
+    // Retry button handler
+    function handleRetry() {
+      const btn = document.querySelector('.retry-btn');
+      const status = document.getElementById('status');
+      
+      btn.textContent = 'Checking...';
+      btn.disabled = true;
+      status.textContent = 'Attempting to reconnect...';
+      
+      // Try to fetch a small resource
+      fetch('/?_=' + Date.now(), { cache: 'no-store' })
+        .then(response => {
+          if (response.ok) {
+            status.textContent = 'Connection restored!';
+            // Reload the page to show the app
+            window.location.reload();
+          } else {
+            throw new Error('Not online yet');
+          }
+        })
+        .catch(() => {
+          btn.textContent = 'Try Again';
+          btn.disabled = false;
+          status.textContent = 'Still offline. Please check your connection.';
+        });
+    }
+    
+    // Auto-detect when back online
+    window.addEventListener('online', () => {
+      document.getElementById('status').textContent = 'Connection restored! Reloading...';
+      setTimeout(() => window.location.reload(), 500);
+    });
+    
+    // Update status when offline
+    window.addEventListener('offline', () => {
+      document.getElementById('status').textContent = 'Waiting for connection...';
+    });
+  </script>
+</body>
+</html>

@@ -6,7 +6,39 @@ module.exports = {
     "./public/index.html"
   ],
   theme: {
+  	// Standard responsive breakpoints (mobile-first)
+  	screens: {
+  		'xs': '360px',   // Small phones
+  		'sm': '640px',   // Large phones
+  		'md': '768px',   // Tablets
+  		'lg': '1024px',  // Laptops
+  		'xl': '1280px',  // Desktops
+  		'2xl': '1536px', // Large screens
+  	},
   	extend: {
+  		// Safe area spacing
+  		spacing: {
+  			'safe-top': 'env(safe-area-inset-top)',
+  			'safe-bottom': 'env(safe-area-inset-bottom)',
+  			'safe-left': 'env(safe-area-inset-left)',
+  			'safe-right': 'env(safe-area-inset-right)',
+  		},
+  		// Min height with dynamic viewport height
+  		minHeight: {
+  			'screen-dvh': '100dvh',
+  			'screen-svh': '100svh',
+  		},
+  		height: {
+  			'screen-dvh': '100dvh',
+  			'screen-svh': '100svh',
+  		},
+  		// Touch target minimum
+  		minWidth: {
+  			'touch': '44px',
+  		},
+  		minHeight: {
+  			'touch': '44px',
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -53,6 +85,17 @@ module.exports = {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
+  		},
+  		// Fluid typography using clamp
+  		fontSize: {
+  			'fluid-xs': 'clamp(0.75rem, 1.5vw, 0.875rem)',
+  			'fluid-sm': 'clamp(0.875rem, 2vw, 1rem)',
+  			'fluid-base': 'clamp(1rem, 2.5vw, 1.125rem)',
+  			'fluid-lg': 'clamp(1.125rem, 3vw, 1.25rem)',
+  			'fluid-xl': 'clamp(1.25rem, 3.5vw, 1.5rem)',
+  			'fluid-2xl': 'clamp(1.5rem, 4vw, 2rem)',
+  			'fluid-3xl': 'clamp(1.875rem, 5vw, 2.5rem)',
+  			'fluid-4xl': 'clamp(2.25rem, 6vw, 3rem)',
   		},
   		keyframes: {
   			'accordion-down': {

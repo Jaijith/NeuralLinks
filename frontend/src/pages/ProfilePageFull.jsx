@@ -796,8 +796,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
     <ImmersivePageWrapper pageId="profile" user={currentUser}>
       <AppHeader user={currentUser} currentPage="profile" />
       
-      {/* Cover Photo */}
-      <div className="relative h-96 bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-600 profile-cover overflow-hidden">
+      {/* Cover Photo - responsive height */}
+      <div className="relative h-48 sm:h-64 lg:h-96 bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-600 profile-cover overflow-hidden">
         {(worldMode === 'avatar' ? profileUser?.avatar_cover_photo : profileUser?.cover_photo) ? (
           <img
             src={worldMode === 'avatar' ? profileUser.avatar_cover_photo : profileUser.cover_photo}
@@ -835,12 +835,13 @@ const ProfilePageFull = ({ user: currentUser }) => {
       </div>
 
       {/* Profile Info */}
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6">
         <div className="relative">
-          <div className="absolute -top-32 left-8">
-            <Avatar className="w-44 h-44 border-8 border-white shadow-xl">
+          {/* Avatar - responsive positioning */}
+          <div className="absolute -top-16 sm:-top-24 lg:-top-32 left-4 sm:left-8">
+            <Avatar className="w-24 h-24 sm:w-32 sm:h-32 lg:w-44 lg:h-44 border-4 sm:border-8 border-white shadow-xl">
               <AvatarImage src={displayPicture} className="object-cover" />
-              <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-600 text-white text-4xl">
+              <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-600 text-white text-2xl sm:text-3xl lg:text-4xl">
                 {displayName?.charAt(0)}
               </AvatarFallback>
             </Avatar>
@@ -856,25 +857,26 @@ const ProfilePageFull = ({ user: currentUser }) => {
                 />
               <Button
                 size="sm"
-                className="absolute bottom-2 right-2 rounded-full w-10 h-10 p-0 bg-white hover:bg-gray-100"
+                className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 rounded-full w-8 h-8 sm:w-10 sm:h-10 p-0 bg-white hover:bg-gray-100"
                   disabled={uploadingProfilePicture}
                   onClick={(e) => {
                     e.preventDefault();
                     document.getElementById('profile-picture-upload')?.click();
                   }}
               >
-                <Camera className="w-5 h-5 text-gray-700" />
+                <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
               </Button>
               </label>
             )}
           </div>
 
           <div className="bg-white shadow rounded-b-2xl">
-            <div className="pt-8 pb-4 px-8 ml-56">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <h1 className="text-4xl font-bold text-gray-900">{displayName}</h1>
+            {/* Responsive padding - stacks below avatar on mobile, beside on desktop */}
+            <div className="pt-12 sm:pt-10 lg:pt-8 pb-4 px-4 sm:px-8 ml-0 sm:ml-36 lg:ml-56">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-gray-900 break-words">{displayName}</h1>
                     {profileUser.is_bot && (
                       <Badge className="bg-purple-100 text-purple-700">
                         <Bot className="w-3 h-3 mr-1" />
@@ -889,9 +891,9 @@ const ProfilePageFull = ({ user: currentUser }) => {
                     )}
                   </div>
                   
-                  <p className="text-gray-600 text-lg mb-2">{displayBio}</p>
+                  <p className="text-gray-600 text-sm sm:text-base lg:text-lg mb-2 break-words">{displayBio}</p>
                   
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500">
                     {displayJobTitle && (
                       <span className="flex items-center">
                         <Briefcase className="w-4 h-4 mr-1" />
@@ -1282,10 +1284,10 @@ const ProfilePageFull = ({ user: currentUser }) => {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="grid grid-cols-5 gap-6 mt-6 pb-12">
-          {/* Left Sidebar */}
-          <div className="col-span-2 space-y-4">
+        {/* Content - responsive grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6 mt-4 sm:mt-6 pb-20 sm:pb-12 px-3 sm:px-0">
+          {/* Left Sidebar - full width on mobile, 2 cols on desktop */}
+          <div className="col-span-1 lg:col-span-2 space-y-4 order-2 lg:order-1">
             {/* About Card */}
             <Card className="p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">About</h2>
@@ -1331,7 +1333,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                   See All
                 </Button>
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {friends.slice(0, 9).map((friend, idx) => {
                   const friendDisplayName = worldMode === 'avatar'
                     ? (friend.avatar_name || friend.name)
@@ -1357,8 +1359,8 @@ const ProfilePageFull = ({ user: currentUser }) => {
             </Card>
           </div>
 
-          {/* Main Content */}
-          <div className="col-span-3 space-y-4">
+          {/* Main Content - full width on mobile, 3 cols on desktop */}
+          <div className="col-span-1 lg:col-span-3 space-y-4 order-1 lg:order-2">
             {/* View Mode Selector Banner for Own Profile */}
             {isOwnProfile && viewMode === 'both' && (
               <Card className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300">
@@ -1811,15 +1813,15 @@ const ProfilePageFull = ({ user: currentUser }) => {
             {posts.length > 0 ? (
               <div className="space-y-4">
                 {posts.map((post) => (
-                  <Card key={post.id} className="p-4">
-                    <div className="flex items-start space-x-3">
-                      <Avatar className="w-10 h-10">
+                  <Card key={post.id} className="p-3 sm:p-4 overflow-hidden">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <Avatar className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
                         <AvatarImage src={displayPicture} className="object-cover" />
                         <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
                       </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="font-semibold">{displayName}</span>
+                      <div className="flex-1 min-w-0 overflow-hidden">
+                        <div className="flex items-center justify-between mb-1 gap-2">
+                          <span className="font-semibold text-sm sm:text-base truncate">{displayName}</span>
                           <div className="flex items-center space-x-2">
                             <span className="text-xs text-gray-500">
                               {new Date(post.created_at).toLocaleDateString()}
@@ -1869,7 +1871,7 @@ const ProfilePageFull = ({ user: currentUser }) => {
                         ) : (
                           <>
                             {post.text && (
-                          <p className="text-gray-800 mb-3">{post.text}</p>
+                          <p className="text-gray-800 mb-3 break-words overflow-hidden">{post.text}</p>
                             )}
                             {/* Post Image */}
                             {(post.image_url || post.has_image) && (

@@ -11,10 +11,13 @@ import { cn } from '@/lib/utils';
  * @property {string} [className] - Additional CSS classes for container
  * @property {boolean} [showHeader] - Whether to show header (default: true)
  * @property {string} [backgroundClass] - Background class (default: gradient)
+ * @property {boolean} [hasBottomNav] - Whether page has bottom navigation (for mobile padding)
+ * @property {boolean} [fullWidth] - Whether to use full width (no max-width container)
  */
 
 /**
  * Reusable Page Container component for consistent page layout across the app.
+ * Includes responsive padding, safe area support, and mobile bottom nav handling.
  * @param {PageContainerProps} props
  */
 const PageContainer = React.memo(({ 
@@ -24,16 +27,40 @@ const PageContainer = React.memo(({
   currentPage,
   className,
   showHeader = true,
-  backgroundClass = "bg-gradient-to-br from-blue-50 via-white to-slate-50"
+  backgroundClass = "bg-gradient-to-br from-blue-50 via-white to-slate-50",
+  hasBottomNav = true,
+  fullWidth = false
 }) => {
   return (
-    <div className={cn("min-h-screen", backgroundClass, className)}>
+    <div 
+      className={cn(
+        // Use dynamic viewport height for mobile
+        "min-h-screen-safe min-h-[100dvh]",
+        backgroundClass, 
+        className
+      )}
+      style={{
+        // Add top padding to account for fixed header (56px + safe area)
+        paddingTop: showHeader ? 'calc(56px + env(safe-area-inset-top, 0px))' : undefined,
+      }}
+    >
       {showHeader && (
         <AppHeader user={user} setUser={setUser} currentPage={currentPage} />
       )}
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <main 
+        className={cn(
+          // Responsive horizontal padding
+          "px-3 sm:px-4 md:px-6",
+          // Responsive vertical padding
+          "py-4 sm:py-6",
+          // Max width container (unless fullWidth)
+          !fullWidth && "max-w-7xl mx-auto",
+          // Add bottom padding for mobile bottom navigation
+          hasBottomNav && "pb-20 sm:pb-6"
+        )}
+      >
         {children}
-      </div>
+      </main>
     </div>
   );
 });

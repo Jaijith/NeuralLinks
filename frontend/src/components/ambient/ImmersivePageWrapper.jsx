@@ -492,10 +492,16 @@ const ImmersivePageWrapper = ({
         )}
         
         {/* === PAGE CONTENT === */}
-        <div className={`min-h-screen ${backgroundClass}`}>
-          {/* View Mode Toggle */}
+        <div 
+          className={`min-h-screen min-h-[100dvh] ${backgroundClass} overflow-x-hidden`}
+          style={{
+            // Add top padding to account for fixed header (56px + safe area)
+            paddingTop: 'calc(56px + env(safe-area-inset-top, 0px))',
+          }}
+        >
+          {/* View Mode Toggle - sticky, scrolls with content on mobile */}
           {isAvatarWorld && showToggle && (
-            <div className="fixed top-20 right-6 z-50">
+            <div className="sticky top-[60px] sm:top-[64px] right-0 z-40 flex justify-end px-3 sm:px-6 py-2">
               <ViewModeToggle 
                 isImmersive={isImmersive}
                 onToggle={toggleViewMode}

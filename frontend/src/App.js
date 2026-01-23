@@ -8,6 +8,7 @@ import { WorldModeProvider } from "./contexts/WorldModeContext";
 import LazyPage from "./components/common/LazyPage";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 import ErrorBoundary from "./components/common/ErrorBoundary";
+import PWAUpdateNotification from "./components/common/PWAUpdateNotification";
 
 // Lazy load all pages for code splitting
 const LandingPage = lazy(() => import("./pages/LandingPage"));
@@ -25,6 +26,7 @@ const IntegrationsPage = lazy(() => import("./pages/IntegrationsPage"));
 const AvatarControl = lazy(() => import("./pages/AvatarControl"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const AvatarVisualization = lazy(() => import("./pages/AvatarVisualization"));
+const Matches = lazy(() => import("./pages/Matches"));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -210,6 +212,18 @@ function App() {
                 }
               />
               <Route
+                path="/matches"
+                element={
+                  user ? (
+                    <LazyPage>
+                      <Matches user={user} setUser={setUser} />
+                    </LazyPage>
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
                 path="/chat/:matchId"
                 element={
                   user ? (
@@ -272,6 +286,8 @@ function App() {
             </Routes>
           </BrowserRouter>
         </div>
+        {/* PWA Update Notification */}
+        <PWAUpdateNotification />
       </WorldModeProvider>
     </ErrorBoundary>
   );

@@ -29,9 +29,37 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001'
 
 // Generate aggressive CSS for the mode
 const getGlobalStyles = (isImmersive) => {
+  // Mobile responsive styles - always included
+  const mobileStyles = `
+    /* MOBILE SIDEBAR HIDING - Force hide sidebars below 1024px */
+    @media (max-width: 1023px) {
+      #maya-home-container aside,
+      #maya-home-container [data-sidebar="left"],
+      #maya-home-container [data-sidebar="right"] {
+        display: none !important;
+      }
+      
+      #maya-home-container main {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
+    
+    /* Desktop grid layout */
+    @media (min-width: 1024px) {
+      #maya-home-container aside,
+      #maya-home-container [data-sidebar="left"],
+      #maya-home-container [data-sidebar="right"] {
+        display: block !important;
+      }
+    }
+  `;
+
   if (isImmersive) {
     return `
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+      
+      ${mobileStyles}
       
       /* IMMERSIVE MODE - Override CSS variables */
       #maya-home-container {
@@ -184,6 +212,8 @@ const getGlobalStyles = (isImmersive) => {
   } else {
     return `
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+      
+      ${mobileStyles}
       
       /* CLASSIC MODE */
       #maya-home-container * {
@@ -573,10 +603,11 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
           showHeader={true}
           backgroundClass={isAvatarWorld && isImmersive ? "bg-transparent" : "bg-gradient-to-br from-blue-50 via-white to-slate-50"}
         >
-          <div className="max-w-7xl mx-auto px-4 py-6 relative z-10">
+          {/* Mobile bottom nav padding + responsive container */}
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-6 relative z-10">
             {/* View Mode Toggle - only in Avatar World */}
             {isAvatarWorld && (
-              <div className="flex justify-end mb-4">
+              <div className="flex justify-end mb-3 sm:mb-4">
                 <ViewModeToggle 
                   isImmersive={isImmersive}
                   onToggle={toggleViewMode}
@@ -585,18 +616,21 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
               </div>
             )}
             
-            <div className="grid grid-cols-12 gap-6">
+            {/* Desktop: 3-column grid | Mobile: Single column feed only */}
+            <div className="lg:grid lg:grid-cols-12 lg:gap-6">
               
-              {/* Left Sidebar */}
-              <div className="col-span-3">
-                <HomeSidebar 
-                  user={currentUser}
-                  worldMode={worldMode}
-                />
-              </div>
+              {/* Left Sidebar - DESKTOP ONLY (hidden via CSS media query) */}
+              <aside className="lg:col-span-3" data-sidebar="left">
+                <div className="lg:sticky lg:top-20">
+                  <HomeSidebar 
+                    user={currentUser}
+                    worldMode={worldMode}
+                  />
+                </div>
+              </aside>
 
-              {/* Main Feed */}
-              <div className="col-span-6 space-y-4">
+              {/* Main Feed - Always visible, full width on mobile */}
+              <main className="w-full lg:col-span-6 space-y-3 sm:space-y-4">
                 {/* Create Post Card */}
                 <CreatePostCard
                   user={currentUser}
@@ -640,27 +674,29 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   loadingMore={loadingMore}
                   onLoadMore={loadMore}
                 />
-              </div>
+              </main>
 
-              {/* Right Sidebar */}
-              <div className="col-span-3">
-                <HomeRightSidebar 
-                  friends={friends}
-                  worldMode={worldMode}
-                />
-                
-                {/* Footer Links */}
-                <div className={`text-xs space-y-2 px-2 mt-6 ${isImmersive ? 'text-white/40' : 'text-gray-400'}`}>
-                  <div className="flex flex-wrap gap-x-2 gap-y-1">
-                    <span className="hover:underline cursor-pointer">Privacy</span>
-                    <span>•</span>
-                    <span className="hover:underline cursor-pointer">Terms</span>
-                    <span>•</span>
-                    <span className="hover:underline cursor-pointer">Help</span>
+              {/* Right Sidebar - DESKTOP ONLY (hidden via CSS media query) */}
+              <aside className="lg:col-span-3" data-sidebar="right">
+                <div className="lg:sticky lg:top-20">
+                  <HomeRightSidebar 
+                    friends={friends}
+                    worldMode={worldMode}
+                  />
+                  
+                  {/* Footer Links */}
+                  <div className={`text-xs space-y-2 px-2 mt-6 ${isImmersive ? 'text-white/40' : 'text-gray-400'}`}>
+                    <div className="flex flex-wrap gap-x-2 gap-y-1">
+                      <span className="hover:underline cursor-pointer">Privacy</span>
+                      <span>•</span>
+                      <span className="hover:underline cursor-pointer">Terms</span>
+                      <span>•</span>
+                      <span className="hover:underline cursor-pointer">Help</span>
+                    </div>
+                    <p>© 2024 {isAvatarWorld ? 'Maya World' : 'NeuralLinks'}</p>
                   </div>
-                  <p>© 2024 {isAvatarWorld ? 'Maya World' : 'NeuralLinks'}</p>
                 </div>
-              </div>
+              </aside>
             </div>
           </div>
         </PageContainer>
