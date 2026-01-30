@@ -11,4 +11,4 @@ export { default as userService } from './userService';
 export { default as friendService } from './friendService';
 export { default as messageService } from './messageService';
 export { default as matchService } from './matchService';
-
+export { default as voiceService } from './voiceService';

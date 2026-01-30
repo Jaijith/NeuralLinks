@@ -14,3 +14,5 @@ export { default as VoidInput } from './VoidInput';
 export { default as ViewModeToggle } from './ViewModeToggle';
 export { default as AvatarResponseOverlay } from './AvatarResponseOverlay';
 export { default as ImmersivePageWrapper } from './ImmersivePageWrapper';
+export { default as VoiceAgent } from './VoiceAgent';
+export { default as VoiceSettings } from './VoiceSettings';

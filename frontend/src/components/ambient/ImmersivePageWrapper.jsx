@@ -19,7 +19,9 @@ import {
   AnchorOrb, 
   VoidInput,
   ViewModeToggle,
-  AvatarResponseOverlay
+  AvatarResponseOverlay,
+  VoiceAgent,
+  VoiceSettings
 } from "@/components/ambient";
 import useAvatarState from "@/hooks/useAvatarState";
 import useViewMode from "@/hooks/useViewMode";
@@ -338,6 +340,10 @@ const ImmersivePageWrapper = ({
   const [showResponse, setShowResponse] = useState(false);
   const [chatSessionId, setChatSessionId] = useState(null);
   
+  // Voice mode state - voice is the PRIMARY interaction method
+  const [showVoiceAgent, setShowVoiceAgent] = useState(false);
+  const [showVoiceSettings, setShowVoiceSettings] = useState(false);
+  
   // Initialize chat session when user is available
   useEffect(() => {
     if (isAvatarWorld && user?.id && !chatSessionId) {
@@ -351,10 +357,33 @@ const ImmersivePageWrapper = ({
     }
   }, [isAvatarWorld, user?.id, chatSessionId]);
   
-  // Handle orb activation
+  // Handle orb activation - always starts voice session
   const handleOrbActivate = useCallback(() => {
+    setShowVoiceAgent(true);
+    setCustomWhisper("CONNECTING...");
+  }, []);
+  
+  // Handle voice agent close
+  const handleVoiceClose = useCallback(() => {
+    setShowVoiceAgent(false);
+    setCustomWhisper(null);
+  }, []);
+  
+  // Handle voice transcript for display
+  const handleVoiceTranscript = useCallback((data) => {
+    if (data.type === 'ai') {
+      // AI finished speaking
+      setCustomWhisper(null);
+    } else if (data.type === 'user') {
+      // User spoke
+      setCustomWhisper("THINKING...");
+    }
+  }, []);
+  
+  // Open text input (alternative to voice)
+  const openTextInput = useCallback(() => {
     setShowVoidInput(true);
-    setCustomWhisper("LISTENING...");
+    setCustomWhisper("TYPE...");
   }, []);
   
   // Handle void input submission - use chatService for proper AI responses
@@ -421,22 +450,35 @@ const ImmersivePageWrapper = ({
     setAvatarResponse(null);
   }, []);
   
-  // Spacebar to open void input
+  // Spacebar to start voice session, T for text input
   useEffect(() => {
     if (!isAvatarWorld) return;
     
     const handleKeyDown = (e) => {
-      if (e.code === 'Space' && !showVoidInput && 
+      // Spacebar - start voice session
+      if (e.code === 'Space' && !showVoidInput && !showVoiceAgent &&
           !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
         e.preventDefault();
-        setShowVoidInput(true);
-        setCustomWhisper("SPEAK...");
+        setShowVoiceAgent(true);
+        setCustomWhisper("CONNECTING...");
+      }
+      // T key - open text input instead
+      if (e.code === 'KeyT' && !showVoidInput && !showVoiceAgent &&
+          !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
+        e.preventDefault();
+        openTextInput();
+      }
+      // S key to open voice settings
+      if (e.code === 'KeyS' && e.shiftKey && !showVoidInput && !showVoiceAgent &&
+          !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
+        e.preventDefault();
+        setShowVoiceSettings(true);
       }
     };
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isAvatarWorld, showVoidInput]);
+  }, [isAvatarWorld, showVoidInput, showVoiceAgent, openTextInput]);
   
   const containerId = `${pageId}-container`;
   const modeClass = isAvatarWorld 
@@ -524,7 +566,65 @@ const ImmersivePageWrapper = ({
               onActivate={handleOrbActivate}
             />
             
-            {/* Void Input Overlay */}
+            {/* Voice Controls - small buttons above orb */}
+            <div 
+              className="fixed z-[99] bottom-[130px] sm:bottom-[110px] right-4 sm:right-6 flex flex-col items-center gap-2"
+              style={{ 
+                bottom: typeof window !== 'undefined' && window.innerWidth < 640 
+                  ? 'calc(130px + env(safe-area-inset-bottom, 0px))' 
+                  : undefined
+              }}
+            >
+              {/* Settings button */}
+              <button
+                onClick={() => setShowVoiceSettings(true)}
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{
+                  background: `${colors.primary}20`,
+                  border: `1px solid ${colors.primary}40`
+                }}
+                title="Voice Settings (Shift+S)"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke={colors.primary}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </button>
+              
+              {/* Text input button (press T) */}
+              <button
+                onClick={openTextInput}
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.2)'
+                }}
+                title="Text Input (T)"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Voice Agent Overlay - Real-time voice interaction */}
+            <VoiceAgent
+              isActive={showVoiceAgent}
+              onClose={handleVoiceClose}
+              colors={colors}
+              avatarId={user?.id}
+              settingPreset="low_latency"
+              onTranscript={handleVoiceTranscript}
+            />
+            
+            {/* Voice Settings Panel */}
+            <VoiceSettings
+              isOpen={showVoiceSettings}
+              onClose={() => setShowVoiceSettings(false)}
+              colors={colors}
+            />
+            
+            {/* Void Input Overlay - Text input */}
             <VoidInput 
               isActive={showVoidInput}
               onClose={handleVoidClose}
