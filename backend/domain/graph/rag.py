@@ -23,12 +23,19 @@ class GraphRAG:
         # Use a high limit (10000) to ensure we get all nodes, but this is just a safety limit
         # In practice, users shouldn't have more than 10k nodes, but we want to capture everything
         nodes = await self.db.graph_nodes.find(
-            {"user_id": user_id},
-            {"_id": 0}
+            {"user_id": user_id}
         ).to_list(10000)  # Increased from 1000 to 10000 to ensure all nodes are retrieved
         
         # Get all edges for future use - NO LIMIT on retrieval
-        node_ids = [n["id"] for n in nodes]
+        # Handle nodes that may not have "id" field (use _id or generate from label)
+        node_ids = []
+        for n in nodes:
+            if "id" in n:
+                node_ids.append(n["id"])
+            elif "_id" in n:
+                node_ids.append(str(n["_id"]))
+            elif "label" in n:
+                node_ids.append(f"{n.get('node_type', 'node')}_{n['label']}")
         _ = await self.db.graph_edges.find(
             {"$or": [
                 {"from_node_id": {"$in": node_ids}},

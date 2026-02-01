@@ -13,7 +13,9 @@ import json
 from core.auth import require_auth, get_current_user
 from core.database import get_database
 from domain.voice import VoicePromptGenerator, VoiceConfig, VOICE_SETTINGS
-from domain.voice.voice_config import OPENAI_REALTIME_CLIENT_SECRETS_URL
+from domain.voice.voice_config import OPENAI_REALTIME_CLIENT_SECRETS_URL, VOICE_TOOLS
+from domain.voice.social_context import SocialContextService
+from domain.voice.voice_memory import VoiceMemoryService
 from domain.avatar.state import StateManager
 from domain.workflow.models.bonding_state import BondingState
 
@@ -142,7 +144,7 @@ async def create_voice_session(
         
         # Get voice configuration
         voice_config = VOICE_SETTINGS.get(req.setting_preset, VOICE_SETTINGS["default"])
-        session_config = voice_config.to_session_config(instructions)
+        session_config = voice_config.to_session_config(instructions, tools=VOICE_TOOLS)
         
         # Request ephemeral token from OpenAI (GA API)
         openai_key = _get_cached_openai_key()
@@ -426,3 +428,458 @@ async def update_voice_settings(
     except Exception as e:
         logger.error(f"Error updating voice settings: {e}")
         return {"success": False, "error": str(e)}
+
+
+class ContextRequest(BaseModel):
+    """Request for social context during voice session"""
+    avatar_id: str = Field(..., description="The avatar's ID")
+    context_type: str = Field(..., description="Type of context to fetch")
+    friend_name: Optional[str] = Field(None, description="Friend name for specific queries")
+    time_range: Optional[str] = Field("recent", description="Time range for context")
+
+
+class ContextResponse(BaseModel):
+    """Response with social context"""
+    success: bool
+    summary: str
+    data: Optional[Dict[str, Any]] = None
+    fetch_time_ms: Optional[int] = None
+
+
+@router.post("/context", response_model=ContextResponse)
+async def get_voice_context(
+    req: ContextRequest,
+    request: Request
+):
+    """
+    Get social context during active voice session.
+    
+    This endpoint is called when the AI uses the recall_social_context function
+    to get more specific information than what was provided at session start.
+    
+    The AI decides when to call this - it should NOT be called for:
+    - Casual greetings
+    - Emotional conversations
+    - Questions answerable from existing context
+    """
+    import time
+    start_time = time.time()
+    
+    try:
+        # Authenticate user
+        user = await require_auth(request)
+        
+        # Initialize social context service
+        social_service = SocialContextService(db)
+        
+        # Fetch the requested context
+        result = await social_service.get_specific_context(
+            avatar_id=req.avatar_id,
+            context_type=req.context_type,
+            friend_name=req.friend_name,
+            time_range=req.time_range or "recent"
+        )
+        
+        fetch_time_ms = int((time.time() - start_time) * 1000)
+        
+        logger.info(f"Voice context fetched: type={req.context_type}, time={fetch_time_ms}ms")
+        
+        return ContextResponse(
+            success=True,
+            summary=result.get("summary", ""),
+            data=result.get("data"),
+            fetch_time_ms=fetch_time_ms
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching voice context: {e}")
+        return ContextResponse(
+            success=False,
+            summary="I'm having trouble remembering right now.",
+            data=None
+        )
+
+
+@router.get("/context/tier1/{avatar_id}")
+async def get_tier1_context(
+    avatar_id: str,
+    request: Request
+):
+    """
+    Pre-fetch Tier 1 social context.
+    
+    This can be called when the user hovers over the voice orb to
+    pre-warm the context cache, reducing latency when session starts.
+    """
+    import time
+    start_time = time.time()
+    
+    try:
+        user = await require_auth(request)
+        
+        social_service = SocialContextService(db)
+        context = await social_service.get_tier1_context(avatar_id, user.id)
+        
+        fetch_time_ms = int((time.time() - start_time) * 1000)
+        
+        return {
+            "success": True,
+            "context": context.get("formatted_context", ""),
+            "fetch_time_ms": fetch_time_ms
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching Tier 1 context: {e}")
+        return {
+            "success": False,
+            "context": "",
+            "error": str(e)
+        }
+
+
+# =============================================================================
+# WORKFLOW TRIGGER
+# =============================================================================
+
+class WorkflowTriggerRequest(BaseModel):
+    """Request to trigger a workflow from voice"""
+    avatar_id: str = Field(..., description="Avatar ID")
+    mission_type: str = Field(..., description="Type of workflow to run")
+    mission_name: str = Field(..., description="Name for the mission")
+    description: Optional[str] = Field(None, description="Mission description")
+    interests: Optional[List[str]] = Field(default_factory=list, description="Interests to filter by")
+    keywords: Optional[List[str]] = Field(default_factory=list, description="Keywords to search for")
+    approach: Optional[str] = Field(default="friendly", description="Approach style")
+    max_targets: Optional[int] = Field(default=10, description="Max targets to find")
+
+
+class WorkflowTriggerResponse(BaseModel):
+    """Response after triggering a workflow"""
+    success: bool
+    message: str
+    mission_id: Optional[str] = None
+    mission_name: Optional[str] = None
+    mission_type: Optional[str] = None
+
+
+@router.post("/workflow", response_model=WorkflowTriggerResponse)
+async def trigger_workflow_from_voice(
+    req: WorkflowTriggerRequest,
+    request: Request
+):
+    """
+    Trigger a workflow mission from voice command.
+    
+    This endpoint is called when the AI uses the trigger_workflow function
+    to start a mission based on user's voice request.
+    
+    The mission will appear in the user's Missions page and start automatically.
+    """
+    import time
+    start_time = time.time()
+    
+    try:
+        # Authenticate user
+        user = await require_auth(request)
+        
+        logger.info(f"Voice workflow trigger: type={req.mission_type}, name={req.mission_name}")
+        
+        # Import workflow services
+        from domain.workflow.services.mission_service import MissionService
+        from domain.workflow.models.enums import MissionType, ApproachStyle
+        
+        # Map string to enum
+        mission_type_map = {
+            "matchmaking": MissionType.MATCHMAKING,
+            "networking": MissionType.NETWORKING,
+            "sales_leads": MissionType.SALES_LEADS,
+            "marketing_campaign": MissionType.MARKETING_CAMPAIGN,
+            "bonding": MissionType.BONDING,
+            "job_finder": MissionType.JOB_FINDER
+        }
+        
+        approach_map = {
+            "casual": ApproachStyle.CASUAL,
+            "professional": ApproachStyle.PROFESSIONAL,
+            "friendly": ApproachStyle.CASUAL,  # Map friendly to casual
+            "direct": ApproachStyle.PROFESSIONAL,  # Map direct to professional
+            "curious": ApproachStyle.CURIOUS,
+            "enthusiastic": ApproachStyle.ENTHUSIASTIC,
+            "thoughtful": ApproachStyle.THOUGHTFUL
+        }
+        
+        mission_type = mission_type_map.get(req.mission_type.lower(), MissionType.MATCHMAKING)
+        approach = approach_map.get((req.approach or "casual").lower(), ApproachStyle.CASUAL)
+        
+        # Get required services
+        from app.globals import intelligent_avatar
+        from openai import AsyncOpenAI
+        
+        openai_key = get_openai_api_key()
+        openai_client = AsyncOpenAI(api_key=openai_key) if openai_key else None
+        
+        # Create mission service
+        mission_service = MissionService(
+            db=db,
+            mcp_server=None,  # Will use default
+            openai_client=openai_client,
+            intelligent_avatar=intelligent_avatar
+        )
+        
+        # Build criteria
+        criteria = {
+            "interests": req.interests or [],
+            "keywords": req.keywords or [],
+            "min_compatibility_score": 60
+        }
+        
+        # Build strategy - pass enum directly for Pydantic validation
+        strategy = {
+            "approach": approach,  # Pass enum directly, not string
+            "max_targets": req.max_targets or 10,
+            "talking_points": []
+        }
+        
+        # Create the mission (don't auto_start here - the MCP server isn't available in main Lambda)
+        mission = await mission_service.create_mission(
+            user_id=user.id,
+            avatar_id=req.avatar_id,
+            mission_type=mission_type,
+            name=req.mission_name,
+            description=req.description or f"Mission created via voice: {req.mission_name}",
+            criteria=criteria,
+            strategy=strategy,
+            source_chat_id=None,  # From voice, not chat
+            auto_start=False  # Don't auto-start here - we'll call the workflow Lambda
+        )
+        
+        # Call the Workflow Lambda to start the mission (it has the MCP server)
+        try:
+            import httpx
+            workflow_api = f"https://api.2ness.com/api/workflow/missions/detail/{mission.id}/start"
+            
+            # Get the auth token from the request to forward it
+            auth_header = request.headers.get("Authorization") or request.headers.get("Cookie")
+            headers = {}
+            if "Authorization" in request.headers:
+                headers["Authorization"] = request.headers["Authorization"]
+            if "Cookie" in request.headers:
+                headers["Cookie"] = request.headers["Cookie"]
+            
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                start_response = await client.post(workflow_api, headers=headers)
+                if start_response.status_code == 200:
+                    logger.info(f"✅ Mission {mission.id} started via workflow Lambda")
+                else:
+                    logger.warning(f"⚠️ Failed to start mission via workflow Lambda: {start_response.status_code}")
+        except Exception as start_error:
+            logger.warning(f"⚠️ Could not call workflow Lambda to start mission: {start_error}")
+            # Mission is still created, user can start it manually from Missions page
+        
+        elapsed_ms = int((time.time() - start_time) * 1000)
+        logger.info(f"Voice workflow created: mission_id={mission.id}, elapsed={elapsed_ms}ms")
+        
+        return WorkflowTriggerResponse(
+            success=True,
+            message=f"Mission '{req.mission_name}' has been created and started! You can check the Missions page to see the progress.",
+            mission_id=mission.id,
+            mission_name=mission.name,
+            mission_type=mission.type.value if hasattr(mission.type, 'value') else str(mission.type)
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error triggering workflow from voice: {e}")
+        import traceback
+        traceback.print_exc()
+        return WorkflowTriggerResponse(
+            success=False,
+            message=f"I wasn't able to start that mission right now. Could you try again or check the Missions page?",
+            mission_id=None
+        )
+
+
+# =============================================================================
+# TRANSCRIPT STORAGE AND MEMORY
+# =============================================================================
+
+class TranscriptMessage(BaseModel):
+    """A single message in a transcript"""
+    role: str = Field(..., description="'user' or 'assistant'")
+    content: str = Field(..., description="Message content")
+    timestamp: Optional[str] = Field(None, description="ISO timestamp")
+
+
+class TranscriptRequest(BaseModel):
+    """Request to save a voice transcript"""
+    session_id: str = Field(..., description="Voice session ID")
+    avatar_id: str = Field(..., description="Avatar ID")
+    messages: List[TranscriptMessage] = Field(..., description="Conversation messages")
+    started_at: str = Field(..., description="Session start time (ISO)")
+    ended_at: str = Field(..., description="Session end time (ISO)")
+    duration_seconds: int = Field(..., description="Session duration in seconds")
+
+
+@router.post("/transcript")
+async def save_transcript(
+    req: TranscriptRequest,
+    request: Request
+):
+    """
+    Save voice transcript to S3 and trigger background memory extraction.
+    
+    This endpoint is called by frontend when a voice session ends.
+    It's fire-and-forget from the frontend perspective - returns immediately.
+    
+    Flow:
+    1. Save transcript to S3 (user-isolated path)
+    2. Track in MongoDB for processing
+    3. Trigger background Lambda for memory extraction (async)
+    """
+    try:
+        user = await require_auth(request)
+        user_id = user.id
+        
+        # Initialize memory service
+        memory_service = VoiceMemoryService(db)
+        
+        # Save transcript (fast - just S3 put + MongoDB insert)
+        result = await memory_service.save_transcript(
+            session_id=req.session_id,
+            user_id=user_id,
+            avatar_id=req.avatar_id,
+            messages=[m.dict() for m in req.messages],
+            started_at=req.started_at,
+            ended_at=req.ended_at,
+            duration_seconds=req.duration_seconds
+        )
+        
+        if result.get("success"):
+            # Trigger background memory extraction (fire-and-forget)
+            # This invokes Lambda asynchronously - no waiting
+            _trigger_memory_extraction_async(req.session_id)
+        
+        # Return immediately - 202 Accepted
+        return {
+            "success": True,
+            "status": "accepted",
+            "session_id": req.session_id
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error saving transcript: {e}")
+        # Still return success - we don't want to block the user
+        return {
+            "success": True,
+            "status": "accepted_with_error",
+            "error": str(e)
+        }
+
+
+def _trigger_memory_extraction_async(session_id: str):
+    """
+    Trigger background Lambda for memory extraction.
+    
+    This is fire-and-forget - we don't wait for the result.
+    If the Lambda isn't available (local dev), we just log and continue.
+    """
+    try:
+        import boto3
+        
+        # Get Lambda function name - AWS_LAMBDA_FUNCTION_NAME is set automatically in Lambda
+        lambda_function = os.environ.get('AWS_LAMBDA_FUNCTION_NAME')
+        
+        # Get region from environment (AWS_REGION is set automatically in Lambda)
+        region = os.environ.get('AWS_REGION', 'us-west-1')
+        
+        if not lambda_function:
+            # Local development - skip Lambda invocation
+            logger.info(f"Not in Lambda environment, skipping background extraction for {session_id}")
+            return
+        
+        lambda_client = boto3.client('lambda', region_name=region)
+        
+        # Invoke asynchronously (Event invocation type) - self-invocation
+        lambda_client.invoke(
+            FunctionName=lambda_function,
+            InvocationType='Event',  # Async - returns immediately
+            Payload=json.dumps({
+                "action": "extract_memories",
+                "session_id": session_id
+            })
+        )
+        
+        logger.info(f"Triggered memory extraction Lambda for session {session_id} (region: {region})")
+        
+    except Exception as e:
+        # Don't fail - this is best-effort background processing
+        logger.warning(f"Could not trigger memory extraction Lambda: {e}")
+
+
+@router.get("/memory/{avatar_id}")
+async def get_voice_memory(
+    avatar_id: str,
+    request: Request
+):
+    """
+    Get user's memory for voice session (connections, interests, facts, recent conversations).
+    
+    This is called at session start (in parallel with other fetches).
+    Returns quickly - if slow, voice session starts without it.
+    """
+    import time
+    start_time = time.time()
+    
+    try:
+        user = await require_auth(request)
+        
+        memory_service = VoiceMemoryService(db)
+        memory = await memory_service.get_user_memory(user.id, avatar_id)
+        
+        # Also check for unprocessed transcripts and trigger processing
+        unprocessed = await memory_service.get_unprocessed_transcripts(user.id)
+        if unprocessed:
+            logger.info(f"Found {len(unprocessed)} unprocessed transcripts, triggering background processing")
+            for transcript in unprocessed[:3]:  # Limit to 3 at a time
+                _trigger_memory_extraction_async(transcript.get("session_id"))
+        
+        fetch_time_ms = int((time.time() - start_time) * 1000)
+        
+        # Get user's REAL name (not avatar name) for formatting
+        user_doc = await db.users.find_one({"id": user.id}, {"name": 1, "email": 1})
+        if user_doc:
+            real_name = user_doc.get("name", "")
+            if real_name:
+                user_name = real_name.split()[0].capitalize()  # First name
+            else:
+                # Fallback to email prefix
+                email = user_doc.get("email", "")
+                user_name = email.split("@")[0].split(".")[0].capitalize() if email else "them"
+        else:
+            user_name = "them"
+        
+        return {
+            "success": True,
+            "memory": memory,
+            "formatted": memory_service.format_memory_for_prompt(memory, user_name),
+            "fetch_time_ms": fetch_time_ms,
+            "unprocessed_count": len(unprocessed)
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching voice memory: {e}")
+        return {
+            "success": False,
+            "memory": {},
+            "formatted": "",
+            "error": str(e)
+        }

@@ -1,152 +1,635 @@
 """
-Graph Routes
+Graph CRUD API Routes
+Endpoints for managing interests, connections, traits, and visualization
 """
 
-from fastapi import APIRouter, Request, HTTPException, Query
-from typing import Dict, Any
-from core.auth import require_auth
-from core.database import get_database
-from api.models import GraphNode
-from services.graph_service import GraphService
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel, Field
+from typing import Optional, List
+from datetime import datetime, timezone
 import logging
 
-db = get_database()
-router = APIRouter(prefix="/api/graph", tags=["graph"])
+from core.database import get_database
+from core.auth import require_auth, get_current_user
+from app.globals import get_graph_service
+
 logger = logging.getLogger(__name__)
+router = APIRouter(prefix="/api/graph", tags=["graph"])
 
 
-def get_graph_service() -> GraphService:
-    """Get graph service instance"""
-    from app.globals import graph_service
-    return graph_service
+# =============================================================================
+# MODELS
+# =============================================================================
 
+class InterestCreate(BaseModel):
+    label: str = Field(..., description="Interest name")
+    strength: float = Field(default=0.7, ge=0, le=1)
+
+
+class InterestUpdate(BaseModel):
+    label: Optional[str] = None
+    strength: Optional[float] = Field(default=None, ge=0, le=1)
+
+
+class ConnectionCreate(BaseModel):
+    name: str = Field(..., description="Person's name")
+    relationship: str = Field(..., description="Relationship type (daughter, friend, etc.)")
+    details: Optional[str] = None
+
+
+class ConnectionUpdate(BaseModel):
+    name: Optional[str] = None
+    relationship: Optional[str] = None
+    details: Optional[str] = None
+
+
+class TraitCreate(BaseModel):
+    label: str = Field(..., description="Trait name")
+    strength: float = Field(default=0.7, ge=0, le=1)
+
+
+class TraitUpdate(BaseModel):
+    label: Optional[str] = None
+    strength: Optional[float] = Field(default=None, ge=0, le=1)
+
+
+# =============================================================================
+# VISUALIZATION
+# =============================================================================
 
 @router.get("/visualization")
 async def get_graph_visualization(request: Request):
-    """Get graph visualization data for current user"""
-    user = await require_auth(request)
-    graph_service = get_graph_service()
-    return await graph_service.get_visualization_data(user.id)
+    """Get graph visualization data for the avatar settings page"""
+    try:
+        user = await require_auth(request)
+        graph_service = get_graph_service()
+        
+        visualization_data = await graph_service.get_visualization_data(user.id)
+        return visualization_data
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting graph visualization: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/build-from-profile")
-async def build_graph_from_profile(request: Request):
-    """Build knowledge graph from user profile"""
-    user = await require_auth(request)
-    user_doc = await db.users.find_one({"id": user.id})
-    if not user_doc:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    graph_service = get_graph_service()
-    result = await graph_service.build_graph_from_profile(user_doc)
-    if not result.get("success"):
-        raise HTTPException(status_code=500, detail=result.get("error", "Graph build failed"))
-    return {"message": "Graph built from profile"}
+# =============================================================================
+# INTERESTS CRUD
+# =============================================================================
+
+@router.get("/interests")
+async def get_interests(request: Request):
+    """Get all interests for the current user"""
+    try:
+        user = await require_auth(request)
+        db = get_database()
+        
+        interests = await db.graph_nodes.find({
+            "user_id": user.id,
+            "node_type": "interest"
+        }).sort("strength", -1).to_list(100)
+        
+        return {
+            "success": True,
+            "interests": [
+                {
+                    "id": str(i.get("id") or i.get("_id")),
+                    "label": i.get("display_label") or i.get("label", "").title(),
+                    "strength": i.get("strength", 0.5),
+                    "source": i.get("properties", {}).get("source", "unknown"),
+                    "mention_count": i.get("mention_count", 0)
+                }
+                for i in interests
+            ]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting interests: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/enrich-from-post")
-async def enrich_graph_from_post(post_data: Dict[str, str], request: Request):
-    """Enrich knowledge graph from post content"""
-    user = await require_auth(request)
-    post_text = post_data.get('text', '')
-    if not post_text:
-        raise HTTPException(status_code=400, detail="Post text is required")
-    
-    graph_service = get_graph_service()
-    result = await graph_service.enrich_graph_from_post(post_text, user.id)
-    if not result.get("success"):
-        raise HTTPException(status_code=500, detail=result.get("error", "Graph enrichment failed"))
-    return {"message": "Graph enriched from post"}
+@router.post("/interests")
+async def create_interest(req: InterestCreate, request: Request):
+    """Create a new interest"""
+    try:
+        user = await require_auth(request)
+        db = get_database()
+        now = datetime.now(timezone.utc)
+        
+        # Check if already exists
+        existing = await db.graph_nodes.find_one({
+            "user_id": user.id,
+            "node_type": "interest",
+            "label": req.label.lower()
+        })
+        
+        if existing:
+            raise HTTPException(status_code=400, detail="Interest already exists")
+        
+        node_id = f"interest_{user.id}_{req.label.lower().replace(' ', '_')}"
+        
+        await db.graph_nodes.insert_one({
+            "id": node_id,
+            "user_id": user.id,
+            "node_type": "interest",
+            "label": req.label.lower(),
+            "display_label": req.label.title(),
+            "strength": req.strength,
+            "properties": {"source": "explicit", "service": "manual"},
+            "mention_count": 1,
+            "created_at": now,
+            "updated_at": now
+        })
+        
+        return {"success": True, "id": node_id, "message": "Interest created"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating interest: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/compatibility/{other_user_id}")
-async def get_compatibility(other_user_id: str, request: Request):
-    """Get compatibility score with another user"""
-    user = await require_auth(request)
-    graph_service = get_graph_service()
-    return await graph_service.calculate_compatibility(user.id, other_user_id)
+@router.put("/interests/{interest_id:path}")
+async def update_interest(interest_id: str, req: InterestUpdate, request: Request):
+    """Update an existing interest"""
+    try:
+        from urllib.parse import unquote
+        user = await require_auth(request)
+        db = get_database()
+        
+        # URL decode the interest_id
+        decoded_id = unquote(interest_id)
+        
+        # Try to extract label from interest_id format
+        label_to_match = None
+        if decoded_id.startswith("interest_"):
+            parts = decoded_id.split("_", 2)
+            if len(parts) >= 3:
+                label_to_match = parts[2].replace("_", " ")
+        
+        update_fields = {"updated_at": datetime.now(timezone.utc)}
+        if req.label:
+            update_fields["label"] = req.label.lower()
+            update_fields["display_label"] = req.label.title()
+        if req.strength is not None:
+            update_fields["strength"] = req.strength
+        
+        result = await db.graph_nodes.update_one(
+            {
+                "user_id": user.id,
+                "node_type": "interest",
+                "$or": [
+                    {"id": decoded_id},
+                    {"_id": decoded_id},
+                    {"label": decoded_id.lower()},
+                    {"display_label": {"$regex": f"^{decoded_id}$", "$options": "i"}},
+                    *([{"label": {"$regex": f"^{label_to_match}$", "$options": "i"}}] if label_to_match else [])
+                ]
+            },
+            {"$set": update_fields}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Interest not found")
+        
+        return {"success": True, "message": "Interest updated"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating interest: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/my-graph")
-async def get_my_graph(request: Request):
-    """Get user's knowledge graph"""
-    user = await require_auth(request)
-    
-    nodes = await db.graph_nodes.find({"user_id": user.id}, {"_id": 0}).to_list(1000)
-    edges = await db.graph_edges.find(
-        {"$or": [
-            {"from_node_id": {"$in": [n['id'] for n in nodes]}},
-            {"to_node_id": {"$in": [n['id'] for n in nodes]}}
-        ]},
-        {"_id": 0}
-    ).to_list(1000)
-    
-    return {"nodes": nodes, "edges": edges}
+@router.delete("/interests/{interest_id:path}")
+async def delete_interest(interest_id: str, request: Request):
+    """Delete an interest"""
+    try:
+        from urllib.parse import unquote
+        user = await require_auth(request)
+        db = get_database()
+        
+        # URL decode the interest_id
+        decoded_id = unquote(interest_id)
+        
+        # Try to extract label from interest_id format: interest_{user_id}_{label}
+        label_to_match = None
+        if decoded_id.startswith("interest_"):
+            parts = decoded_id.split("_", 2)
+            if len(parts) >= 3:
+                label_to_match = parts[2].replace("_", " ")
+        
+        # Try multiple matching strategies
+        result = await db.graph_nodes.delete_one({
+            "user_id": user.id,
+            "node_type": "interest",
+            "$or": [
+                {"id": decoded_id},
+                {"_id": decoded_id},
+                {"label": decoded_id.lower()},
+                {"display_label": {"$regex": f"^{decoded_id}$", "$options": "i"}},
+                *([{"label": {"$regex": f"^{label_to_match}$", "$options": "i"}}] if label_to_match else [])
+            ]
+        })
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Interest not found")
+        
+        return {"success": True, "message": "Interest deleted"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting interest: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/add-node")
-async def add_graph_node(node_data: Dict[str, Any], request: Request):
-    """Add a node to user's knowledge graph"""
-    user = await require_auth(request)
-    
-    node = GraphNode(
-        user_id=user.id,
-        node_type=node_data['node_type'],
-        label=node_data['label'],
-        properties=node_data.get('properties', {})
-    )
-    
-    node_dict = node.model_dump()
-    node_dict['created_at'] = node_dict['created_at'].isoformat()
-    node_dict['updated_at'] = node_dict['updated_at'].isoformat()
-    await db.graph_nodes.insert_one(node_dict)
-    
-    return node
+# =============================================================================
+# CONNECTIONS CRUD
+# =============================================================================
+
+@router.get("/connections")
+async def get_connections(request: Request):
+    """Get all connections for the current user"""
+    try:
+        user = await require_auth(request)
+        db = get_database()
+        
+        # Get from users.connections
+        user_doc = await db.users.find_one({"id": user.id}, {"connections": 1})
+        user_connections = user_doc.get("connections", []) if user_doc else []
+        
+        # Get from graph_nodes
+        conn_nodes = await db.graph_nodes.find({
+            "user_id": user.id,
+            "node_type": "connection"
+        }).to_list(100)
+        
+        # Merge and dedupe
+        connections = []
+        seen_names = set()
+        
+        for conn in user_connections:
+            name = conn.get("name", "").strip()
+            if name and name.lower() not in seen_names:
+                seen_names.add(name.lower())
+                connections.append({
+                    "id": f"conn_{user.id}_{name.lower().replace(' ', '_')}",
+                    "name": name,
+                    "relationship": conn.get("relationship", "friend"),
+                    "source": conn.get("source", "conversation"),
+                    "details": conn.get("details", ""),
+                    "mentioned_count": conn.get("mentioned_count", 1)
+                })
+        
+        for node in conn_nodes:
+            name = node.get("display_label") or node.get("label", "").title()
+            if name and name.lower() not in seen_names:
+                seen_names.add(name.lower())
+                props = node.get("properties", {})
+                connections.append({
+                    "id": str(node.get("id") or node.get("_id")),
+                    "name": name,
+                    "relationship": props.get("relationship", "friend"),
+                    "source": props.get("source", "implicit"),
+                    "details": props.get("details", ""),
+                    "mentioned_count": node.get("mention_count", 1)
+                })
+        
+        return {"success": True, "connections": connections}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting connections: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/enrich-from-interaction")
-async def enrich_graph_from_interaction(request: Request, data: Dict[str, Any]):
-    """Enrich graph from user interaction"""
-    user = await require_auth(request)
-    
-    target_user_id = data.get("target_user_id")
-    interaction_type = data.get("interaction_type", "view")  # view, like, match, message
-    
-    if not target_user_id:
-        raise HTTPException(status_code=400, detail="Target user ID required")
-    
-    graph_builder = get_graph_builder()
-    _ = await graph_builder.enrich_graph_from_interaction(
-        user.id, target_user_id, interaction_type
-    )
-    
-    return {"message": "Graph enriched from interaction"}
+@router.post("/connections")
+async def create_connection(req: ConnectionCreate, request: Request):
+    """Create a new connection"""
+    try:
+        user = await require_auth(request)
+        db = get_database()
+        now = datetime.now(timezone.utc)
+        
+        # Add to users.connections
+        await db.users.update_one(
+            {"id": user.id},
+            {
+                "$push": {
+                    "connections": {
+                        "name": req.name.strip(),
+                        "relationship": req.relationship,
+                        "details": req.details or "",
+                        "source": "explicit",
+                        "mentioned_count": 1,
+                        "last_mentioned": now.isoformat()
+                    }
+                }
+            },
+            upsert=True
+        )
+        
+        # Also add to graph_nodes for display
+        node_id = f"connection_{user.id}_{req.name.lower().replace(' ', '_')}"
+        await db.graph_nodes.update_one(
+            {"user_id": user.id, "node_type": "connection", "label": req.name.lower()},
+            {
+                "$set": {
+                    "id": node_id,
+                    "user_id": user.id,
+                    "node_type": "connection",
+                    "label": req.name.lower(),
+                    "display_label": req.name.strip(),
+                    "properties": {
+                        "source": "explicit",
+                        "relationship": req.relationship,
+                        "details": req.details or ""
+                    },
+                    "strength": 0.8,
+                    "updated_at": now
+                },
+                "$setOnInsert": {"created_at": now, "mention_count": 1}
+            },
+            upsert=True
+        )
+        
+        return {"success": True, "id": node_id, "message": "Connection created"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating connection: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/context")
-async def get_graph_context(request: Request):
-    """Get user's graph context"""
-    user = await require_auth(request)
-    
-    from app.globals import graph_rag
-    context = await graph_rag.get_user_context(user.id)
-    
-    return context
+@router.put("/connections/{connection_id}")
+async def update_connection(connection_id: str, req: ConnectionUpdate, request: Request):
+    """Update an existing connection"""
+    try:
+        user = await require_auth(request)
+        db = get_database()
+        now = datetime.now(timezone.utc)
+        
+        # Try to extract name from connection_id
+        # Format: conn_{user_id}_{name} or connection_{user_id}_{name}
+        parts = connection_id.split("_")
+        if len(parts) >= 3:
+            old_name = "_".join(parts[2:]).replace("_", " ")
+        else:
+            old_name = connection_id
+        
+        # Update in users.connections
+        update_user_fields = {}
+        if req.name:
+            update_user_fields["connections.$.name"] = req.name.strip()
+        if req.relationship:
+            update_user_fields["connections.$.relationship"] = req.relationship
+        if req.details is not None:
+            update_user_fields["connections.$.details"] = req.details
+        update_user_fields["connections.$.last_mentioned"] = now.isoformat()
+        
+        await db.users.update_one(
+            {"id": user.id, "connections.name": {"$regex": f"^{old_name}$", "$options": "i"}},
+            {"$set": update_user_fields}
+        )
+        
+        # Update in graph_nodes
+        update_node_fields = {"updated_at": now}
+        if req.name:
+            update_node_fields["label"] = req.name.lower()
+            update_node_fields["display_label"] = req.name.strip()
+        if req.relationship:
+            update_node_fields["properties.relationship"] = req.relationship
+        if req.details is not None:
+            update_node_fields["properties.details"] = req.details
+        
+        await db.graph_nodes.update_one(
+            {
+                "user_id": user.id,
+                "node_type": "connection",
+                "$or": [
+                    {"id": connection_id},
+                    {"label": {"$regex": f"^{old_name}$", "$options": "i"}}
+                ]
+            },
+            {"$set": update_node_fields}
+        )
+        
+        return {"success": True, "message": "Connection updated"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating connection: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/similar-users")
-async def find_similar_users(request: Request, limit: int = Query(10, ge=1, le=50)):
-    """Find users with similar graphs"""
-    user = await require_auth(request)
-    
-    from app.globals import graph_rag
-    similar = await graph_rag.find_similar_users(user.id, limit)
-    
-    return {"similar_users": similar}
+@router.delete("/connections/{connection_id}")
+async def delete_connection(connection_id: str, request: Request):
+    """Delete a connection"""
+    try:
+        user = await require_auth(request)
+        db = get_database()
+        
+        # Extract name from connection_id
+        parts = connection_id.split("_")
+        if len(parts) >= 3:
+            name = "_".join(parts[2:]).replace("_", " ")
+        else:
+            name = connection_id
+        
+        # Delete from users.connections
+        await db.users.update_one(
+            {"id": user.id},
+            {"$pull": {"connections": {"name": {"$regex": f"^{name}$", "$options": "i"}}}}
+        )
+        
+        # Delete from graph_nodes
+        await db.graph_nodes.delete_one({
+            "user_id": user.id,
+            "node_type": "connection",
+            "$or": [
+                {"id": connection_id},
+                {"label": {"$regex": f"^{name}$", "$options": "i"}}
+            ]
+        })
+        
+        return {"success": True, "message": "Connection deleted"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting connection: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-def get_graph_builder():
-    """Get GraphBuilder instance"""
-    from app.globals import graph_builder
-    return graph_builder
+# =============================================================================
+# TRAITS CRUD
+# =============================================================================
 
+@router.get("/traits")
+async def get_traits(request: Request):
+    """Get all traits for the current user"""
+    try:
+        user = await require_auth(request)
+        db = get_database()
+        
+        traits = await db.graph_nodes.find({
+            "user_id": user.id,
+            "node_type": "trait"
+        }).sort("strength", -1).to_list(100)
+        
+        return {
+            "success": True,
+            "traits": [
+                {
+                    "id": str(t.get("id") or t.get("_id")),
+                    "label": t.get("display_label") or t.get("label", "").title(),
+                    "strength": t.get("strength", 0.5),
+                    "source": t.get("properties", {}).get("source", "unknown")
+                }
+                for t in traits
+            ]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting traits: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/traits")
+async def create_trait(req: TraitCreate, request: Request):
+    """Create a new trait"""
+    try:
+        user = await require_auth(request)
+        db = get_database()
+        now = datetime.now(timezone.utc)
+        
+        existing = await db.graph_nodes.find_one({
+            "user_id": user.id,
+            "node_type": "trait",
+            "label": req.label.lower()
+        })
+        
+        if existing:
+            raise HTTPException(status_code=400, detail="Trait already exists")
+        
+        node_id = f"trait_{user.id}_{req.label.lower().replace(' ', '_')}"
+        
+        await db.graph_nodes.insert_one({
+            "id": node_id,
+            "user_id": user.id,
+            "node_type": "trait",
+            "label": req.label.lower(),
+            "display_label": req.label.title(),
+            "strength": req.strength,
+            "properties": {"source": "explicit", "service": "manual"},
+            "created_at": now,
+            "updated_at": now
+        })
+        
+        return {"success": True, "id": node_id, "message": "Trait created"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating trait: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.put("/traits/{trait_id:path}")
+async def update_trait(trait_id: str, req: TraitUpdate, request: Request):
+    """Update an existing trait"""
+    try:
+        from urllib.parse import unquote
+        user = await require_auth(request)
+        db = get_database()
+        
+        decoded_id = unquote(trait_id)
+        
+        # Try to extract label from trait_id format
+        label_to_match = None
+        if decoded_id.startswith("trait_"):
+            parts = decoded_id.split("_", 2)
+            if len(parts) >= 3:
+                label_to_match = parts[2].replace("_", " ")
+        
+        update_fields = {"updated_at": datetime.now(timezone.utc)}
+        if req.label:
+            update_fields["label"] = req.label.lower()
+            update_fields["display_label"] = req.label.title()
+        if req.strength is not None:
+            update_fields["strength"] = req.strength
+        
+        result = await db.graph_nodes.update_one(
+            {
+                "user_id": user.id,
+                "node_type": "trait",
+                "$or": [
+                    {"id": decoded_id},
+                    {"_id": decoded_id},
+                    {"label": decoded_id.lower()},
+                    {"display_label": {"$regex": f"^{decoded_id}$", "$options": "i"}},
+                    *([{"label": {"$regex": f"^{label_to_match}$", "$options": "i"}}] if label_to_match else [])
+                ]
+            },
+            {"$set": update_fields}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Trait not found")
+        
+        return {"success": True, "message": "Trait updated"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating trait: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/traits/{trait_id:path}")
+async def delete_trait(trait_id: str, request: Request):
+    """Delete a trait"""
+    try:
+        from urllib.parse import unquote
+        user = await require_auth(request)
+        db = get_database()
+        
+        decoded_id = unquote(trait_id)
+        
+        # Try to extract label from trait_id format
+        label_to_match = None
+        if decoded_id.startswith("trait_"):
+            parts = decoded_id.split("_", 2)
+            if len(parts) >= 3:
+                label_to_match = parts[2].replace("_", " ")
+        
+        result = await db.graph_nodes.delete_one({
+            "user_id": user.id,
+            "node_type": "trait",
+            "$or": [
+                {"id": decoded_id},
+                {"_id": decoded_id},
+                {"label": decoded_id.lower()},
+                {"display_label": {"$regex": f"^{decoded_id}$", "$options": "i"}},
+                *([{"label": {"$regex": f"^{label_to_match}$", "$options": "i"}}] if label_to_match else [])
+            ]
+        })
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Trait not found")
+        
+        return {"success": True, "message": "Trait deleted"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting trait: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

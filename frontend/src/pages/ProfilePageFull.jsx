@@ -23,6 +23,7 @@ import AppHeader from "@/components/AppHeader";
 import SideMessenger from "@/components/SideMessenger";
 import ProfilePictureCropper from "@/components/common/ProfilePictureCropper";
 import { ImmersivePageWrapper } from "@/components/ambient";
+import { getVoiceSettings, updateVoiceSettings } from "@/services/api/voiceService";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -151,6 +152,204 @@ const AvatarStatus = () => {
         <Card className="p-4 bg-yellow-50 border-yellow-200">
           <p className="text-sm text-yellow-800">⚠️ Avatar profile not yet configured</p>
         </Card>
+      )}
+    </div>
+  );
+};
+
+// Voice Settings Panel Component for Profile Tab
+const VoiceSettingsPanel = () => {
+  const [settings, setSettings] = useState({
+    preset: 'default',
+    noise_threshold: 0.5,
+    response_speed: 'balanced',
+    prefer_shorter_responses: false,
+    enable_transcription: true
+  });
+  const [presets, setPresets] = useState(['default']);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState(null);
+
+  // Preset descriptions
+  const presetDescriptions = {
+    default: 'Balanced settings for most environments',
+    low_latency: 'Fast response time for natural conversations',
+    ultra_low_latency: 'Fastest possible - may be sensitive to noise',
+    quiet_environment: 'Higher sensitivity for quiet rooms',
+    noisy_environment: 'Filters background noise better',
+    push_to_talk: 'Manual control - hold to speak'
+  };
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const data = await getVoiceSettings();
+        if (data.success) {
+          setSettings(prev => ({ ...prev, ...data.settings }));
+          setPresets(data.presets || ['default']);
+        }
+      } catch (err) {
+        console.error('Error loading voice settings:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadSettings();
+  }, []);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveStatus(null);
+
+    try {
+      const result = await updateVoiceSettings({
+        preset: settings.preset,
+        custom: {
+          noise_threshold: settings.noise_threshold,
+          response_speed: settings.response_speed,
+          prefer_shorter_responses: settings.prefer_shorter_responses,
+          enable_transcription: settings.enable_transcription
+        }
+      });
+
+      if (result.success) {
+        setSaveStatus('saved');
+        toast.success('Voice settings saved');
+        setTimeout(() => setSaveStatus(null), 2000);
+      } else {
+        setSaveStatus('error');
+        toast.error('Failed to save voice settings');
+      }
+    } catch (err) {
+      console.error('Error saving voice settings:', err);
+      setSaveStatus('error');
+      toast.error('Failed to save voice settings');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (isLoading) return <p className="text-gray-500">Loading voice settings...</p>;
+
+  return (
+    <div className="space-y-6">
+      {/* Environment Preset */}
+      <div>
+        <label className="block text-sm font-medium mb-3">Environment Preset</label>
+        <div className="grid grid-cols-1 gap-2">
+          {presets.map((preset) => (
+            <button
+              key={preset}
+              onClick={() => setSettings(prev => ({ ...prev, preset }))}
+              className={`p-3 rounded-lg text-left transition-all border ${
+                settings.preset === preset 
+                  ? 'border-purple-500 bg-purple-50' 
+                  : 'border-gray-200 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium capitalize">
+                  {preset.replace(/_/g, ' ')}
+                </span>
+                {settings.preset === preset && (
+                  <span className="text-purple-600">✓</span>
+                )}
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                {presetDescriptions[preset] || 'Custom preset'}
+              </p>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Noise Sensitivity */}
+      <div>
+        <label className="block text-sm font-medium mb-2">Noise Sensitivity</label>
+        <div className="flex items-center gap-4">
+          <span className="text-xs text-gray-500">Quiet</span>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value={settings.noise_threshold}
+            onChange={(e) => setSettings(prev => ({ 
+              ...prev, 
+              noise_threshold: parseFloat(e.target.value) 
+            }))}
+            className="flex-1 h-2 rounded-full appearance-none cursor-pointer bg-gray-200"
+          />
+          <span className="text-xs text-gray-500">Noisy</span>
+        </div>
+        <p className="text-xs text-gray-400 mt-1">
+          Higher values filter out more background noise
+        </p>
+      </div>
+
+      {/* Response Speed */}
+      <div>
+        <label className="block text-sm font-medium mb-2">Response Speed</label>
+        <div className="flex gap-2">
+          {['quick', 'balanced', 'thoughtful'].map((speed) => (
+            <button
+              key={speed}
+              onClick={() => setSettings(prev => ({ ...prev, response_speed: speed }))}
+              className={`flex-1 py-2 px-3 rounded-lg text-sm transition-all border ${
+                settings.response_speed === speed 
+                  ? 'border-purple-500 bg-purple-50 text-purple-700' 
+                  : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {speed.charAt(0).toUpperCase() + speed.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Toggle options */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between p-3 rounded-lg border bg-gray-50">
+          <div>
+            <p className="text-sm font-medium">Prefer shorter responses</p>
+            <p className="text-xs text-gray-500">More concise answers from Maya</p>
+          </div>
+          <Switch
+            checked={settings.prefer_shorter_responses}
+            onCheckedChange={(checked) => setSettings(prev => ({ 
+              ...prev, 
+              prefer_shorter_responses: checked 
+            }))}
+          />
+        </div>
+
+        <div className="flex items-center justify-between p-3 rounded-lg border bg-gray-50">
+          <div>
+            <p className="text-sm font-medium">Show transcription</p>
+            <p className="text-xs text-gray-500">Display text of conversation</p>
+          </div>
+          <Switch
+            checked={settings.enable_transcription}
+            onCheckedChange={(checked) => setSettings(prev => ({ 
+              ...prev, 
+              enable_transcription: checked 
+            }))}
+          />
+        </div>
+      </div>
+
+      {/* Save Button */}
+      <Button 
+        onClick={handleSave} 
+        disabled={isSaving}
+        className="w-full bg-gradient-to-r from-pink-500 to-purple-600"
+      >
+        {isSaving ? 'Saving...' : 'Save Voice Settings'}
+      </Button>
+
+      {saveStatus === 'saved' && (
+        <p className="text-sm text-green-600 text-center">✓ Settings saved successfully</p>
       )}
     </div>
   );
@@ -1038,11 +1237,12 @@ const ProfilePageFull = ({ user: currentUser }) => {
                               <DialogTitle>Edit Maya Profile</DialogTitle>
                             </DialogHeader>
                             <Tabs defaultValue="profile" className="w-full">
-                              <TabsList className="grid w-full grid-cols-4">
+                              <TabsList className="grid w-full grid-cols-5">
                                 <TabsTrigger value="profile">Profile</TabsTrigger>
                                 <TabsTrigger value="autonomy">Autonomy</TabsTrigger>
                                 <TabsTrigger value="activity">Activity</TabsTrigger>
                                 <TabsTrigger value="status">Status</TabsTrigger>
+                                <TabsTrigger value="voice">Voice</TabsTrigger>
                               </TabsList>
                               
                               <TabsContent value="profile" className="space-y-4 py-4">
@@ -1214,6 +1414,11 @@ const ProfilePageFull = ({ user: currentUser }) => {
                               <TabsContent value="status" className="space-y-4 py-4">
                                 <h3 className="text-lg font-semibold mb-4">⚡ Avatar Status</h3>
                                 <AvatarStatus />
+                              </TabsContent>
+                              
+                              <TabsContent value="voice" className="space-y-4 py-4">
+                                <h3 className="text-lg font-semibold mb-4">🎙️ Voice Settings</h3>
+                                <VoiceSettingsPanel />
                               </TabsContent>
                             </Tabs>
                           </DialogContent>
@@ -1534,11 +1739,12 @@ const ProfilePageFull = ({ user: currentUser }) => {
                             <DialogTitle>Edit Maya Profile</DialogTitle>
                           </DialogHeader>
                           <Tabs defaultValue="profile" className="w-full">
-                            <TabsList className="grid w-full grid-cols-4">
+                            <TabsList className="grid w-full grid-cols-5">
                               <TabsTrigger value="profile">Profile</TabsTrigger>
                               <TabsTrigger value="autonomy">Autonomy</TabsTrigger>
                               <TabsTrigger value="activity">Activity</TabsTrigger>
                               <TabsTrigger value="status">Status</TabsTrigger>
+                              <TabsTrigger value="voice">Voice</TabsTrigger>
                             </TabsList>
                             
                             <TabsContent value="profile" className="space-y-4 py-4">
@@ -1698,6 +1904,11 @@ const ProfilePageFull = ({ user: currentUser }) => {
                             <TabsContent value="status" className="space-y-4 py-4">
                               <h3 className="text-lg font-semibold mb-4">⚡ Avatar Status</h3>
                               <AvatarStatus />
+                            </TabsContent>
+                            
+                            <TabsContent value="voice" className="space-y-4 py-4">
+                              <h3 className="text-lg font-semibold mb-4">🎙️ Voice Settings</h3>
+                              <VoiceSettingsPanel />
                             </TabsContent>
                           </Tabs>
                         </DialogContent>

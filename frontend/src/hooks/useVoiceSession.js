@@ -6,7 +6,16 @@
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { createVoiceSession, recordVoiceEvent } from '../services/api/voiceService';
+import { createVoiceSession, recordVoiceEvent, getVoiceContext, prewarmContext, saveTranscript, triggerWorkflow } from '../services/api/voiceService';
+
+// Generate unique ID for session (uses crypto if available, fallback to timestamp)
+const generateSessionId = () => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  // Fallback: timestamp + random
+  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+};
 
 // Session states
 export const VoiceSessionState = {
@@ -54,6 +63,12 @@ export function useVoiceSession({
   const sessionStartTimeRef = useRef(null);
   const animationFrameRef = useRef(null);
   
+  // Refs for transcript accumulation
+  const sessionIdRef = useRef(null);
+  const messagesRef = useRef([]);
+  const currentUserTranscriptRef = useRef('');
+  const currentAiTranscriptRef = useRef('');
+  
   // Update state and notify callback
   const updateState = useCallback((newState) => {
     setSessionState(newState);
@@ -99,18 +114,37 @@ export function useVoiceSession({
           
         case 'response.output_audio_transcript.done':
         case 'response.audio_transcript.done':  // Keep for backwards compatibility
-          // AI finished speaking
+          // AI finished speaking - save to transcript history
           const fullTranscript = message.transcript || '';
           setAiTranscript(fullTranscript);
           onTranscript?.({ type: 'ai', text: fullTranscript });
+          
+          // Accumulate for saving
+          if (fullTranscript.trim()) {
+            messagesRef.current.push({
+              role: 'assistant',
+              content: fullTranscript,
+              timestamp: new Date().toISOString()
+            });
+          }
+          
           updateState(VoiceSessionState.CONNECTED);
           break;
           
         case 'conversation.item.input_audio_transcription.completed':
-          // User speech transcription
+          // User speech transcription - save to transcript history
           const userText = message.transcript || '';
           setTranscript(userText);
           onTranscript?.({ type: 'user', text: userText });
+          
+          // Accumulate for saving
+          if (userText.trim()) {
+            messagesRef.current.push({
+              role: 'user',
+              content: userText,
+              timestamp: new Date().toISOString()
+            });
+          }
           break;
           
         case 'response.done':
@@ -131,6 +165,11 @@ export function useVoiceSession({
           console.debug('Conversation item:', message.type);
           break;
           
+        case 'response.function_call_arguments.done':
+          // AI wants to call a function - handle it
+          handleFunctionCall(message);
+          break;
+          
         case 'error':
           console.error('Voice session error:', message.error);
           setError(message.error?.message || 'Voice session error');
@@ -145,6 +184,108 @@ export function useVoiceSession({
       console.error('Error parsing data channel message:', err);
     }
   }, [onTranscript, onError, updateState]);
+  
+  // Handle function calls from the AI
+  const handleFunctionCall = useCallback(async (message) => {
+    const { call_id, name, arguments: argsString } = message;
+    
+    try {
+      const args = JSON.parse(argsString || '{}');
+      console.log(`AI calling function: ${name}`, args);
+      
+      let result;
+      
+      if (name === 'recall_social_context') {
+        // Handle social context recall
+        result = await getVoiceContext({
+          avatarId,
+          contextType: args.context_type,
+          friendName: args.friend_name,
+          timeRange: args.time_range
+        });
+        
+        // Send function result back to the AI
+        if (dataChannelRef.current && dataChannelRef.current.readyState === 'open') {
+          const outputEvent = {
+            type: 'conversation.item.create',
+            item: {
+              type: 'function_call_output',
+              call_id: call_id,
+              output: result.summary || 'No information available.'
+            }
+          };
+          dataChannelRef.current.send(JSON.stringify(outputEvent));
+          dataChannelRef.current.send(JSON.stringify({ type: 'response.create' }));
+        }
+        
+      } else if (name === 'trigger_workflow') {
+        // Handle workflow trigger
+        console.log('Triggering workflow:', args);
+        
+        result = await triggerWorkflow({
+          avatarId,
+          missionType: args.mission_type,
+          missionName: args.mission_name,
+          description: args.description,
+          interests: args.interests || [],
+          keywords: args.keywords || [],
+          approach: args.approach || 'friendly',
+          maxTargets: args.max_targets || 10
+        });
+        
+        // Send function result back to the AI
+        if (dataChannelRef.current && dataChannelRef.current.readyState === 'open') {
+          const outputMessage = result.success 
+            ? `${result.message} Mission ID: ${result.mission_id}`
+            : result.message;
+          
+          const outputEvent = {
+            type: 'conversation.item.create',
+            item: {
+              type: 'function_call_output',
+              call_id: call_id,
+              output: outputMessage
+            }
+          };
+          dataChannelRef.current.send(JSON.stringify(outputEvent));
+          dataChannelRef.current.send(JSON.stringify({ type: 'response.create' }));
+        }
+        
+      } else {
+        console.warn('Unknown function call:', name);
+        // Send error result for unknown function
+        if (dataChannelRef.current && dataChannelRef.current.readyState === 'open') {
+          const errorEvent = {
+            type: 'conversation.item.create',
+            item: {
+              type: 'function_call_output',
+              call_id: call_id,
+              output: "I don't know how to do that right now."
+            }
+          };
+          dataChannelRef.current.send(JSON.stringify(errorEvent));
+          dataChannelRef.current.send(JSON.stringify({ type: 'response.create' }));
+        }
+      }
+      
+    } catch (err) {
+      console.error('Error handling function call:', err);
+      
+      // Send error result back to AI
+      if (dataChannelRef.current && dataChannelRef.current.readyState === 'open') {
+        const errorEvent = {
+          type: 'conversation.item.create',
+          item: {
+            type: 'function_call_output',
+            call_id: call_id,
+            output: "I'm having trouble with that right now. Could you try again?"
+          }
+        };
+        dataChannelRef.current.send(JSON.stringify(errorEvent));
+        dataChannelRef.current.send(JSON.stringify({ type: 'response.create' }));
+      }
+    }
+  }, [avatarId]);
   
   // Analyze audio levels for visualization
   const analyzeAudioLevel = useCallback(() => {
@@ -170,6 +311,10 @@ export function useVoiceSession({
     try {
       setError(null);
       updateState(VoiceSessionState.CONNECTING);
+      
+      // Initialize session tracking
+      sessionIdRef.current = generateSessionId();
+      messagesRef.current = [];
       
       // Request microphone access
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -290,6 +435,10 @@ export function useVoiceSession({
   
   // Stop voice session
   const stopSession = useCallback(async () => {
+    const endTime = new Date().toISOString();
+    const startTime = sessionStartTimeRef.current 
+      ? new Date(sessionStartTimeRef.current).toISOString()
+      : endTime;
     const duration = sessionStartTimeRef.current 
       ? Math.floor((Date.now() - sessionStartTimeRef.current) / 1000)
       : 0;
@@ -298,12 +447,30 @@ export function useVoiceSession({
     try {
       await recordVoiceEvent('session_ended', {
         avatar_id: avatarId,
-        timestamp: new Date().toISOString(),
+        timestamp: endTime,
         duration_seconds: duration
       });
     } catch (err) {
       console.error('Error recording session end:', err);
     }
+    
+    // Save transcript to backend (fire-and-forget)
+    // Only save if we have messages and a meaningful conversation (>10s)
+    if (messagesRef.current.length > 0 && duration > 10) {
+      saveTranscript({
+        sessionId: sessionIdRef.current,
+        avatarId: avatarId,
+        messages: messagesRef.current,
+        startedAt: startTime,
+        endedAt: endTime,
+        durationSeconds: duration
+      });
+      console.log(`Saved transcript: ${messagesRef.current.length} messages, ${duration}s`);
+    }
+    
+    // Clear session data
+    sessionIdRef.current = null;
+    messagesRef.current = [];
     
     cleanup();
     updateState(VoiceSessionState.IDLE);
@@ -367,10 +534,7 @@ export function useVoiceSession({
     
     // Request response (GA API)
     dataChannelRef.current.send(JSON.stringify({ 
-      type: 'response.create',
-      response: {
-        modalities: ['text', 'audio']
-      }
+      type: 'response.create'
     }));
   }, []);
   
@@ -382,6 +546,20 @@ export function useVoiceSession({
     
     dataChannelRef.current.send(JSON.stringify({ type: 'response.cancel' }));
   }, []);
+  
+  // Pre-warm context (call on hover over orb)
+  const prewarm = useCallback(async () => {
+    if (!avatarId) return;
+    
+    try {
+      console.log('Pre-warming voice context...');
+      await prewarmContext(avatarId);
+      console.log('Context pre-warmed');
+    } catch (err) {
+      // Silently fail - this is just optimization
+      console.debug('Pre-warm failed:', err);
+    }
+  }, [avatarId]);
   
   // Cleanup on unmount
   useEffect(() => {
@@ -405,7 +583,8 @@ export function useVoiceSession({
     startSession,
     stopSession,
     sendMessage,
-    interrupt
+    interrupt,
+    prewarm
   };
 }
 

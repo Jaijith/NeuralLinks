@@ -70,3 +70,8 @@ def get_agent_runner() -> Optional["AutonomousAgentRunner"]:
     """Get the global agent runner instance."""
     return agent_runner
 
+
+def get_graph_service() -> Optional["GraphService"]:
+    """Get the global graph service instance."""
+    return graph_service
+

@@ -79,7 +79,17 @@ class MissionService:
         
         logger.info(f"📋 Created mission: {mission.id} ({mission.type}), auto_start={auto_start}")
         
-        # Return mission object with auto_start flag for frontend to handle
+        # Auto-start the mission if requested
+        if auto_start:
+            try:
+                logger.info(f"🚀 Auto-starting mission: {mission.id}")
+                start_result = await self.start_mission(mission.id)
+                if not start_result.get("success"):
+                    logger.warning(f"⚠️ Auto-start failed for {mission.id}: {start_result.get('error')}")
+            except Exception as e:
+                logger.error(f"❌ Auto-start error for {mission.id}: {e}")
+                # Don't fail the creation, mission is still saved
+        
         return mission
     
     async def start_mission(self, mission_id: str, force: bool = False) -> Dict[str, Any]:

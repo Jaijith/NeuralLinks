@@ -5,7 +5,7 @@ Models for tracking user-avatar bonding state and relationship health
 
 from typing import Dict, List, Any, Optional
 from datetime import datetime, timezone, timedelta
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 import uuid
 
 from .enums import UserMood, UserEmotion
@@ -36,16 +36,24 @@ class RelationshipArc(BaseModel):
 
 class BondingMetrics(BaseModel):
     """Quantitative metrics for bond health"""
-    bond_strength: float = Field(default=0.5, ge=0.0, le=1.0, description="Overall closeness (0-1)")
-    trust: float = Field(default=0.5, ge=0.0, le=1.0, description="User trust in avatar (0-1)")
-    alignment_confidence: float = Field(default=0.5, ge=0.0, le=1.0, description="How well avatar understands user (0-1)")
-    engagement_rate: float = Field(default=0.5, ge=0.0, le=1.0, description="How often user engages (0-1)")
-    satisfaction_score: float = Field(default=0.5, ge=0.0, le=1.0, description="User satisfaction (0-1)")
+    bond_strength: float = Field(default=0.5, description="Overall closeness (0-1)")
+    trust: float = Field(default=0.5, description="User trust in avatar (0-1)")
+    alignment_confidence: float = Field(default=0.5, description="How well avatar understands user (0-1)")
+    engagement_rate: float = Field(default=0.5, description="How often user engages (0-1)")
+    satisfaction_score: float = Field(default=0.5, description="User satisfaction (0-1)")
     
     # Deltas (change since last session)
     bond_delta: float = Field(default=0.0, description="Change in bond strength")
     trust_delta: float = Field(default=0.0, description="Change in trust")
     alignment_delta: float = Field(default=0.0, description="Change in alignment")
+    
+    @field_validator('bond_strength', 'trust', 'alignment_confidence', 'engagement_rate', 'satisfaction_score', mode='before')
+    @classmethod
+    def clamp_to_valid_range(cls, v):
+        """Clamp values to 0.0-1.0 range to handle floating point precision"""
+        if v is None:
+            return 0.5
+        return max(0.0, min(1.0, float(v)))
 
 
 class BondingState(BaseModel):

@@ -428,6 +428,131 @@ try:
                 'body': json.dumps({'success': False, 'error': str(e)})
             }
     
+    async def process_voice_memory(session_id: str = None):
+        """Process voice transcript and extract memories
+        
+        Args:
+            session_id: Specific session to process, or None to process all unprocessed
+        """
+        from motor.motor_asyncio import AsyncIOMotorClient
+        from domain.voice.voice_memory import VoiceMemoryService
+        from openai import AsyncOpenAI
+        
+        print(f"🧠 Voice memory processing started: session_id={session_id}")
+        
+        mongodb_uri = os.environ.get('MONGODB_URI')
+        if not mongodb_uri:
+            logger.error("❌ MONGODB_URI not set")
+            return {"processed": 0, "errors": 1, "error": "MONGODB_URI not set"}
+        
+        client = AsyncIOMotorClient(mongodb_uri)
+        db = client.neurallinks_local
+        
+        try:
+            # Get OpenAI client
+            openai_api_key = os.environ.get('OPENAI_API_KEY')
+            if not openai_api_key:
+                logger.error("❌ OPENAI_API_KEY not set")
+                return {"processed": 0, "errors": 1, "error": "OPENAI_API_KEY not set"}
+            
+            openai_client = AsyncOpenAI(api_key=openai_api_key)
+            memory_service = VoiceMemoryService(db)
+            
+            processed = 0
+            errors = 0
+            
+            if session_id:
+                # Process specific session
+                result = await memory_service.extract_and_store_memories(session_id, openai_client)
+                if result.get("success"):
+                    processed = 1
+                else:
+                    errors = 1
+                    logger.error(f"❌ Memory extraction failed: {result.get('error')}")
+            else:
+                # Process all unprocessed transcripts (daily backup)
+                # Get all unprocessed transcripts
+                cursor = db.voice_transcripts.find({"processed": False}).limit(50)
+                transcripts = await cursor.to_list(length=50)
+                
+                logger.info(f"📊 Found {len(transcripts)} unprocessed transcripts")
+                
+                for transcript in transcripts:
+                    try:
+                        result = await memory_service.extract_and_store_memories(
+                            transcript.get("session_id"),
+                            openai_client
+                        )
+                        if result.get("success"):
+                            processed += 1
+                        else:
+                            errors += 1
+                    except Exception as e:
+                        logger.error(f"❌ Error processing {transcript.get('session_id')}: {e}")
+                        errors += 1
+            
+            logger.info(f"✅ Voice memory processing complete: processed={processed}, errors={errors}")
+            return {"processed": processed, "errors": errors}
+            
+        except Exception as e:
+            logger.error(f"❌ Voice memory processing failed: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
+            return {"processed": 0, "errors": 1, "error": str(e)}
+        finally:
+            client.close()
+    
+    def voice_memory_handler(event, context):
+        """Handle voice memory extraction events"""
+        import asyncio
+        import json
+        
+        print(f"🧠 Voice memory handler invoked!")
+        print(f"🧠 Event: {json.dumps(event, default=str)[:500]}")
+        
+        # Get session_id if processing specific session
+        session_id = event.get('session_id')
+        detail = event.get('detail', {})
+        if isinstance(detail, str):
+            try:
+                detail = json.loads(detail)
+            except json.JSONDecodeError:
+                detail = {}
+        
+        # Check for session_id in detail as well
+        if not session_id:
+            session_id = detail.get('session_id')
+        
+        try:
+            # Handle event loop
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_closed():
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            
+            result = loop.run_until_complete(process_voice_memory(session_id))
+            
+            return {
+                'statusCode': 200,
+                'body': json.dumps({
+                    'success': True,
+                    'processed': result.get('processed', 0),
+                    'errors': result.get('errors', 0)
+                })
+            }
+        except Exception as e:
+            logger.error(f"❌ Voice memory handler failed: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
+            return {
+                'statusCode': 500,
+                'body': json.dumps({'success': False, 'error': str(e)})
+            }
+    
     def combined_handler(event, context):
         """Route to appropriate handler based on event type"""
         import json
@@ -445,6 +570,14 @@ try:
                 detail = json.loads(detail)
             except json.JSONDecodeError:
                 detail = {}
+        
+        # Check for voice memory extraction (async invocation or EventBridge)
+        if (event.get('action') == 'extract_memories' or 
+            detail.get('action') == 'extract_memories' or
+            detail.get('action') == 'process_unprocessed_transcripts' or
+            event.get('detail-type') == 'Voice Memory Processing'):
+            print("[DEBUG] Routing to voice memory handler")
+            return voice_memory_handler(event, context)
         
         # Check for avatar_id at top level or in detail
         avatar_id = event.get('avatar_id') or detail.get('avatar_id')

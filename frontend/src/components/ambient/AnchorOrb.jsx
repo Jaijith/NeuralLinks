@@ -13,16 +13,19 @@ const AnchorOrb = ({
   energy = 0.5, 
   pulseSpeed = 3,
   onActivate,
+  onHoverStart,  // Called when user hovers - use for pre-warming voice context
   presenceIntensity = 0.5 
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isCharging, setIsCharging] = useState(false);
   const [chargeProgress, setChargeProgress] = useState(0);
   
-  // Handle hover
+  // Handle hover - also trigger pre-warm callback
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
-  }, []);
+    // Notify parent to pre-warm voice context
+    onHoverStart?.();
+  }, [onHoverStart]);
   
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);

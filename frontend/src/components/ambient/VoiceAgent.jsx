@@ -56,7 +56,8 @@ const VoiceAgent = ({
     audioLevel,
     startSession,
     stopSession,
-    interrupt
+    interrupt,
+    prewarm
   } = useVoiceSession({
     avatarId,
     settingPreset,
@@ -71,6 +72,13 @@ const VoiceAgent = ({
       console.error('Voice error:', err);
     }
   });
+  
+  // Pre-warm context when component mounts (user is about to start voice)
+  useEffect(() => {
+    if (isActive && avatarId) {
+      prewarm();
+    }
+  }, [isActive, avatarId, prewarm]);
   
   // Auto-start session when activated
   useEffect(() => {

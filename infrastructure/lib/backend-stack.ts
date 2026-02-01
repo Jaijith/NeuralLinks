@@ -204,6 +204,21 @@ export class BackendStack extends cdk.Stack {
       })
     );
 
+    // Grant Lambda permission to invoke itself asynchronously (for background memory extraction)
+    // Use wildcard pattern to avoid circular dependency
+    backendFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: [
+          'lambda:InvokeFunction',
+          'lambda:InvokeAsync',
+        ],
+        resources: [
+          `arn:aws:lambda:${this.region}:${this.account}:function:*BackendFunction*`,
+        ],
+      })
+    );
+
     // Note: LAMBDA_FUNCTION_ARN will be found at runtime by listing functions
     // This avoids circular dependency issues
     backendFunction.addEnvironment('STACK_NAME', 'BackendStack');
@@ -320,10 +335,41 @@ export class BackendStack extends cdk.Stack {
 
     // Add environment variable for EventBridge API key
     backendFunction.addEnvironment('EVENTBRIDGE_API_KEY', 'neurallinks-autonomous-trigger-2024');
+    
+    // Memory extraction uses the same Lambda (self-invocation)
+    // The function name pattern is: BackendStack-BackendFunction...
+    // We use STACK_NAME (already set) to construct this at runtime
 
     new cdk.CfnOutput(this, 'AutonomousCycleRuleArn', {
       value: autonomousCycleRule.ruleArn,
       description: 'EventBridge rule for autonomous avatar cycles',
+    });
+
+    // ============================================================================
+    // VOICE MEMORY PROCESSING - Daily backup for unprocessed transcripts
+    // ============================================================================
+    const voiceMemoryRule = new events.Rule(this, 'VoiceMemoryRule', {
+      ruleName: '2n1-voice-memory-processing',
+      description: 'Daily backup: Process any unprocessed voice transcripts',
+      schedule: events.Schedule.rate(cdk.Duration.hours(24)),
+      enabled: true,
+    });
+
+    voiceMemoryRule.addTarget(new eventsTargets.LambdaFunction(backendFunction, {
+      event: events.RuleTargetInput.fromObject({
+        source: 'aws.events',
+        'detail-type': 'Voice Memory Processing',
+        detail: {
+          action: 'process_unprocessed_transcripts',
+          trigger: 'daily_backup'
+        }
+      }),
+      retryAttempts: 1,
+    }));
+
+    new cdk.CfnOutput(this, 'VoiceMemoryRuleArn', {
+      value: voiceMemoryRule.ruleArn,
+      description: 'EventBridge rule for daily voice memory processing',
     });
 
     // Workflow Lambda output

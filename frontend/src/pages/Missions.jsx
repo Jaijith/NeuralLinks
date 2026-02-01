@@ -631,7 +631,7 @@ const Missions = ({ user, setUser }) => {
           />
         )}
 
-        {/* Center Panel - World Canvas */}
+        {/* Center Panel - World Canvas (Desktop) / Mission Content (Mobile) */}
         <div className="flex-1 flex flex-col pt-14 lg:pt-0 pb-16 sm:pb-0">
           {/* Avatar Status Strip */}
           <div className="p-2 sm:p-4">
@@ -645,8 +645,46 @@ const Missions = ({ user, setUser }) => {
             />
           </div>
           
-          {/* World Canvas */}
-          <div className="flex-1 p-2 sm:p-4 pt-0">
+          {/* Mobile: Show Mission Briefing when mission selected, otherwise show command prompt */}
+          <div className="lg:hidden flex-1 p-2 overflow-y-auto">
+            {selectedMission ? (
+              <MissionBriefing
+                mission={selectedMission}
+                leads={leads}
+                activities={activities}
+                summary={missionStatus?.results_summary}
+                avatarName={user?.avatar_name || user?.name}
+                avatarPicture={user?.avatar_picture || user?.picture}
+                onFollowUp={() => toast.info('Follow-up coming soon')}
+                onRefineScope={() => toast.info('Refine scope coming soon')}
+                onNewMission={() => setMobileLeftPanelOpen(true)}
+                onViewLead={(lead) => navigate(`/profile/${lead.target_user_id}`)}
+                onStartMission={() => handleMissionAction(selectedMission.id, 'start')}
+                onPauseMission={() => handleMissionAction(selectedMission.id, 'pause')}
+                onResumeMission={() => handleMissionAction(selectedMission.id, 'resume')}
+                className="h-full"
+              />
+            ) : (
+              <Card className="h-full flex flex-col items-center justify-center p-6 text-center bg-white/80 backdrop-blur-sm">
+                <MessageCircle className="w-12 h-12 text-purple-400 mb-4" />
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Command Center</h3>
+                <p className="text-sm text-gray-500 mb-4">
+                  Use the chat to start a new mission, or tap the menu to view past missions.
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={() => setMobileChatOpen(true)}
+                  className="gap-2"
+                >
+                  <Send className="w-4 h-4" />
+                  Start New Mission
+                </Button>
+              </Card>
+            )}
+          </div>
+          
+          {/* Desktop: World Canvas */}
+          <div className="hidden lg:block flex-1 p-2 sm:p-4 pt-0">
             <WorldCanvas
               entities={worldEntities}
               interactions={worldInteractions}

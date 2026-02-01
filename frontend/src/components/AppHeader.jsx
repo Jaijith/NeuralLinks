@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import WorldModeToggle from "./WorldModeToggle";
+import { ViewModeToggle } from "@/components/ambient";
+import useViewMode from "@/hooks/useViewMode";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -18,6 +20,8 @@ const API = `${BACKEND_URL}/api`;
 const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
   const navigate = useNavigate();
   const { worldMode } = useWorldMode();
+  const { isImmersive, toggleViewMode } = useViewMode();
+  const isAvatarWorld = worldMode === 'avatar';
   const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -199,6 +203,17 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
 
             {/* Right - Actions & Profile */}
             <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+              {/* View Mode Toggle (Immersive/Classic) - only in avatar world */}
+              {isAvatarWorld && (
+                <div className="hidden xs:block">
+                  <ViewModeToggle 
+                    isImmersive={isImmersive}
+                    onToggle={toggleViewMode}
+                    compact={true}
+                  />
+                </div>
+              )}
+              
               {/* World Mode Toggle - hidden on very small screens */}
               <div className="hidden xs:block">
                 <WorldModeToggle />
@@ -330,6 +345,20 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                 <SettingsIcon className="w-5 h-5" />
                 <span className="font-medium">Settings</span>
               </button>
+              
+              {/* View Mode Toggle (Immersive/Classic) - for very small screens */}
+              {isAvatarWorld && (
+                <div className="xs:hidden px-4 py-3">
+                  <div className={`flex items-center justify-between ${worldMode === 'avatar' ? 'text-blue-100' : 'text-gray-700'}`}>
+                    <span className="font-medium">View Mode</span>
+                    <ViewModeToggle 
+                      isImmersive={isImmersive}
+                      onToggle={toggleViewMode}
+                      compact={true}
+                    />
+                  </div>
+                </div>
+              )}
               
               {/* World Mode Toggle (for very small screens) */}
               <div className="xs:hidden px-4 py-3">

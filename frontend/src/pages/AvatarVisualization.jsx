@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { 
   Sparkles, TrendingUp, Heart, Brain, Star, 
   Music, Camera, Code, Book, Gamepad2,
-  RefreshCw, Eye, BarChart3
+  RefreshCw, Eye, BarChart3, Users, Pencil, Trash2, Plus, X, Check
 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
@@ -25,12 +26,28 @@ const interestIcons = {
   default: Star
 };
 
+// Relationship type options
+const RELATIONSHIP_TYPES = [
+  "friend", "daughter", "son", "wife", "husband", "mother", "father",
+  "brother", "sister", "cousin", "nephew", "niece", "colleague", "boss",
+  "mentor", "partner", "other"
+];
+
 const AvatarVisualization = ({ user, hideHeader = false }) => {
   const [graphData, setGraphData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const { worldMode } = useWorldMode();
   const isAvatarWorld = worldMode === 'avatar';
+  
+  // Edit states
+  const [editingItem, setEditingItem] = useState(null);
+  const [editValue, setEditValue] = useState("");
+  const [editRelationship, setEditRelationship] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newItemName, setNewItemName] = useState("");
+  const [newItemRelationship, setNewItemRelationship] = useState("friend");
+  const [newItemStrength, setNewItemStrength] = useState(0.7);
 
   // Apply avatar-world class to body when in avatar mode
   useEffect(() => {
@@ -55,11 +72,9 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
       fetchGraphData();
     };
 
-    // Listen for custom event from IntegrationsPage after sync
     window.addEventListener('youtube-sync-complete', handleSyncComplete);
     window.addEventListener('linkedin-sync-complete', handleSyncComplete);
     
-    // Also listen for storage events (if sync updates localStorage)
     window.addEventListener('storage', (e) => {
       if (e.key === 'sync-complete') {
         fetchGraphData();
@@ -99,6 +114,236 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
     return Star;
   };
 
+  // ===========================================
+  // CRUD OPERATIONS
+  // ===========================================
+
+  const handleAddItem = async (type) => {
+    if (!newItemName.trim()) {
+      toast.error("Please enter a name");
+      return;
+    }
+
+    try {
+      const endpoint = type === "connections" ? "/graph/connections" : 
+                       type === "interests" ? "/graph/interests" : "/graph/traits";
+      
+      const payload = type === "connections" 
+        ? { name: newItemName, relationship: newItemRelationship }
+        : { label: newItemName, strength: newItemStrength };
+
+      await axios.post(`${API}${endpoint}`, payload, { withCredentials: true });
+      toast.success(`${type.slice(0, -1)} added successfully`);
+      setShowAddForm(false);
+      setNewItemName("");
+      setNewItemRelationship("friend");
+      setNewItemStrength(0.7);
+      fetchGraphData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || `Failed to add ${type.slice(0, -1)}`);
+    }
+  };
+
+  const handleEditItem = async (type, item) => {
+    try {
+      const endpoint = type === "connections" ? `/graph/connections/${item.id}` :
+                       type === "interests" ? `/graph/interests/${item.id}` : `/graph/traits/${item.id}`;
+      
+      const payload = type === "connections"
+        ? { name: editValue, relationship: editRelationship }
+        : { label: editValue };
+
+      await axios.put(`${API}${endpoint}`, payload, { withCredentials: true });
+      toast.success(`${type.slice(0, -1)} updated successfully`);
+      setEditingItem(null);
+      setEditValue("");
+      setEditRelationship("");
+      fetchGraphData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || `Failed to update ${type.slice(0, -1)}`);
+    }
+  };
+
+  const handleDeleteItem = async (type, item) => {
+    if (!window.confirm(`Are you sure you want to delete "${item.name || item.label}"?`)) {
+      return;
+    }
+
+    try {
+      const endpoint = type === "connections" ? `/graph/connections/${item.id}` :
+                       type === "interests" ? `/graph/interests/${item.id}` : `/graph/traits/${item.id}`;
+
+      await axios.delete(`${API}${endpoint}`, { withCredentials: true });
+      toast.success(`${type.slice(0, -1)} deleted successfully`);
+      fetchGraphData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || `Failed to delete ${type.slice(0, -1)}`);
+    }
+  };
+
+  const startEdit = (item, type) => {
+    setEditingItem({ ...item, type });
+    setEditValue(item.name || item.label);
+    setEditRelationship(item.relationship || "friend");
+  };
+
+  const cancelEdit = () => {
+    setEditingItem(null);
+    setEditValue("");
+    setEditRelationship("");
+  };
+
+  // ===========================================
+  // RENDER HELPERS
+  // ===========================================
+
+  const renderAddForm = (type) => {
+    if (!showAddForm) return null;
+
+    return (
+      <div className={`${isAvatarWorld ? 'bg-yellow-100' : 'bg-white'} rounded-lg p-4 mb-4 border-2 ${isAvatarWorld ? 'border-yellow-400' : 'border-purple-200'}`}>
+        <div className="flex flex-col gap-3">
+          <Input
+            placeholder={type === "connections" ? "Person's name" : `${type.slice(0, -1)} name`}
+            value={newItemName}
+            onChange={(e) => setNewItemName(e.target.value)}
+            className={isAvatarWorld ? 'border-yellow-400' : ''}
+          />
+          
+          {type === "connections" && (
+            <select
+              value={newItemRelationship}
+              onChange={(e) => setNewItemRelationship(e.target.value)}
+              className={`w-full p-2 rounded-md border ${isAvatarWorld ? 'border-yellow-400 bg-yellow-50' : 'border-gray-300'}`}
+            >
+              {RELATIONSHIP_TYPES.map(rel => (
+                <option key={rel} value={rel}>{rel.charAt(0).toUpperCase() + rel.slice(1)}</option>
+              ))}
+            </select>
+          )}
+          
+          {type !== "connections" && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm">Strength:</span>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={newItemStrength}
+                onChange={(e) => setNewItemStrength(parseFloat(e.target.value))}
+                className="flex-1"
+              />
+              <span className="text-sm w-8">{newItemStrength.toFixed(1)}</span>
+            </div>
+          )}
+          
+          <div className="flex gap-2">
+            <Button
+              onClick={() => handleAddItem(type)}
+              className={isAvatarWorld ? 'bg-yellow-500 hover:bg-yellow-600 text-slate-900' : 'bg-purple-500 hover:bg-purple-600'}
+            >
+              <Check className="w-4 h-4 mr-1" /> Add
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => { setShowAddForm(false); setNewItemName(""); }}
+              className={isAvatarWorld ? 'border-yellow-400' : ''}
+            >
+              <X className="w-4 h-4 mr-1" /> Cancel
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderEditableItem = (item, type, icon = null) => {
+    const isEditing = editingItem?.id === item.id && editingItem?.type === type;
+    const Icon = icon || Star;
+    const isEditable = item.editable !== false;
+
+    if (isEditing) {
+      return (
+        <div className={`${isAvatarWorld ? 'bg-yellow-100' : 'bg-white'} rounded-lg p-4 border-2 ${isAvatarWorld ? 'border-yellow-500' : 'border-purple-400'}`}>
+          <div className="flex flex-col gap-2">
+            <Input
+              value={editValue}
+              onChange={(e) => setEditValue(e.target.value)}
+              className={isAvatarWorld ? 'border-yellow-400' : ''}
+            />
+            {type === "connections" && (
+              <select
+                value={editRelationship}
+                onChange={(e) => setEditRelationship(e.target.value)}
+                className={`w-full p-2 rounded-md border ${isAvatarWorld ? 'border-yellow-400 bg-yellow-50' : 'border-gray-300'}`}
+              >
+                {RELATIONSHIP_TYPES.map(rel => (
+                  <option key={rel} value={rel}>{rel.charAt(0).toUpperCase() + rel.slice(1)}</option>
+                ))}
+              </select>
+            )}
+            <div className="flex gap-2">
+              <Button size="sm" onClick={() => handleEditItem(type, item)} className={isAvatarWorld ? 'bg-yellow-500 text-slate-900' : 'bg-purple-500'}>
+                <Check className="w-3 h-3" />
+              </Button>
+              <Button size="sm" variant="outline" onClick={cancelEdit}>
+                <X className="w-3 h-3" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className={`${isAvatarWorld ? 'bg-yellow-50' : 'bg-white/50'} rounded-lg p-4 ${isAvatarWorld ? 'border-2 border-yellow-400' : 'border-2 border-purple-200'} group`}>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center space-x-2 flex-1 min-w-0">
+            <Icon className={`w-5 h-5 flex-shrink-0 ${isAvatarWorld ? 'text-yellow-600' : 'text-purple-600'}`} />
+            <span className={`font-semibold capitalize truncate ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
+              {item.name || item.label}
+            </span>
+          </div>
+          <div className="flex items-center gap-1">
+            {type === "connections" && item.relationship && (
+              <Badge className={`text-xs ${isAvatarWorld ? 'bg-yellow-400 text-slate-900' : 'bg-purple-100 text-purple-700'}`}>
+                {item.relationship}
+              </Badge>
+            )}
+            {(item.strength !== undefined || item.mentioned_count) && (
+              <Badge className={`text-xs ${isAvatarWorld ? 'bg-yellow-400 text-slate-900' : 'bg-purple-100 text-purple-700'}`}>
+                {item.strength?.toFixed(1) || item.mentioned_count || "1"}
+              </Badge>
+            )}
+            {isEditable && (
+              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button size="sm" variant="ghost" onClick={() => startEdit(item, type)} className="h-6 w-6 p-0">
+                  <Pencil className="w-3 h-3" />
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => handleDeleteItem(type, item)} className="h-6 w-6 p-0 text-red-500 hover:text-red-700">
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+        {type !== "connections" && item.strength !== undefined && (
+          <div className={`w-full ${isAvatarWorld ? 'bg-yellow-100' : 'bg-gray-200'} rounded-full h-2`}>
+            <div
+              className={`${isAvatarWorld ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 'bg-gradient-to-r from-purple-500 to-pink-500'} h-2 rounded-full`}
+              style={{ width: `${Math.min((item.strength / 10) * 100, 100)}%` }}
+            ></div>
+          </div>
+        )}
+        <p className={`text-xs mt-2 ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-500'}`}>
+          Source: {item.source || item.properties?.source || "profile"}
+          {item.properties?.service && ` • ${item.properties.service.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`}
+        </p>
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${isAvatarWorld ? 'bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-700' : 'bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50'}`}>
@@ -129,6 +374,7 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
     avatar_info = { name: "Avatar", picture: null, bio: "", archetype: "casual_observer" },
     graph_stats = { total_nodes: 0 },
     top_interests = [],
+    top_connections = [],
     top_traits = [],
     top_values = [],
     sources = {}
@@ -209,6 +455,7 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
           {[
             { id: "overview", label: "Overview", icon: Eye },
             { id: "interests", label: "Interests", icon: Star },
+            { id: "connections", label: "Connections", icon: Users },
             { id: "personality", label: "Personality", icon: Brain },
             { id: "sources", label: "Sources", icon: BarChart3 }
           ].map((tab) => {
@@ -216,7 +463,7 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
             return (
               <Button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => { setActiveTab(tab.id); setShowAddForm(false); setEditingItem(null); }}
                 variant={activeTab === tab.id ? "default" : "outline"}
                 className={`flex-shrink-0 text-xs sm:text-sm min-h-[44px] px-3 sm:px-4 ${
                   isAvatarWorld
@@ -248,7 +495,7 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
             )}
             
             {/* Stats Cards */}
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-4 gap-6">
               <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className={`text-lg font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>Interests</h3>
@@ -259,6 +506,19 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
                 </div>
                 <p className={`text-sm ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
                   Unique interests discovered
+                </p>
+              </Card>
+
+              <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className={`text-lg font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>Connections</h3>
+                  <Users className={`w-5 h-5 ${isAvatarWorld ? 'text-green-600' : 'text-green-500'}`} />
+                </div>
+                <div className={`text-4xl font-bold mb-2 ${isAvatarWorld ? 'text-yellow-600' : 'text-purple-600'}`}>
+                  {graph_stats.connections_count || top_connections.length}
+                </div>
+                <p className={`text-sm ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-600'}`}>
+                  People in your network
                 </p>
               </Card>
 
@@ -304,44 +564,79 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
         {/* Interests Tab */}
         {activeTab === "interests" && (
           <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
-            <h3 className={`text-xl font-bold mb-4 ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
-              Top Interests
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className={`text-xl font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
+                Your Interests
+              </h3>
+              <Button
+                onClick={() => setShowAddForm(!showAddForm)}
+                className={isAvatarWorld ? 'bg-yellow-500 hover:bg-yellow-600 text-slate-900' : 'bg-purple-500 hover:bg-purple-600'}
+              >
+                <Plus className="w-4 h-4 mr-1" /> Add Interest
+              </Button>
+            </div>
+            
+            {renderAddForm("interests")}
+            
             <div className="grid md:grid-cols-3 gap-4">
               {top_interests.map((interest, idx) => {
                 const Icon = getInterestIcon(interest);
-                const strength = interest.strength || 1.0;
-                const strengthPercent = Math.min((strength / 10) * 100, 100);
-                
                 return (
-                  <div
-                    key={idx}
-                    className={`${isAvatarWorld ? 'bg-yellow-50' : 'bg-white/50'} rounded-lg p-4 ${isAvatarWorld ? 'border-2 border-yellow-400' : 'border-2 border-purple-200'}`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center space-x-2">
-                        <Icon className={`w-5 h-5 ${isAvatarWorld ? 'text-yellow-600' : 'text-purple-600'}`} />
-                        <span className={`font-semibold capitalize ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
-                          {interest.label}
-                        </span>
-                      </div>
-                      <Badge className={isAvatarWorld ? 'bg-yellow-400 text-slate-900 font-bold' : 'bg-purple-100 text-purple-700'}>
-                        {strength.toFixed(1)}
-                      </Badge>
-                    </div>
-                    <div className={`w-full ${isAvatarWorld ? 'bg-yellow-100' : 'bg-gray-200'} rounded-full h-2`}>
-                      <div
-                        className={`${isAvatarWorld ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 'bg-gradient-to-r from-purple-500 to-pink-500'} h-2 rounded-full`}
-                        style={{ width: `${strengthPercent}%` }}
-                      ></div>
-                    </div>
-                    <p className={`text-xs mt-2 ${isAvatarWorld ? 'text-slate-700 font-semibold' : 'text-gray-500'}`}>
-                      Source: {interest.properties?.source || "profile"}
-                      {interest.properties?.service && ` • ${interest.properties.service.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`}
-                    </p>
+                  <div key={interest.id || idx}>
+                    {renderEditableItem({ ...interest, id: interest.id || `interest_${idx}` }, "interests", Icon)}
                   </div>
                 );
               })}
+            </div>
+            
+            {top_interests.length === 0 && (
+              <p className={`text-center py-8 ${isAvatarWorld ? 'text-slate-700' : 'text-gray-500'}`}>
+                No interests yet. Add some or have a conversation to discover them!
+              </p>
+            )}
+          </Card>
+        )}
+
+        {/* Connections Tab */}
+        {activeTab === "connections" && (
+          <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className={`text-xl font-bold ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
+                Your Connections
+              </h3>
+              <Button
+                onClick={() => setShowAddForm(!showAddForm)}
+                className={isAvatarWorld ? 'bg-yellow-500 hover:bg-yellow-600 text-slate-900' : 'bg-purple-500 hover:bg-purple-600'}
+              >
+                <Plus className="w-4 h-4 mr-1" /> Add Connection
+              </Button>
+            </div>
+            
+            {renderAddForm("connections")}
+            
+            <div className="grid md:grid-cols-3 gap-4">
+              {top_connections.map((connection, idx) => (
+                <div key={connection.id || idx}>
+                  {renderEditableItem(connection, "connections", Users)}
+                </div>
+              ))}
+            </div>
+            
+            {top_connections.length === 0 && (
+              <p className={`text-center py-8 ${isAvatarWorld ? 'text-slate-700' : 'text-gray-500'}`}>
+                No connections yet. Add friends, mention family in conversations, or connect social accounts!
+              </p>
+            )}
+            
+            {/* Legend */}
+            <div className={`mt-6 p-4 rounded-lg ${isAvatarWorld ? 'bg-yellow-50' : 'bg-gray-50'}`}>
+              <h4 className={`text-sm font-semibold mb-2 ${isAvatarWorld ? 'text-slate-700' : 'text-gray-700'}`}>Source Legend:</h4>
+              <div className="flex flex-wrap gap-3 text-xs">
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500"></span> Voice Conversation</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500"></span> App Friend</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-orange-500"></span> From Posts</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-purple-500"></span> Manually Added</span>
+              </div>
             </div>
           </Card>
         )}
@@ -350,19 +645,26 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
         {activeTab === "personality" && (
           <div className="grid md:grid-cols-2 gap-6">
             <Card className={isAvatarWorld ? 'card-avatar p-6' : 'glass-morphism p-6'}>
-              <h3 className={`text-xl font-bold mb-4 flex items-center ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
-                <Heart className={`w-5 h-5 mr-2 ${isAvatarWorld ? 'text-pink-600' : 'text-pink-500'}`} />
-                Personality Traits
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className={`text-xl font-bold flex items-center ${isAvatarWorld ? 'text-slate-800' : 'text-gray-800'}`}>
+                  <Heart className={`w-5 h-5 mr-2 ${isAvatarWorld ? 'text-pink-600' : 'text-pink-500'}`} />
+                  Personality Traits
+                </h3>
+                <Button
+                  size="sm"
+                  onClick={() => setShowAddForm(!showAddForm)}
+                  className={isAvatarWorld ? 'bg-yellow-500 hover:bg-yellow-600 text-slate-900' : 'bg-purple-500'}
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              {showAddForm && activeTab === "personality" && renderAddForm("traits")}
+              
               <div className="space-y-3">
                 {top_traits.map((trait, idx) => (
-                  <div key={idx} className={`flex items-center justify-between ${isAvatarWorld ? 'bg-yellow-50' : 'bg-white/50'} rounded-lg p-3`}>
-                    <span className={`font-medium capitalize ${isAvatarWorld ? 'text-slate-800 font-semibold' : 'text-gray-800'}`}>
-                      {trait.label}
-                    </span>
-                    <Badge className={isAvatarWorld ? 'bg-yellow-400 text-slate-900 font-bold' : 'bg-pink-100 text-pink-700'}>
-                      {trait.strength?.toFixed(1) || "1.0"}
-                    </Badge>
+                  <div key={trait.id || idx}>
+                    {renderEditableItem({ ...trait, id: trait.id || `trait_${idx}` }, "traits", Heart)}
                   </div>
                 ))}
               </div>
@@ -433,4 +735,3 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
 };
 
 export default AvatarVisualization;
-
