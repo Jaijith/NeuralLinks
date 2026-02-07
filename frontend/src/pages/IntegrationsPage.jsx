@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { ArrowLeft, CheckCircle, XCircle, RefreshCw, Video, Book, Heart, ShoppingCart, X } from "lucide-react";
 import { useWorldMode } from "@/contexts/WorldModeContext";
+import useViewMode from "@/hooks/useViewMode";
 import {
   FaInstagram,
   FaFacebook,
@@ -131,6 +132,7 @@ const getPlatformColor = (platformName) => {
 const IntegrationsPage = ({ user, hideHeader = false }) => {
   const navigate = useNavigate();
   const { worldMode } = useWorldMode();
+  const { isImmersive } = useViewMode();
   const isAvatarWorld = worldMode === 'avatar';
   const [integrations, setIntegrations] = useState({
     social_media: [],
@@ -634,7 +636,13 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
 
             {/* LinkedIn OAuth Credentials Dialog */}
             <Dialog open={showLinkedInDialog} onOpenChange={setShowLinkedInDialog}>
-              <DialogContent className="glass-morphism">
+              <DialogContent 
+                className="rounded-2xl border"
+                style={{ 
+                  backgroundColor: isImmersive ? 'rgba(10, 15, 30, 0.98)' : '#ffffff',
+                  borderColor: isImmersive ? 'rgba(71, 85, 105, 0.4)' : '#e2e8f0',
+                }}
+              >
                 <DialogHeader>
                   <DialogTitle>LinkedIn OAuth Setup</DialogTitle>
                   <DialogDescription>
@@ -704,7 +712,13 @@ const IntegrationsPage = ({ user, hideHeader = false }) => {
 
             {/* YouTube OAuth Credentials Dialog */}
             <Dialog open={showYouTubeDialog} onOpenChange={setShowYouTubeDialog}>
-              <DialogContent className="glass-morphism">
+              <DialogContent 
+                className="rounded-2xl border"
+                style={{ 
+                  backgroundColor: isImmersive ? 'rgba(10, 15, 30, 0.98)' : '#ffffff',
+                  borderColor: isImmersive ? 'rgba(71, 85, 105, 0.4)' : '#e2e8f0',
+                }}
+              >
                 <DialogHeader>
                   <DialogTitle>YouTube OAuth Setup</DialogTitle>
                   <DialogDescription>

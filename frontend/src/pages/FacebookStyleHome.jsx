@@ -6,9 +6,13 @@ import { LoadingSpinner } from "@/components/common";
 import { CreatePostCard, CreatePostDialog } from "@/features/posts/components";
 import { HomeSidebar, HomeRightSidebar, PostsFeed, useHomeFeed, usePostInteractions, useCreatePost } from "@/features/home";
 import { friendService, postService } from "@/services/api";
-import { Sparkles } from "lucide-react";
+import { Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
+import AvatarStoriesRow from "@/components/AvatarStoriesRow";
 
 // Ambient components
 import { 
@@ -16,15 +20,15 @@ import {
   ImmersiveBackground,
   WhisperText, 
   SpiritTrail, 
-  AnchorOrb, 
   VoidInput,
   AvatarResponseOverlay,
   VoiceAgent
 } from "@/components/ambient";
 import useAvatarState from "@/hooks/useAvatarState";
 import useViewMode from "@/hooks/useViewMode";
+import useSwipeNavigation from "@/hooks/useSwipeNavigation";
 import { chatService } from "@/services/api/workflowService";
-import { prewarmContext } from "@/services/api/voiceService";
+// prewarmContext is now handled in the VoiceAgent component
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -93,11 +97,23 @@ const getGlobalStyles = (isImmersive) => {
       #maya-home-container [class*="shadow"],
       #maya-home-container .bg-white,
       #maya-home-container [class*="bg-white"] {
-        background: rgba(12, 15, 25, 0.88) !important;
-        backdrop-filter: blur(16px) saturate(1.3) !important;
-        -webkit-backdrop-filter: blur(16px) saturate(1.3) !important;
-        border-color: rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+        background: rgba(12, 15, 25, 0.70) !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
+      }
+      
+      /* Sticky top cards (stories, create post) - slightly more opaque for readability */
+      #maya-home-container .sticky .rounded-lg,
+      #maya-home-container .sticky .rounded-xl,
+      #maya-home-container .sticky .rounded-2xl,
+      #maya-home-container .sticky .shadow,
+      #maya-home-container .sticky .shadow-sm,
+      #maya-home-container .sticky .border,
+      #maya-home-container .sticky [class*="shadow"],
+      #maya-home-container .sticky .bg-white,
+      #maya-home-container .sticky [class*="bg-white"],
+      #maya-home-container .sticky [class*="bg-card"] {
+        background: rgba(12, 15, 25, 0.80) !important;
       }
       
       /* Text white - but EXCLUDE colored backgrounds and special components */
@@ -199,16 +215,6 @@ const getGlobalStyles = (isImmersive) => {
         color: rgba(255, 255, 255, 0.7) !important;
       }
       
-      /* Animation */
-      .post-card {
-        animation: slideUp 0.5s ease-out forwards;
-        opacity: 0;
-      }
-      
-      @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
     `;
   } else {
     return `
@@ -233,8 +239,6 @@ const getGlobalStyles = (isImmersive) => {
       #maya-home-container .bg-white,
       #maya-home-container [class*="bg-white"] {
         background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
         border-color: rgba(0, 0, 0, 0.08) !important;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
       }
@@ -267,17 +271,6 @@ const getGlobalStyles = (isImmersive) => {
       #maya-home-container svg {
         color: rgba(0, 0, 0, 0.6) !important;
       }
-      
-      /* Animation */
-      .post-card {
-        animation: slideUp 0.5s ease-out forwards;
-        opacity: 0;
-      }
-      
-      @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
     `;
   }
 };
@@ -290,6 +283,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
   // View mode toggle (Classic vs Immersive) - only for avatar world
   const { isImmersive, toggleViewMode } = useViewMode();
 
+  // Swipe navigation for PWA (Home ↔ Profile)
+  useSwipeNavigation({ enabled: true, threshold: 80 });
+
   // Ambient state from backend (only in avatar world)
   const {
     mood,
@@ -300,7 +296,6 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     colors,
     whisperText,
     presenceIntensity,
-    pulseSpeed,
     sendUserEvent,
     isLoading: avatarStateLoading
   } = useAvatarState(isAvatarWorld ? currentUser?.id : null);
@@ -446,20 +441,6 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     setShowResponse(false);
     setAvatarResponse(null);
   }, []);
-
-  // Handle orb activation - always starts voice session
-  const handleOrbActivate = useCallback(() => {
-    setShowVoiceAgent(true);
-    setCustomWhisper("CONNECTING...");
-    sendUserEvent?.('voice_started');
-  }, [sendUserEvent]);
-  
-  // Pre-warm voice context on orb hover (reduces latency when session starts)
-  const handleOrbHover = useCallback(() => {
-    if (currentUser?.id) {
-      prewarmContext(currentUser.id);
-    }
-  }, [currentUser?.id]);
   
   // Handle voice agent close
   const handleVoiceClose = useCallback(() => {
@@ -485,8 +466,13 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     hasMore,
     loadMore,
     addPost,
-    removePost
+    removePost,
+    updatePost
   } = useHomeFeed(worldMode, currentUser);
+
+  // Edit post state
+  const [editingPost, setEditingPost] = useState(null);
+  const [editedPostText, setEditedPostText] = useState('');
 
   const {
     likedPosts,
@@ -532,6 +518,38 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
     } catch (error) {
       console.error("Error deleting post:", error);
       toast.error("Failed to delete post");
+    }
+  };
+
+  // Handle edit post - opens edit dialog
+  const handleEditPost = (post) => {
+    setEditingPost(post);
+    setEditedPostText(post.content || post.text || '');
+  };
+
+  // Handle save edited post
+  const handleSaveEditedPost = async () => {
+    if (!editingPost || !editedPostText.trim()) return;
+    
+    try {
+      const updatedPost = await postService.updatePost(editingPost.id, {
+        text: editedPostText.trim(),
+        post_type: worldMode === 'avatar' ? 'avatar' : 'real'
+      });
+      
+      // Update post in local state
+      updatePost(editingPost.id, {
+        content: editedPostText.trim(),
+        text: editedPostText.trim(),
+        ...updatedPost
+      });
+      
+      toast.success("Post updated successfully");
+      setEditingPost(null);
+      setEditedPostText('');
+    } catch (error) {
+      console.error("Error updating post:", error);
+      toast.error("Failed to update post");
     }
   };
 
@@ -647,7 +665,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
           backgroundClass={isAvatarWorld && isImmersive ? "bg-transparent" : "bg-gradient-to-br from-blue-50 via-white to-slate-50"}
         >
           {/* Mobile bottom nav padding + responsive container */}
-          <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-20 sm:pb-6 relative z-10">
+          <div className="max-w-7xl mx-auto px-0 sm:px-4 pt-0 sm:pt-4 pb-20 sm:pb-6 relative z-10 -mt-4 sm:mt-0">
             {/* Desktop: 3-column grid | Mobile: Single column feed only */}
             <div className="lg:grid lg:grid-cols-12 lg:gap-6">
               
@@ -662,21 +680,58 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
               </aside>
 
               {/* Main Feed - Always visible, full width on mobile */}
-              <main className="w-full lg:col-span-6 space-y-3 sm:space-y-4">
-                {/* Create Post Card */}
-                <CreatePostCard
-                  user={currentUser}
-                  worldMode={worldMode}
-                  onCreateClick={() => setShowDialog(true)}
-                  onPhotoClick={() => {
-                    setShowDialog(true);
-                    setTimeout(() => {
-                          document.getElementById('post-image-upload')?.click();
-                    }, 100);
+              <main className="w-full lg:col-span-6">
+                {/* Sticky Top Section - Stories + Create Post (All screen sizes) */}
+                <div 
+                  className="sticky z-30 -mx-3 sm:mx-0 pb-3 sm:pb-4 pt-0 sm:pt-1"
+                  style={{
+                    top: 'calc(3.5rem + env(safe-area-inset-top, 0px))',
+                    background: isImmersive 
+                      ? 'rgba(10, 15, 30, 0.90)'
+                      : 'rgba(245, 247, 250, 0.90)',
                   }}
-                />
+                >
+                  {/* Friends Stories Row - Both worlds, full width on mobile */}
+                  <AvatarStoriesRow 
+                    currentUser={currentUser}
+                    className={`rounded-none sm:rounded-xl mb-2 sm:mb-3 ${isImmersive ? '' : 'bg-white/90 shadow-sm'}`}
+                    style={isImmersive ? { 
+                      backgroundColor: 'rgba(12, 15, 25, 0.90)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                    } : undefined}
+                  />
+                  
+                  {/* Create Post Card - Wider on mobile, 80% opacity in immersive */}
+                  <div style={isImmersive ? { 
+                    '--card-bg': 'rgba(12, 15, 25, 0.80)',
+                  } : undefined}>
+                    <CreatePostCard
+                      user={currentUser}
+                      worldMode={worldMode}
+                      onCreateClick={() => setShowDialog(true)}
+                      onPhotoClick={() => {
+                        setShowDialog(true);
+                        setTimeout(() => {
+                              document.getElementById('post-image-upload')?.click();
+                        }, 100);
+                      }}
+                      onOrbClick={worldMode === 'avatar' ? () => {
+                        // Trigger voice session
+                        setShowVoiceAgent(true);
+                        setCustomWhisper("CONNECTING...");
+                      } : undefined}
+                      onSearchClick={() => navigate('/search')}
+                      placeholder={worldMode === 'avatar' ? "Share your Maya moments." : "Share your Sense moments."}
+                      mood={mood}
+                      energyLevel={energy_level}
+                      className="w-full !rounded-none sm:!rounded-xl"
+                    />
+                  </div>
+                </div>
                 
-                {/* Create Post Dialog */}
+                {/* Posts Feed with top spacing to prevent overlap */}
+                <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4 px-3 sm:px-0">
+                  {/* Create Post Dialog */}
                 <CreatePostDialog
                   open={showDialog}
                   onOpenChange={setShowDialog}
@@ -699,6 +754,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   onShowComments={showComments}
                   onAddComment={handleAddComment}
                   onDelete={handleDeletePost}
+                  onEdit={handleEditPost}
                   commentsData={commentsData}
                   showingCommentsFor={showingCommentsFor}
                   showingLikesFor={showingLikesFor}
@@ -706,6 +762,7 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
                   loadingMore={loadingMore}
                   onLoadMore={loadMore}
                 />
+                </div>
               </main>
 
               {/* Right Sidebar - DESKTOP ONLY (hidden via CSS media query) */}
@@ -733,18 +790,9 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
           </div>
         </PageContainer>
         
-        {/* === LIVING SPIRIT ORB (Avatar World Only) === */}
+        {/* === VOICE & INPUT OVERLAYS (Avatar World Only) === */}
         {isAvatarWorld && (
           <>
-            {/* The magical anchor orb - always present */}
-            <AnchorOrb 
-              colors={colors}
-              pulseSpeed={pulseSpeed}
-              onActivate={handleOrbActivate}
-              onHoverStart={handleOrbHover}
-              presenceIntensity={presenceIntensity}
-            />
-            
             {/* Voice Agent Overlay - Real-time voice interaction */}
             <VoiceAgent
               isActive={showVoiceAgent}
@@ -776,6 +824,54 @@ const FacebookStyleHome = ({ user: currentUser, setUser }) => {
             />
           </>
         )}
+        
+        {/* Edit Post Dialog */}
+        <Dialog open={editingPost !== null} onOpenChange={(open) => !open && setEditingPost(null)}>
+          <DialogContent 
+            className="max-w-lg rounded-2xl border"
+            style={{ 
+              backgroundColor: (isAvatarWorld && isImmersive) ? 'rgba(10, 15, 30, 0.98)' : '#ffffff',
+              borderColor: (isAvatarWorld && isImmersive) ? 'rgba(71, 85, 105, 0.4)' : '#e2e8f0',
+            }}
+          >
+            <DialogHeader>
+              <DialogTitle style={{ color: (isAvatarWorld && isImmersive) ? '#e2e8f0' : undefined }}>Edit Post</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              <Textarea
+                value={editedPostText}
+                onChange={(e) => setEditedPostText(e.target.value)}
+                placeholder="What's on your mind?"
+                className="min-h-[150px] resize-none rounded-xl"
+                style={{ 
+                  backgroundColor: (isAvatarWorld && isImmersive) ? 'rgba(30, 35, 55, 0.8)' : '#ffffff',
+                  borderColor: (isAvatarWorld && isImmersive) ? 'rgba(71, 85, 105, 0.5)' : '#d1d5db',
+                  color: (isAvatarWorld && isImmersive) ? '#e2e8f0' : '#1e293b',
+                }}
+                autoFocus
+              />
+            </div>
+            <DialogFooter className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setEditingPost(null);
+                  setEditedPostText('');
+                }}
+                className={(isAvatarWorld && isImmersive) ? 'border-slate-600 text-slate-300 hover:bg-slate-800' : ''}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSaveEditedPost}
+                disabled={!editedPostText.trim()}
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                Save Changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   );

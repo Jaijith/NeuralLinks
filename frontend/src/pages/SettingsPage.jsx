@@ -9,6 +9,7 @@ import IntegrationsPage from "./IntegrationsPage";
 import AvatarVisualization from "./AvatarVisualization";
 import AppHeader from "@/components/AppHeader";
 import { useWorldMode } from "@/contexts/WorldModeContext";
+import useViewMode from "@/hooks/useViewMode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
@@ -21,6 +22,7 @@ const SettingsPage = ({ user, setUser }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("avatar");
   const { worldMode } = useWorldMode();
+  const { isImmersive } = useViewMode();
   const isAvatarWorld = worldMode === 'avatar';
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
@@ -152,25 +154,36 @@ const SettingsPage = ({ user, setUser }) => {
 
       {/* Delete Account Confirmation Dialog */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent className="bg-white">
+        <DialogContent 
+          className="rounded-2xl border"
+          style={{ 
+            backgroundColor: isImmersive ? 'rgba(10, 15, 30, 0.98)' : '#ffffff',
+            borderColor: isImmersive ? 'rgba(71, 85, 105, 0.4)' : '#e2e8f0',
+          }}
+        >
           <DialogHeader>
-            <DialogTitle className="text-gray-900">
+            <DialogTitle style={{ color: isImmersive ? '#e2e8f0' : '#111827' }}>
               Delete Account
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription style={{ color: isImmersive ? '#94a3b8' : undefined }}>
               This action cannot be undone. This will permanently delete your account, posts, friends, and all associated data.
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
-            <p className={`text-sm mb-4 ${isAvatarWorld ? 'text-gray-700' : 'text-gray-600'}`}>
-              To confirm, please type <strong className={isAvatarWorld ? 'text-gray-900' : 'text-gray-800'}>DELETE</strong> in the box below:
+            <p className="text-sm mb-4" style={{ color: isImmersive ? '#cbd5e1' : '#4b5563' }}>
+              To confirm, please type <strong style={{ color: isImmersive ? '#f1f5f9' : '#1f2937' }}>DELETE</strong> in the box below:
             </p>
             <Input
               type="text"
               placeholder="Type DELETE to confirm"
               value={deleteConfirmText}
               onChange={(e) => setDeleteConfirmText(e.target.value)}
-              className="bg-white border-gray-200"
+              className="rounded-xl"
+              style={{ 
+                backgroundColor: isImmersive ? 'rgba(30, 35, 55, 0.8)' : '#ffffff',
+                borderColor: isImmersive ? 'rgba(71, 85, 105, 0.5)' : '#e5e7eb',
+                color: isImmersive ? '#e2e8f0' : '#1e293b',
+              }}
             />
           </div>
           <DialogFooter>
@@ -181,6 +194,7 @@ const SettingsPage = ({ user, setUser }) => {
                 setDeleteConfirmText("");
               }}
               disabled={deleting}
+              className={isImmersive ? 'border-slate-600 text-slate-300 hover:bg-slate-800' : ''}
             >
               Cancel
             </Button>
@@ -188,7 +202,7 @@ const SettingsPage = ({ user, setUser }) => {
               variant="destructive"
               onClick={handleDeleteAccount}
               disabled={deleteConfirmText !== "DELETE" || deleting}
-              className={isAvatarWorld ? 'bg-red-600 hover:bg-red-700' : ''}
+              className="bg-red-600 hover:bg-red-700"
             >
               {deleting ? "Deleting..." : "Delete Account"}
             </Button>

@@ -69,10 +69,47 @@ export function useVoiceSession({
   const currentUserTranscriptRef = useRef('');
   const currentAiTranscriptRef = useRef('');
   
+  // Timeout refs for stuck detection
+  const connectionTimeoutRef = useRef(null);
+  const activityTimeoutRef = useRef(null);
+  const lastActivityRef = useRef(Date.now());
+  
+  // Clear all timeouts
+  const clearTimeouts = useCallback(() => {
+    if (connectionTimeoutRef.current) {
+      clearTimeout(connectionTimeoutRef.current);
+      connectionTimeoutRef.current = null;
+    }
+    if (activityTimeoutRef.current) {
+      clearTimeout(activityTimeoutRef.current);
+      activityTimeoutRef.current = null;
+    }
+  }, []);
+  
+  // Reset activity timeout (called when we receive any message)
+  const resetActivityTimeout = useCallback(() => {
+    lastActivityRef.current = Date.now();
+    
+    // Clear existing activity timeout
+    if (activityTimeoutRef.current) {
+      clearTimeout(activityTimeoutRef.current);
+    }
+    
+    // Set new activity timeout (30 seconds of silence = stuck)
+    activityTimeoutRef.current = setTimeout(() => {
+      console.warn('Voice session appears stuck - no activity for 30s');
+      setError('Connection lost - please try again');
+      // Don't auto-cleanup, let user decide to close
+    }, 30000);
+  }, []);
+  
   // Update state and notify callback
   const updateState = useCallback((newState) => {
     setSessionState(newState);
     onStateChange?.(newState);
+    
+    // Reset activity timeout on any state change
+    resetActivityTimeout();
     
     if (newState === VoiceSessionState.LISTENING) {
       setIsListening(true);
@@ -82,13 +119,18 @@ export function useVoiceSession({
       setIsListening(false);
     } else if (newState === VoiceSessionState.CONNECTED) {
       setIsListening(true);
+    } else if (newState === VoiceSessionState.DISCONNECTED || newState === VoiceSessionState.ERROR) {
+      clearTimeouts();
     }
-  }, [onStateChange]);
+  }, [onStateChange, resetActivityTimeout, clearTimeouts]);
   
   // Handle data channel messages from OpenAI
   const handleDataChannelMessage = useCallback((event) => {
     try {
       const message = JSON.parse(event.data);
+      
+      // Reset activity timeout on any message received
+      lastActivityRef.current = Date.now();
       
       switch (message.type) {
         case 'session.created':
@@ -312,6 +354,14 @@ export function useVoiceSession({
       setError(null);
       updateState(VoiceSessionState.CONNECTING);
       
+      // Set connection timeout (15 seconds to connect)
+      connectionTimeoutRef.current = setTimeout(() => {
+        console.error('Voice session connection timeout');
+        setError('Connection timed out - please try again');
+        updateState(VoiceSessionState.ERROR);
+        cleanup();
+      }, 15000);
+      
       // Initialize session tracking
       sessionIdRef.current = generateSessionId();
       messagesRef.current = [];
@@ -417,6 +467,12 @@ export function useVoiceSession({
         sdp: answerSdp
       });
       
+      // Clear connection timeout - we're connected!
+      if (connectionTimeoutRef.current) {
+        clearTimeout(connectionTimeoutRef.current);
+        connectionTimeoutRef.current = null;
+      }
+      
       setIsConnected(true);
       updateState(VoiceSessionState.CONNECTED);
       
@@ -478,32 +534,52 @@ export function useVoiceSession({
   
   // Cleanup resources
   const cleanup = useCallback(() => {
+    // Clear all timeouts first
+    clearTimeouts();
+    
     // Stop animation frame
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
     }
     
     // Close data channel
     if (dataChannelRef.current) {
-      dataChannelRef.current.close();
+      try {
+        dataChannelRef.current.close();
+      } catch (e) {
+        console.debug('Data channel close error:', e);
+      }
       dataChannelRef.current = null;
     }
     
     // Close peer connection
     if (peerConnectionRef.current) {
-      peerConnectionRef.current.close();
+      try {
+        peerConnectionRef.current.close();
+      } catch (e) {
+        console.debug('Peer connection close error:', e);
+      }
       peerConnectionRef.current = null;
     }
     
     // Stop local stream
     if (localStreamRef.current) {
-      localStreamRef.current.getTracks().forEach(track => track.stop());
+      try {
+        localStreamRef.current.getTracks().forEach(track => track.stop());
+      } catch (e) {
+        console.debug('Stream stop error:', e);
+      }
       localStreamRef.current = null;
     }
     
     // Close audio context
     if (audioContextRef.current) {
-      audioContextRef.current.close();
+      try {
+        audioContextRef.current.close();
+      } catch (e) {
+        console.debug('Audio context close error:', e);
+      }
       audioContextRef.current = null;
     }
     
@@ -511,7 +587,7 @@ export function useVoiceSession({
     setIsSpeaking(false);
     setIsListening(false);
     setAudioLevel(0);
-  }, []);
+  }, [clearTimeouts]);
   
   // Send text message (for hybrid text/voice mode)
   const sendMessage = useCallback((text) => {

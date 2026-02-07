@@ -23,150 +23,101 @@ import {
 } from "@/components/ambient";
 import useAvatarState from "@/hooks/useAvatarState";
 import useViewMode from "@/hooks/useViewMode";
+import useSwipeNavigation from "@/hooks/useSwipeNavigation";
 import { chatService } from "@/services/api/workflowService";
 import { prewarmContext } from "@/services/api/voiceService";
 import axios from "axios";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
-// Generate aggressive CSS for the mode - using unique page container ID
+// Simplified CSS for the mode - PERFORMANCE OPTIMIZED
+// Removed: backdrop-filter (expensive), wildcard selectors, complex :not() chains
 const getGlobalStyles = (isImmersive, containerId) => {
   const id = containerId || 'maya-page-container';
   
   if (isImmersive) {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-      
-      /* IMMERSIVE MODE - Override CSS variables */
+      /* IMMERSIVE MODE - Comprehensive overrides for all pages */
       #${id} {
-        --card: 12 15 25;
-        --card-foreground: 255 255 255;
-        --background: transparent;
-        --foreground: 255 255 255;
-        --muted: 30 35 50;
-        --muted-foreground: 200 200 220;
-        --border: 255 255 255;
+        --card-bg: rgba(12, 15, 25, 0.70);
+        --text-primary: rgba(255, 255, 255, 0.9);
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --border-color: rgba(255, 255, 255, 0.1);
       }
       
-      #${id} * {
-        font-family: 'Inter', sans-serif !important;
+      /* Card/panel backgrounds - target common patterns but avoid colored cards */
+      #${id} .immersive-card,
+      #${id} .glass-morphism:not([class*="bg-blue"]):not([class*="bg-purple"]):not([class*="bg-pink"]):not([class*="bg-green"]):not([class*="bg-red"]):not([class*="bg-yellow"]) {
+        background: var(--card-bg) !important;
+        border-color: var(--border-color) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
       }
       
-      /* Target Card component and all card-like elements */
-      #${id} .bg-card,
-      #${id} [class*="bg-card"],
-      #${id} .glass-card,
-      #${id} .rounded-lg,
-      #${id} .rounded-xl,
-      #${id} .rounded-2xl,
-      #${id} .rounded-md,
-      #${id} .shadow,
-      #${id} .shadow-sm,
-      #${id} .shadow-md,
-      #${id} .shadow-lg,
-      #${id} .border,
-      #${id} [class*="shadow"],
-      #${id} .bg-white,
-      #${id} [class*="bg-white"] {
-        background: rgba(12, 15, 25, 0.88) !important;
-        backdrop-filter: blur(16px) saturate(1.3) !important;
-        -webkit-backdrop-filter: blur(16px) saturate(1.3) !important;
-        border-color: rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+      /* White backgrounds to dark */
+      #${id} [class*="bg-white"]:not([class*="bg-white/"]) {
+        background: var(--card-bg) !important;
       }
       
-      /* Text white - but EXCLUDE colored backgrounds and special components */
-      #${id},
-      #${id} div:not([class*="bg-yellow"]):not([class*="bg-green"]):not([class*="bg-red"]):not([class*="bg-blue"]):not([class*="bg-purple"]):not([class*="bg-pink"]):not([class*="bg-orange"]):not([class*="bg-gradient"]):not([class*="from-"]):not(.memory-orb-page):not(.memory-orb-page *),
-      #${id} p:not([class*="text-white"]):not(.memory-orb-page *),
-      #${id} span:not([class*="bg-"]):not([class*="text-white"]):not(.memory-orb-page *),
-      #${id} h1:not(.memory-orb-page *), #${id} h2:not(.memory-orb-page *), #${id} h3:not(.memory-orb-page *),
-      #${id} h4:not(.memory-orb-page *), #${id} h5:not(.memory-orb-page *), #${id} h6:not(.memory-orb-page *),
-      #${id} a:not([class*="bg-"]):not(.memory-orb-page *),
-      #${id} label:not(.memory-orb-page *),
-      #${id} li:not(.memory-orb-page *) {
-        color: rgba(255, 255, 255, 0.9) !important;
+      /* Generic card backgrounds - exclude colored cards */
+      #${id} [class*="bg-card"]:not([class*="bg-blue-"]):not([class*="bg-purple-"]):not([class*="bg-pink-"]):not([class*="bg-green-"]):not([class*="bg-red-"]):not([class*="bg-yellow-"]):not([class*="bg-gradient"]) {
+        background: var(--card-bg) !important;
       }
       
-      /* PRESERVE MemoryOrb component's own styling */
-      #${id} .memory-orb-page,
-      #${id} .memory-orb-page * {
-        color: inherit !important;
+      /* Text colors - override common gray text classes */
+      #${id} .immersive-text,
+      #${id} h1:not([style]),
+      #${id} h2:not([style]),
+      #${id} h3:not([style]),
+      #${id} h4:not([style]) {
+        color: var(--text-primary) !important;
       }
       
-      #${id} .memory-orb-page .stat-bars,
-      #${id} .memory-orb-page .memory-panel {
-        background: rgba(255, 255, 255, 0.95) !important;
+      #${id} .immersive-muted {
+        color: rgba(255, 255, 255, 0.6) !important;
       }
       
-      #${id} .memory-orb-page .stat-label {
-        color: #1f2937 !important;
+      /* Muted text specifically */
+      #${id} [class*="text-gray-500"],
+      #${id} [class*="text-gray-400"],
+      #${id} [class*="text-slate-500"],
+      #${id} [class*="text-slate-400"] {
+        color: rgba(255, 255, 255, 0.5) !important;
       }
       
-      #${id} .memory-orb-page svg {
-        color: inherit !important;
-      }
-      
-      /* Buttons - only apply to non-colored buttons */
-      #${id} button:not([class*="bg-"]):not([class*="btn-"]) {
+      #${id} [class*="text-gray-600"],
+      #${id} [class*="text-gray-700"],
+      #${id} [class*="text-gray-800"],
+      #${id} [class*="text-gray-900"],
+      #${id} [class*="text-slate-600"],
+      #${id} [class*="text-slate-700"],
+      #${id} [class*="text-slate-800"],
+      #${id} [class*="text-slate-900"] {
         color: rgba(255, 255, 255, 0.85) !important;
       }
       
-      /* PRESERVE original colors on badges and colored elements */
-      #${id} [class*="bg-yellow"] *,
-      #${id} [class*="bg-green"] *,
-      #${id} [class*="bg-red"]:not(.bg-red-50) *,
-      #${id} [class*="bg-blue"]:not(.bg-blue-50) *,
-      #${id} [class*="bg-purple"]:not(.bg-purple-50) *,
-      #${id} [class*="bg-pink"] *,
-      #${id} [class*="bg-orange"] *,
-      #${id} [class*="bg-gradient"] *,
-      #${id} [class*="from-pink"] *,
-      #${id} [class*="from-purple"] *,
-      #${id} [class*="from-blue"] *,
-      #${id} [class*="from-green"] * {
-        color: inherit !important;
+      /* Border colors */
+      #${id} [class*="border-gray"],
+      #${id} [class*="border-slate"],
+      #${id} [class*="border-purple-100"],
+      #${id} [class*="border-purple-200"] {
+        border-color: rgba(255, 255, 255, 0.1) !important;
       }
       
-      /* Badges with colored backgrounds - keep dark text */
-      #${id} [class*="bg-yellow-100"],
-      #${id} [class*="bg-purple-100"],
-      #${id} [class*="bg-green-100"],
-      #${id} [class*="bg-blue-100"],
-      #${id} [class*="bg-pink-100"],
-      #${id} [class*="bg-red-100"],
-      #${id} [class*="bg-orange-100"] {
-        background-color: inherit !important;
+      /* Background overrides for subtle bg classes */
+      #${id} [class*="bg-gray-50"],
+      #${id} [class*="bg-gray-100"],
+      #${id} [class*="bg-slate-50"],
+      #${id} [class*="bg-slate-100"] {
+        background: rgba(255, 255, 255, 0.05) !important;
       }
       
-      #${id} [class*="bg-yellow-100"] *,
-      #${id} [class*="bg-purple-100"] *,
-      #${id} [class*="bg-green-100"] *,
-      #${id} [class*="bg-blue-100"] *,
-      #${id} [class*="bg-red-100"] *,
-      #${id} .text-purple-700,
-      #${id} .text-yellow-700,
-      #${id} .text-green-700,
-      #${id} .text-blue-700,
-      #${id} .text-red-700 {
-        color: inherit !important;
-      }
-      
-      /* Muted text - only for non-colored elements */
-      #${id} .text-muted-foreground:not([class*="bg-"]),
-      #${id} .text-gray-400:not([class*="bg-"]),
-      #${id} .text-gray-500:not([class*="bg-"]),
-      #${id} .text-gray-600:not([class*="bg-"]) {
-        color: rgba(255, 255, 255, 0.65) !important;
-      }
-      
-      /* Inputs */
+      /* Inputs in immersive mode */
       #${id} input,
       #${id} textarea,
       #${id} select {
         background: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        color: rgba(255, 255, 255, 0.9) !important;
+        border-color: var(--border-color) !important;
+        color: var(--text-primary) !important;
       }
       
       #${id} input::placeholder,
@@ -174,123 +125,37 @@ const getGlobalStyles = (isImmersive, containerId) => {
         color: rgba(255, 255, 255, 0.4) !important;
       }
       
-      /* Borders */
-      #${id} .border,
-      #${id} [class*="border-gray"],
-      #${id} [class*="divide-gray"] > * {
-        border-color: rgba(255, 255, 255, 0.1) !important;
+      /* Preserve colored backgrounds/badges - don't override these */
+      #${id} [class*="bg-gradient"],
+      #${id} [class*="from-pink"],
+      #${id} [class*="from-purple"],
+      #${id} [class*="from-green"],
+      #${id} [class*="from-blue"],
+      #${id} [class*="bg-purple-100"],
+      #${id} [class*="bg-blue-100"],
+      #${id} [class*="bg-yellow-100"],
+      #${id} [class*="bg-green-100"],
+      #${id} [class*="bg-red-"],
+      #${id} [class*="bg-blue-5"],
+      #${id} [class*="bg-purple-5"],
+      #${id} [class*="bg-blue-50"] {
+        /* Don't override colored backgrounds */
       }
       
-      /* Background utilities */
-      #${id} .bg-gray-50,
-      #${id} .bg-gray-100,
-      #${id} [class*="bg-gray-"],
-      #${id} .bg-muted,
-      #${id} [class*="bg-muted"] {
-        background: rgba(255, 255, 255, 0.05) !important;
-      }
-      
-      /* SVG/Icons */
-      #${id} svg {
-        color: rgba(255, 255, 255, 0.7) !important;
-      }
-      
-      /* Tabs styling */
-      #${id} [role="tablist"] {
-        background: rgba(255, 255, 255, 0.05) !important;
-      }
-      
-      #${id} [role="tab"] {
-        color: rgba(255, 255, 255, 0.6) !important;
-      }
-      
-      #${id} [role="tab"][data-state="active"] {
-        background: rgba(255, 255, 255, 0.1) !important;
-        color: rgba(255, 255, 255, 0.95) !important;
-      }
-      
-      /* Dialog/Modal styling */
-      #${id} [role="dialog"] {
-        background: rgba(12, 15, 25, 0.95) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      }
-      
-      /* Animation */
-      .page-content-card {
-        animation: slideUp 0.5s ease-out forwards;
-        opacity: 0;
-      }
-      
-      @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+      /* Hover states */
+      #${id} [class*="hover\\:bg-gray"]:hover,
+      #${id} [class*="hover\\:bg-purple-50"]:hover {
+        background: rgba(255, 255, 255, 0.08) !important;
       }
     `;
   } else {
+    // Classic mode - use defaults, minimal CSS
     return `
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-      
-      /* CLASSIC MODE */
-      #${id} * {
-        font-family: 'Inter', sans-serif !important;
-      }
-      
-      /* Light glass cards */
-      #${id} .bg-card,
-      #${id} .glass-card,
-      #${id} .rounded-lg,
-      #${id} .rounded-xl,
-      #${id} .rounded-2xl,
-      #${id} .rounded-md,
-      #${id} .shadow,
-      #${id} [class*="shadow"],
-      #${id} .bg-white,
-      #${id} [class*="bg-white"] {
-        background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        border-color: rgba(0, 0, 0, 0.08) !important;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
-      }
-      
-      /* Dark text */
-      #${id},
-      #${id} div,
-      #${id} p,
-      #${id} span,
-      #${id} h1, #${id} h2, #${id} h3,
-      #${id} h4, #${id} h5, #${id} h6,
-      #${id} a,
-      #${id} label,
-      #${id} li,
-      #${id} button,
-      #${id} .text-card-foreground,
-      #${id} .text-foreground {
-        color: rgba(0, 0, 0, 0.85) !important;
-      }
-      
-      /* Muted text */
-      #${id} .text-muted-foreground,
-      #${id} .text-gray-400,
-      #${id} .text-gray-500,
-      #${id} .text-gray-600 {
-        color: rgba(0, 0, 0, 0.55) !important;
-      }
-      
-      /* SVG/Icons */
-      #${id} svg {
-        color: rgba(0, 0, 0, 0.6) !important;
-      }
-      
-      /* Animation */
-      .page-content-card {
-        animation: slideUp 0.5s ease-out forwards;
-        opacity: 0;
-      }
-      
-      @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+      /* CLASSIC MODE - Minimal overrides */
+      #${id} {
+        --card-bg: rgba(255, 255, 255, 0.98);
+        --text-primary: rgba(0, 0, 0, 0.85);
+        --text-muted: rgba(0, 0, 0, 0.55);
       }
     `;
   }
@@ -331,6 +196,12 @@ const ImmersivePageWrapper = ({
   
   // View mode (classic vs immersive)
   const { isImmersive, toggleViewMode } = useViewMode();
+  
+  // Swipe navigation for PWA (enabled on mobile)
+  useSwipeNavigation({
+    enabled: true,
+    threshold: 80,
+  });
   
   // Void input state
   const [showVoidInput, setShowVoidInput] = useState(false);
@@ -522,10 +393,12 @@ const ImmersivePageWrapper = ({
         
         {/* === PAGE CONTENT === */}
         <div 
-          className={`min-h-screen min-h-[100dvh] ${backgroundClass} overflow-x-hidden`}
+          className={`min-h-screen min-h-[100dvh] ${backgroundClass}`}
           style={{
             // Add top padding to account for fixed header (56px + safe area)
             paddingTop: 'calc(56px + env(safe-area-inset-top, 0px))',
+            // NOTE: Do NOT add overflow-x:hidden here — it breaks position:sticky
+            // for child elements. Horizontal overflow is handled by html/body in index.css.
           }}
         >
           {/* View Mode Toggle moved to AppHeader toolbar - no longer needed here */}

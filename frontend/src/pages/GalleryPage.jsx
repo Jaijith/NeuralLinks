@@ -8,6 +8,7 @@ import { Camera, Image as ImageIcon } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
+import useViewMode from "@/hooks/useViewMode";
 import AppHeader from "@/components/AppHeader";
 import { ImmersivePageWrapper } from "@/components/ambient";
 
@@ -17,6 +18,7 @@ const API = `${BACKEND_URL}/api`;
 const GalleryPage = ({ user, setUser }) => {
   const navigate = useNavigate();
   const { worldMode } = useWorldMode();
+  const { isImmersive } = useViewMode();
   const [galleryPhotos, setGalleryPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showUploadImage, setShowUploadImage] = useState(false);
@@ -224,9 +226,15 @@ const GalleryPage = ({ user, setUser }) => {
 
       {/* Upload Image Dialog - responsive for mobile */}
       <Dialog open={showUploadImage} onOpenChange={setShowUploadImage}>
-        <DialogContent className="max-w-[95vw] sm:max-w-md bg-white mx-2 sm:mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto">
+        <DialogContent 
+          className="max-w-[95vw] sm:max-w-md mx-2 sm:mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto rounded-2xl border"
+          style={{ 
+            backgroundColor: isImmersive ? 'rgba(10, 15, 30, 0.98)' : '#ffffff',
+            borderColor: isImmersive ? 'rgba(71, 85, 105, 0.4)' : '#e2e8f0',
+          }}
+        >
           <DialogHeader>
-            <DialogTitle className="text-gray-900 font-bold text-lg sm:text-xl">
+            <DialogTitle className="font-bold text-lg sm:text-xl" style={{ color: isImmersive ? '#e2e8f0' : '#111827' }}>
               Upload Photo
             </DialogTitle>
           </DialogHeader>

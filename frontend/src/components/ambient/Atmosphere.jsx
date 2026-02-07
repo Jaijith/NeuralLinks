@@ -1,122 +1,80 @@
 /**
- * Atmosphere - Subtle ambient presence layer
+ * Atmosphere - Subtle ambient presence layer (ULTRA LIGHTWEIGHT)
  * 
- * Creates a feeling of a living spirit presence without overwhelming the UI.
- * Uses edge glows, subtle particles, and gentle animations.
+ * Performance optimizations:
+ * - NO Framer Motion - pure CSS animations
+ * - NO blur filters
+ * - NO particles on mobile
+ * - Simple gradients only
  */
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
+
+// Detect mobile/PWA
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    window.matchMedia('(max-width: 768px)').matches ||
+    window.matchMedia('(display-mode: standalone)').matches;
+};
 
 const Atmosphere = ({ mood, energy, colors, presenceIntensity }) => {
-  // Animation duration inversely proportional to energy
-  const animationDuration = useMemo(() => {
-    return 12 + (1 - energy) * 8; // 12-20 seconds (slower, more ethereal)
-  }, [energy]);
+  const [isLowPowerMode, setIsLowPowerMode] = useState(true);
+  
+  useEffect(() => {
+    setIsLowPowerMode(isMobile());
+  }, []);
   
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Edge glow - top */}
-      <motion.div
-        className="absolute top-0 left-0 right-0 h-[300px]"
+      {/* CSS animations for desktop only */}
+      {!isLowPowerMode && (
+        <style>{`
+          @keyframes atmospherePulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.5; } }
+          .atmo-pulse { animation: atmospherePulse 15s ease-in-out infinite; }
+        `}</style>
+      )}
+      
+      {/* Edge glow - top (static on mobile) */}
+      <div
+        className={`absolute top-0 left-0 right-0 h-[200px] ${!isLowPowerMode ? 'atmo-pulse' : ''}`}
         style={{
-          background: `linear-gradient(180deg, ${colors.primary}15 0%, transparent 100%)`
-        }}
-        animate={{
-          opacity: [0.3, 0.5, 0.3]
-        }}
-        transition={{
-          duration: animationDuration,
-          repeat: Infinity,
-          ease: "easeInOut"
+          background: `linear-gradient(180deg, ${colors.primary}12 0%, transparent 100%)`,
+          opacity: 0.4
         }}
       />
       
       {/* Edge glow - bottom */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-[200px]"
+      <div
+        className="absolute bottom-0 left-0 right-0 h-[150px]"
         style={{
-          background: `linear-gradient(0deg, ${colors.secondary}12 0%, transparent 100%)`
-        }}
-        animate={{
-          opacity: [0.2, 0.4, 0.2]
-        }}
-        transition={{
-          duration: animationDuration * 0.8,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 3
+          background: `linear-gradient(0deg, ${colors.secondary}10 0%, transparent 100%)`,
+          opacity: 0.3
         }}
       />
       
-      {/* Corner presence - top left */}
-      <motion.div
-        className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full blur-[100px]"
+      {/* Corner presence - top left (NO blur) */}
+      <div
+        className={`absolute -top-10 -left-10 w-[300px] h-[300px] rounded-full ${!isLowPowerMode ? 'atmo-pulse' : ''}`}
         style={{ 
-          background: `radial-gradient(circle, ${colors.primary}18 0%, transparent 70%)`
-        }}
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.4, 0.6, 0.4]
-        }}
-        transition={{
-          duration: animationDuration,
-          repeat: Infinity,
-          ease: "easeInOut"
+          background: `radial-gradient(circle, ${colors.primary}15 0%, transparent 70%)`,
+          opacity: 0.5
         }}
       />
       
-      {/* Corner presence - bottom right */}
-      <motion.div
-        className="absolute -bottom-20 -right-20 w-[350px] h-[350px] rounded-full blur-[80px]"
+      {/* Corner presence - bottom right (NO blur) */}
+      <div
+        className="absolute -bottom-10 -right-10 w-[250px] h-[250px] rounded-full"
         style={{ 
-          background: `radial-gradient(circle, ${colors.secondary}15 0%, transparent 70%)`
-        }}
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.3, 0.5, 0.3]
-        }}
-        transition={{
-          duration: animationDuration * 0.9,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 4
+          background: `radial-gradient(circle, ${colors.secondary}12 0%, transparent 70%)`,
+          opacity: 0.4
         }}
       />
       
-      {/* Floating spirit particles - very sparse and ethereal */}
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            width: 2 + (i % 3),
-            height: 2 + (i % 3),
-            background: `radial-gradient(circle, ${colors.primary} 0%, transparent 70%)`,
-            left: `${15 + (i * 11) % 70}%`,
-            top: `${20 + (i * 13) % 60}%`,
-            boxShadow: `0 0 ${4 + i * 2}px ${colors.glow}`
-          }}
-          animate={{
-            y: [0, -60 - i * 10, 0],
-            x: [0, (i % 2 === 0 ? 20 : -20), 0],
-            opacity: [0, 0.6, 0],
-            scale: [0.5, 1, 0.5]
-          }}
-          transition={{
-            duration: 10 + i * 2,
-            repeat: Infinity,
-            delay: i * 1.5,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
-      
-      {/* Subtle vignette for depth */}
+      {/* Subtle vignette - static */}
       <div 
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0"
         style={{
-          background: `radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, rgba(0,0,0,0.08) 100%)`
+          background: 'radial-gradient(ellipse 80% 60% at 50% 50%, transparent 50%, rgba(0,0,0,0.05) 100%)'
         }}
       />
     </div>

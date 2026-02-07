@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
  * @property {function} onShowComments - Handler for showing comments
  * @property {function} onAddComment - Handler for adding comment
  * @property {function} [onDelete] - Handler for deleting a post
+ * @property {function} [onEdit] - Handler for editing a post
  * @property {Object} commentsData - Comments data by post ID
  * @property {string} showingCommentsFor - Post ID for which comments are shown
  * @property {string} showingLikesFor - Post ID for which likes are shown
@@ -40,6 +41,7 @@ const PostsFeed = React.memo(({
   onShowComments,
   onAddComment,
   onDelete,
+  onEdit,
   commentsData = {},
   showingCommentsFor,
   showingLikesFor,
@@ -86,11 +88,12 @@ const PostsFeed = React.memo(({
             onComment={() => onShowComments(post.id)}
             onShowLikes={() => onShowLikes(post.id)}
             onDelete={onDelete}
+            onEdit={onEdit}
             comments={comments}
             onAddComment={onAddComment}
             showComments={showComments}
             onToggleComments={() => onShowComments(post.id)}
-            style={{ animationDelay: `${idx * 0.05}s` }}
+            
           />
         );
       })}

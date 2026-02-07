@@ -7,6 +7,7 @@ import { MessageCircle, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 import LikeButton from './LikeButton';
 import { memo } from 'react';
+import useViewMode from '@/hooks/useViewMode';
 
 const PostActions = memo(({ 
   postId,
@@ -15,6 +16,8 @@ const PostActions = memo(({
   onComment,
   onShare
 }) => {
+  const { isImmersive } = useViewMode();
+  
   const handleShare = () => {
     if (onShare) {
       onShare();
@@ -31,7 +34,7 @@ const PostActions = memo(({
   };
 
   return (
-    <div className="px-2 py-1.5 border-t border-gray-200">
+    <div className={`px-2 py-1.5 border-t ${isImmersive ? 'border-slate-700' : 'border-gray-200'}`}>
       <div className="flex items-center justify-around">
         <LikeButton
           postId={postId}
@@ -40,7 +43,7 @@ const PostActions = memo(({
         />
         <button
           onClick={() => onComment?.(postId)}
-          className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
+          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all ${isImmersive ? 'hover:bg-slate-800 text-gray-300' : 'hover:bg-gray-100 text-gray-700'}`}
           aria-label="Comment on this post"
         >
           <MessageCircle className="w-4 h-4" />
@@ -48,7 +51,7 @@ const PostActions = memo(({
         </button>
         <button
           onClick={handleShare}
-          className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
+          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all ${isImmersive ? 'hover:bg-slate-800 text-gray-300' : 'hover:bg-gray-100 text-gray-700'}`}
           aria-label="Share this post"
         >
           <Share2 className="w-4 h-4" />

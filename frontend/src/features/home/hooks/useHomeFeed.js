@@ -140,6 +140,12 @@ const useHomeFeed = (worldMode = 'real', currentUser) => {
     setPosts(prev => prev.filter(p => p.id !== postId));
   }, []);
 
+  const updatePost = useCallback((postId, updatedData) => {
+    setPosts(prev => prev.map(post => 
+      post.id === postId ? { ...post, ...updatedData } : post
+    ));
+  }, []);
+
   return {
     posts,
     friends,
@@ -151,6 +157,7 @@ const useHomeFeed = (worldMode = 'real', currentUser) => {
     refresh,
     addPost,
     removePost,
+    updatePost,
     refetch: refresh
   };
 };

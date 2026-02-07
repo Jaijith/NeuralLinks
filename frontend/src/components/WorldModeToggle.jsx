@@ -1,56 +1,92 @@
-import { Button } from "@/components/ui/button";
 import { Globe, Sparkles } from "lucide-react";
 import { useWorldMode } from "@/contexts/WorldModeContext";
+import useViewMode from "@/hooks/useViewMode";
 
 const WorldModeToggle = ({ className = "" }) => {
   const { worldMode, toggleWorldMode } = useWorldMode();
+  const { isImmersive } = useViewMode();
+  const isAvatar = worldMode === 'avatar';
+  const isDark = isAvatar && isImmersive;
+
+  const handleClick = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent?.stopImmediatePropagation?.();
+    }
+    toggleWorldMode();
+  };
 
   return (
-    <div className={`relative ${className}`}>
-      <Button
-        onClick={toggleWorldMode}
-        className={`
-          relative overflow-hidden px-6 py-6 rounded-full font-bold text-sm
-          transition-all duration-500 ease-in-out
-          ${worldMode === 'avatar' 
-            ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70' 
-            : 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg hover:shadow-xl'
-          }
-        `}
+    <div 
+      className={`relative ${className}`} 
+      style={{ 
+        zIndex: 9999,
+        position: 'relative',
+        isolation: 'isolate',
+      }}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onTouchStart={(e) => e.stopPropagation()}
+      onTouchEnd={(e) => e.stopPropagation()}
+    >
+      <button
+        type="button"
+        onClick={handleClick}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleClick(e);
+        }}
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          padding: '7px 14px',
+          borderRadius: '9999px',
+          fontWeight: '600',
+          fontSize: '12px',
+          letterSpacing: '0.01em',
+          transition: 'all 0.3s ease',
+          cursor: 'pointer',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minWidth: '72px',
+          minHeight: '36px',
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+          userSelect: 'none',
+          zIndex: 9999,
+          background: isAvatar
+            ? (isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(139, 92, 246, 0.1)')
+            : (isDark ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.08)'),
+          color: isAvatar
+            ? (isDark ? '#c4b5fd' : '#7c3aed')
+            : (isDark ? '#93c5fd' : '#2563eb'),
+          border: `1.5px solid ${isAvatar
+            ? (isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.25)')
+            : (isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)')}`,
+          boxShadow: 'none',
+        }}
         data-testid="world-mode-toggle"
+        aria-label={`Switch to ${isAvatar ? 'Sense' : 'Maya'} world`}
       >
-        <div className="flex items-center space-x-2">
-          {worldMode === 'avatar' ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          {isAvatar ? (
             <>
-              <Sparkles className="w-5 h-5 animate-pulse" />
+              <Sparkles style={{ width: '14px', height: '14px' }} />
               <span>Maya</span>
             </>
           ) : (
             <>
-              <Globe className="w-5 h-5" />
+              <Globe style={{ width: '14px', height: '14px' }} />
               <span>Sense</span>
             </>
           )}
         </div>
-        
-        {worldMode === 'avatar' && (
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]" 
-                 style={{transform: 'translateX(-100%)'}} />
-          </div>
-        )}
-      </Button>
-      
-      <style>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-      `}</style>
+      </button>
     </div>
   );
 };

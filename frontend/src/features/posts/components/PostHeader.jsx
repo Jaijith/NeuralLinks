@@ -3,19 +3,21 @@
  * Header section of a post with user info and timestamp
  */
 
-import { Clock, Globe, MoreHorizontal, Bot, Trash2 } from 'lucide-react';
+import { Clock, Globe, MoreHorizontal, Bot, Trash2, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import UserAvatar from '@/components/common/UserAvatar';
 import { formatTimeAgo } from '@/utils/dateUtils';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useViewMode from '@/hooks/useViewMode';
 
 const PostHeader = memo(({ 
   post, 
@@ -25,9 +27,11 @@ const PostHeader = memo(({
   onUserClick,
   onMoreClick,
   onDelete,
+  onEdit,
   className = ''
 }) => {
   const navigate = useNavigate();
+  const { isImmersive } = useViewMode();
   const displayName = worldMode === 'avatar'
     ? (post.author_avatar_name || post.user?.avatar_name || post.user?.name || 'Unknown')
     : (post.author_name || post.user?.name || 'Unknown');
@@ -68,7 +72,7 @@ const PostHeader = memo(({
           <div>
             <div className="flex items-center gap-2">
               <span 
-                className="font-semibold cursor-pointer hover:underline text-gray-900"
+                className={`font-semibold cursor-pointer hover:underline ${isImmersive ? 'text-white' : 'text-gray-900'}`}
                 onClick={handleUserClick}
               >
                 {displayName}
@@ -80,7 +84,7 @@ const PostHeader = memo(({
                 </Badge>
               )}
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-gray-500">
+            <div className={`flex items-center gap-1.5 text-xs ${isImmersive ? 'text-gray-400' : 'text-gray-500'}`}>
               <Clock className="w-3 h-3" />
               <span>{formatTimeAgo(post.created_at)}</span>
               <span>•</span>
@@ -88,26 +92,38 @@ const PostHeader = memo(({
             </div>
           </div>
         </div>
-        {currentUser && currentUser.id === userId && onDelete && (
+        {currentUser && currentUser.id === userId && (onDelete || onEdit) && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
-                className="rounded-full p-1 h-8 w-8 hover:bg-gray-100 text-gray-600"
+                className={`rounded-full p-1 h-8 w-8 ${isImmersive ? 'hover:bg-slate-700 text-gray-400' : 'hover:bg-gray-100 text-gray-600'}`}
                 aria-label="More options"
               >
                 <MoreHorizontal className="w-5 h-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem
-                onClick={() => onDelete(post.id)}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer focus:text-red-700 focus:bg-red-50"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete Post
-              </DropdownMenuItem>
+              {onEdit && (
+                <DropdownMenuItem
+                  onClick={() => onEdit(post)}
+                  className="cursor-pointer"
+                >
+                  <Pencil className="w-4 h-4 mr-2" />
+                  Edit Post
+                </DropdownMenuItem>
+              )}
+              {onEdit && onDelete && <DropdownMenuSeparator />}
+              {onDelete && (
+                <DropdownMenuItem
+                  onClick={() => onDelete(post.id)}
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer focus:text-red-700 focus:bg-red-50"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Post
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         )}

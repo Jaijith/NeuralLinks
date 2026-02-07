@@ -5,12 +5,14 @@
 
 import { ThumbsUp } from 'lucide-react';
 import { memo } from 'react';
+import useViewMode from '@/hooks/useViewMode';
 
 const PostEngagement = memo(({ 
   post, 
   onLikesClick,
   onCommentsClick
 }) => {
+  const { isImmersive } = useViewMode();
   const likesCount = post.likes || 0;
   const commentsCount = post.comment_count || post.comments?.length || 0;
   const hasEngagement = likesCount > 0 || commentsCount > 0;
@@ -18,7 +20,7 @@ const PostEngagement = memo(({
   if (!hasEngagement) return null;
 
   return (
-    <div className="px-4 py-2 flex items-center justify-between text-sm text-gray-600">
+    <div className={`px-4 py-2 flex items-center justify-between text-sm ${isImmersive ? 'text-gray-400' : 'text-gray-600'}`}>
       {likesCount > 0 && (
         <button
           onClick={() => onLikesClick?.(post.id)}
@@ -34,7 +36,7 @@ const PostEngagement = memo(({
       {commentsCount > 0 && (
         <button
           onClick={() => onCommentsClick?.(post.id)}
-          className="hover:underline text-gray-600"
+          className={`hover:underline ${isImmersive ? 'text-gray-400' : 'text-gray-600'}`}
           aria-label={`${commentsCount} comment${commentsCount !== 1 ? 's' : ''}`}
         >
           {commentsCount} comment{commentsCount !== 1 ? 's' : ''}

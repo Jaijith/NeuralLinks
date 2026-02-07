@@ -525,9 +525,11 @@ class PostService:
     async def update_post(self, post_id: str, user_id: str, post_data: Dict[str, Any]) -> Dict[str, Any]:
         """Update a post"""
         update_fields = {}
-        if 'text' in post_data:
-            update_fields['text'] = post_data['text']
-            update_fields['content'] = post_data['text']  # Backwards compatibility
+        # Accept both 'text' and 'content' as the post body field
+        new_text = post_data.get('text') or post_data.get('content')
+        if new_text:
+            update_fields['text'] = new_text
+            update_fields['content'] = new_text  # Keep both fields in sync
         
         if not update_fields:
             return {"success": False, "error": "No fields to update"}

@@ -42,11 +42,45 @@
     }
 }
 
+/* ========================================
+   OVERLAY / PORTAL MOBILE GHOST-CLICK FIX
+   When any Radix portal (Dialog, DropdownMenu, Popover, Select, etc.)
+   is open, disable the mobile bottom nav and fixed header to prevent
+   ghost-click / touch pass-through on iOS & Android.
+   ======================================== */
+body:has([data-state="open"][role="dialog"]) .mobile-bottom-nav,
+body:has([data-radix-dialog-overlay]) .mobile-bottom-nav,
+body:has([data-radix-dropdown-menu-content]) .mobile-bottom-nav,
+body:has([data-radix-popover-content]) .mobile-bottom-nav,
+body:has([data-radix-select-content]) .mobile-bottom-nav,
+body:has([data-radix-context-menu-content]) .mobile-bottom-nav,
+body:has([data-story-popup="open"]) .mobile-bottom-nav {
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transition: opacity 0.15s ease;
+}
+
+/* Also disable the fixed header from receiving clicks when any overlay is open */
+body:has([data-state="open"][role="dialog"]) header.fixed,
+body:has([data-radix-dialog-overlay]) header.fixed,
+body:has([data-radix-dropdown-menu-content]) header.fixed,
+body:has([data-radix-popover-content]) header.fixed,
+body:has([data-radix-select-content]) header.fixed,
+body:has([data-radix-context-menu-content]) header.fixed,
+body:has([data-story-popup="open"]) header.fixed {
+    pointer-events: none !important;
+}
+
 /* Small viewport height (always excludes browser chrome) */
 @supports (height: 100svh) {
     :root {
         --vh-small: 100svh;
     }
+}
+
+/* Prevent iOS text size inflation */
+html {
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -57,8 +91,13 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Prevent horizontal overflow */
+    /* Prevent horizontal overflow - ONLY on body (not html or #root).
+       When html has no overflow set, body's overflow is propagated to the
+       viewport. This prevents body from becoming a scroll container,
+       which would break position:sticky on child elements. */
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
     /* Enable smooth scrolling */
     scroll-behavior: smooth;
     /* Support for safe areas in PWA mode */
@@ -67,6 +106,10 @@ body {
     padding-left: var(--safe-area-inset-left);
     padding-right: var(--safe-area-inset-right);
 }
+
+/* NOTE: Do NOT add overflow-x:hidden to #root or html — it breaks
+   position:sticky. body's overflow-x:hidden is propagated to the
+   viewport which is sufficient. */
 
 /* PWA standalone mode adjustments */
 @media all and (display-mode: standalone) {
@@ -86,12 +129,23 @@ body {
     body {
         /* Prevent elastic bounce on iOS */
         overscroll-behavior-y: none;
+        /* Width containment for keyboard dismiss fix */
+        width: 100% !important;
+        max-width: 100vw !important;
     }
     
     /* Fix 100vh on iOS Safari */
     .min-h-screen {
         min-height: var(--vh-full);
         min-height: -webkit-fill-available;
+    }
+    
+    /* Prevent input zoom on iOS (font-size < 16px triggers auto-zoom) */
+    input, textarea, select {
+        font-size: 16px !important;
+    }
+    input:focus, textarea:focus, select:focus {
+        font-size: 16px !important;
     }
 }
 
@@ -394,9 +448,10 @@ button {
         --card: 0 0% 3.9%;
         --card-foreground: 0 0% 98%;
     }
-    body.avatar-world {
-        --card: 0 0% 100% !important;
-        --card-foreground: 0 0% 3.9% !important;
+    /* Avatar world - Classic mode (white cards) */
+    body.avatar-world.view-classic {
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
         --popover: 0 0% 100%;
         --popover-foreground: 0 0% 3.9%;
         --primary: 0 0% 9%;
@@ -412,11 +467,31 @@ button {
         --border: 0 0% 89.8%;
         --input: 0 0% 89.8%;
         --ring: 0 0% 3.9%;
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
+    }
+    /* Avatar world - Immersive mode (dark cards) */
+    body.avatar-world.view-immersive {
+        --card: 217 33% 10%;
+        --card-foreground: 0 0% 98%;
+        --popover: 217 33% 10%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 217 91% 60%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 217 33% 17%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 217 33% 17%;
+        --muted-foreground: 215 20% 65%;
+        --accent: 217 33% 17%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 217 33% 20%;
+        --input: 217 33% 20%;
+        --ring: 217 91% 60%;
+    }
+    /* Fallback for avatar-world without view mode class */
+    body.avatar-world:not(.view-classic):not(.view-immersive) {
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
     }
 }
 
@@ -707,7 +782,6 @@ body.avatar-world::before {
   body.avatar-world .bg-card,
   body.avatar-world [class*="Card"] {
     background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 4px 24px rgba(0, 0, 0, 0.04) !important;
 }
@@ -884,4 +958,316 @@ body.avatar-world button[role="tab"][data-state="active"] svg {
 body.avatar-world [role="tab"] svg,
 body.avatar-world button[role="tab"] svg {
     color: rgb(100, 116, 139) !important; /* Slate-500 for inactive icons */
+}
+
+/* ============================================
+   IMMERSIVE MODE OVERRIDES FOR AVATAR WORLD
+   These override the classic white theme above
+   ============================================ */
+
+/* Background for immersive mode - dark gradient */
+body.avatar-world.view-immersive {
+    background: linear-gradient(135deg, 
+        #0f172a 0%,
+        #1e293b 25%,
+        #0f172a 50%,
+        #1e293b 75%,
+        #0f172a 100%
+    ) !important;
+    background-attachment: fixed !important;
+}
+
+/* Card backgrounds - Dark for immersive */
+body.avatar-world.view-immersive .card,
+body.avatar-world.view-immersive .card-avatar,
+body.avatar-world.view-immersive [class*="card"],
+body.avatar-world.view-immersive .bg-card,
+body.avatar-world.view-immersive [class*="Card"],
+body.avatar-world.view-immersive [class*="rounded-xl"][class*="border"] {
+    background: rgba(15, 23, 42, 0.85) !important;
+    border: 1px solid rgba(51, 65, 85, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Text colors - Light for immersive mode */
+body.avatar-world.view-immersive h1,
+body.avatar-world.view-immersive h2,
+body.avatar-world.view-immersive h3,
+body.avatar-world.view-immersive h4,
+body.avatar-world.view-immersive h5,
+body.avatar-world.view-immersive h6 {
+    color: rgb(255, 255, 255) !important;
+    text-shadow: none !important;
+}
+
+body.avatar-world.view-immersive p,
+body.avatar-world.view-immersive span,
+body.avatar-world.view-immersive div,
+body.avatar-world.view-immersive label {
+    color: rgb(209, 213, 219) !important;
+    text-shadow: none !important;
+}
+
+/* Muted/secondary text in immersive */
+body.avatar-world.view-immersive .text-gray-400,
+body.avatar-world.view-immersive .text-gray-500,
+body.avatar-world.view-immersive .text-muted-foreground {
+    color: rgb(156, 163, 175) !important;
+}
+
+body.avatar-world.view-immersive .text-gray-600,
+body.avatar-world.view-immersive .text-gray-700 {
+    color: rgb(209, 213, 219) !important;
+}
+
+/* Input fields - Dark for immersive */
+body.avatar-world.view-immersive input,
+body.avatar-world.view-immersive textarea {
+    background: rgba(30, 41, 59, 0.8) !important;
+    border: 1px solid rgba(71, 85, 105, 0.5) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+body.avatar-world.view-immersive input::placeholder,
+body.avatar-world.view-immersive textarea::placeholder {
+    color: rgb(148, 163, 184) !important;
+}
+
+/* Buttons in immersive mode */
+body.avatar-world.view-immersive button {
+    color: rgb(209, 213, 219) !important;
+}
+
+body.avatar-world.view-immersive button:hover {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* Links in immersive mode */
+body.avatar-world.view-immersive a,
+body.avatar-world.view-immersive a * {
+    color: rgb(167, 139, 250) !important;
+}
+
+body.avatar-world.view-immersive a:hover {
+    color: rgb(196, 181, 253) !important;
+}
+
+/* Friend cards in immersive mode */
+body.avatar-world.view-immersive .friend-card {
+    background: rgba(15, 23, 42, 0.85) !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+}
+
+body.avatar-world.view-immersive .friend-card h3,
+body.avatar-world.view-immersive .friend-card p,
+body.avatar-world.view-immersive .friend-card span {
+    color: rgb(226, 232, 240) !important;
+}
+
+/* Tabs in immersive mode */
+body.avatar-world.view-immersive [role="tablist"],
+body.avatar-world.view-immersive .bg-muted[role="tablist"] {
+    background: rgba(30, 41, 59, 0.8) !important;
+    border: 1px solid rgba(71, 85, 105, 0.5) !important;
+}
+
+body.avatar-world.view-immersive [role="tab"],
+body.avatar-world.view-immersive button[role="tab"] {
+    color: rgb(148, 163, 184) !important;
+    background: transparent !important;
+}
+
+body.avatar-world.view-immersive [role="tab"]:hover,
+body.avatar-world.view-immersive button[role="tab"]:hover {
+    color: rgb(226, 232, 240) !important;
+    background: rgba(51, 65, 85, 0.5) !important;
+}
+
+body.avatar-world.view-immersive [role="tab"][data-state="active"],
+body.avatar-world.view-immersive button[role="tab"][data-state="active"] {
+    background: rgba(139, 92, 246, 0.2) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+body.avatar-world.view-immersive [role="tab"] svg,
+body.avatar-world.view-immersive button[role="tab"] svg {
+    color: rgb(148, 163, 184) !important;
+}
+
+body.avatar-world.view-immersive [role="tab"][data-state="active"] svg,
+body.avatar-world.view-immersive button[role="tab"][data-state="active"] svg {
+    color: rgb(255, 255, 255) !important;
+}
+
+/* Scrollbar for immersive mode */
+body.avatar-world.view-immersive ::-webkit-scrollbar-track {
+    background: rgba(30, 41, 59, 0.5) !important;
+}
+
+body.avatar-world.view-immersive ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #8b5cf6, #6366f1) !important;
+}
+
+/* Badge styling in immersive */
+body.avatar-world.view-immersive .badge,
+body.avatar-world.view-immersive [class*="Badge"] {
+    background: rgba(139, 92, 246, 0.2) !important;
+    color: rgb(196, 181, 253) !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+}
+
+/* ============================================
+   SENSE WORLD (NON-AVATAR) IMMERSIVE OVERRIDES
+   Dark professional theme for Sense world
+   ============================================ */
+
+/* Background for Sense immersive mode - dark slate gradient */
+body:not(.avatar-world).view-immersive {
+    background: linear-gradient(135deg,
+        #0f172a 0%,
+        #1e293b 25%,
+        #0f172a 50%,
+        #1e293b 75%,
+        #0f172a 100%
+    ) !important;
+    background-attachment: fixed !important;
+}
+
+/* Card backgrounds - Dark for Sense immersive */
+body:not(.avatar-world).view-immersive .card,
+body:not(.avatar-world).view-immersive .card-avatar,
+body:not(.avatar-world).view-immersive [class*="card"],
+body:not(.avatar-world).view-immersive .bg-card,
+body:not(.avatar-world).view-immersive [class*="Card"],
+body:not(.avatar-world).view-immersive [class*="rounded-xl"][class*="border"] {
+    background: rgba(15, 23, 42, 0.85) !important;
+    border: 1px solid rgba(71, 85, 105, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Text colors - Light for Sense immersive mode */
+body:not(.avatar-world).view-immersive h1,
+body:not(.avatar-world).view-immersive h2,
+body:not(.avatar-world).view-immersive h3,
+body:not(.avatar-world).view-immersive h4,
+body:not(.avatar-world).view-immersive h5,
+body:not(.avatar-world).view-immersive h6 {
+    color: rgb(255, 255, 255) !important;
+    text-shadow: none !important;
+}
+
+body:not(.avatar-world).view-immersive p,
+body:not(.avatar-world).view-immersive span,
+body:not(.avatar-world).view-immersive div,
+body:not(.avatar-world).view-immersive label {
+    color: rgb(209, 213, 219) !important;
+    text-shadow: none !important;
+}
+
+/* Muted text colors for Sense immersive */
+body:not(.avatar-world).view-immersive .text-gray-400,
+body:not(.avatar-world).view-immersive .text-gray-500,
+body:not(.avatar-world).view-immersive .text-muted-foreground {
+    color: rgb(156, 163, 175) !important;
+}
+
+body:not(.avatar-world).view-immersive .text-gray-600,
+body:not(.avatar-world).view-immersive .text-gray-700 {
+    color: rgb(209, 213, 219) !important;
+}
+
+/* Input fields - Dark for Sense immersive */
+body:not(.avatar-world).view-immersive input,
+body:not(.avatar-world).view-immersive textarea {
+    background: rgba(30, 41, 59, 0.8) !important;
+    border: 1px solid rgba(71, 85, 105, 0.5) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+body:not(.avatar-world).view-immersive input::placeholder,
+body:not(.avatar-world).view-immersive textarea::placeholder {
+    color: rgb(148, 163, 184) !important;
+}
+
+/* Buttons in Sense immersive mode - blue accent instead of purple */
+body:not(.avatar-world).view-immersive button {
+    color: rgb(209, 213, 219) !important;
+}
+
+body:not(.avatar-world).view-immersive button:hover {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* Links in Sense immersive mode */
+body:not(.avatar-world).view-immersive a,
+body:not(.avatar-world).view-immersive a * {
+    color: rgb(96, 165, 250) !important;
+}
+
+body:not(.avatar-world).view-immersive a:hover {
+    color: rgb(147, 197, 253) !important;
+}
+
+/* Friend cards in Sense immersive mode */
+body:not(.avatar-world).view-immersive .friend-card {
+    background: rgba(15, 23, 42, 0.85) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+body:not(.avatar-world).view-immersive .friend-card h3,
+body:not(.avatar-world).view-immersive .friend-card p,
+body:not(.avatar-world).view-immersive .friend-card span {
+    color: rgb(226, 232, 240) !important;
+}
+
+/* Tabs in Sense immersive mode */
+body:not(.avatar-world).view-immersive [role="tablist"],
+body:not(.avatar-world).view-immersive .bg-muted[role="tablist"] {
+    background: rgba(30, 41, 59, 0.8) !important;
+    border: 1px solid rgba(71, 85, 105, 0.5) !important;
+}
+
+body:not(.avatar-world).view-immersive [role="tab"],
+body:not(.avatar-world).view-immersive button[role="tab"] {
+    color: rgb(148, 163, 184) !important;
+    background: transparent !important;
+}
+
+body:not(.avatar-world).view-immersive [role="tab"]:hover,
+body:not(.avatar-world).view-immersive button[role="tab"]:hover {
+    color: rgb(226, 232, 240) !important;
+    background: rgba(51, 65, 85, 0.5) !important;
+}
+
+body:not(.avatar-world).view-immersive [role="tab"][data-state="active"],
+body:not(.avatar-world).view-immersive button[role="tab"][data-state="active"] {
+    background: rgba(59, 130, 246, 0.2) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+body:not(.avatar-world).view-immersive [role="tab"] svg,
+body:not(.avatar-world).view-immersive button[role="tab"] svg {
+    color: rgb(148, 163, 184) !important;
+}
+
+body:not(.avatar-world).view-immersive [role="tab"][data-state="active"] svg,
+body:not(.avatar-world).view-immersive button[role="tab"][data-state="active"] svg {
+    color: rgb(255, 255, 255) !important;
+}
+
+/* Scrollbar for Sense immersive mode */
+body:not(.avatar-world).view-immersive ::-webkit-scrollbar-track {
+    background: rgba(30, 41, 59, 0.5) !important;
+}
+
+body:not(.avatar-world).view-immersive ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #3b82f6, #1d4ed8) !important;
+}
+
+/* Badge styling for Sense immersive */
+body:not(.avatar-world).view-immersive .badge,
+body:not(.avatar-world).view-immersive [class*="Badge"] {
+    background: rgba(59, 130, 246, 0.2) !important;
+    color: rgb(147, 197, 253) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
 }

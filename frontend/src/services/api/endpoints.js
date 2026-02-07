@@ -30,6 +30,7 @@ export const endpoints = {
     create: `${API_BASE}/profile/posts`,
     getUserPosts: `${API_BASE}/profile/posts`,
     getFeedPosts: `${API_BASE}/feed/posts`,
+    update: (postId) => `${API_BASE}/profile/posts/${postId}`,
     delete: (postId) => `${API_BASE}/profile/posts/${postId}`,
     like: (postId) => `${API_BASE}/posts/${postId}/like`,
     getLikes: (postId) => `${API_BASE}/posts/${postId}/likes`,

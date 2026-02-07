@@ -83,6 +83,14 @@ export const postService = {
   },
 
   /**
+   * Update a post
+   */
+  updatePost: async (postId, postData) => {
+    const response = await apiClient.put(endpoints.posts.update(postId), postData);
+    return response.data;
+  },
+
+  /**
    * Delete a post
    */
   deletePost: async (postId) => {

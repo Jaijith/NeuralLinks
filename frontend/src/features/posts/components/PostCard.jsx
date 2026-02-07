@@ -12,6 +12,7 @@ import PostActions from './PostActions';
 import CommentSection from './CommentSection';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import useViewMode from '@/hooks/useViewMode';
 
 /**
  * @typedef {Object} PostCardProps
@@ -44,6 +45,7 @@ const PostCard = memo(({
   onUserClick,
   onMoreClick,
   onDelete,
+  onEdit,
   comments = [],
   onAddComment,
   showComments = false,
@@ -51,6 +53,7 @@ const PostCard = memo(({
   className = '',
   style = {}
 }) => {
+  const { isImmersive } = useViewMode();
   const [localComments, setLocalComments] = useState(comments);
 
   const handleAddComment = async (postId, text) => {
@@ -66,8 +69,14 @@ const PostCard = memo(({
 
   return (
     <Card 
-      className={cn("rounded-xl overflow-hidden post-card glass-card", className)}
-      style={style}
+      className={cn("rounded-xl overflow-hidden post-card", className)}
+      style={{
+        backgroundColor: isImmersive ? 'rgba(15, 23, 42, 0.8)' : 'white',
+        borderColor: isImmersive ? 'rgba(51, 65, 85, 0.5)' : undefined,
+        contentVisibility: 'auto',
+        containIntrinsicSize: 'auto 400px',
+        ...style
+      }}
     >
       <PostHeader
         post={post}
@@ -77,6 +86,7 @@ const PostCard = memo(({
         onUserClick={onUserClick}
         onMoreClick={onMoreClick}
         onDelete={onDelete}
+        onEdit={onEdit}
       />
 
       <PostContent post={post} />

@@ -12,6 +12,7 @@ import { Globe, Image as ImageIcon, X } from 'lucide-react';
 import { postService } from '@/services/api';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import useViewMode from '@/hooks/useViewMode';
 
 /**
  * @typedef {Object} CreatePostDialogProps
@@ -36,6 +37,7 @@ const CreatePostDialog = React.memo(({
   onPostCreated,
   className
 }) => {
+  const { isImmersive } = useViewMode();
   const [postText, setPostText] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -43,6 +45,8 @@ const CreatePostDialog = React.memo(({
 
   const isAvatarWorld = worldMode === 'avatar';
   const postType = isAvatarWorld ? 'avatar' : 'real';
+  // Use dark theme for immersive mode in any world
+  const useDarkTheme = isImmersive || isAvatarWorld;
   
   const displayName = isAvatarWorld 
     ? (user.avatar_name || user.name)
@@ -143,27 +147,56 @@ const CreatePostDialog = React.memo(({
     ? "What's your avatar thinking?"
     : "What's on your mind?";
 
+  // Accent color - purple for Maya, blue for Sense
+  const accentColor = isAvatarWorld ? 'purple' : 'blue';
+  
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={cn("max-w-lg bg-white", className)}>
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-gray-900">
+      <DialogContent 
+        className={cn(
+          "w-[95vw] max-w-lg mx-auto p-4 sm:p-6 rounded-2xl",
+          useDarkTheme 
+            ? "bg-slate-900 border border-slate-700/50" 
+            : "bg-white border border-gray-200",
+          className
+        )}
+        style={{
+          maxHeight: '90vh',
+          overflowY: 'auto',
+        }}
+      >
+        <DialogHeader className="pb-2">
+          <DialogTitle className={cn(
+            "text-lg sm:text-xl font-bold text-center",
+            useDarkTheme ? "text-white" : "text-gray-900"
+          )}>
             {dialogTitle}
           </DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-4 mt-4">
+        <div className="space-y-4">
           {/* User Info */}
-          <div className="flex items-start gap-3">
-            <Avatar className="w-10 h-10">
+          <div className="flex items-center gap-3">
+            <Avatar className={cn(
+              "w-10 h-10 sm:w-12 sm:h-12 ring-2",
+              isAvatarWorld ? "ring-purple-500/30" : "ring-blue-500/20"
+            )}>
               <AvatarImage src={displayPicture} alt={displayName} />
-              <AvatarFallback>{displayName?.charAt(0) || '?'}</AvatarFallback>
+              <AvatarFallback className={isAvatarWorld ? "bg-purple-600 text-white" : "bg-blue-500 text-white"}>
+                {displayName?.charAt(0) || '?'}
+              </AvatarFallback>
             </Avatar>
-            <div className="flex-1">
-              <p className="font-semibold text-gray-900">
+            <div className="flex-1 min-w-0">
+              <p className={cn(
+                "font-semibold truncate",
+                useDarkTheme ? "text-white" : "text-gray-900"
+              )}>
                 {displayName}
               </p>
-              <div className="flex items-center gap-1 text-xs text-gray-500">
+              <div className={cn(
+                "flex items-center gap-1 text-xs",
+                useDarkTheme ? "text-gray-400" : "text-gray-500"
+              )}>
                 <Globe className="w-3 h-3" />
                 <span>Public</span>
               </div>
@@ -175,8 +208,13 @@ const CreatePostDialog = React.memo(({
             placeholder={placeholder}
             value={postText}
             onChange={(e) => setPostText(e.target.value)}
-            rows={5}
-            className="resize-none border-none text-lg bg-gray-50 focus:ring-blue-500/50"
+            rows={4}
+            className={cn(
+              "w-full resize-none rounded-xl text-base",
+              useDarkTheme 
+                ? `bg-slate-800 border-slate-700 text-white placeholder:text-gray-500 focus:ring-${accentColor}-500/50 focus:border-${accentColor}-500` 
+                : "bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:ring-blue-500/50"
+            )}
           />
 
           {/* Hidden file input */}
@@ -190,11 +228,11 @@ const CreatePostDialog = React.memo(({
 
           {/* Image Preview */}
           {imagePreview && (
-            <div className="relative">
+            <div className="relative rounded-xl overflow-hidden">
               <img
                 src={imagePreview}
                 alt="Preview"
-                className="w-full h-64 object-cover rounded-lg"
+                className="w-full h-48 sm:h-64 object-cover"
               />
               <button
                 onClick={handleRemoveImage}
@@ -207,27 +245,43 @@ const CreatePostDialog = React.memo(({
           )}
 
           {/* Actions */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
             <label
               htmlFor="post-image-upload"
-              className="cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
+              className={cn(
+                "cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl transition-all",
+                useDarkTheme 
+                  ? "bg-slate-800 hover:bg-slate-700 text-gray-300" 
+                  : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+              )}
             >
               <ImageIcon className="w-5 h-5" style={{ color: '#34d399' }} />
               <span className="font-medium text-sm">Add Photo</span>
             </label>
+            
             <div className="flex gap-2">
               <Button
                 variant="ghost"
                 onClick={handleClose}
                 disabled={uploading}
-                className="text-gray-600 hover:bg-gray-100"
+                className={cn(
+                  "flex-1 sm:flex-none px-4",
+                  useDarkTheme 
+                    ? "text-gray-400 hover:bg-slate-800 hover:text-white" 
+                    : "text-gray-600 hover:bg-gray-100"
+                )}
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleCreatePost}
                 disabled={(!postText.trim() && !selectedImage) || uploading}
-                className="px-6 bg-blue-500 hover:bg-blue-600 text-white"
+                className={cn(
+                  "flex-1 sm:flex-none px-6",
+                  isAvatarWorld 
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0" 
+                    : "bg-blue-500 hover:bg-blue-600 text-white"
+                )}
               >
                 {uploading ? 'Posting...' : 'Post'}
               </Button>

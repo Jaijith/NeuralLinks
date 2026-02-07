@@ -1,207 +1,203 @@
 /**
- * ImmersiveBackground - Cosmic space-themed background (OPTIMIZED)
+ * ImmersiveBackground - Mood-driven cosmic background (LIGHTWEIGHT)
  * 
- * Performance optimizations:
- * - Reduced star count (60 instead of 180)
- * - CSS animations for stars instead of Framer Motion
- * - Fewer particles (8 instead of 15)
- * - will-change hints for GPU acceleration
- * - Simplified gradients
+ * Makes the avatar's mood dramatically visible through smooth color washes.
+ * Uses wide, overlapping gradients for an aurora-like effect without visible blobs.
+ * Performance: pure CSS gradients only, no JS animations, no blur filters.
+ * Mobile: reduced star count, no twinkle animation.
  */
 
-import { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useMemo, useEffect, useState } from 'react';
 
-// Pre-generate stars once (not on every render)
-const generateStars = () => {
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    window.matchMedia('(max-width: 768px)').matches ||
+    window.matchMedia('(display-mode: standalone)').matches;
+};
+
+const generateStars = (count) => {
   const stars = [];
-  // Reduced to 60 stars total
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < count; i++) {
     stars.push({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 1.5 + 0.5,
-      opacity: Math.random() * 0.4 + 0.2,
-      delay: Math.random() * 4
-    });
-  }
-  // Medium stars (fewer)
-  for (let i = 50; i < 60; i++) {
-    stars.push({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2 + 1.5,
-      opacity: Math.random() * 0.3 + 0.3,
-      delay: Math.random() * 4
+      size: Math.random() * 1.6 + 0.4,
+      opacity: Math.random() * 0.5 + 0.15
     });
   }
   return stars;
 };
 
-// Static stars - generated once
-const STARS = generateStars();
-
 const ImmersiveBackground = ({ colors, energy = 0.5, presenceIntensity = 0.5 }) => {
-  // Animation speed based on energy (memoized)
-  const animationDuration = useMemo(() => {
-    return 25 + (1 - energy) * 15; // 25-40 seconds (slower = less CPU)
-  }, [energy]);
+  const [isLowPower, setIsLowPower] = useState(true);
   
-  // Nebula opacity based on presence (memoized)
-  const nebulaOpacity = useMemo(() => {
-    return 0.25 + presenceIntensity * 0.2;
+  useEffect(() => {
+    setIsLowPower(isMobile());
+  }, []);
+  
+  const stars = useMemo(() => {
+    return generateStars(isLowPower ? 15 : 30);
+  }, [isLowPower]);
+  
+  // Intensity drives the overall vibrancy
+  const intensity = useMemo(() => {
+    return 0.30 + presenceIntensity * 0.30; // 0.30 - 0.60
   }, [presenceIntensity]);
 
-  const primaryHex = useMemo(() => 
-    Math.round(nebulaOpacity * 255).toString(16).padStart(2, '0'),
-    [nebulaOpacity]
-  );
-
-  const secondaryHex = useMemo(() => 
-    Math.round(nebulaOpacity * 0.8 * 255).toString(16).padStart(2, '0'),
-    [nebulaOpacity]
-  );
+  // Generate hex opacity helpers
+  const op = useMemo(() => {
+    const toHex = (fraction) => Math.round(fraction * 255).toString(16).padStart(2, '0');
+    return {
+      high: toHex(intensity),           // ~30-60%
+      med: toHex(intensity * 0.55),     // ~16-33%
+      low: toHex(intensity * 0.30),     // ~9-18%
+      faint: toHex(intensity * 0.15),   // ~4-9%
+    };
+  }, [intensity]);
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Deep space base gradient - static, no animation */}
+      
+      {/* Layer 1: Deep base with very subtle mood tinting at the edges */}
       <div 
         className="absolute inset-0"
         style={{
           background: `
-            radial-gradient(ellipse 120% 80% at 50% 0%, #0d1117 0%, #010409 50%),
-            linear-gradient(180deg, #0d1117 0%, #010409 100%)
+            linear-gradient(170deg,
+              ${colors.primary}${op.faint} 0%,
+              #060a12 15%,
+              #050810 45%,
+              #060a12 80%,
+              ${colors.secondary}${op.faint} 100%
+            )
           `
         }}
       />
-      
-      {/* Star field layer - using CSS animations */}
+
+      {/* Layer 2: Full-viewport primary color wash — wide & soft, top-biased */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(
+            ellipse 130% 80% at 25% 15%,
+            ${colors.primary}${op.med} 0%,
+            ${colors.primary}${op.low} 20%,
+            ${colors.primary}${op.faint} 45%,
+            transparent 75%
+          )`,
+        }}
+      />
+
+      {/* Layer 3: Full-viewport secondary color wash — wide & soft, bottom-biased */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(
+            ellipse 120% 90% at 75% 85%,
+            ${colors.secondary}${op.med} 0%,
+            ${colors.secondary}${op.low} 20%,
+            ${colors.secondary}${op.faint} 45%,
+            transparent 75%
+          )`,
+        }}
+      />
+
+      {/* Layer 4: Diagonal band — blends both colors across center like aurora */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `linear-gradient(
+            135deg,
+            ${colors.primary}${op.low} 0%,
+            transparent 25%,
+            ${colors.secondary}${op.faint} 40%,
+            ${colors.primary}${op.faint} 60%,
+            transparent 75%,
+            ${colors.secondary}${op.low} 100%
+          )`,
+        }}
+      />
+
+      {/* Layer 5: Very wide center blend — prevents harsh boundary between primary/secondary */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(
+            ellipse 100% 70% at 50% 45%,
+            ${colors.primary}${op.faint} 0%,
+            ${colors.secondary}${op.faint} 35%,
+            transparent 70%
+          )`,
+        }}
+      />
+
+      {/* Layer 6: Top edge glow — soft mood wash along the header area */}
+      <div 
+        className="absolute top-0 left-0 right-0"
+        style={{
+          height: '40%',
+          background: `linear-gradient(180deg,
+            ${colors.primary}${op.low} 0%,
+            ${colors.primary}${op.faint} 30%,
+            transparent 100%
+          )`
+        }}
+      />
+
+      {/* Layer 7: Bottom edge glow */}
+      <div 
+        className="absolute bottom-0 left-0 right-0"
+        style={{
+          height: '35%',
+          background: `linear-gradient(0deg,
+            ${colors.secondary}${op.low} 0%,
+            ${colors.secondary}${op.faint} 30%,
+            transparent 100%
+          )`
+        }}
+      />
+
+      {/* Stars — tiny dots for depth */}
       <div className="absolute inset-0">
-        <style>{`
-          @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.1); }
-          }
-        `}</style>
-        {STARS.map((star) => (
+        {!isLowPower && (
+          <style>{`
+            @keyframes twinkle { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.8; } }
+            .star-twinkle { animation: twinkle 5s ease-in-out infinite; }
+          `}</style>
+        )}
+        {stars.map((star) => (
           <div
             key={star.id}
-            className="absolute rounded-full bg-white"
+            className={`absolute rounded-full bg-white ${!isLowPower ? 'star-twinkle' : ''}`}
             style={{
               left: `${star.x}%`,
               top: `${star.y}%`,
               width: star.size,
               height: star.size,
               opacity: star.opacity,
-              animation: `twinkle ${3 + star.delay}s ease-in-out infinite`,
-              animationDelay: `${star.delay}s`,
-              willChange: 'opacity, transform'
+              animationDelay: !isLowPower ? `${star.id * 0.4}s` : undefined,
             }}
           />
         ))}
       </div>
       
-      {/* Primary nebula cloud - mood radiance */}
-      <motion.div
-        className="absolute -top-[15%] -left-[5%] w-[70%] h-[60%]"
-        style={{
-          background: `radial-gradient(ellipse at center, ${colors.primary}${primaryHex} 0%, transparent 60%)`,
-          filter: 'blur(80px)',
-          willChange: 'transform, opacity'
-        }}
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [nebulaOpacity * 0.8, nebulaOpacity, nebulaOpacity * 0.8]
-        }}
-        transition={{
-          duration: animationDuration,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-      />
+      {/* Slow nebula drift on primary wash — desktop only, pure CSS */}
+      {!isLowPower && (
+        <style>{`
+          @keyframes nebulaDrift { 
+            0%, 100% { opacity: 0.9; transform: translate(0, 0) scale(1); } 
+            50% { opacity: 1; transform: translate(0.5%, 0.5%) scale(1.01); } 
+          }
+          .nebula-drift { animation: nebulaDrift 30s ease-in-out infinite; }
+        `}</style>
+      )}
       
-      {/* Secondary nebula cloud - bottom */}
-      <motion.div
-        className="absolute -bottom-[10%] -right-[10%] w-[60%] h-[50%]"
-        style={{
-          background: `radial-gradient(ellipse at center, ${colors.secondary}${secondaryHex} 0%, transparent 60%)`,
-          filter: 'blur(90px)',
-          willChange: 'transform, opacity'
-        }}
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [nebulaOpacity * 0.6, nebulaOpacity * 0.9, nebulaOpacity * 0.6]
-        }}
-        transition={{
-          duration: animationDuration * 0.9,
-          repeat: Infinity,
-          ease: "linear",
-          delay: 3
-        }}
-      />
-      
-      {/* Center mood glow - simplified */}
-      <div
-        className="absolute top-[30%] left-[40%] w-[40%] h-[40%]"
-        style={{
-          background: `radial-gradient(ellipse at center, ${colors.primary}18 0%, transparent 60%)`,
-          filter: 'blur(60px)',
-        }}
-      />
-      
-      {/* Edge glow - top (static gradient, subtle animation) */}
-      <motion.div 
-        className="absolute top-0 left-0 right-0 h-[200px]"
-        style={{
-          background: `linear-gradient(180deg, ${colors.primary}25 0%, transparent 100%)`,
-          willChange: 'opacity'
-        }}
-        animate={{ opacity: [0.7, 1, 0.7] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-      />
-      
-      {/* Edge glow - bottom */}
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-[150px]"
-        style={{
-          background: `linear-gradient(0deg, ${colors.secondary}20 0%, transparent 100%)`
-        }}
-      />
-      
-      {/* Floating spirit particles - reduced to 8 */}
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={`particle-${i}`}
-          className="absolute rounded-full"
-          style={{
-            width: 2 + (i % 3),
-            height: 2 + (i % 3),
-            left: `${10 + (i * 10) % 80}%`,
-            top: `${15 + (i * 12) % 70}%`,
-            background: colors.primary,
-            boxShadow: `0 0 ${6 + i}px ${colors.glow}`,
-            willChange: 'transform, opacity'
-          }}
-          animate={{
-            y: [0, -80 - i * 5, 0],
-            opacity: [0, 0.7, 0],
-          }}
-          transition={{
-            duration: 12 + i * 2,
-            repeat: Infinity,
-            delay: i * 1.5,
-            ease: "linear"
-          }}
-        />
-      ))}
-      
-      {/* Vignette for depth - static */}
+      {/* Gentle vignette — frames content without darkening the mood colors */}
       <div 
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(ellipse 70% 50% at 50% 50%, transparent 30%, rgba(0,0,0,0.35) 100%)`
+          background: 'radial-gradient(ellipse 90% 70% at 50% 50%, transparent 40%, rgba(0,0,0,0.25) 100%)'
         }}
       />
     </div>

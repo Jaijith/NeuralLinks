@@ -5,6 +5,7 @@
 
 import { ThumbsUp } from 'lucide-react';
 import { memo } from 'react';
+import useViewMode from '@/hooks/useViewMode';
 
 const LikeButton = memo(({ 
   postId, 
@@ -14,6 +15,8 @@ const LikeButton = memo(({
   showCount = false,
   variant = 'button' // 'button' or 'icon'
 }) => {
+  const { isImmersive } = useViewMode();
+  
   const handleClick = (e) => {
     e.stopPropagation();
     if (onClick) {
@@ -25,7 +28,7 @@ const LikeButton = memo(({
     return (
       <button
         onClick={handleClick}
-        className="flex items-center gap-1.5 hover:underline text-sm text-gray-600"
+        className={`flex items-center gap-1.5 hover:underline text-sm ${isImmersive ? 'text-gray-400' : 'text-gray-600'}`}
         aria-label={`${isLiked ? 'Unlike' : 'Like'} this post`}
       >
         {likesCount > 0 && (
@@ -43,8 +46,8 @@ const LikeButton = memo(({
   return (
     <button
       onClick={handleClick}
-      className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all hover:bg-gray-100 text-gray-700"
-      style={{ color: isLiked ? '#3b82f6' : '#4b5563' }}
+      className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all ${isImmersive ? 'hover:bg-slate-800' : 'hover:bg-gray-100'}`}
+      style={{ color: isLiked ? '#3b82f6' : (isImmersive ? '#d1d5db' : '#4b5563') }}
       aria-label={`${isLiked ? 'Unlike' : 'Like'} this post`}
     >
       <ThumbsUp className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />

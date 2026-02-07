@@ -372,13 +372,23 @@ const AvatarVisualization = ({ user, hideHeader = false }) => {
   // Safely destructure with defaults to prevent undefined errors
   const { 
     avatar_info = { name: "Avatar", picture: null, bio: "", archetype: "casual_observer" },
-    graph_stats = { total_nodes: 0 },
+    graph_stats: rawStats = {},
     top_interests = [],
     top_connections = [],
     top_traits = [],
     top_values = [],
     sources = {}
   } = graphData || {};
+
+  // Ensure graph_stats has all counts - calculate from arrays if not provided by backend
+  const graph_stats = {
+    total_nodes: rawStats.total_nodes || 0,
+    interests_count: rawStats.interests_count ?? top_interests.length,
+    connections_count: rawStats.connections_count ?? top_connections.length,
+    traits_count: rawStats.traits_count ?? top_traits.length,
+    values_count: rawStats.values_count ?? top_values.length,
+    ...rawStats
+  };
 
   return (
     <div className={hideHeader ? "" : `min-h-screen ${isAvatarWorld ? 'bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-700' : 'bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50'} p-6`}>

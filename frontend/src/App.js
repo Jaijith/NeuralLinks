@@ -68,6 +68,60 @@ function App() {
     handleAuthCallback();
   }, []);
 
+  // iOS keyboard dismiss viewport fix
+  // When the iOS virtual keyboard opens then dismisses, the visual viewport
+  // can get stuck at a wider width, causing horizontal scroll / "wobbly" layout.
+  // This forces the viewport back to the correct size on keyboard dismiss.
+  useEffect(() => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (!isIOS) return;
+
+    // 1. On input blur (keyboard dismiss), force viewport reset
+    const handleFocusOut = (e) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target?.tagName)) {
+        // Small delay to let the keyboard fully dismiss
+        setTimeout(() => {
+          // Force the browser to recalculate the viewport
+          window.scrollTo(0, window.scrollY);
+          // Reset any width expansion
+          document.documentElement.style.width = '100%';
+          document.body.style.width = '100%';
+        }, 50);
+
+        // Second pass after keyboard animation finishes
+        setTimeout(() => {
+          window.scrollTo(0, window.scrollY);
+        }, 300);
+      }
+    };
+
+    // 2. Use visualViewport API to detect keyboard dismiss (viewport height increases)
+    let lastHeight = window.visualViewport?.height || window.innerHeight;
+    const handleViewportResize = () => {
+      const newHeight = window.visualViewport?.height || window.innerHeight;
+      if (newHeight > lastHeight) {
+        // Keyboard dismissed (viewport grew) - force width reset
+        requestAnimationFrame(() => {
+          window.scrollTo(0, window.scrollY);
+        });
+      }
+      lastHeight = newHeight;
+    };
+
+    document.addEventListener('focusout', handleFocusOut, true);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleViewportResize);
+    }
+
+    return () => {
+      document.removeEventListener('focusout', handleFocusOut, true);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleViewportResize);
+      }
+    };
+  }, []);
+
   if (loading) {
     return <LoadingSpinner size="lg" message="Loading..." fullScreen />;
   }

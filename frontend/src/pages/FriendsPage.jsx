@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, MessageCircle, UserMinus, UserPlus, Check, X } from "lucide-react";
+import { Users, MessageCircle, UserMinus, UserPlus, Check, X, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import { PageContainer } from "@/components/layout";
@@ -13,17 +13,28 @@ import { friendService } from "@/services/api";
 import SideMessenger from "@/components/SideMessenger";
 import { LoadingSpinner, EmptyState } from "@/components/common";
 import { ImmersivePageWrapper } from "@/components/ambient";
+import axios from "axios";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const FriendsPage = ({ user }) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const viewingUserId = searchParams.get('user'); // If set, we're viewing another user's friends
   const { worldMode } = useWorldMode();
   const [activeTab, setActiveTab] = useState("friends");
   const [showMessenger, setShowMessenger] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [friendToRemove, setFriendToRemove] = useState(null);
+  
+  // State for viewing another user's friends
+  const [otherUserFriends, setOtherUserFriends] = useState([]);
+  const [otherUserInfo, setOtherUserInfo] = useState(null);
+  const [otherUserLoading, setOtherUserLoading] = useState(false);
 
-  // Use custom hooks
-  const { friends, loading: friendsLoading, refresh: refreshFriends } = useFriends(worldMode);
+  // Use custom hooks for own friends
+  const { friends: myFriends, loading: friendsLoading, refresh: refreshFriends } = useFriends(worldMode);
   const { 
     friendRequests, 
     loading: requestsLoading, 
@@ -33,7 +44,29 @@ const FriendsPage = ({ user }) => {
     refresh: refreshRequests
   } = useFriendRequests(worldMode);
 
-  const loading = friendsLoading || requestsLoading;
+  // Fetch other user's friends if viewing someone else's
+  useEffect(() => {
+    if (viewingUserId) {
+      setOtherUserLoading(true);
+      Promise.all([
+        axios.get(`${API}/friends?user_id=${viewingUserId}`, { withCredentials: true }),
+        axios.get(`${API}/users/${viewingUserId}`, { withCredentials: true })
+      ]).then(([friendsRes, userRes]) => {
+        setOtherUserFriends(friendsRes.data || []);
+        setOtherUserInfo(userRes.data);
+      }).catch(err => {
+        console.error('Error fetching user friends:', err);
+        toast.error('Failed to load friends');
+      }).finally(() => {
+        setOtherUserLoading(false);
+      });
+    }
+  }, [viewingUserId]);
+
+  // Use other user's friends if viewing someone else, otherwise own friends
+  const friends = viewingUserId ? otherUserFriends : myFriends;
+  const loading = viewingUserId ? otherUserLoading : (friendsLoading || requestsLoading);
+  const isViewingOtherUser = !!viewingUserId;
 
   const handleAcceptRequest = async (friendshipId, requesterId) => {
     await acceptRequest(friendshipId, requesterId);
@@ -56,8 +89,15 @@ const FriendsPage = ({ user }) => {
   };
 
   const isAvatarWorld = worldMode === 'avatar';
-  const pageTitle = isAvatarWorld ? 'Connections' : 'Friends';
-  const pageSubtitle = isAvatarWorld ? 'Manage your digital connections' : 'Manage your connections';
+  const otherUserDisplayName = isViewingOtherUser && otherUserInfo 
+    ? (isAvatarWorld ? (otherUserInfo.avatar_name || otherUserInfo.name) : otherUserInfo.name)
+    : null;
+  const pageTitle = isViewingOtherUser 
+    ? `${otherUserDisplayName || 'User'}'s ${isAvatarWorld ? 'Connections' : 'Friends'}`
+    : (isAvatarWorld ? 'Connections' : 'Friends');
+  const pageSubtitle = isViewingOtherUser
+    ? `Viewing ${otherUserDisplayName || 'user'}'s connections`
+    : (isAvatarWorld ? 'Manage your digital connections' : 'Manage your connections');
 
   return (
     <ImmersivePageWrapper pageId="friends" user={user}>
@@ -68,11 +108,22 @@ const FriendsPage = ({ user }) => {
       >
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 pb-20 sm:pb-8">
         <div className="mb-4 sm:mb-6 md:mb-8">
+          {/* Back button when viewing other user's friends */}
+          {isViewingOtherUser && (
+            <Button
+              variant="ghost"
+              onClick={() => navigate(-1)}
+              className="mb-2 -ml-2"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+          )}
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold gradient-text mb-1 sm:mb-2">{pageTitle}</h1>
           <p className="text-sm sm:text-base text-gray-600">{pageSubtitle}</p>
         </div>
 
-        {/* Tabs for Friends and Requests */}
+        {/* Tabs for Friends and Requests - Hide requests when viewing other user */}
         <div className="flex gap-2 sm:gap-4 mb-4 sm:mb-6 border-b border-purple-200 overflow-x-auto hide-scrollbar-mobile">
           <button
             onClick={() => setActiveTab("friends")}
@@ -83,24 +134,27 @@ const FriendsPage = ({ user }) => {
             }`}
           >
             <Users className="w-4 h-4 inline mr-1 sm:mr-2" />
-            {pageTitle} {friends.length > 0 && `(${friends.length})`}
+            {isAvatarWorld ? 'Connections' : 'Friends'} {friends.length > 0 && `(${friends.length})`}
           </button>
-          <button
-            onClick={() => setActiveTab("requests")}
-            className={`pb-2 sm:pb-3 px-3 sm:px-4 font-semibold transition-colors relative whitespace-nowrap text-sm sm:text-base min-h-[44px] ${
-              activeTab === "requests"
-                ? "text-purple-600 border-b-2 border-purple-600"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            <UserPlus className="w-4 h-4 inline mr-1 sm:mr-2" />
-            <span className="hidden xs:inline">Friend </span>Requests
-            {friendRequests.length > 0 && (
-              <span className="ml-1 sm:ml-2 bg-red-500 text-white text-[10px] sm:text-xs rounded-full px-1.5 sm:px-2 py-0.5">
-                {friendRequests.length}
-              </span>
-            )}
-          </button>
+          {/* Only show requests tab for own friends page */}
+          {!isViewingOtherUser && (
+            <button
+              onClick={() => setActiveTab("requests")}
+              className={`pb-2 sm:pb-3 px-3 sm:px-4 font-semibold transition-colors relative whitespace-nowrap text-sm sm:text-base min-h-[44px] ${
+                activeTab === "requests"
+                  ? "text-purple-600 border-b-2 border-purple-600"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              <UserPlus className="w-4 h-4 inline mr-1 sm:mr-2" />
+              <span className="hidden xs:inline">Friend </span>Requests
+              {friendRequests.length > 0 && (
+                <span className="ml-1 sm:ml-2 bg-red-500 text-white text-[10px] sm:text-xs rounded-full px-1.5 sm:px-2 py-0.5">
+                  {friendRequests.length}
+                </span>
+              )}
+            </button>
+          )}
         </div>
 
         {loading ? (
@@ -240,29 +294,33 @@ const FriendsPage = ({ user }) => {
                       >
                         <span className="hidden xs:inline">View </span>Profile
                       </Button>
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedFriend(friend);
-                          setShowMessenger(true);
-                        }}
-                        data-testid={`message-friend-${idx}`}
-                        className="bg-blue-500 hover:bg-blue-600 text-white rounded-full font-bold min-h-[44px] min-w-[44px] px-3"
-                      >
-                        <MessageCircle className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          setFriendToRemove(friend);
-                        }}
-                        data-testid={`remove-friend-${idx}`}
-                        variant="outline"
-                        className="border-2 border-red-400 text-red-600 hover:bg-red-50 rounded-full font-bold min-h-[44px] min-w-[44px] px-3"
-                      >
-                        <UserMinus className="w-4 h-4" />
-                      </Button>
+                      {!isViewingOtherUser && (
+                        <>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedFriend(friend);
+                              setShowMessenger(true);
+                            }}
+                            data-testid={`message-friend-${idx}`}
+                            className="bg-blue-500 hover:bg-blue-600 text-white rounded-full font-bold min-h-[44px] min-w-[44px] px-3"
+                          >
+                            <MessageCircle className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              setFriendToRemove(friend);
+                            }}
+                            data-testid={`remove-friend-${idx}`}
+                            variant="outline"
+                            className="border-2 border-red-400 text-red-600 hover:bg-red-50 rounded-full font-bold min-h-[44px] min-w-[44px] px-3"
+                          >
+                            <UserMinus className="w-4 h-4" />
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </Card>

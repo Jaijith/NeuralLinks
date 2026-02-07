@@ -90,6 +90,27 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
 
   const handleNavigation = (path) => {
     setMobileMenuOpen(false);
+    
+    // Map paths to page names for comparison
+    const pathToPage = {
+      '/home': 'home',
+      '/friends': 'friends',
+      '/missions': 'missions',
+      '/gallery': 'gallery',
+      '/settings': 'settings',
+      '/myprofile': 'profile',
+      '/search': 'search'
+    };
+    
+    const targetPage = pathToPage[path];
+    
+    // If already on the same page, refresh instead of navigating
+    if (targetPage === currentPage || (currentPage === 'profile' && path === '/myprofile')) {
+      // Use window.location.reload for a full refresh
+      window.location.reload();
+      return;
+    }
+    
     if (currentPage === 'missions') {
       window.location.href = path;
     } else {
@@ -105,15 +126,24 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
     { icon: Image, label: 'Gallery', path: '/gallery', page: 'gallery' },
   ];
 
+  // Determine dark mode: only dark in avatar world AND immersive mode
+  const isDarkMode = isAvatarWorld && isImmersive;
+
   return (
     <>
       <header className={`shadow-sm fixed top-0 left-0 right-0 z-50 border-b ${
-        worldMode === 'avatar' 
-          ? 'bg-slate-900 border-blue-500/30' 
-          : 'bg-white border-gray-200'
+        isDarkMode 
+          ? 'border-blue-500/30' 
+          : 'border-gray-200'
       }`}
       style={{ 
         paddingTop: 'env(safe-area-inset-top, 0px)',
+        isolation: 'isolate',
+        backgroundColor: isDarkMode 
+          ? 'rgba(15, 23, 42, 0.90)' 
+          : 'rgba(255, 255, 255, 0.90)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
       }}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4">
@@ -137,7 +167,7 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                 />
                 <div 
                   className={`w-full h-full rounded-full flex items-center justify-center hidden ${
-                    worldMode === 'avatar' 
+                    isDarkMode 
                       ? 'bg-gradient-to-br from-blue-500 to-purple-600 avatar-glow' 
                       : 'bg-blue-500'
                   }`}
@@ -154,7 +184,7 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                   onClick={() => handleNavigation('/search')}
                   readOnly
                   className={`pl-10 rounded-full w-40 lg:w-60 cursor-pointer border-none text-sm ${
-                    worldMode === 'avatar'
+                    isDarkMode
                       ? 'bg-slate-800 text-blue-100 placeholder:text-blue-300/50'
                       : 'bg-gray-100'
                   }`}
@@ -168,7 +198,7 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                 onClick={() => handleNavigation('/search')}
                 className="md:hidden p-2 min-w-[44px] min-h-[44px]"
               >
-                <Search className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
+                <Search className={`w-5 h-5 ${isDarkMode ? 'text-blue-300' : 'text-gray-600'}`} />
               </Button>
             </div>
 
@@ -181,16 +211,16 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                   onClick={() => handleNavigation(item.path)}
                   className={`px-3 sm:px-4 md:px-6 lg:px-8 py-2 rounded-lg relative min-h-[44px] ${
                     currentPage === item.page 
-                      ? worldMode === 'avatar'
+                      ? isDarkMode
                         ? 'border-b-4 border-blue-400'
                         : 'border-b-4 border-blue-500'
                       : ''
                   }`}
                 >
-                  <item.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
+                  <item.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${isDarkMode ? 'text-blue-300' : 'text-gray-600'}`} />
                   {item.badge > 0 && (
                     <span className={`absolute top-1 right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-white rounded-full ${
-                      worldMode === 'avatar' 
+                      isDarkMode 
                         ? 'bg-blue-500 border border-slate-900' 
                         : 'bg-red-500 border border-white'
                     }`}>
@@ -201,11 +231,18 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
               ))}
             </nav>
 
-            {/* Right - Actions & Profile */}
-            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-              {/* View Mode Toggle (Immersive/Classic) - only in avatar world */}
+            {/* Right - Actions & Profile - with high z-index to ensure buttons are clickable */}
+            <div 
+              className="flex items-center gap-1 sm:gap-2 flex-shrink-0"
+              style={{
+                position: 'relative',
+                zIndex: 9999,
+                isolation: 'isolate',
+              }}
+            >
+              {/* View Mode Toggle (Immersive/Classic) - only in avatar world, always visible */}
               {isAvatarWorld && (
-                <div className="hidden xs:block">
+                <div className="block">
                   <ViewModeToggle 
                     isImmersive={isImmersive}
                     onToggle={toggleViewMode}
@@ -214,8 +251,8 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                 </div>
               )}
               
-              {/* World Mode Toggle - hidden on very small screens */}
-              <div className="hidden xs:block">
+              {/* World Mode Toggle - always visible on mobile */}
+              <div className="block">
                 <WorldModeToggle />
               </div>
 
@@ -226,7 +263,7 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                 onClick={() => handleNavigation('/settings')}
                 className="hidden sm:flex rounded-full p-2 min-w-[44px] min-h-[44px] items-center justify-center"
               >
-                <SettingsIcon className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : ''}`} />
+                <SettingsIcon className={`w-5 h-5 ${isDarkMode ? 'text-blue-300' : 'text-gray-600'}`} />
               </Button>
 
               {/* Logout - hidden on mobile */}
@@ -236,20 +273,20 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                 onClick={handleLogout}
                 className="hidden sm:flex rounded-full p-2 min-w-[44px] min-h-[44px] items-center justify-center"
               >
-                <LogOut className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
+                <LogOut className={`w-5 h-5 ${isDarkMode ? 'text-blue-300' : 'text-gray-600'}`} />
               </Button>
 
               {/* Profile Avatar */}
               <Avatar 
                 className={`w-8 h-8 cursor-pointer flex-shrink-0 ${
-                  worldMode === 'avatar' 
+                  isDarkMode 
                     ? 'border-2 border-blue-400 avatar-glow' 
                     : 'border-2 border-blue-500'
                 }`}
                 onClick={() => handleNavigation('/myprofile')}
               >
                 <AvatarImage src={user?.picture} />
-                <AvatarFallback className={worldMode === 'avatar' ? 'bg-blue-600 text-white text-sm' : 'bg-blue-500 text-white text-sm'}>
+                <AvatarFallback className={isDarkMode ? 'bg-blue-600 text-white text-sm' : 'bg-blue-500 text-white text-sm'}>
                   {user?.name?.charAt(0)}
                 </AvatarFallback>
               </Avatar>
@@ -262,9 +299,9 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                 className="sm:hidden p-2 min-w-[44px] min-h-[44px]"
               >
                 {mobileMenuOpen ? (
-                  <X className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
+                  <X className={`w-5 h-5 ${isDarkMode ? 'text-blue-300' : 'text-gray-600'}`} />
                 ) : (
-                  <Menu className={`w-5 h-5 ${worldMode === 'avatar' ? 'text-blue-300' : 'text-gray-600'}`} />
+                  <Menu className={`w-5 h-5 ${isDarkMode ? 'text-blue-300' : 'text-gray-600'}`} />
                 )}
               </Button>
             </div>
@@ -280,13 +317,13 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
         >
           {/* Backdrop */}
           <div className={`absolute inset-0 ${
-            worldMode === 'avatar' ? 'bg-slate-900/80' : 'bg-black/50'
+            isDarkMode ? 'bg-slate-900/80' : 'bg-black/50'
           } backdrop-blur-sm`} />
           
           {/* Menu Panel */}
           <div 
             className={`fixed left-0 right-0 ${
-              worldMode === 'avatar' 
+              isDarkMode 
                 ? 'bg-slate-900 border-b border-blue-500/30' 
                 : 'bg-white border-b border-gray-200'
             } shadow-lg`}
@@ -304,10 +341,10 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                   onClick={() => handleNavigation(item.path)}
                   className={`w-full flex items-center gap-3 px-4 py-3 min-h-[48px] text-left transition-colors ${
                     currentPage === item.page 
-                      ? worldMode === 'avatar'
+                      ? isDarkMode
                         ? 'bg-blue-500/20 text-blue-300'
                         : 'bg-blue-50 text-blue-600'
-                      : worldMode === 'avatar'
+                      : isDarkMode
                         ? 'text-blue-100 hover:bg-slate-800'
                         : 'text-gray-700 hover:bg-gray-50'
                   }`}
@@ -316,7 +353,7 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                   <span className="font-medium">{item.label}</span>
                   {item.badge > 0 && (
                     <span className={`ml-auto px-2 py-0.5 text-xs font-bold rounded-full ${
-                      worldMode === 'avatar' 
+                      isDarkMode 
                         ? 'bg-blue-500 text-white' 
                         : 'bg-red-500 text-white'
                     }`}>
@@ -327,17 +364,17 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
               ))}
               
               {/* Divider */}
-              <div className={`my-2 mx-4 h-px ${worldMode === 'avatar' ? 'bg-blue-500/30' : 'bg-gray-200'}`} />
+              <div className={`my-2 mx-4 h-px ${isDarkMode ? 'bg-blue-500/30' : 'bg-gray-200'}`} />
               
               {/* Secondary Navigation */}
               <button
                 onClick={() => handleNavigation('/settings')}
                 className={`w-full flex items-center gap-3 px-4 py-3 min-h-[48px] text-left transition-colors ${
                   currentPage === 'settings'
-                    ? worldMode === 'avatar'
+                    ? isDarkMode
                       ? 'bg-blue-500/20 text-blue-300'
                       : 'bg-blue-50 text-blue-600'
-                    : worldMode === 'avatar'
+                    : isDarkMode
                       ? 'text-blue-100 hover:bg-slate-800'
                       : 'text-gray-700 hover:bg-gray-50'
                 }`}
@@ -346,33 +383,15 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
                 <span className="font-medium">Settings</span>
               </button>
               
-              {/* View Mode Toggle (Immersive/Classic) - for very small screens */}
-              {isAvatarWorld && (
-                <div className="xs:hidden px-4 py-3">
-                  <div className={`flex items-center justify-between ${worldMode === 'avatar' ? 'text-blue-100' : 'text-gray-700'}`}>
-                    <span className="font-medium">View Mode</span>
-                    <ViewModeToggle 
-                      isImmersive={isImmersive}
-                      onToggle={toggleViewMode}
-                      compact={true}
-                    />
-                  </div>
-                </div>
-              )}
+{/* View Mode Toggle moved to header - always visible */}
               
-              {/* World Mode Toggle (for very small screens) */}
-              <div className="xs:hidden px-4 py-3">
-                <div className={`flex items-center justify-between ${worldMode === 'avatar' ? 'text-blue-100' : 'text-gray-700'}`}>
-                  <span className="font-medium">World Mode</span>
-                  <WorldModeToggle />
-                </div>
-              </div>
+{/* World Mode Toggle moved to header - always visible */}
               
               {/* Logout */}
               <button
                 onClick={handleLogout}
                 className={`w-full flex items-center gap-3 px-4 py-3 min-h-[48px] text-left transition-colors ${
-                  worldMode === 'avatar'
+                  isDarkMode
                     ? 'text-red-400 hover:bg-red-500/20'
                     : 'text-red-600 hover:bg-red-50'
                 }`}
@@ -387,8 +406,8 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
 
       {/* Mobile Bottom Navigation Bar (visible on mobile only) */}
       <nav 
-        className={`fixed bottom-0 left-0 right-0 z-40 sm:hidden ${
-          worldMode === 'avatar' 
+        className={`mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 sm:hidden ${
+          isDarkMode 
             ? 'bg-slate-900 border-t border-blue-500/30' 
             : 'bg-white border-t border-gray-200'
         }`}
@@ -400,13 +419,26 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
           {navItems.map((item) => (
             <button
               key={item.page}
-              onClick={() => handleNavigation(item.path)}
+              onClick={(e) => {
+                // Guard: don't navigate if any overlay is open (prevents ghost clicks on mobile)
+                if (document.querySelector('[data-state="open"][role="dialog"]') || 
+                    document.querySelector('[data-radix-dialog-overlay]') ||
+                    document.querySelector('[data-radix-dropdown-menu-content]') ||
+                    document.querySelector('[data-radix-popover-content]') ||
+                    document.querySelector('[data-radix-select-content]') ||
+                    document.querySelector('[data-story-popup="open"]')) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                handleNavigation(item.path);
+              }}
               className={`flex flex-col items-center justify-center gap-0.5 px-3 py-2 min-w-[60px] min-h-[48px] relative ${
                 currentPage === item.page 
-                  ? worldMode === 'avatar'
+                  ? isDarkMode
                     ? 'text-blue-400'
                     : 'text-blue-600'
-                  : worldMode === 'avatar'
+                  : isDarkMode
                     ? 'text-blue-300/60'
                     : 'text-gray-500'
               }`}
@@ -415,7 +447,7 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
               <span className="text-[10px] font-medium">{item.label}</span>
               {item.badge > 0 && (
                 <span className={`absolute top-1 right-1 min-w-[16px] h-4 flex items-center justify-center px-1 text-[9px] font-bold text-white rounded-full ${
-                  worldMode === 'avatar' ? 'bg-blue-500' : 'bg-red-500'
+                  isDarkMode ? 'bg-blue-500' : 'bg-red-500'
                 }`}>
                   {item.badge > 99 ? '99+' : item.badge}
                 </span>
