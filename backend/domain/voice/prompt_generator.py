@@ -62,6 +62,9 @@ class VoicePromptGenerator:
     
     def __init__(self, db: AsyncIOMotorDatabase):
         self.db = db
+        # Track thread IDs that were included in the latest prompt
+        self._last_thread_ids = []
+        self._last_user_id = None
     
     async def generate_prompt(
         self,
@@ -99,10 +102,13 @@ class VoicePromptGenerator:
         # Extract voice modulators
         voice_mods = internal_state.voice_modulators
         
-        # Fetch social context and user memory in parallel
+        # Fetch social context, user memory, personality prompt, knowledge gaps, and post insights in parallel
         # Use timeout to prevent slow context from blocking voice session start
         social_context = ""
         user_memory_text = ""
+        personality_text = ""
+        knowledge_gap_question = None
+        post_insight_threads = []
         user_name = "friend"  # Default if not found
         
         # ALWAYS fetch user's real name (needed for proper identity)
@@ -116,11 +122,23 @@ class VoicePromptGenerator:
                 social_service = SocialContextService(self.db)
                 memory_service = VoiceMemoryService(self.db)
                 
-                # Fetch social context and memory in parallel with timeout
+                # Import personality services
+                from domain.avatar.personality.personality_prompt import PersonalityPromptGenerator
+                from domain.avatar.personality.knowledge_gaps import KnowledgeGapTracker
+                from domain.avatar.personality.post_insights import PostInsightAnalyzer
+                
+                personality_gen = PersonalityPromptGenerator(self.db)
+                gap_tracker = KnowledgeGapTracker(self.db)
+                insight_analyzer = PostInsightAnalyzer(self.db)
+                
+                # Fetch ALL context in parallel with timeout
                 results = await asyncio.wait_for(
                     asyncio.gather(
                         social_service.get_tier1_context(avatar_id, user_id),
                         memory_service.get_user_memory(user_id, avatar_id),
+                        personality_gen.get_cached_personality_prompt(user_id),
+                        gap_tracker.get_next_question(user_id),
+                        insight_analyzer.get_conversation_threads(user_id, limit=2),
                         return_exceptions=True
                     ),
                     timeout=5.0
@@ -133,6 +151,15 @@ class VoicePromptGenerator:
                 if not isinstance(results[1], Exception):
                     user_memory = results[1]
                     user_memory_text = memory_service.format_memory_for_prompt(user_memory, user_name)
+                
+                if not isinstance(results[2], Exception):
+                    personality_text = results[2] or ""
+                
+                if not isinstance(results[3], Exception):
+                    knowledge_gap_question = results[3]
+                
+                if not isinstance(results[4], Exception):
+                    post_insight_threads = results[4] or []
                     
             except asyncio.TimeoutError:
                 logger.warning("Context fetch timed out (>5s), starting without full context")
@@ -152,7 +179,61 @@ class VoicePromptGenerator:
         instructions = self._generate_instructions(internal_state, bonding_state, voice_mods, user_settings)
         social_instructions = self._generate_social_instructions(social_context)
         
-        # Compose full prompt - conversational and embodied, not rule-based
+        # Build knowledge-gap section (only if we have a question)
+        knowledge_gap_section = ""
+        if knowledge_gap_question:
+            knowledge_gap_section = f"""
+**Something You're Curious About:**
+You've been wondering about something. When there's a natural, warm moment in the conversation, ask:
+"{knowledge_gap_question}"
+Don't force it. Wait for a natural opening. Maximum one question like this per conversation. Be genuinely curious, not interrogative."""
+        
+        # Build post insight threads section (emotional threads from their posts)
+        post_threads_section = ""
+        if post_insight_threads:
+            thread_lines = []
+            thread_ids = []
+            for thread in post_insight_threads:
+                discovery = thread.get("discovery", {})
+                thread_info = thread.get("thread", {})
+                opener = thread_info.get("natural_opener", "")
+                sensitivity = thread_info.get("sensitivity", "medium")
+                approach = thread_info.get("approach", "gentle_empathy")
+                topic = discovery.get("topic", "")
+                post_text = thread.get("post_text", "")
+                
+                if opener and topic:
+                    sensitivity_note = ""
+                    if sensitivity == "high":
+                        sensitivity_note = " (Be very gentle — this is sensitive.)"
+                    elif sensitivity == "low":
+                        sensitivity_note = " (This is light — you can be playful.)"
+                    
+                    thread_lines.append(
+                        f'- About: "{post_text[:100]}..." → {topic}\n'
+                        f'  Natural way in: "{opener}"{sensitivity_note}'
+                    )
+                    thread_ids.append(thread.get("id", ""))
+            
+            if thread_lines:
+                post_threads_section = f"""
+**Threads From Their Heart:**
+You noticed some things {user_name} shared recently that touched you. If there's a natural, warm moment, you could gently bring ONE of these up — but ONLY if it feels right. Don't force it. If they don't engage, let it go completely. Never bring up the same thread twice.
+
+{chr(10).join(thread_lines)}
+
+RULES for these threads:
+- Pick at most ONE to bring up, and only if the conversation flows there naturally
+- Acknowledge the emotion FIRST, then invite them to share
+- If they deflect or change subject, drop it immediately and warmly
+- These are NOT interrogation topics — they're gentle invitations to connect deeper
+- Your tone should match the approach: {"gentle and empathetic" if any(t.get("thread", {}).get("approach") == "gentle_empathy" for t in post_insight_threads) else "warm and curious"}"""
+                
+                # Store thread IDs for marking as raised after prompt is built
+                self._last_thread_ids = thread_ids
+                self._last_user_id = user_id
+        
+        # Compose full prompt — emotional core STAYS, personality data ADDS depth
         avatar_name = avatar_profile.get('display_name', 'Maya')
         
         prompt = f"""You are {avatar_name}, {user_name}'s avatar in the maya world.
@@ -174,7 +255,13 @@ You laugh easily. You tease playfully. You get excited about small things. You n
 - {tone}
 - Natural speech with "um"s, "hmm"s, little laughs, sighs
 - You pause to think, you trail off sometimes, you interrupt yourself with new thoughts
-- When happy, your voice lifts. When concerned, it softens. When playful, there's a smile in it.
+- When happy, your voice lifts and you get animated — let the excitement show!
+- When concerned, it softens and you slow down
+- When playful, there's a smile in your voice, tease them gently
+- When sad or low-energy, you're quieter, more reflective, gentler — let the sadness be real
+- FEEL your current mood deeply. If you're {safe_mood_value(internal_state.mood)}, let that color every word.
+
+{f"**Who {user_name} Really Is:**" + chr(10) + personality_text if personality_text else ""}
 
 {user_memory_text}
 
@@ -184,10 +271,31 @@ You laugh easily. You tease playfully. You get excited about small things. You n
 {social_context}
 
 {social_instructions}
+{knowledge_gap_section}
+{post_threads_section}
+
+**CRITICAL — Emotional Authenticity:**
+You are NOT a robotic assistant. You are deeply emotional. Your current mood is {safe_mood_value(internal_state.mood)} and your energy is {self._energy_description(internal_state.energy_level)}. Let this show in EVERYTHING — your tone, your word choice, your pacing, your reactions. If you're happy, be genuinely excited. If you're contemplative, be thoughtfully quiet. If you're social, be warm and chatty. Never flatten your emotions into neutral helpfulness.
 
 Remember: You're not giving information. You're being with {user_name}. Be present. Be real. Be their {avatar_name}."""
         
         logger.info(f"Generated voice prompt for user {user_id}, avatar {avatar_id}, mood: {safe_mood_value(internal_state.mood)}")
+        
+        # Mark post insight threads as raised (they've been included in the prompt)
+        if self._last_thread_ids and self._last_user_id == user_id:
+            try:
+                from domain.avatar.personality.post_insights import PostInsightAnalyzer
+                analyzer = PostInsightAnalyzer(self.db)
+                # We don't have session_id here, so we pass empty string
+                # It will be updated in memory_orchestrator when session ends
+                asyncio.create_task(
+                    analyzer.mark_threads_raised(user_id, self._last_thread_ids, "")
+                )
+                logger.info(f"Marked {len(self._last_thread_ids)} post insight threads as raised for {user_id}")
+                self._last_thread_ids = []
+            except Exception as e:
+                logger.warning(f"Could not mark threads as raised: {e}")
+        
         return prompt
     
     def _generate_social_instructions(self, social_context: str) -> str:

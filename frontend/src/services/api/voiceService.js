@@ -213,6 +213,32 @@ export const getVoiceMemory = async (avatarId) => {
  * @param {number} options.maxTargets - Max targets
  * @returns {Promise<Object>} Trigger result
  */
+/**
+ * Recall past voice conversations
+ * Called when AI uses the recall_past_conversations function
+ * @param {Object} options - Recall options
+ * @param {string} options.avatarId - Avatar ID
+ * @param {string} options.query - What to search for in past conversations
+ * @param {boolean} options.includeFullTranscript - Whether to fetch full S3 transcript
+ * @returns {Promise<Object>} Recall results with summary
+ */
+export const recallPastConversations = async (options) => {
+  try {
+    const response = await api.post('/api/voice/recall', {
+      avatar_id: options.avatarId,
+      query: options.query,
+      include_full_transcript: options.includeFullTranscript || false
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error recalling past conversations:', error);
+    return {
+      success: false,
+      summary: "I'm having trouble searching my memory right now. Let me try to remember on my own..."
+    };
+  }
+};
+
 export const triggerWorkflow = async (options) => {
   try {
     const response = await api.post('/api/voice/workflow', {
@@ -245,5 +271,6 @@ export default {
   prewarmContext,
   saveTranscript,
   getVoiceMemory,
+  recallPastConversations,
   triggerWorkflow
 };

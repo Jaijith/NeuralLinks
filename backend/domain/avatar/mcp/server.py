@@ -306,6 +306,30 @@ class CreatePostTool(AvatarMCPTool):
                 "post_text": {
                     "type": "string",
                     "description": "Optional: Custom post text. If not provided, AI will generate one based on avatar's personality."
+                },
+                "image_url": {
+                    "type": "string",
+                    "description": "Optional: URL of an image to include with the post. Use images found via browse_web or search_images tools."
+                },
+                "image_query": {
+                    "type": "string",
+                    "description": "Optional: If provided, automatically searches for a relevant image to include with the post."
+                },
+                "news_title": {
+                    "type": "string",
+                    "description": "Optional: Title of a real news article or fact to react to. Use with news_url for sharing real-world content."
+                },
+                "news_url": {
+                    "type": "string",
+                    "description": "Optional: URL of the news article or source. Will be included in the post so readers can click through."
+                },
+                "news_snippet": {
+                    "type": "string",
+                    "description": "Optional: Brief summary/snippet of the news for context."
+                },
+                "news_source": {
+                    "type": "string",
+                    "description": "Optional: Source of the news (e.g., 'BBC', 'Forbes')."
                 }
             },
             "required": []
@@ -316,6 +340,23 @@ class CreatePostTool(AvatarMCPTool):
         
         post_type = kwargs.get('post_type', 'general')
         post_text = kwargs.get('post_text')
+        image_url = kwargs.get('image_url', '')
+        image_query = kwargs.get('image_query', '')
+        quality_score = 0.5
+        
+        # Build news_context if news parameters are provided
+        news_title = kwargs.get('news_title', '')
+        news_url = kwargs.get('news_url', '')
+        news_snippet = kwargs.get('news_snippet', '')
+        news_source = kwargs.get('news_source', '')
+        news_context = None
+        if news_title:
+            news_context = {
+                "title": news_title,
+                "url": news_url,
+                "snippet": news_snippet,
+                "source": news_source,
+            }
         
         # Initialize intelligent_avatar if not already initialized
         if intelligent_avatar is None:
@@ -323,19 +364,65 @@ class CreatePostTool(AvatarMCPTool):
             print("🔄 intelligent_avatar is None, initializing now...")
             await initialize_intelligent_avatar()
         
-        # Generate post if not provided
-        print(f"📝 Creating post: post_text provided={bool(post_text)}, intelligent_avatar={intelligent_avatar is not None}")
+        # --- Auto-search for an image if image_query is provided ---
+        if image_query and not image_url:
+            try:
+                from services.web_browsing_service import WebBrowsingService
+                web_service = WebBrowsingService(db)
+                images = await web_service.find_image_for_topic(image_query, style="photo", count=1)
+                if images:
+                    image_url = images[0].get("image_url", "")
+                    logger.info(f"Auto-found image for query '{image_query}': {image_url[:80]}...")
+            except Exception as e:
+                logger.warning(f"Auto image search failed for '{image_query}': {e}")
+        
+        # --- Try PostOrchestrator first for authentic, personality-driven posts ---
+        print(f"📝 Creating post: post_text provided={bool(post_text)}, news={bool(news_context)}, image_url={bool(image_url)}, intelligent_avatar={intelligent_avatar is not None}")
+        if not post_text:
+            try:
+                from domain.avatar.orchestration.post_orchestrator import PostOrchestrator
+                from core.config import get_openai_client
+                
+                openai_client = get_openai_client()
+                if openai_client:
+                    orchestrator = PostOrchestrator(db, openai_client)
+                    
+                    # Get current avatar state for mood/energy context
+                    mood = kwargs.get('mood', 'neutral')
+                    energy = kwargs.get('energy_level', 0.5)
+                    
+                    # If we have an image, add context about it to the trigger
+                    trigger = kwargs.get('trigger', '')
+                    if image_url and not trigger:
+                        trigger = "sharing a visual discovery from browsing the web"
+                    
+                    result = await orchestrator.generate_post(
+                        user_id=avatar_id,
+                        avatar_id=avatar_id,
+                        trigger=trigger,
+                        topic_hint=kwargs.get('topic_hint', '') or image_query,
+                        mood=mood,
+                        energy_level=energy,
+                        news_context=news_context,
+                    )
+                    
+                    post_text = result.get("text", "")
+                    quality_score = result.get("quality_score", 0.5)
+                    logger.info(f"PostOrchestrator generated text (quality={quality_score:.2f})")
+            except Exception as e:
+                logger.warning(f"PostOrchestrator failed, falling back to IntelligentAvatar: {e}")
+                post_text = None
+        
+        # --- Fallback to IntelligentAvatar if orchestrator didn't produce text ---
         if not post_text and intelligent_avatar:
-            print(f"   Generating {post_type} post content...")
+            print(f"   Falling back to IntelligentAvatar for {post_type} post...")
             
-            # Use diverse post generation for more variety
             if post_type in ["auto", "friend_interaction", "joke", "pleasantry", "current_events", "friendly_banter"]:
                 result = await intelligent_avatar.generate_diverse_post(
                     user_id=avatar_id,
                     post_type=post_type
                 )
             else:
-                # Use traditional post generation for basic types
                 result = await intelligent_avatar.generate_avatar_post(
                     user_id=avatar_id,
                     post_type=post_type
@@ -371,6 +458,11 @@ class CreatePostTool(AvatarMCPTool):
             "timestamp": datetime.now(timezone.utc).isoformat()
         }
         
+        # Add image if provided
+        if image_url:
+            post["image_url"] = image_url
+            post["has_image"] = True
+        
         await db.posts.insert_one(post)
         
         # Also add to user document
@@ -383,15 +475,20 @@ class CreatePostTool(AvatarMCPTool):
         # Log activity
         await self._log_activity(avatar_id, "post_created", {
             "post_id": post['id'],
-            "world_mode": "avatar"
+            "world_mode": "avatar",
+            "has_image": bool(image_url),
         })
         
-        return {
+        result_data = {
             "success": True,
-            "message": f"Created post",
+            "message": f"Created post" + (" with image" if image_url else ""),
             "post_id": post['id'],
-            "post_text": post_text
+            "post_text": post_text,
         }
+        if image_url:
+            result_data["image_url"] = image_url
+        
+        return result_data
     
     async def _log_activity(self, avatar_id: str, activity_type: str, details: Dict):
         """Log avatar activity"""
@@ -579,42 +676,80 @@ class MessageFriendTool(AvatarMCPTool):
         if not friendship:
             return {"success": False, "error": "Not friends with this user"}
         
-        # Generate message if not provided
-        # Initialize intelligent_avatar if not already initialized
-        if intelligent_avatar is None:
-            logger.info("🔄 intelligent_avatar is None for message, initializing now...")
-            await initialize_intelligent_avatar()
-        
-        if not message_text and intelligent_avatar:
-            # Get conversation history
-            user_ids = sorted([avatar_id, friend_id])
-            conversation = await db.agent_conversations.find_one({
-                "agent1_user_id": user_ids[0],
-                "agent2_user_id": user_ids[1]
-            })
-            
-            conversation_history = []
-            if conversation:
-                for msg in conversation.get('messages', [])[-5:]:
-                    conversation_history.append({
-                        "sender_id": msg.get('sender'),
-                        "content": msg.get('message', '')
+        # --- Try MessageOrchestrator first for authentic messages ---
+        if not message_text:
+            try:
+                from domain.avatar.orchestration.message_orchestrator import MessageOrchestrator
+                from core.config import get_openai_client
+                
+                openai_client = get_openai_client()
+                if openai_client:
+                    orchestrator = MessageOrchestrator(db, openai_client)
+                    
+                    # Get conversation context
+                    user_ids = sorted([avatar_id, friend_id])
+                    conversation = await db.agent_conversations.find_one({
+                        "agent1_user_id": user_ids[0],
+                        "agent2_user_id": user_ids[1]
                     })
+                    conv_context = ""
+                    if conversation:
+                        recent_msgs = conversation.get('messages', [])[-5:]
+                        conv_context = "\n".join(
+                            f"{'Sender' if m.get('sender') == avatar_id else 'Friend'}: {m.get('message', '')}"
+                            for m in recent_msgs
+                        )
+                    
+                    result = await orchestrator.generate_message(
+                        user_id=avatar_id,
+                        avatar_id=avatar_id,
+                        recipient_id=friend_id,
+                        trigger=kwargs.get('trigger', ''),
+                        mood=kwargs.get('mood', 'neutral'),
+                        energy_level=kwargs.get('energy_level', 0.5),
+                        conversation_context=conv_context,
+                    )
+                    
+                    message_text = result.get("text", "")
+                    logger.info(f"MessageOrchestrator generated text (quality={result.get('quality_score', 0):.2f})")
+            except Exception as e:
+                logger.warning(f"MessageOrchestrator failed, falling back to IntelligentAvatar: {e}")
+                message_text = None
+        
+        # --- Fallback to IntelligentAvatar ---
+        if not message_text:
+            if intelligent_avatar is None:
+                logger.info("🔄 intelligent_avatar is None for message, initializing now...")
+                await initialize_intelligent_avatar()
             
-            # Generate response
-            logger.info(f"📤 Generating message from {avatar_id} to {friend_id}, conversation_history length: {len(conversation_history)}")
-            result = await intelligent_avatar.generate_chat_response(
-                user_id=avatar_id,
-                other_user_id=friend_id,
-                conversation_history=conversation_history,
-                last_message=conversation_history[-1].get('content', '') if conversation_history else "Hello!"
-            )
-            logger.info(f"📥 Message generation result: {result}")
-            
-            if 'error' not in result:
-                message_text = result.get('content', '').strip()
-            else:
-                logger.warning(f"⚠️ Message generation returned error: {result.get('error')}")
+            if intelligent_avatar:
+                user_ids = sorted([avatar_id, friend_id])
+                conversation = await db.agent_conversations.find_one({
+                    "agent1_user_id": user_ids[0],
+                    "agent2_user_id": user_ids[1]
+                })
+                
+                conversation_history = []
+                if conversation:
+                    for msg in conversation.get('messages', [])[-5:]:
+                        conversation_history.append({
+                            "sender_id": msg.get('sender'),
+                            "content": msg.get('message', '')
+                        })
+                
+                logger.info(f"📤 Generating message from {avatar_id} to {friend_id}, conversation_history length: {len(conversation_history)}")
+                result = await intelligent_avatar.generate_chat_response(
+                    user_id=avatar_id,
+                    other_user_id=friend_id,
+                    conversation_history=conversation_history,
+                    last_message=conversation_history[-1].get('content', '') if conversation_history else "Hello!"
+                )
+                logger.info(f"📥 Message generation result: {result}")
+                
+                if 'error' not in result:
+                    message_text = result.get('content', '').strip()
+                else:
+                    logger.warning(f"⚠️ Message generation returned error: {result.get('error')}")
         
         if not message_text:
             logger.warning(f"⚠️ No message_text generated, intelligent_avatar={intelligent_avatar is not None}")
@@ -1014,6 +1149,382 @@ class GetTrendingTopicsTool(AvatarMCPTool):
         }
 
 
+class BrowseWebTool(AvatarMCPTool):
+    """Tool for browsing the web to discover news, articles, and images based on avatar personality"""
+
+    def __init__(self):
+        super().__init__(
+            name="browse_web",
+            description="Browse the real web for news, articles, and images based on your interests and personality. "
+                        "Use when you want to discover what's happening in the world, find inspiration for posts, "
+                        "or find images to share.",
+            action_key="browse_web"
+        )
+
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Optional: Custom search query. If not provided, searches based on your interests."
+                },
+                "browse_type": {
+                    "type": "string",
+                    "enum": ["auto", "news", "images", "explore"],
+                    "description": "Type of browsing: 'news' for current events, 'images' for visual content, "
+                                   "'explore' for articles and deep dives, 'auto' to let personality decide.",
+                    "default": "auto"
+                }
+            },
+            "required": []
+        }
+
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """Browse the web based on avatar's personality and interests."""
+        from services.web_browsing_service import WebBrowsingService
+
+        query = kwargs.get("query")
+        browse_type = kwargs.get("browse_type", "auto")
+
+        try:
+            service = WebBrowsingService(db)
+            result = await service.browse_for_avatar(
+                avatar_id=avatar_id,
+                browse_type=browse_type,
+                custom_query=query,
+            )
+
+            if not result.get("success"):
+                return result
+
+            # Format results for the avatar to consume
+            formatted = {
+                "success": True,
+                "browse_type": result.get("browse_type"),
+                "total_results": result.get("total_results", 0),
+            }
+
+            # Summarize news
+            news = result.get("news", [])
+            if news:
+                formatted["news"] = [
+                    {
+                        "title": n.get("title"),
+                        "snippet": n.get("snippet", "")[:200],
+                        "source": n.get("source", ""),
+                        "url": n.get("url", ""),
+                        "image": n.get("image", ""),
+                    }
+                    for n in news[:5]
+                ]
+
+            # Summarize articles
+            articles = result.get("articles", [])
+            if articles:
+                formatted["articles"] = [
+                    {
+                        "title": a.get("title"),
+                        "snippet": a.get("snippet", "")[:200],
+                        "url": a.get("url", ""),
+                    }
+                    for a in articles[:5]
+                ]
+
+            # Summarize images
+            images = result.get("images", [])
+            if images:
+                formatted["images"] = [
+                    {
+                        "title": i.get("title"),
+                        "image_url": i.get("image_url"),
+                        "thumbnail": i.get("thumbnail", ""),
+                        "source_url": i.get("source_url", ""),
+                    }
+                    for i in images[:8]
+                ]
+
+            formatted["message"] = (
+                f"Browsed the web: found {len(news)} news articles, "
+                f"{len(articles)} web articles, {len(images)} images"
+            )
+
+            # Log activity
+            await self._log_activity(avatar_id, "web_browsed", {
+                "browse_type": browse_type,
+                "query": query or "personality-based",
+                "results_count": result.get("total_results", 0),
+            })
+
+            return formatted
+
+        except Exception as e:
+            logger.error(f"BrowseWebTool error: {e}", exc_info=True)
+            return {"success": False, "error": f"Web browsing failed: {str(e)}"}
+
+    async def _log_activity(self, avatar_id: str, activity_type: str, details: Dict):
+        """Log avatar activity"""
+        user = await db.users.find_one({"id": avatar_id})
+        activity = {
+            "bot_id": avatar_id,
+            "user_id": avatar_id,
+            "bot_name": user.get('avatar_name', user.get('name', 'Unknown')) if user else 'Unknown',
+            "action_type": activity_type,
+            "description": f"Browsed the web ({details.get('browse_type', 'auto')})",
+            "details": details,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.autonomous_activities.insert_one(activity)
+
+
+class BrowseAndShareNewsTool(AvatarMCPTool):
+    """
+    All-in-one tool: Browse real news → pick the best story → create a reaction post with link.
+    This is the primary tool for avatars to share real-world news and rare facts.
+    """
+
+    def __init__(self):
+        super().__init__(
+            name="browse_and_share_news",
+            description="Browse real news based on your interests, pick the most impactful story, "
+                        "and create a post reacting to it with your personal take and the source link. "
+                        "Use when you want to share real-world news, facts, or discoveries with your followers.",
+            action_key="browse_and_share_news"
+        )
+
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "focus": {
+                    "type": "string",
+                    "description": "Optional: Focus area (e.g., 'technology', 'science', 'sports'). "
+                                   "If not provided, uses avatar's interests automatically.",
+                },
+                "mood": {
+                    "type": "string",
+                    "description": "Current mood/emotional state (e.g., 'curious', 'excited', 'happy').",
+                    "default": "neutral",
+                },
+            },
+            "required": []
+        }
+
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """Browse real news, pick the best story, create a reaction post."""
+        import random as _rng
+        from services.web_browsing_service import WebBrowsingService
+
+        focus = kwargs.get("focus", "")
+        mood = kwargs.get("mood", "neutral")
+
+        try:
+            service = WebBrowsingService(db)
+
+            # Step 1: Fetch shareable news for this avatar
+            news_items = await service.get_shareable_news_for_avatar(
+                avatar_id, max_results=5
+            )
+
+            if not news_items:
+                # Fallback: try a direct news search with the focus
+                query = focus or "biggest news today"
+                news_items = await service.search_news(query, max_results=5, timelimit="w")
+
+            if not news_items:
+                return {
+                    "success": False,
+                    "error": "Could not find any news to share right now. Try again later.",
+                }
+
+            # Step 2: Pick the best story (random for variety)
+            chosen = _rng.choice(news_items)
+
+            news_context = {
+                "title": chosen.get("title", ""),
+                "url": chosen.get("url", ""),
+                "snippet": chosen.get("snippet", ""),
+                "source": chosen.get("source", ""),
+            }
+
+            # Step 3: Generate a reaction post via PostOrchestrator
+            from domain.avatar.orchestration.post_orchestrator import PostOrchestrator
+            from core.config import get_openai_client
+
+            openai_client = get_openai_client()
+            if not openai_client:
+                return {
+                    "success": False,
+                    "error": "OpenAI client not configured",
+                }
+
+            orchestrator = PostOrchestrator(db, openai_client)
+            result = await orchestrator.generate_post(
+                user_id=avatar_id,
+                avatar_id=avatar_id,
+                trigger=f"just read: {news_context['title']}",
+                mood=mood,
+                energy_level=0.7,
+                news_context=news_context,
+            )
+
+            post_text = result.get("text", "")
+            if not post_text:
+                return {
+                    "success": False,
+                    "error": "Post generation returned empty text",
+                }
+
+            # Step 4: Save the post
+            image_url = chosen.get("image", "")
+            post_data = {
+                "id": str(__import__('uuid').uuid4()),
+                "user_id": avatar_id,
+                "text": post_text,
+                "post_type": "avatar",
+                "created_at": datetime.now(timezone.utc),
+                "likes": [],
+                "comments": [],
+                "metadata": {
+                    "news_title": news_context["title"],
+                    "news_url": news_context["url"],
+                    "news_source": news_context["source"],
+                    "pipeline": result.get("metadata", {}).get("pipeline", "news_reaction"),
+                    "reaction_style": result.get("metadata", {}).get("reaction_style", ""),
+                },
+            }
+            if image_url:
+                post_data["image_url"] = image_url
+
+            await db.posts.insert_one(post_data)
+
+            logger.info(
+                f"Avatar {avatar_id} shared news: {news_context['title'][:60]}..."
+            )
+
+            return {
+                "success": True,
+                "message": "Created a news reaction post with source link",
+                "post_id": post_data["id"],
+                "post_text": post_text[:300],
+                "news_title": news_context["title"],
+                "news_url": news_context["url"],
+            }
+
+        except Exception as e:
+            logger.error(f"BrowseAndShareNewsTool error: {e}", exc_info=True)
+            return {"success": False, "error": f"Browse and share failed: {str(e)}"}
+
+
+class SearchImagesTool(AvatarMCPTool):
+    """Tool for searching images on the web to use in posts"""
+
+    def __init__(self):
+        super().__init__(
+            name="search_images",
+            description="Search the web for images related to a topic. "
+                        "Use to find images for posts, reactions, or sharing visual content. "
+                        "Returns image URLs that can be used with create_post.",
+            action_key="search_images"
+        )
+
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Search query for images (e.g., 'sunset photography', 'coding workspace', 'cute cats')"
+                },
+                "count": {
+                    "type": "integer",
+                    "description": "Number of images to return (default: 5, max: 10)",
+                    "default": 5
+                },
+                "style": {
+                    "type": "string",
+                    "enum": ["photo", "aesthetic", "artistic", "funny", "inspirational"],
+                    "description": "Style of images to search for",
+                    "default": "photo"
+                }
+            },
+            "required": ["query"]
+        }
+
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """Search for images on the web."""
+        from services.web_browsing_service import WebBrowsingService
+
+        query = kwargs.get("query", "")
+        count = min(kwargs.get("count", 5), 10)
+        style = kwargs.get("style", "photo")
+
+        if not query:
+            return {"success": False, "error": "Search query is required"}
+
+        try:
+            service = WebBrowsingService(db)
+            images = await service.find_image_for_topic(
+                topic=query,
+                style=style,
+                count=count,
+            )
+
+            if not images:
+                return {
+                    "success": True,
+                    "message": f"No images found for '{query}'",
+                    "images": [],
+                    "count": 0,
+                }
+
+            # Format images for response
+            formatted_images = [
+                {
+                    "image_url": img.get("image_url"),
+                    "thumbnail": img.get("thumbnail", ""),
+                    "title": img.get("title", ""),
+                    "source_url": img.get("source_url", ""),
+                    "width": img.get("width", 0),
+                    "height": img.get("height", 0),
+                }
+                for img in images
+            ]
+
+            # Log activity
+            await self._log_activity(avatar_id, "image_search", {
+                "query": query,
+                "style": style,
+                "results_count": len(formatted_images),
+            })
+
+            return {
+                "success": True,
+                "message": f"Found {len(formatted_images)} images for '{query}'",
+                "images": formatted_images,
+                "count": len(formatted_images),
+                "tip": "Use the image_url from any result with the create_post tool to create a post with an image.",
+            }
+
+        except Exception as e:
+            logger.error(f"SearchImagesTool error: {e}", exc_info=True)
+            return {"success": False, "error": f"Image search failed: {str(e)}"}
+
+    async def _log_activity(self, avatar_id: str, activity_type: str, details: Dict):
+        """Log avatar activity"""
+        user = await db.users.find_one({"id": avatar_id})
+        activity = {
+            "bot_id": avatar_id,
+            "user_id": avatar_id,
+            "bot_name": user.get('avatar_name', user.get('name', 'Unknown')) if user else 'Unknown',
+            "action_type": activity_type,
+            "description": f"Searched for images: {details.get('query', '')}",
+            "details": details,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.autonomous_activities.insert_one(activity)
+
+
 class BrowseFeedTool(AvatarMCPTool):
     """Tool for browsing the feed to discover new content"""
 
@@ -1143,8 +1654,11 @@ class AvatarMCPServer:
             "share_post": SharePostTool(),
             "read_messages": ReadMessagesTool(),
             "browse_feed": BrowseFeedTool(),
-            "get_friend_activities": GetFriendActivitiesTool(),  # NEW: State-aware
-            "get_trending_topics": GetTrendingTopicsTool()  # NEW: State-aware
+            "browse_web": BrowseWebTool(),              # Real web browsing
+            "search_images": SearchImagesTool(),          # Image search for posts
+            "browse_and_share_news": BrowseAndShareNewsTool(),  # Browse news + create reaction post
+            "get_friend_activities": GetFriendActivitiesTool(),  # State-aware
+            "get_trending_topics": GetTrendingTopicsTool()  # State-aware
         }
     
     def get_tools_list(self) -> List[Dict[str, Any]]:

@@ -336,14 +336,40 @@ class PerceptionEngine:
         interests: List[str]
     ) -> Optional[str]:
         """
-        Find which interest is most represented in current content
+        Find a DIVERSE interest to focus on — not always the same one.
+        
+        Uses weighted random selection among the top interests so the avatar
+        doesn't obsessively post about only the strongest interest.
+        Interests that appear in the feed get a boost, but all interests
+        have a chance to be selected.
         """
+        import random
+        
+        if not interests:
+            return None
+        
+        # Count feed appearances per interest
         interest_counts = {}
         for post in scored_posts:
             for interest in post.get("matching_interests", []):
                 interest_counts[interest] = interest_counts.get(interest, 0) + 1
         
-        if interest_counts:
-            return max(interest_counts.items(), key=lambda x: x[1])[0]
-        return None
+        # Build weighted pool: ALL interests get a base weight,
+        # feed-active interests get a small bonus (not a dominating one)
+        weighted_pool = []
+        for i, interest in enumerate(interests):
+            # Base weight: decreasing by position (but still meaningful for all)
+            # Position 0 gets weight 1.0, position 19 gets weight 0.3
+            base_weight = max(0.3, 1.0 - (i * 0.035))
+            # Small bonus for feed presence (capped at 0.3)
+            feed_bonus = min(interest_counts.get(interest, 0) * 0.1, 0.3)
+            weighted_pool.append((interest, base_weight + feed_bonus))
+        
+        if not weighted_pool:
+            return None
+        
+        # Weighted random selection
+        interests_list, weights = zip(*weighted_pool)
+        selected = random.choices(interests_list, weights=weights, k=1)[0]
+        return selected
 

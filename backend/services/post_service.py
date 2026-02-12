@@ -70,6 +70,17 @@ class PostService:
             asyncio.create_task(self._enrich_graph_background(post_text, user_id))
             logger.info(f"Started background graph enrichment for post {post_id}")
         
+        # Trigger style learner update (background, non-blocking)
+        # This helps the avatar learn the user's writing style for authentic post generation
+        if post_type == 'real' and post_text:
+            asyncio.create_task(self._update_style_profile_background(user_id, post_text))
+        
+        # Trigger post insight analysis (background, non-blocking)
+        # Analyzes the post for emotional signals, connections, life events
+        # These become conversation threads the avatar can proactively bring up
+        if post_type == 'real' and post_text:
+            asyncio.create_task(self._analyze_post_insights_background(user_id, post_id, post_text))
+        
         # Remove _id for response
         new_post.pop('_id', None)
         return new_post
@@ -84,6 +95,48 @@ class PostService:
             logger.info(f"Background graph enrichment completed for user {user_id}")
         except Exception as e:
             logger.error(f"Background graph enrichment error for user {user_id}: {str(e)}")
+    
+    async def _update_style_profile_background(self, user_id: str, post_text: str):
+        """
+        Background task to update the user's writing style profile.
+        Called after every real post. Does incremental check and
+        triggers full rebuild when enough new posts have accumulated.
+        """
+        try:
+            from domain.avatar.personality.style_learner import StyleLearner
+            learner = StyleLearner(self.db)
+            await learner.on_new_post(user_id, post_text)
+        except Exception as e:
+            logger.error(f"Style profile update error for user {user_id}: {e}")
+    
+    async def _analyze_post_insights_background(self, user_id: str, post_id: str, post_text: str):
+        """
+        Background task to analyze a new post for deep personal insights.
+        Extracts emotional signals, implied connections, and life events.
+        These become conversation threads the avatar can bring up in voice sessions.
+        """
+        try:
+            from domain.avatar.personality.post_insights import PostInsightAnalyzer
+            analyzer = PostInsightAnalyzer(self.db)
+            
+            # Initialize OpenAI client for LLM analysis
+            try:
+                from openai import AsyncOpenAI
+                import os
+                api_key = os.environ.get("OPENAI_API_KEY", "")
+                if api_key:
+                    analyzer.openai = AsyncOpenAI(api_key=api_key)
+                else:
+                    logger.warning("No OpenAI API key found, skipping post insight analysis")
+                    return
+            except Exception:
+                logger.warning("Could not initialize OpenAI client for post insights")
+                return
+            
+            await analyzer.analyze_single_post(user_id, post_id, post_text)
+            logger.info(f"Post insight analysis completed for user {user_id}, post {post_id}")
+        except Exception as e:
+            logger.error(f"Post insight analysis error for user {user_id}: {e}")
     
     async def get_user_posts(self, user_id: str, post_type: str = "real", limit: int = 20, skip: int = 0) -> Dict[str, Any]:
         """Get user's posts with pagination"""

@@ -217,6 +217,40 @@ share your thoughts, express anticipation, or talk about something related.""",
     },
     {
         "type": "function",
+        "name": "recall_past_conversations",
+        "description": """Search your memory of past voice conversations with the user.
+
+USE THIS WHEN:
+- The user asks "do you remember when we talked about...?"
+- The user refers to a previous conversation or something they told you before
+- You want to reference a past conversation to show you remember
+- The user asks about something you discussed in an earlier session
+- You need to recall specific details from a past discussion
+
+DO NOT USE THIS FOR:
+- Questions about social network activity (use recall_social_context for that)
+- Current session topics (you already know those)
+- General knowledge questions
+
+When you call this, say something like "Let me think... I remember us talking about that..." 
+to keep the conversation flowing naturally. Show genuine effort to remember.""",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "What you're trying to remember (e.g., 'Japan trip discussion', 'when they talked about their daughter')"
+                },
+                "include_full_transcript": {
+                    "type": "boolean",
+                    "description": "Whether to fetch the full conversation transcript for detailed recall. Use true when user asks for exact details."
+                }
+            },
+            "required": ["query"]
+        }
+    },
+    {
+        "type": "function",
         "name": "trigger_workflow",
         "description": """Trigger a workflow mission when the user CONFIRMS they want to start a task.
 

@@ -308,6 +308,14 @@ async def record_voice_event(
                     upsert=True
                 )
             
+            # Increment knowledge gap conversation counter (for pacing calibration questions)
+            try:
+                from domain.avatar.personality.knowledge_gaps import KnowledgeGapTracker
+                gap_tracker = KnowledgeGapTracker(db)
+                await gap_tracker.increment_conversation_count(user_id)
+            except Exception as gap_err:
+                logger.debug(f"Knowledge gap counter update skipped: {gap_err}")
+            
         elif req.event_type == "emotional_moment":
             # Record significant emotional moments
             emotion = context.get("emotion")
@@ -539,6 +547,104 @@ async def get_tier1_context(
             "context": "",
             "error": str(e)
         }
+
+
+# =============================================================================
+# CONVERSATION RECALL (MCP Tool: recall_past_conversations)
+# =============================================================================
+
+class RecallRequest(BaseModel):
+    """Request to search past conversations"""
+    avatar_id: str = Field(..., description="Avatar ID")
+    query: str = Field(..., description="What to search for in past conversations")
+    include_full_transcript: bool = Field(default=False, description="Whether to fetch full S3 transcript")
+
+
+class RecallResponse(BaseModel):
+    """Response with recalled conversation memories"""
+    success: bool
+    summary: str
+    results: List[Dict[str, Any]] = []
+    total_found: int = 0
+
+
+@router.post("/recall", response_model=RecallResponse)
+async def recall_past_conversations(
+    req: RecallRequest,
+    request: Request
+):
+    """
+    Search past voice conversations.
+
+    Called by the `recall_past_conversations` MCP tool during active voice
+    sessions. Uses a multi-layer search strategy:
+    1. conversation_index (summaries + S3 keys)
+    2. episodic_memory (deeper context)
+    3. S3 full transcripts (when include_full_transcript=True)
+    """
+    import time
+    start_time = time.time()
+
+    try:
+        user = await require_auth(request)
+        user_id = user.id
+
+        from domain.voice.conversation_recall import ConversationRecallService
+        recall_service = ConversationRecallService(db)
+
+        result = await recall_service.recall(
+            user_id=user_id,
+            query=req.query,
+            avatar_id=req.avatar_id,
+            limit=5,
+            include_full_transcript=req.include_full_transcript,
+        )
+
+        # Build a human-friendly summary for the voice agent
+        results_list = result.get("results", [])
+
+        # Serialize datetime objects in results for JSON compatibility
+        from datetime import datetime as _dt
+        for r in results_list:
+            for k, v in list(r.items()):
+                if isinstance(v, _dt):
+                    r[k] = v.isoformat()
+
+        if results_list:
+            summaries = []
+            for r in results_list[:3]:
+                s = r.get("summary", "")
+                if s:
+                    summaries.append(s)
+                # Include relevant snippets from full transcript if available
+                snippets = r.get("relevant_snippets", [])
+                for snip in snippets[:2]:
+                    summaries.append(f"From that conversation: {snip[:300]}")
+
+            summary = " | ".join(summaries)
+        else:
+            summary = "I couldn't find a specific conversation about that, but it might have been a while ago."
+
+        fetch_time = int((time.time() - start_time) * 1000)
+        logger.info(f"Conversation recall: query='{req.query}', found={len(results_list)}, time={fetch_time}ms")
+
+        return RecallResponse(
+            success=True,
+            summary=summary,
+            results=results_list,
+            total_found=len(results_list),
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in conversation recall: {e}")
+        return RecallResponse(
+            success=False,
+            summary="I'm having trouble searching my memory right now.",
+            results=[],
+            total_found=0,
+        )
 
 
 # =============================================================================

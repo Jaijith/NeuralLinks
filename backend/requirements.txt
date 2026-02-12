@@ -49,3 +49,6 @@ email-validator==2.3.0
 
 # Type hints
 typing-extensions==4.15.0
+
+# Web browsing for avatars
+duckduckgo-search==8.1.1

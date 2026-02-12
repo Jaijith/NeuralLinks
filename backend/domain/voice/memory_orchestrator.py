@@ -85,15 +85,27 @@ class MemoryOrchestrator:
         self, 
         user_id: str, 
         avatar_id: str,
-        conversation: str
+        conversation: str,
+        session_id: str = "",
+        s3_key: str = "",
+        duration_seconds: int = 0,
     ) -> OrchestrationResult:
         """
         Main entry point - processes conversation through the full pipeline.
+        
+        Enhanced pipeline:
+        1. Extract → 2. Reason → 3. Validate → 4. Execute
+        5. Personality Extraction (parallel)
+        6. Conversation Indexing (parallel)
+        7. Knowledge Gap Update (parallel)
         
         Args:
             user_id: User's ID
             avatar_id: Avatar's ID
             conversation: The conversation text to process
+            session_id: Voice session ID (for conversation index)
+            s3_key: S3 key for the full transcript
+            duration_seconds: Duration of the conversation
             
         Returns:
             OrchestrationResult with all planned and executed actions
@@ -119,6 +131,11 @@ class MemoryOrchestrator:
             if not actions:
                 logger.info("No actions identified")
                 result.success = True
+                # Even with no CRUD actions, still run personality extraction + indexing
+                await self._run_post_pipeline(
+                    user_id, avatar_id, conversation,
+                    session_id, s3_key, duration_seconds, extraction
+                )
                 return result
             
             # Step 3: VALIDATION
@@ -134,6 +151,13 @@ class MemoryOrchestrator:
             executed = await self._execute_actions(validated_actions, user_id, avatar_id)
             result.actions_executed = executed
             
+            # Step 5-7: POST-PIPELINE (personality extraction + indexing + knowledge gaps)
+            logger.info("🧬 Step 5-7: Post-pipeline (personality + index + gaps)...")
+            await self._run_post_pipeline(
+                user_id, avatar_id, conversation,
+                session_id, s3_key, duration_seconds, extraction
+            )
+            
             result.success = True
             logger.info(f"✅ Orchestration complete: {len(executed)} actions executed")
             
@@ -142,6 +166,310 @@ class MemoryOrchestrator:
             result.errors.append(str(e))
         
         return result
+    
+    async def _run_post_pipeline(
+        self,
+        user_id: str,
+        avatar_id: str,
+        conversation: str,
+        session_id: str,
+        s3_key: str,
+        duration_seconds: int,
+        extraction: Dict[str, Any],
+    ):
+        """
+        Post-pipeline: personality extraction, conversation indexing, knowledge gap update,
+        and post insight thread status update.
+        Runs in parallel for speed. Failures here don't block the main pipeline.
+        """
+        import asyncio
+        tasks = []
+        
+        # 5. Personality Extraction Agent
+        tasks.append(self._personality_extraction_agent(user_id, conversation, extraction))
+        
+        # 6. Conversation Indexing
+        if session_id:
+            tasks.append(self._index_conversation(
+                user_id, avatar_id, session_id, s3_key,
+                conversation, extraction, duration_seconds
+            ))
+        
+        # 7. Knowledge Gap Update
+        tasks.append(self._update_knowledge_gaps(user_id, conversation))
+        
+        # 8. Post Insight Thread Status Update
+        if session_id:
+            tasks.append(self._update_post_insight_threads(user_id, session_id, conversation))
+        
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        for i, r in enumerate(results):
+            if isinstance(r, Exception):
+                logger.warning(f"Post-pipeline task {i} failed: {r}")
+    
+    # =========================================================================
+    # AGENT 5: PERSONALITY EXTRACTION
+    # =========================================================================
+    
+    async def _personality_extraction_agent(
+        self, user_id: str, conversation: str, extraction: Dict[str, Any]
+    ):
+        """
+        Extract personality signals from the conversation:
+        - Communication style patterns
+        - Emotional tendencies
+        - Values revealed through conversation
+        - Decision-making patterns
+        
+        Stores in graph_nodes as 'trait' and 'value' types.
+        """
+        try:
+            prompt = """You are a PERSONALITY EXTRACTION agent. Analyze this conversation to extract personality signals about the USER (not the AI).
+
+Focus on:
+1. TRAITS: How do they communicate? Are they direct/indirect? Confident/uncertain? Analytical/intuitive? Warm/reserved?
+2. VALUES: What do they seem to care about? What priorities emerge?
+3. EMOTIONAL PATTERNS: How do they express emotions? What makes them animated?
+4. COMMUNICATION STYLE: Sentence length, vocabulary level, use of humor, storytelling tendency
+
+IMPORTANT: Only extract what is CLEARLY demonstrated in the conversation. Don't infer from nothing.
+
+Conversation:
+---
+{conversation}
+---
+
+Already extracted entities for context:
+{extraction}
+
+Return JSON:
+{{
+  "traits": [
+    {{"label": "trait name", "evidence": "brief quote/observation", "confidence": 0.0-1.0}}
+  ],
+  "values": [
+    {{"label": "value name", "evidence": "brief observation", "confidence": 0.0-1.0}}
+  ],
+  "emotional_signals": [
+    {{"trigger": "what caused the emotion", "emotion": "joy|excitement|concern|frustration|etc", "intensity": 0.0-1.0}}
+  ],
+  "style_notes": {{
+    "formality": "casual|mixed|formal",
+    "humor_frequency": "none|occasional|frequent",
+    "storytelling": true/false,
+    "vocabulary_level": "simple|moderate|sophisticated"
+  }}
+}}"""
+            
+            response = await self.openai.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Extract personality signals precisely."},
+                    {"role": "user", "content": prompt.format(
+                        conversation=conversation,
+                        extraction=json.dumps(extraction, indent=2)[:2000]
+                    )}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.2
+            )
+            
+            result = json.loads(response.choices[0].message.content)
+            now = datetime.now(timezone.utc)
+            
+            # Store traits in graph_nodes
+            for trait in result.get("traits", []):
+                if trait.get("confidence", 0) < 0.6:
+                    continue
+                label = trait.get("label", "").lower().strip()
+                if not label:
+                    continue
+                
+                existing = await self.db.graph_nodes.find_one({
+                    "user_id": user_id, "node_type": "trait", "label": label
+                })
+                if existing:
+                    await self.db.graph_nodes.update_one(
+                        {"_id": existing["_id"]},
+                        {"$inc": {"mention_count": 1}, "$set": {"updated_at": now}}
+                    )
+                else:
+                    await self.db.graph_nodes.insert_one({
+                        "id": f"trait_{user_id}_{label.replace(' ', '_')}",
+                        "user_id": user_id,
+                        "node_type": "trait",
+                        "label": label,
+                        "display_label": label.title(),
+                        "strength": trait.get("confidence", 0.7),
+                        "properties": {"evidence": trait.get("evidence", ""), "source": "conversation"},
+                        "mention_count": 1,
+                        "created_at": now,
+                        "updated_at": now,
+                    })
+            
+            # Store values
+            for value in result.get("values", []):
+                if value.get("confidence", 0) < 0.6:
+                    continue
+                label = value.get("label", "").lower().strip()
+                if not label:
+                    continue
+                
+                existing = await self.db.graph_nodes.find_one({
+                    "user_id": user_id, "node_type": "value", "label": label
+                })
+                if existing:
+                    await self.db.graph_nodes.update_one(
+                        {"_id": existing["_id"]},
+                        {"$inc": {"mention_count": 1}, "$set": {"updated_at": now}}
+                    )
+                else:
+                    await self.db.graph_nodes.insert_one({
+                        "id": f"value_{user_id}_{label.replace(' ', '_')}",
+                        "user_id": user_id,
+                        "node_type": "value",
+                        "label": label,
+                        "display_label": label.title(),
+                        "strength": value.get("confidence", 0.7),
+                        "properties": {"evidence": value.get("evidence", ""), "source": "conversation"},
+                        "mention_count": 1,
+                        "created_at": now,
+                        "updated_at": now,
+                    })
+            
+            logger.info(f"Personality extraction: {len(result.get('traits', []))} traits, {len(result.get('values', []))} values for {user_id}")
+            
+        except Exception as e:
+            logger.error(f"Personality extraction error: {e}")
+    
+    # =========================================================================
+    # STEP 6: CONVERSATION INDEXING
+    # =========================================================================
+    
+    async def _index_conversation(
+        self,
+        user_id: str,
+        avatar_id: str,
+        session_id: str,
+        s3_key: str,
+        conversation: str,
+        extraction: Dict[str, Any],
+        duration_seconds: int,
+    ):
+        """Index this conversation for future recall searches."""
+        try:
+            # Build summary from extraction data
+            topics = []
+            people = []
+            for interest in extraction.get("interests", []):
+                t = interest.get("topic", "")
+                if t:
+                    topics.append(t)
+            for person in extraction.get("people", []):
+                n = person.get("name", "")
+                if n:
+                    people.append(n)
+            
+            # Generate a concise summary
+            summary_prompt = f"""Summarize this conversation in 1-2 sentences (what was discussed, key points):
+---
+{conversation[:3000]}
+---
+
+Also extract 2-3 notable quotes from the USER (not the AI).
+
+Return JSON:
+{{"summary": "...", "key_quotes": ["...", "..."], "emotional_tone": "happy|sad|neutral|excited|contemplative|anxious"}}"""
+            
+            response = await self.openai.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "Summarize conversations concisely."},
+                    {"role": "user", "content": summary_prompt}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.1
+            )
+            summary_data = json.loads(response.choices[0].message.content)
+            
+            from domain.voice.conversation_recall import ConversationRecallService
+            recall_service = ConversationRecallService(self.db)
+            
+            await recall_service.index_conversation(
+                user_id=user_id,
+                avatar_id=avatar_id,
+                session_id=session_id,
+                s3_key=s3_key,
+                summary=summary_data.get("summary", ""),
+                topics=topics,
+                people_mentioned=people,
+                emotional_tone=summary_data.get("emotional_tone", "neutral"),
+                key_quotes=summary_data.get("key_quotes", []),
+                duration_seconds=duration_seconds,
+            )
+            
+        except Exception as e:
+            logger.error(f"Conversation indexing error: {e}")
+    
+    # =========================================================================
+    # STEP 7: KNOWLEDGE GAP UPDATE
+    # =========================================================================
+    
+    async def _update_knowledge_gaps(self, user_id: str, conversation: str):
+        """Update knowledge gap coverage based on what was revealed in conversation."""
+        try:
+            from domain.avatar.personality.knowledge_gaps import KnowledgeGapTracker
+            tracker = KnowledgeGapTracker(self.db)
+            
+            # Increment conversation count
+            await tracker.increment_conversation_count(user_id)
+            
+            # Determine which categories this conversation touched
+            category_keywords = {
+                "life_narrative": ["grew up", "childhood", "story", "career", "history", "started"],
+                "values_beliefs": ["believe", "important", "value", "passionate", "feel strongly"],
+                "communication_style": ["disagree", "argue", "conflict", "express"],
+                "social_patterns": ["friends", "family", "people", "inner circle", "social"],
+                "interests_passions": ["love", "hobby", "passionate", "obsessed", "into"],
+                "emotional_patterns": ["happy", "frustrated", "upset", "excited", "anxious"],
+                "daily_life": ["morning", "routine", "typical day", "everyday", "wake up"],
+                "humor_personality": ["funny", "joke", "laugh", "humor", "silly"],
+            }
+            
+            conv_lower = conversation.lower()
+            for category, keywords in category_keywords.items():
+                if any(kw in conv_lower for kw in keywords):
+                    await tracker.update_coverage(user_id, category, delta=0.05)
+                    
+        except Exception as e:
+            logger.error(f"Knowledge gap update error: {e}")
+    
+    # =========================================================================
+    # STEP 8: POST INSIGHT THREAD STATUS UPDATE
+    # =========================================================================
+    
+    async def _update_post_insight_threads(self, user_id: str, session_id: str, conversation: str):
+        """
+        After a voice conversation, check if any 'raised' post insight threads
+        were discussed or deflected. Update their status accordingly.
+        
+        This ensures:
+        - Discussed threads get a user response summary stored
+        - Deflected threads are never raised proactively again
+        - Both retain knowledge for reactive engagement
+        """
+        try:
+            from domain.avatar.personality.post_insights import PostInsightAnalyzer
+            analyzer = PostInsightAnalyzer(self.db, self.openai)
+            await analyzer.update_thread_statuses(
+                user_id=user_id,
+                session_id=session_id,
+                conversation_text=conversation,
+                openai_client=self.openai,
+            )
+            logger.info(f"Post insight thread statuses updated for {user_id}, session {session_id}")
+        except Exception as e:
+            logger.error(f"Post insight thread update error: {e}")
     
     # =========================================================================
     # AGENT 1: EXTRACTION

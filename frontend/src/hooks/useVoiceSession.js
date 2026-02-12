@@ -6,7 +6,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { createVoiceSession, recordVoiceEvent, getVoiceContext, prewarmContext, saveTranscript, triggerWorkflow } from '../services/api/voiceService';
+import { createVoiceSession, recordVoiceEvent, getVoiceContext, prewarmContext, saveTranscript, triggerWorkflow, recallPastConversations } from '../services/api/voiceService';
 
 // Generate unique ID for session (uses crypto if available, fallback to timestamp)
 const generateSessionId = () => {
@@ -254,6 +254,30 @@ export function useVoiceSession({
               type: 'function_call_output',
               call_id: call_id,
               output: result.summary || 'No information available.'
+            }
+          };
+          dataChannelRef.current.send(JSON.stringify(outputEvent));
+          dataChannelRef.current.send(JSON.stringify({ type: 'response.create' }));
+        }
+        
+      } else if (name === 'recall_past_conversations') {
+        // Handle conversation recall — search past voice conversations
+        console.log('Recalling past conversations:', args);
+        
+        result = await recallPastConversations({
+          avatarId,
+          query: args.query,
+          includeFullTranscript: args.include_full_transcript || false
+        });
+        
+        // Send function result back to the AI
+        if (dataChannelRef.current && dataChannelRef.current.readyState === 'open') {
+          const outputEvent = {
+            type: 'conversation.item.create',
+            item: {
+              type: 'function_call_output',
+              call_id: call_id,
+              output: result.summary || "I couldn't find anything specific about that in my memory."
             }
           };
           dataChannelRef.current.send(JSON.stringify(outputEvent));

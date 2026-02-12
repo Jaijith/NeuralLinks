@@ -8,6 +8,7 @@ from .voice_config import VoiceConfig, VOICE_SETTINGS, VOICE_TOOLS
 from .social_context import SocialContextService
 from .voice_memory import VoiceMemoryService
 from .memory_orchestrator import MemoryOrchestrator
+from .conversation_recall import ConversationRecallService
 
 __all__ = [
     'VoicePromptGenerator',
@@ -16,5 +17,6 @@ __all__ = [
     'VOICE_TOOLS',
     'SocialContextService',
     'VoiceMemoryService',
-    'MemoryOrchestrator'
+    'MemoryOrchestrator',
+    'ConversationRecallService',
 ]

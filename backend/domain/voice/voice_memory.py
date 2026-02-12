@@ -151,39 +151,111 @@ class VoiceMemoryService:
     
     async def get_user_memory(self, user_id: str, avatar_id: str) -> Dict[str, Any]:
         """
-        Get user's memory (connections, interests, facts) for voice prompt.
+        Get user's COMPREHENSIVE memory for voice prompt.
         
-        Fetches from existing collections:
-        - users.connections → Network (daughter, wife, friends)
-        - identity_memory → Interests and preferences
-        - episodic_memory → Recent conversation summaries
+        Enhanced to load:
+        - users.connections → ALL people (not limited to 5)
+        - graph_nodes → ALL interests with strength scores
+        - identity_memory → Facts and preferences from voice
+        - episodic_memory → 10 recent conversation summaries (not 3)
+        - posts → 10 most recent real posts for context
         
         Called at session start, must be FAST (<3s timeout).
         """
         try:
-            # Fetch all in parallel
+            # Fetch ALL sources in parallel
             results = await asyncio.gather(
                 self._get_user_connections(user_id),
                 self._get_identity_memory(user_id, avatar_id),
-                self._get_recent_conversation_summaries(user_id, avatar_id, limit=3),
+                self._get_all_interests_from_graph(user_id),
+                self._get_recent_conversation_summaries(user_id, avatar_id, limit=10),
+                self._get_user_recent_posts(user_id, limit=10),
                 return_exceptions=True
             )
             
             connections = results[0] if not isinstance(results[0], Exception) else []
             identity = results[1] if not isinstance(results[1], Exception) else {}
-            summaries = results[2] if not isinstance(results[2], Exception) else []
+            graph_interests = results[2] if not isinstance(results[2], Exception) else []
+            summaries = results[3] if not isinstance(results[3], Exception) else []
+            recent_posts = results[4] if not isinstance(results[4], Exception) else []
+            
+            # Merge interests: graph_nodes (comprehensive) + identity_memory (voice-extracted)
+            voice_interests = identity.get("interests", [])
+            merged_interests = self._merge_interests(graph_interests, voice_interests)
             
             return {
                 "connections": connections,
-                "interests": identity.get("interests", []),
+                "interests": merged_interests,
                 "facts": identity.get("facts", []),
                 "preferences": identity.get("preferences", []),
-                "recent_conversations": summaries
+                "recent_conversations": summaries,
+                "recent_posts": recent_posts,
             }
             
         except Exception as e:
             logger.error(f"Error fetching user memory: {e}")
             return {}
+    
+    async def _get_all_interests_from_graph(self, user_id: str) -> List[Dict[str, Any]]:
+        """Get ALL interests from graph_nodes (profile + posts + voice + platform)."""
+        try:
+            cursor = self.db.graph_nodes.find(
+                {"user_id": user_id, "node_type": "interest"},
+                {"_id": 0, "label": 1, "strength": 1, "properties": 1, "mention_count": 1}
+            ).sort("strength", -1).limit(50)
+            return await cursor.to_list(50)
+        except Exception as e:
+            logger.error(f"Error fetching graph interests: {e}")
+            return []
+    
+    async def _get_user_recent_posts(self, user_id: str, limit: int = 10) -> List[Dict[str, Any]]:
+        """Get user's recent real posts for voice context."""
+        try:
+            cursor = self.db.posts.find(
+                {"user_id": user_id, "post_type": {"$in": ["real", None]}},
+                {"_id": 0, "text": 1, "created_at": 1, "likes": 1, "comment_count": 1}
+            ).sort("created_at", -1).limit(limit)
+            return await cursor.to_list(limit)
+        except Exception as e:
+            logger.error(f"Error fetching recent posts: {e}")
+            return []
+    
+    def _merge_interests(
+        self,
+        graph_interests: List[Dict[str, Any]],
+        voice_interests: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
+        """Merge graph-sourced and voice-sourced interests, de-duplicating."""
+        seen = {}
+        merged = []
+        
+        # Graph interests take priority (they have strength scores)
+        for gi in graph_interests:
+            label = (gi.get("label") or "").lower()
+            if label and label not in seen:
+                seen[label] = True
+                merged.append({
+                    "label": gi.get("label", ""),
+                    "topic": gi.get("label", ""),
+                    "strength": gi.get("strength", 0.5),
+                    "source": "graph",
+                })
+        
+        # Add voice interests not already in graph
+        for vi in voice_interests:
+            topic = (vi.get("topic") or "").lower()
+            if topic and topic not in seen:
+                seen[topic] = True
+                merged.append({
+                    "label": vi.get("topic", ""),
+                    "topic": vi.get("topic", ""),
+                    "strength": vi.get("strength", 0.6),
+                    "source": "voice",
+                })
+        
+        # Sort by strength descending
+        merged.sort(key=lambda x: x.get("strength", 0), reverse=True)
+        return merged
     
     async def _get_user_connections(self, user_id: str) -> List[Dict[str, Any]]:
         """Get user's network connections (people they've mentioned)"""
@@ -247,65 +319,122 @@ class VoiceMemoryService:
         user_name: str
     ) -> str:
         """
-        Format memory as natural language for the voice prompt.
+        Format ALL memory as natural language for the voice prompt.
         
-        Returns something like:
-        "**Your Memory of John:**
-         - Their daughter Sarah loves soccer and has a birthday coming up
-         - They work in marketing and are planning a trip to Japan
-         - Last conversation was about vacation plans..."
+        Enhanced: no artificial limits on connections/interests.
+        Groups connections by relationship type, interests by strength tier.
+        Includes recent posts and expanded conversation history.
         """
         if not memory:
             return ""
         
         sections = []
         
-        # Format connections (network)
+        # ----- Connections (ALL, grouped by relationship) -----
         connections = memory.get("connections", [])
         if connections:
-            conn_lines = []
-            for conn in connections[:5]:  # Limit to 5 most important
-                name = conn.get("name", "")
-                rel = conn.get("relationship", "")
-                details = conn.get("details", "")
-                context = ", ".join(conn.get("context", [])[:3])
-                
-                if name and rel:
-                    line = f"{name} ({rel})"
-                    if details:
-                        line += f" - {details}"
-                    elif context:
-                        line += f" - mentioned in context of: {context}"
-                    conn_lines.append(f"  - {line}")
+            family_kw = {"wife", "husband", "daughter", "son", "mother", "father",
+                         "sister", "brother", "parent", "child", "spouse", "partner",
+                         "mom", "dad"}
+            friend_kw = {"friend", "best friend", "close friend", "college friend", "buddy"}
+            work_kw = {"colleague", "coworker", "boss", "manager", "teammate", "mentor"}
             
-            if conn_lines:
-                sections.append(f"**People in {user_name}'s life:**\n" + "\n".join(conn_lines))
+            def _classify(c):
+                r = (c.get("relationship") or "").lower()
+                if any(k in r for k in family_kw):
+                    return "family"
+                if any(k in r for k in friend_kw):
+                    return "friends"
+                if any(k in r for k in work_kw):
+                    return "work"
+                return "other"
+            
+            groups: Dict[str, list] = {"family": [], "friends": [], "work": [], "other": []}
+            for c in connections:
+                groups[_classify(c)].append(c)
+            
+            conn_text = f"**People in {user_name}'s life:**\n"
+            for label, members in [("Family", groups["family"]),
+                                    ("Friends", groups["friends"]),
+                                    ("Work", groups["work"]),
+                                    ("Others", groups["other"])]:
+                if members:
+                    parts = []
+                    for m in members:
+                        name = m.get("name", "")
+                        rel = m.get("relationship", "")
+                        det = m.get("details", "")
+                        entry = f"{name} ({rel})" if rel else name
+                        if det:
+                            entry += f" — {det}"
+                        parts.append(entry)
+                    conn_text += f"  {label}: {', '.join(parts)}\n"
+            sections.append(conn_text.rstrip())
         
-        # Format interests
+        # ----- Interests (ALL, tiered by strength) -----
         interests = memory.get("interests", [])
         if interests:
-            interest_names = [i.get("topic", "") for i in interests[:5] if i.get("topic")]
-            if interest_names:
-                sections.append(f"**{user_name}'s interests:** {', '.join(interest_names)}")
+            core = [i for i in interests if i.get("strength", 0) >= 0.8]
+            strong = [i for i in interests if 0.5 <= i.get("strength", 0) < 0.8]
+            casual = [i for i in interests if i.get("strength", 0) < 0.5]
+            
+            def _label(i):
+                return i.get("label", i.get("topic", ""))
+            
+            interest_text = f"**{user_name}'s interests:**\n"
+            if core:
+                interest_text += f"  Core passions: {', '.join(_label(i) for i in core)}\n"
+            if strong:
+                interest_text += f"  Strong interests: {', '.join(_label(i) for i in strong)}\n"
+            if casual:
+                interest_text += f"  Also into: {', '.join(_label(i) for i in casual[:15])}\n"
+            sections.append(interest_text.rstrip())
         
-        # Format key facts
+        # ----- Key facts (expanded) -----
         facts = memory.get("facts", [])
         if facts:
-            fact_lines = [f"  - {f.get('fact', '')}" for f in facts[:5] if f.get("fact")]
+            fact_lines = []
+            for f in facts[:15]:
+                ft = f.get("fact", "") if isinstance(f, dict) else str(f)
+                if ft:
+                    fact_lines.append(f"  - {ft}")
             if fact_lines:
-                sections.append(f"**Things to remember:**\n" + "\n".join(fact_lines))
+                sections.append(f"**Things you know about {user_name}:**\n" + "\n".join(fact_lines))
         
-        # Format recent conversations
+        # ----- Preferences -----
+        prefs = memory.get("preferences", [])
+        if prefs:
+            pref_lines = []
+            for p in prefs[:10]:
+                pt = p.get("preference", "") if isinstance(p, dict) else str(p)
+                if pt:
+                    pref_lines.append(f"  - {pt}")
+            if pref_lines:
+                sections.append(f"**{user_name}'s preferences:**\n" + "\n".join(pref_lines))
+        
+        # ----- Recent posts (what they've been sharing) -----
+        posts = memory.get("recent_posts", [])
+        if posts:
+            post_snippets = [p.get("text", "")[:150] for p in posts[:5] if p.get("text")]
+            if post_snippets:
+                post_lines = [f'  - "{s}..."' if len(s) >= 150 else f'  - "{s}"'
+                              for s in post_snippets]
+                sections.append(
+                    f"**What {user_name} has been posting recently:**\n" + "\n".join(post_lines)
+                )
+        
+        # ----- Recent conversations (expanded from 2 to 10) -----
         recent = memory.get("recent_conversations", [])
         if recent:
             conv_lines = []
-            for conv in recent[:2]:  # Last 2 conversations
+            for conv in recent[:10]:
                 summary = conv.get("summary", "")
                 if summary:
                     conv_lines.append(f"  - {summary}")
-            
             if conv_lines:
-                sections.append(f"**Recent conversations:**\n" + "\n".join(conv_lines))
+                sections.append(
+                    f"**Your recent conversations with {user_name}:**\n" + "\n".join(conv_lines)
+                )
         
         return "\n\n".join(sections) if sections else ""
     
@@ -350,6 +479,7 @@ class VoiceMemoryService:
             
             if extracted:
                 # Use agentic orchestrator for more accurate CRUD operations
+                # Enhanced: pass session_id, s3_key, duration for conversation indexing
                 try:
                     from domain.voice.memory_orchestrator import MemoryOrchestrator
                     
@@ -357,7 +487,10 @@ class VoiceMemoryService:
                     result = await orchestrator.process_conversation(
                         user_id=user_id,
                         avatar_id=avatar_id,
-                        conversation=conversation_text
+                        conversation=conversation_text,
+                        session_id=session_id,
+                        s3_key=s3_key or "",
+                        duration_seconds=transcript.get("duration_seconds", 0),
                     )
                     
                     if result.success:
@@ -892,16 +1025,24 @@ Return JSON: {{connections, interests, key_facts, summary, topics, emotional_ton
             if not summary:
                 return
             
+            # Get s3_key from transcript metadata for conversation recall
+            transcript_meta = await self.db.voice_transcripts.find_one(
+                {"session_id": session_id}, {"s3_key": 1}
+            )
+            s3_key = transcript_meta.get("s3_key", "") if transcript_meta else ""
+            
             await self.db.episodic_memory.insert_one({
                 "user_id": user_id,
                 "avatar_id": avatar_id,
                 "session_id": session_id,
+                "episode_id": session_id,
                 "episode_type": "voice_conversation",
                 "timestamp": datetime.now(timezone.utc),
                 "summary": summary,
                 "topics": extracted.get("topics", []),
                 "emotional_tone": extracted.get("emotional_tone", ""),
                 "key_moments": [],
+                "s3_key": s3_key,
                 "source": "conversation"
             })
             

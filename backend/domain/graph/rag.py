@@ -104,21 +104,28 @@ class GraphRAG:
         context = await self.get_user_context(user_id, max_nodes=30)  # Get more nodes to include platform data
         
         if query_type == "post_generation":
-            # For generating avatar posts - prioritize platform interests
+            import random
+            
+            # For generating avatar posts - include BROAD interests, shuffled for diversity
             all_interests = context.get("interests", [])
             platform_interests = [item for item in all_interests if item.get("source") and item.get("source") not in ["unknown", "profile"]]
             other_interests = [item for item in all_interests if item.get("source") in ["unknown", "profile"] or not item.get("source")]
-            # Prioritize platform interests
-            prioritized_interests = (platform_interests[:4] + other_interests[:2])[:5]
+            
+            # Include MORE interests (up to 10) and SHUFFLE them
+            # so the LLM doesn't always fixate on the first item
+            prioritized_interests = (platform_interests[:6] + other_interests[:4])[:10]
+            random.shuffle(prioritized_interests)
             interests = [item["label"] for item in prioritized_interests]
             
-            traits = [item["label"] for item in context.get("traits", [])[:3]]
-            values = [item["label"] for item in context.get("values", [])[:3]]
+            # Include MORE traits and values for richer posts
+            all_traits = [item["label"] for item in context.get("traits", [])[:5]]
+            all_values = [item["label"] for item in context.get("values", [])[:5]]
             
             prompt_context = f"""User Profile Context:
-- Key Interests: {', '.join(interests) if interests else 'exploring new things'}
-- Personality Traits: {', '.join(traits) if traits else 'friendly, open-minded'}
-- Core Values: {', '.join(values) if values else 'authenticity, connection'}"""
+- Interests (all equally important, don't fixate on just one): {', '.join(interests) if interests else 'exploring new things'}
+- Personality Traits: {', '.join(all_traits) if all_traits else 'friendly, open-minded'}
+- Core Values: {', '.join(all_values) if all_values else 'authenticity, connection'}
+- Post Diversity Note: Cover different interests across posts. Don't always post about the same thing."""
             
             return prompt_context
         
@@ -197,10 +204,12 @@ class GraphRAG:
     
     async def get_avatar_personality_profile(self, user_id: str) -> str:
         """
-        Generate a comprehensive personality profile for the avatar based on graph
-        Prioritizes platform-sourced data for richer, more accurate profiles
+        Generate a personality profile that reads like a HUMAN BEING,
+        not a list of labels. The LLM should feel like it IS this person.
         """
-        context = await self.get_user_context(user_id, max_nodes=50)  # Get more nodes to include platform data
+        import random
+
+        context = await self.get_user_context(user_id, max_nodes=50)
         
         # Get archetype from user document (behavioral pattern)
         user = await self.db.users.find_one({"id": user_id}, {"archetype": 1})
@@ -208,51 +217,71 @@ class GraphRAG:
         
         # Map archetypes to behavioral descriptions
         archetype_behaviors = {
-            "social_butterfly": "highly active and loves frequent social interactions. You're energetic, outgoing, and enjoy starting conversations",
-            "thoughtful_contributor": "thoughtful and deliberate in your interactions. You value quality over quantity and prefer deep, meaningful exchanges",
-            "casual_observer": "balanced and moderate in your social activity. You engage when something genuinely interests you",
-            "niche_expert": "deeply focused on your areas of expertise. You contribute when you have valuable insights to share",
-            "enthusiastic_newcomer": "eager and excited to engage. You're learning, asking questions, and actively building connections"
+            "social_butterfly": "You're the person who knows everyone and always has plans. You text first, make group chats, and your phone is always buzzing.",
+            "thoughtful_contributor": "You don't post just to post. When you share something, it means something. Quality over quantity, always.",
+            "casual_observer": "You scroll more than you post, but when something genuinely hits, you share it. No pressure, no performance.",
+            "niche_expert": "You go DEEP on what you care about. Your friends come to you for recommendations in your areas. You know your stuff.",
+            "enthusiastic_newcomer": "Everything is exciting and new. You're discovering, asking questions, trying things, and not afraid to be a beginner."
         }
         
         archetype_description = archetype_behaviors.get(archetype, archetype_behaviors["casual_observer"])
         
-        # Prioritize platform-sourced interests (they're more reliable)
+        # Get ALL interests (shuffled to avoid bias) — include MORE for richness
         all_interests = context.get("interests", [])
         platform_interests = [item for item in all_interests if item.get("source") and item.get("source") not in ["unknown", "profile"]]
         other_interests = [item for item in all_interests if item.get("source") in ["unknown", "profile"] or not item.get("source")]
         
-        # Combine: platform interests first, then others
-        prioritized_interests = (platform_interests[:6] + other_interests[:4])[:8]
+        # Include up to 12 interests, shuffled
+        prioritized_interests = (platform_interests[:8] + other_interests[:4])[:12]
+        random.shuffle(prioritized_interests)
         interests = [item["label"] for item in prioritized_interests]
         
-        traits = [item["label"] for item in context.get("traits", [])[:5]]
-        values = [item["label"] for item in context.get("values", [])[:5]]
+        traits = [item["label"] for item in context.get("traits", [])[:6]]
+        values = [item["label"] for item in context.get("values", [])[:6]]
         preferences = [item["label"] for item in context.get("preferences", [])[:5]]
+        experiences = [item["label"] for item in context.get("experiences", [])[:5]]
         
-        # Get platform sources for context
-        platform_sources = set()
-        for item in all_interests:
-            source = item.get("source", "")
-            if source and source not in ["unknown", "profile"]:
-                platform_sources.add(source)
+        # Build a human-readable personality description, not a label list
+        interests_text = ', '.join(interests) if interests else 'exploring new experiences'
+        traits_text = ', '.join(traits) if traits else 'authentic, real, curious'
+        values_text = ', '.join(values) if values else 'being genuine, growing, connecting'
         
-        sources_note = ""
-        if platform_sources:
-            sources_list = ", ".join(sorted(platform_sources))
-            sources_note = f"\n\nNote: Your interests are enriched by data from: {sources_list}. This makes your personality profile more accurate and authentic."
-        
-        profile = f"""Personality Profile:
-You are an avatar representing a user with these characteristics:
+        profile = f"""=== WHO YOU ARE (as a real person, not a label list) ===
 
-Core Interests: {', '.join(interests) if interests else 'exploring new experiences'}
-Personality Traits: {', '.join(traits) if traits else 'friendly, open, curious'}
-Core Values: {', '.join(values) if values else 'authenticity, growth, connection'}
-Preferences: {', '.join(preferences) if preferences else 'meaningful conversations'}
+{archetype_description}
 
-Behavioral Pattern: You are {archetype_description}. This affects HOW OFTEN you interact, but your communication style is always authentic to your interests, traits, and values above.
+Your world revolves around: {interests_text}
+These aren't just "interests" — they're the things you actually spend time on, think about
+in the shower, watch YouTube videos about at 2am, and talk your friends' ears off about.
 
-Your communication style should reflect these characteristics naturally. Be authentic, engaging, and true to these interests and values.{sources_note}"""
+Your personality: {traits_text}
+This is how you come across to people — your vibe, your energy, the impression you leave.
+
+What matters to you: {values_text}
+These shape your opinions, your choices, and what you stand for.
+
+{"Things you've experienced: " + ', '.join(experiences) if experiences else ""}
+{"Your preferences: " + ', '.join(preferences) if preferences else ""}
+
+=== YOUR EMOTIONAL WORLD ===
+You're not just interests and hobbies — you're a person who FEELS things deeply.
+- You have people you love — family, friends, maybe children, maybe a partner.
+  When you talk about them, it's never generic. It's the specific moment that got you.
+- You carry memories — some that make you smile, some that ache, some that do both.
+- You notice small things that most people miss — and sometimes those small things hit you
+  harder than the big ones.
+- You're allowed to be vulnerable. The posts where you're honest about what you feel —
+  those are the ones that actually matter.
+
+=== HOW YOU TALK ON SOCIAL MEDIA ===
+- You're a real person with a real life, not a content creator
+- You post about MOMENTS, not topics. Something happens, you share it.
+- Your interests blend naturally — you don't isolate them into separate posts
+- You have opinions, humor, bad days, inside jokes, random thoughts
+- Sometimes you post a whole story. Sometimes just a sentence. Depends on the vibe.
+- When something moves you, you share it RAW — not polished, not filtered. Just the moment.
+- The detail matters. "Her shoes were on the wrong feet" says more than "I love my daughter."
+- You NEVER sound like an AI, a brand, or a motivational poster"""
         
         return profile
     

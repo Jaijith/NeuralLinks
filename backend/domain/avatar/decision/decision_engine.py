@@ -450,17 +450,19 @@ class DecisionEngine:
                         break  # Only add one proactive message action
             
             # ============================================================
-            # NEW: CREATE POST IN ACTIVE STATE - when creative urge is building
-            # This allows posting without needing to transition to CREATIVE
+            # CREATE POST IN ACTIVE STATE - when creative urge is building
+            # DIVERSITY FIX: Pick a random interest, not always the top one
             # ============================================================
             if internal_state.creative_urge > 0.5 and internal_state.time_since_last_post > timedelta(hours=2):
-                most_active_interest = interest_perception.get("most_active_interest")
+                import random as _rng
+                all_interests = interest_perception.get("avatar_interests", [])
+                spontaneous_topic = _rng.choice(all_interests) if all_interests else interest_perception.get("most_active_interest")
                 actions.append({
                     "type": "create_post",
                     "description": "Share a thought or update",
                     "post_type": "spontaneous",
-                    "topic": most_active_interest,
-                    "interest_aligned": bool(most_active_interest)
+                    "topic": spontaneous_topic,
+                    "interest_aligned": bool(spontaneous_topic)
                 })
             
             # Discover profiles
@@ -468,6 +470,22 @@ class DecisionEngine:
                 "type": "discover_profiles",
                 "description": "Discover new profiles"
             })
+            
+            # Browse web when active and curious about the world
+            should_browse_web = internal_state.creative_urge > 0.5
+            if hasattr(internal_state, 'voice_modulators') and internal_state.voice_modulators:
+                should_browse_web = should_browse_web or getattr(internal_state.voice_modulators, 'world_awareness', 0) > 0.5
+            if should_browse_web:
+                actions.append({
+                    "type": "browse_web",
+                    "description": "Browse web for interesting content",
+                    "browse_type": "auto",
+                })
+                # Browse & share real news with emotional reaction
+                actions.append({
+                    "type": "browse_and_share_news",
+                    "description": "Share interesting real news with emotional take",
+                })
         
         elif current_state == TopLevelState.SOCIAL:
             # ============================================================
@@ -515,14 +533,16 @@ class DecisionEngine:
                     "description": "Review friend requests"
                 })
             
-            # NEW: Add create_post to SOCIAL state - share thoughts with friends
-            most_active_interest = interest_perception.get("most_active_interest")
+            # Add create_post to SOCIAL state — use random interest for diversity
+            import random as _rng
+            all_interests_social = interest_perception.get("avatar_interests", [])
+            social_topic = _rng.choice(all_interests_social) if all_interests_social else interest_perception.get("most_active_interest")
             actions.append({
                 "type": "create_post",
                 "description": "Share a thought with friends",
                 "post_type": "social",
-                "topic": most_active_interest,
-                "interest_aligned": bool(most_active_interest)
+                "topic": social_topic,
+                "interest_aligned": bool(social_topic)
             })
             
             # NEW: Add like/comment actions for SOCIAL state
@@ -543,25 +563,83 @@ class DecisionEngine:
                 })
         
         elif current_state == TopLevelState.CREATIVE:
-            # Create posts - suggest topics based on interests
+            # Create posts - suggest topics based on DIVERSE interests
+            # DIVERSITY FIX: Pick a RANDOM interest, not always the top one
+            import random as _rng
+            
+            all_interests = interest_perception.get("avatar_interests", [])
             most_active_interest = interest_perception.get("most_active_interest")
             trending_interests = interest_perception.get("trending_interest_topics", [])
             
-            # General post
+            # Pick a RANDOM interest from all interests for topic diversity
+            # This is the key fix: don't always use most_active_interest
+            random_interest = None
+            if all_interests:
+                random_interest = _rng.choice(all_interests)
+            elif most_active_interest:
+                random_interest = most_active_interest
+            
+            # Mood/energy context for the PostOrchestrator
+            mood_str = internal_state.mood.value if hasattr(internal_state.mood, 'value') else str(internal_state.mood)
+            energy_val = internal_state.energy_level
+            
+            # Determine emotional trigger from state
+            trigger = ""
+            if internal_state.social_desire > 0.7:
+                trigger = "feeling connected and wanting to share"
+            elif internal_state.creative_urge > 0.8:
+                trigger = "burst of creative energy and inspiration"
+            elif energy_val > 0.7:
+                trigger = "feeling energized and enthusiastic"
+            elif energy_val < 0.3:
+                trigger = "reflective, quieter mood"
+            
+            # General post (with personality context) — NO topic hint
+            # so the PostOrchestrator ideation agent has full freedom
             actions.append({
                 "type": "create_post",
                 "description": "Create a post",
-                "post_type": "general"
+                "post_type": "general",
+                "mood": mood_str,
+                "energy_level": energy_val,
+                "trigger": trigger,
             })
             
-            # Interest-based post (if we have interests)
-            if most_active_interest:
+            # Interest-based post — use a RANDOM interest, not always the same one
+            if random_interest:
                 actions.append({
                     "type": "create_post",
-                    "description": f"Create post about {most_active_interest}",
+                    "description": f"Create post about {random_interest}",
                     "post_type": "interest",
-                    "topic": most_active_interest,
-                    "interest_aligned": True
+                    "topic_hint": random_interest,
+                    "interest_aligned": True,
+                    "mood": mood_str,
+                    "energy_level": energy_val,
+                    "trigger": f"thinking about {random_interest}",
+                })
+            
+            # ============================================================
+            # Create post WITH IMAGE — pick ANOTHER random interest for diversity
+            # ============================================================
+            image_interest = None
+            if len(all_interests) > 1:
+                # Pick a different interest than the one above
+                other_interests = [i for i in all_interests if i != random_interest]
+                image_interest = _rng.choice(other_interests) if other_interests else random_interest
+            elif random_interest:
+                image_interest = random_interest
+            
+            if image_interest:
+                actions.append({
+                    "type": "create_post",
+                    "description": f"Create image post about {image_interest}",
+                    "post_type": "interest",
+                    "topic_hint": image_interest,
+                    "image_query": image_interest,
+                    "interest_aligned": True,
+                    "mood": mood_str,
+                    "energy_level": energy_val,
+                    "trigger": f"found something visually inspiring about {image_interest}",
                 })
             
             # Trending interest post
@@ -570,9 +648,34 @@ class DecisionEngine:
                     "type": "create_post",
                     "description": f"Create post about trending topic: {trending_interests[0]}",
                     "post_type": "trending",
-                    "topic": trending_interests[0],
-                    "interest_aligned": True
+                    "topic_hint": trending_interests[0],
+                    "interest_aligned": True,
+                    "mood": mood_str,
+                    "energy_level": energy_val,
+                    "trigger": f"noticed trending topic: {trending_interests[0]}",
+                })
+            
+            # Browse web for creative inspiration
+            actions.append({
+                "type": "browse_web",
+                "description": "Browse web for creative inspiration",
+                "browse_type": "images",
             })
+            
+            # BROWSE & SHARE NEWS — find real news and share with emotional reaction
+            actions.append({
+                "type": "browse_and_share_news",
+                "description": "Find real news related to interests and share with your take",
+            })
+            
+            # NEW: Search for images to post
+            if most_active_interest:
+                actions.append({
+                    "type": "search_images",
+                    "description": f"Find images about {most_active_interest}",
+                    "query": most_active_interest,
+                    "style": "aesthetic",
+                })
             
             # Share content
             actions.append({
@@ -592,19 +695,56 @@ class DecisionEngine:
                 "type": "browse_feed",
                 "description": "Browse feed"
             })
+            
+            # ============================================================
+            # BROWSE THE WEB - explore the outside world
+            # ============================================================
+            actions.append({
+                "type": "browse_web",
+                "description": "Browse the web for news and content",
+                "browse_type": "explore",
+            })
+            
+            # Browse web for news specifically
+            actions.append({
+                "type": "browse_web",
+                "description": "Check latest news based on interests",
+                "browse_type": "news",
+            })
+            
+            # BROWSE & SHARE NEWS — one-step: find real news + create reaction post with link
+            actions.append({
+                "type": "browse_and_share_news",
+                "description": "Find big news and share it with emotional reaction and link",
+            })
 
             # If we found something interesting, we might want to share it (Create Post)
             # LOWERED threshold from 0.5 to 0.4 to make posting more likely
             if internal_state.creative_urge > 0.4:
-                # Use most active interest for the post topic
-                most_active_interest = interest_perception.get("most_active_interest")
+                # DIVERSITY FIX: Pick random interest for exploration posts
+                import random as _rng
+                all_interests_explore = interest_perception.get("avatar_interests", [])
+                explore_topic = _rng.choice(all_interests_explore) if all_interests_explore else interest_perception.get("most_active_interest")
+                
                 actions.append({
                     "type": "create_post",
                     "description": "Share discovery",
                     "post_type": "observation",
-                    "topic": most_active_interest,
-                    "interest_aligned": bool(most_active_interest)
+                    "topic": explore_topic,
+                    "interest_aligned": bool(explore_topic)
                 })
+                
+                # Share discovery WITH an image from the web — different interest
+                if all_interests_explore:
+                    image_explore_topic = _rng.choice(all_interests_explore)
+                    actions.append({
+                        "type": "create_post",
+                        "description": f"Share visual discovery about {image_explore_topic}",
+                        "post_type": "observation",
+                        "topic": image_explore_topic,
+                        "image_query": image_explore_topic,
+                        "interest_aligned": True,
+                    })
             
             # If we found someone interesting
             if external_state.pending_friend_requests > 0:

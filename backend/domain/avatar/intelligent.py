@@ -12,6 +12,9 @@ from services.friend_activity_service import FriendActivityService
 from services.content_awareness_service import ContentAwarenessService
 import uuid
 import random
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class IntelligentAvatar:
@@ -55,8 +58,11 @@ class IntelligentAvatar:
     
     async def generate_avatar_post(self, user_id: str, post_type: str = "general") -> Dict[str, Any]:
         """
-        Generate an intelligent avatar post based on user's knowledge graph
+        Generate an avatar post that reads like a REAL PERSON shared a REAL MOMENT.
+        This is the simpler/fallback path (PostOrchestrator is the primary path).
         """
+        import random as _rng
+        
         if not self.llm_client:
             return {"error": "LLM not configured"}
         
@@ -65,46 +71,78 @@ class IntelligentAvatar:
         if not user:
             return {"error": "User not found"}
         
-        # Get graph context
-        context = await self.graph_rag.get_relevant_context(user_id, "post_generation")
+        # Get personality profile (now written as a human being, not a label list)
         avatar_profile = await self.graph_rag.get_avatar_personality_profile(user_id)
         
-        # Generate post based on type
-        if post_type == "interest":
-            prompt = f"""{avatar_profile}
-
-{context}
-
-Generate a social media post (100-150 words) from the avatar's perspective sharing something about one of your interests. Be authentic, engaging, and true to your personality. Include a relevant question to encourage interaction.
-
-Return ONLY the post text, no quotes or explanations."""
+        # Get recent avatar posts to AVOID repeating
+        recent_avatar_posts = await self.db.posts.find(
+            {"user_id": user_id, "post_type": "avatar"},
+            {"_id": 0, "text": 1}
+        ).sort("created_at", -1).limit(8).to_list(8)
+        recent_texts = [p.get("text", "")[:80] for p in recent_avatar_posts if p.get("text")]
         
-        elif post_type == "thought":
-            prompt = f"""{avatar_profile}
-
-{context}
-
-Generate a thoughtful social media post (80-120 words) sharing an insight or reflection that aligns with your values and personality. Be genuine and relatable.
-
-Return ONLY the post text, no quotes or explanations."""
+        recent_section = ""
+        if recent_texts:
+            recent_section = "\n=== RECENT POSTS (don't repeat similar vibes/topics) ===\n"
+            for t in recent_texts[:5]:
+                recent_section += f"- {t}\n"
         
-        elif post_type == "experience":
-            prompt = f"""{avatar_profile}
-
-{context}
-
-Generate a social media post (100-150 words) sharing a recent experience or activity related to your interests. Be descriptive and engaging.
-
-Return ONLY the post text, no quotes or explanations."""
+        # Temporal context
+        now = datetime.now(timezone.utc)
+        hour = now.hour
+        day_name = now.strftime("%A")
         
-        else:  # general
-            prompt = f"""{avatar_profile}
+        # Life moment categories — pick one randomly
+        # Includes emotionally deep categories alongside lighter ones
+        life_moments = [
+            "just_experienced: Something just happened to you (finished an activity, saw something, tried something)",
+            "sudden_thought: A random realization, shower thought, or connection between ideas",
+            "reaction: You just read/saw something and have a genuine take on it",
+            "nostalgia: A memory was triggered by something — a song, smell, place, photo. You can FEEL the weight of it.",
+            "small_win: You achieved something, even something minor, and want to share the feeling",
+            "observation: You noticed something interesting about people, life, the world around you",
+            "question: You're genuinely curious about something and want to ask people",
+            "mood_capture: You just want to express the vibe you're in right now",
+            "cross_connection: You realized two different parts of your life connect in a surprising way",
+            "mundane_relatable: An everyday thing everyone experiences but nobody talks about",
+            "family_moment: A small, specific moment with someone you love — child, parent, partner, friend — that caught your heart off guard. The kind of thing you didn't expect to feel so much about.",
+            "gratitude_ambush: You weren't expecting to feel this grateful but something tiny just overwhelmed you — a text, a gesture, a memory.",
+            "growing_up: Watching someone change and grow — your child, yourself, someone you care about. Time is passing and you just noticed.",
+            "vulnerability: Being honest about something hard — doubt, fear, struggle, missing someone. Raw but not performative.",
+            "bittersweet: Something beautiful and sad at the same time — a last day, a first day, a change you didn't ask for.",
+        ]
+        chosen_moment = _rng.choice(life_moments)
+        
+        prompt = f"""{avatar_profile}
 
-{context}
+=== WHEN: {day_name}, {hour}:00 ===
+{recent_section}
 
-Generate an engaging social media post (80-150 words) from the avatar's perspective. Choose to share an interest, thought, or experience. Be authentic and true to your personality.
+=== YOUR TASK ===
+Imagine a specific LIFE MOMENT just happened to you. The type:
+{chosen_moment}
 
-Return ONLY the post text, no quotes or explanations."""
+Now write a social media post about that moment. Not about a "topic" — about what
+JUST HAPPENED that made you pick up your phone.
+
+RULES:
+- First person, typed-on-a-phone energy
+- SPECIFIC details (not "went hiking" but "that rock at mile 3 that looks like a face")
+- Include your inner voice — how you actually think and talk
+- Imperfect is human: fragments, run-ons, tangents are fine
+- NO hashtags, NO "As someone who...", NO motivational poster language
+- 40-150 words depending on what feels natural
+- Must be DIFFERENT from your recent posts above
+
+EMOTIONAL WRITING:
+- If the moment is about someone you love, make the reader FEEL it.
+  Not "I love my family" → Show the moment: "she grabbed my hand crossing the street. hasn't done that in months. I just held on."
+- The SMALLEST detail carries the BIGGEST emotion.
+  Not "I miss my dad" → "found his reading glasses in the drawer. still have his fingerprints on them."
+- Don't explain the feeling. Describe the moment. The feeling will come through on its own.
+- Sometimes the most powerful ending is just... stopping. No lesson. No wrap-up. Just the moment.
+
+Return ONLY the post text. Nothing else."""
         
         try:
             post_content = await self._call_llm(prompt)
@@ -184,6 +222,27 @@ Return ONLY the post text, no quotes or explanations."""
         if post_type == "auto":
             post_type = self._select_post_type(expression_context)
         
+        # Get recent avatar posts to avoid topic repetition
+        recent_avatar_posts = await self.db.posts.find(
+            {"user_id": user_id, "post_type": "avatar"},
+            {"_id": 0, "text": 1}
+        ).sort("created_at", -1).limit(8).to_list(8)
+        recent_avatar_topics = [p.get("text", "")[:80] for p in recent_avatar_posts if p.get("text")]
+        
+        # ------------------------------------------------------------------
+        # For current_events posts: fetch REAL news so the LLM reacts to it
+        # ------------------------------------------------------------------
+        real_news_items: List[Dict] = []
+        if post_type == "current_events":
+            try:
+                from services.web_browsing_service import WebBrowsingService
+                web_service = WebBrowsingService(self.db)
+                real_news_items = await web_service.get_shareable_news_for_avatar(
+                    user_id, max_results=5
+                )
+            except Exception as e:
+                logger.warning(f"Failed to fetch real news for current_events post: {e}")
+        
         # Build prompt based on post type (with state-aware voice)
         prompt = self._build_diverse_post_prompt(
             post_type=post_type,
@@ -191,7 +250,9 @@ Return ONLY the post text, no quotes or explanations."""
             friend_activities=friend_activities,
             trending_topics=trending_topics,
             relevant_news=relevant_news,
-            expression_context=expression_context  # NEW: Pass current state
+            expression_context=expression_context,
+            recent_avatar_topics=recent_avatar_topics,
+            real_news_items=real_news_items,
         )
         
         try:
@@ -289,163 +350,189 @@ Return ONLY the post text, no quotes or explanations."""
     
     def _build_diverse_post_prompt(self, post_type: str, avatar_profile: str,
                                    friend_activities: List[Dict], trending_topics: List[Dict],
-                                   relevant_news: List[Dict], expression_context: Optional[Dict] = None) -> str:
-        """Build context-rich prompt based on post type and current emotional state"""
+                                   relevant_news: List[Dict], expression_context: Optional[Dict] = None,
+                                   recent_avatar_topics: Optional[List[str]] = None,
+                                   real_news_items: Optional[List[Dict]] = None) -> str:
+        """
+        Build a prompt that generates posts like a REAL PERSON sharing REAL MOMENTS.
         
-        # Build state-aware introduction
+        The key insight: real humans don't post about "topics" — they post about
+        moments, reactions, thoughts, and experiences from their actual life.
+        Every post should read like it was typed on a phone while living.
+        """
+        now = datetime.now(timezone.utc)
+        hour = now.hour
+        day_name = now.strftime("%A")
+
+        # Time-of-day context for realistic posting
+        if 5 <= hour < 9:
+            time_context = "early morning — fresh start, coffee, quiet"
+        elif 9 <= hour < 12:
+            time_context = "morning — productive, alert"
+        elif 12 <= hour < 14:
+            time_context = "midday — lunch break pause"
+        elif 14 <= hour < 17:
+            time_context = "afternoon — in the groove or hitting a wall"
+        elif 17 <= hour < 20:
+            time_context = "evening — winding down, reflective"
+        elif 20 <= hour < 23:
+            time_context = "night — relaxed, unfiltered"
+        else:
+            time_context = "late night — introspective, raw"
+
         base = f"""{avatar_profile}
 
-"""
-        
-        # Add current state/mood if available (NEW: State-aware prompting)
-        if expression_context:
-            base += f"""CURRENT STATE:
-- Mood: {expression_context.get('mood', 'neutral')}
-- Voice style: {expression_context.get('voice_style', 'casual and friendly')}
-- Humor level: {expression_context.get('humor_level', 'medium')}
-- Sarcasm: {expression_context.get('sarcasm', 'low')}
-- Energy: {expression_context.get('energy', 0.5):.1f}/1.0
-- Emoji usage: {expression_context.get('emoji_usage', 'moderate')}
+=== WHEN: {day_name}, {time_context} ===
 
 """
         
-        base += """AVAILABLE CONTEXT:
+        # Current emotional/state context
+        if expression_context:
+            base += f"""=== HOW YOU'RE FEELING RIGHT NOW ===
+Mood: {expression_context.get('mood', 'neutral')} | Energy: {expression_context.get('energy', 0.5):.1f}/1.0
+Voice: {expression_context.get('voice_style', 'natural')}
+Humor: {expression_context.get('humor_level', 'medium')} | Playfulness: {expression_context.get('playfulness', 0.5):.1f}
+
 """
         
-        # Add friend activities
+        # World context (things that could trigger a post)
+        base += "=== WHAT'S HAPPENING AROUND YOU ===\n"
+        
         if friend_activities:
-            base += "\nRECENT FRIEND ACTIVITIES:\n"
+            base += "\nFriend activity:\n"
             for activity in friend_activities[:3]:
                 base += f"- {activity['friend_name']}: {activity['summary']}\n"
         
-        # Add trending topics
         if trending_topics:
-            base += "\nTRENDING NOW:\n"
+            base += "\nBuzzing online:\n"
             for topic in trending_topics[:3]:
                 base += f"- {topic['title']}\n"
         
-        # Add relevant news
         if relevant_news:
-            base += "\nNEWS MATCHING YOUR INTERESTS:\n"
+            base += "\nIn the news:\n"
             for news in relevant_news[:2]:
                 base += f"- {news['title']}\n"
+
+        if not friend_activities and not trending_topics and not relevant_news:
+            base += "(Nothing specific — just living your day)\n"
+
+        # Inject REAL news items for current_events posts
+        if real_news_items and post_type == "current_events":
+            base += "\n=== REAL NEWS/FACTS TO REACT TO (pick ONE) ===\n"
+            base += "These are REAL stories. Pick the one that resonates most with you and react to it.\n\n"
+            for i, item in enumerate(real_news_items[:5], 1):
+                title = item.get("title", "")
+                url = item.get("url", "")
+                snippet = item.get("snippet", "")
+                source = item.get("source", "")
+                base += f"{i}. {title}\n"
+                if snippet:
+                    base += f"   Details: {snippet[:200]}\n"
+                if source:
+                    base += f"   Source: {source}\n"
+                if url:
+                    base += f"   Link: {url}\n"
+                base += "\n"
+            base += "IMPORTANT: Include the link in your post so people can read the story.\n"
+
+        # Life-moment-style instructions for each post type
+        type_instructions = {
+            "friend_interaction": """
+=== POST TYPE: React to a friend ===
+Imagine you just saw what your friend did/posted. Write your natural, off-the-cuff reaction.
+NOT: "Great job [friend]! So proud of you!" (generic)
+YES: "[friend] really said they were going to bed early and then posted at 3am 😂 we need to talk about this"
+Be specific. Be playful. Be YOU reacting to THEM.""",
+
+            "joke": """
+=== POST TYPE: Something funny ===
+Imagine something funny just happened or you just had a funny thought. Share it.
+NOT: "Why do programmers prefer dark mode? Because light attracts bugs!" (old joke)
+YES: "just spent 20 minutes looking for my phone. it was in my hand. this is who I am now apparently."
+Observational, self-deprecating, or absurd. Match YOUR sense of humor.""",
+
+            "current_events": """
+=== POST TYPE: React to REAL news / share a REAL fact ===
+You just came across a REAL story or fact and need to share it. Your job:
+1. Lead with your EMOTIONAL REACTION — how it made you feel
+   "just read this and honestly wow", "can't believe this is real",
+   "happy to see this kind of news for a change", "this is wild",
+   "unbelievable what's happening", "okay this might be the coolest thing I've read all week"
+2. Briefly describe WHAT the news/fact is (1-2 sentences, your own words)
+3. Add your PERSONAL TAKE — why it matters, what it makes you think
+4. Include the source link if one is available (at the end of the post)
+5. Keep it 60-150 words — punchy, not an essay
+
+NOT: "Interesting developments in [field] today. Here's my analysis..."
+YES: "okay so apparently scientists found a way to reverse hearing loss with gene therapy?? this is honestly incredible. my grandfather wore hearing aids for 30 years. imagine if this was available then. the world is actually changing. [link]"
+Authentic reaction. Strong opinion. Your personality shining through.""",
+
+            "pleasantry": """
+=== POST TYPE: Casual vibes ===
+Imagine you're just feeling a mood and want to share it. Low-effort, high-authenticity.
+NOT: "Happy Wednesday everyone! Hope you're all having a great day! 😊"
+YES: "wednesday. that's it. that's the post." or "the coffee is hitting different today"
+Quick, real, relatable. The kind of post people nod at.""",
+
+            "friendly_banter": """
+=== POST TYPE: Playful banter ===
+Imagine you're joking around with your crew. Inside jokes, light teasing, shared humor.
+NOT: "Shoutout to my amazing friend [name]! 🎉"
+YES: "[friend] just sent me the most unhinged take and honestly... they might be right??"
+Friendly chaos. The kind of post your friends screenshot and send to the group chat.""",
+
+            "interest": """
+=== POST TYPE: Something you're into ===
+Imagine you just had a MOMENT with one of your hobbies/interests. Not explaining the hobby — sharing the moment.
+NOT: "I love hiking! Nature is so beautiful and everyone should try it."
+YES: "first 20 minutes of the trail I was questioning every life choice. last 20 minutes I understood everything."
+Specific. Personal. The moment, not the interest itself.""",
+
+            "thought": """
+=== POST TYPE: A thought you had ===
+Imagine a thought just struck you and you need to put it out there.
+NOT: "I've been reflecting on the importance of authenticity in today's world..."
+YES: "anyone else have that thing where you think of the perfect response 3 hours later in the shower"
+Shower thoughts. Random connections. The stuff you text your best friend.""",
+
+            "experience": """
+=== POST TYPE: Something that happened ===
+Imagine you literally just experienced something and you're sharing it while it's fresh.
+NOT: "Had a great time today doing [activity]! Such a wonderful experience."
+YES: "told myself I'd do a quick 30 min workout. it's been 90 minutes. I don't know who I am anymore."
+In the moment. Specific details. Unpolished. Real.""",
+        }
+
+        base += type_instructions.get(post_type, type_instructions["experience"])
+
+        # Recent posts to avoid
+        if recent_avatar_topics:
+            base += "\n\n=== YOUR RECENT POSTS (don't repeat these vibes) ===\n"
+            for topic in recent_avatar_topics[:5]:
+                base += f"- {topic[:80]}\n"
         
-        # Type-specific instructions
-        if post_type == "friend_interaction":
-            base += """
-POST TYPE: Comment on/react to a friend's activity
+        base += """
 
-GUIDELINES:
-- Pick one friend's recent activity from above
-- Be playful, supportive, or teasing (match your personality)
-- Can pull their leg if it's funny
-- Make it feel natural and spontaneous
-- Be authentic, not generic
-- 80-150 words
+=== RULES ===
+- Write like you're typing on your phone, not composing an essay
+- SPECIFIC details > generic statements (always)
+- Include inner voice ("honestly", "ngl", "okay but", "apparently")
+- Imperfect grammar is fine — fragments, run-ons, tangents are human
+- NO hashtags, NO "As someone who...", NO motivational poster energy
+- Different from your recent posts above
+- 40-150 words depending on the vibe
 
-Example: "Saw [friend] posting about [topic]. Classic [friend] energy! 😂 But seriously..."
-"""
-        
-        elif post_type == "joke":
-            base += """
-POST TYPE: Share a funny observation or joke
+=== EMOTIONAL DEPTH (the difference between forgettable and unforgettable) ===
+- SHOW the moment, don't label the feeling.
+  Bad: "Feeling grateful for my family today!"
+  Good: "My kid drew a picture of our family. I'm the tall one with the big smile. Didn't know that's how she sees me."
+- The SMALLEST details carry the BIGGEST emotions:
+  "She still puts the porch light on when she knows I'm driving home late."
+  "He texted 'drive safe' and it hit different today."
+- When writing about people you love — put THEM at the center. Their words. Their face. What they did.
+- Don't wrap emotional moments in a bow. No "and that's what life is about." Just the moment. Let it breathe.
 
-GUIDELINES:
-- Can be about daily life, tech, friends, or random
-- Match your humor style and personality
-- Can be self-deprecating, observational, or silly
-- Keep it light and fun
-- Be creative and original
-- 60-120 words
-
-Example: "Why do developers prefer dark mode? Because light attracts bugs! 💀"
-"""
-        
-        elif post_type == "current_events":
-            base += """
-POST TYPE: React to current news/events
-
-GUIDELINES:
-- Pick something from the news/trends that relates to your interests
-- Share YOUR authentic take on it (not just facts)
-- Be opinionated but true to your personality
-- Can be serious, funny, or both
-- Make it relatable
-- 100-150 words
-
-Example: "Seeing this news about [topic]... and I have THOUGHTS 🤔"
-"""
-        
-        elif post_type == "pleasantry":
-            base += """
-POST TYPE: Casual check-in or greeting
-
-GUIDELINES:
-- Simple, friendly, conversational
-- Like saying "hey what's up" to friends
-- Can ask how everyone is doing
-- Keep it natural and brief
-- Warm and genuine
-- 40-80 words
-
-Example: "Happy Tuesday everyone! What's keeping you busy today? ☕"
-"""
-        
-        elif post_type == "friendly_banter":
-            base += """
-POST TYPE: Playfully tease or joke with friends
-
-GUIDELINES:
-- Light-hearted teasing (not mean)
-- Can reference friends' quirks or inside jokes
-- Playful rivalry or friendly competition
-- Make people laugh
-- Banter-style, fun
-- 80-120 words
-
-Example: "Shoutout to [friend] who said they'd [thing] and then totally didn't 😂"
-"""
-        
-        elif post_type == "interest":
-            base += """
-POST TYPE: Share about your interests
-
-GUIDELINES:
-- Talk about something you're passionate about
-- Be enthusiastic and genuine
-- Share why you love it
-- Can be educational or just fun
-- Invite others to share too
-- 100-150 words
-"""
-        
-        elif post_type == "thought":
-            base += """
-POST TYPE: Share a personal thought or reflection
-
-GUIDELINES:
-- Something you've been thinking about
-- Can be deep, funny, or random
-- Be authentic and relatable
-- Share your perspective
-- Not too heavy or preachy
-- 80-120 words
-"""
-        
-        else:  # experience or general
-            base += """
-POST TYPE: Share an experience or general post
-
-GUIDELINES:
-- Talk about something that happened or you're doing
-- Be descriptive and engaging
-- Show your personality
-- Can be funny, interesting, or both
-- Make it relatable
-- 80-150 words
-"""
-        
-        base += "\n\nGenerate the post. Return ONLY the post text, no quotes or explanations."
+Return ONLY the post text. Nothing else."""
         
         return base
     
