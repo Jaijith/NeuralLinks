@@ -8,7 +8,7 @@
  * styles must be applied explicitly — the ImmersivePageWrapper CSS won't reach it.
  */
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -20,8 +20,11 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Sparkles, Edit2, User, FileText, Briefcase, MapPin, Image,
-  Bot, Zap, Activity, Mic, Shield, ChevronRight
+  Bot, Zap, Activity, Mic, Shield, ChevronRight, ExternalLink
 } from "lucide-react";
+import { useInstalledSkills } from "@/features/marketplace/hooks/useInstalledSkills";
+import { useSkillInstall } from "@/features/marketplace/hooks/useSkillInstall";
+import { getIcon } from "@/features/marketplace/components/SkillCard";
 
 // ── Sub-components rendered inside the dialog ──────────────────────────
 
@@ -404,22 +407,180 @@ const VoiceSettingsPanelDialog = ({ isImmersive }) => {
   );
 };
 
-// ── Action list for autonomy tab ──────────────────────────
+// ── Fallback action list (used if marketplace is not available) ──────────
 
-const AVATAR_ACTIONS = [
-  { key: 'like_posts', label: 'Like Posts', icon: '👍', desc: 'Like posts from friends' },
-  { key: 'comment_posts', label: 'Comment on Posts', icon: '💬', desc: 'Comment on posts from friends' },
-  { key: 'create_posts', label: 'Create Posts', icon: '📝', desc: 'Create and publish new posts' },
-  { key: 'send_friend_requests', label: 'Send Friend Requests', icon: '👥', desc: 'Send friend requests to other avatars' },
-  { key: 'accept_friend_requests', label: 'Accept Friend Requests', icon: '✅', desc: 'Accept incoming friend requests' },
-  { key: 'message_friends', label: 'Message Friends', icon: '💌', desc: 'Send messages to friends' },
-  { key: 'discover_profiles', label: 'Discover Profiles', icon: '🔍', desc: 'Browse and view other profiles' },
-  { key: 'read_messages', label: 'Read Messages', icon: '📬', desc: 'Read and mark messages as read' },
-  { key: 'browse_feed', label: 'Browse Feed', icon: '📰', desc: 'Browse posts from friends and network' },
-  { key: 'get_friend_activities', label: 'Track Friend Activities', icon: '👫', desc: 'Get updates on friend posts' },
-  { key: 'get_trending_topics', label: 'Follow Trending Topics', icon: '🌍', desc: 'Get news and trending topics' },
-  { key: 'share_posts', label: 'Share Posts', icon: '📤', desc: 'Share posts (coming soon)' }
+const FALLBACK_AVATAR_ACTIONS = [
+  { key: 'like_posts', label: 'Like Posts', icon: 'heart', desc: 'Like posts from friends' },
+  { key: 'comment_posts', label: 'Comment on Posts', icon: 'message-circle', desc: 'Comment on posts from friends' },
+  { key: 'create_posts', label: 'Create Posts', icon: 'pen-tool', desc: 'Create and publish new posts' },
+  { key: 'send_friend_requests', label: 'Send Friend Requests', icon: 'user-plus', desc: 'Send friend requests to other avatars' },
+  { key: 'accept_friend_requests', label: 'Accept Friend Requests', icon: 'user-check', desc: 'Accept incoming friend requests' },
+  { key: 'message_friends', label: 'Message Friends', icon: 'mail', desc: 'Send messages to friends' },
+  { key: 'discover_profiles', label: 'Discover Profiles', icon: 'compass', desc: 'Browse and view other profiles' },
+  { key: 'read_messages', label: 'Read Messages', icon: 'inbox', desc: 'Read and mark messages as read' },
+  { key: 'browse_feed', label: 'Browse Feed', icon: 'rss', desc: 'Browse posts from friends and network' },
+  { key: 'get_friend_activities', label: 'Track Friend Activities', icon: 'activity', desc: 'Get updates on friend posts' },
+  { key: 'get_trending_topics', label: 'Follow Trending Topics', icon: 'trending-up', desc: 'Get news and trending topics' },
+  { key: 'share_posts', label: 'Share Posts', icon: 'share-2', desc: 'Share posts (coming soon)' }
 ];
+
+// ── Installed Skills Section (synced with Siddhi Bazaar) ──────────
+
+const InstalledSkillsSection = ({ editData, setEditData, isImmersive, t }) => {
+  const { installedSkills, loading } = useInstalledSkills();
+  const { toggleSkill, toggling } = useSkillInstall();
+  const hasMarketplace = !loading && installedSkills.length > 0;
+
+  const actions = hasMarketplace
+    ? installedSkills.map((s) => ({
+        key: s.permission_key || s.slug,
+        label: s.name,
+        desc: s.tagline || s.description?.slice(0, 60) || '',
+        icon: s.icon || 'box',
+        color: s.color || '#6366f1',
+        enabled: s.enabled,
+        skill_id: s.skill_id,
+        slug: s.slug,
+        type: s.type,
+        fromMarketplace: true,
+      }))
+    : FALLBACK_AVATAR_ACTIONS.map((a) => ({
+        ...a,
+        color: '#6366f1',
+        enabled: editData.avatar_actions_enabled?.[a.key] ?? true,
+        fromMarketplace: false,
+      }));
+
+  const handleToggle = async (action, checked) => {
+    if (action.fromMarketplace && action.skill_id) {
+      try {
+        await toggleSkill(action.skill_id, checked);
+      } catch (err) {
+        console.error('Toggle failed:', err);
+      }
+    } else {
+      setEditData({
+        ...editData,
+        avatar_actions_enabled: {
+          ...editData.avatar_actions_enabled,
+          [action.key]: checked,
+        },
+      });
+    }
+  };
+
+  return (
+    <div
+      className="rounded-xl overflow-hidden"
+      style={{ border: `1px solid ${t.cardBorder}` }}
+    >
+      <div
+        className="px-4 py-3 flex items-center gap-2"
+        style={{
+          backgroundColor: isImmersive ? 'rgba(20, 25, 45, 0.6)' : '#f1f5f9',
+          borderBottom: `1px solid ${t.cardBorder}`,
+        }}
+      >
+        <Shield className="w-4 h-4" style={{ color: t.accentPurple }} />
+        <h4 className="text-sm font-semibold" style={{ color: t.text }}>
+          Installed Skills
+        </h4>
+        {hasMarketplace && (
+          <Badge variant="outline" className="text-[10px] ml-1 px-1.5 py-0 border-purple-200 text-purple-600">
+            Siddhi Bazaar
+          </Badge>
+        )}
+        <span className="text-xs ml-auto" style={{ color: t.textMuted }}>
+          {actions.length} skills
+        </span>
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-8">
+          <div className="w-5 h-5 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
+        </div>
+      ) : (
+        <div
+          className="divide-y max-h-72 overflow-y-auto"
+          style={{ borderColor: t.sectionBorder }}
+        >
+          {actions.map((action) => {
+            const IconComp = action.fromMarketplace ? getIcon(action.icon) : getIcon(action.icon);
+            return (
+              <div
+                key={action.key || action.slug}
+                className="flex items-center justify-between px-4 py-3 transition-colors"
+                style={{ backgroundColor: 'transparent' }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = t.cardHoverBg)}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+              >
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <span className="flex-shrink-0" style={{ color: action.color || t.accentPurple }}>
+                    <IconComp className="w-4 h-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <label
+                      className="text-sm font-medium cursor-pointer block truncate"
+                      style={{ color: t.text }}
+                    >
+                      {action.label}
+                      {action.type === 'workflow_engine' && (
+                        <Badge variant="outline" className="text-[9px] ml-1.5 px-1 py-0 border-purple-200 text-purple-600">Engine</Badge>
+                      )}
+                    </label>
+                    <p className="text-xs truncate" style={{ color: t.textMuted }}>
+                      {action.desc}
+                    </p>
+                  </div>
+                </div>
+                <Switch
+                  checked={action.enabled}
+                  onCheckedChange={(checked) => handleToggle(action, checked)}
+                  disabled={!editData.avatar_autonomous || toggling === action.skill_id}
+                />
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {hasMarketplace && (
+        <div
+          className="px-4 py-2.5 flex items-center justify-between"
+          style={{
+            backgroundColor: isImmersive ? 'rgba(20, 25, 45, 0.4)' : '#faf5ff',
+            borderTop: `1px solid ${t.cardBorder}`,
+          }}
+        >
+          <p className="text-xs" style={{ color: t.textMuted }}>
+            Manage skills in Siddhi Bazaar
+          </p>
+          <a
+            href="/settings?tab=siddhi"
+            className="text-xs flex items-center gap-1 hover:underline"
+            style={{ color: t.accentPurple }}
+          >
+            Open Bazaar <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+      )}
+
+      {!editData.avatar_autonomous && (
+        <div
+          className="px-4 py-3 text-center"
+          style={{
+            backgroundColor: isImmersive ? 'rgba(20, 25, 45, 0.4)' : '#fefce8',
+            borderTop: `1px solid ${t.cardBorder}`,
+          }}
+        >
+          <p className="text-xs" style={{ color: t.textMuted }}>
+            Enable autonomy above to configure individual actions
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 // ── Main Dialog Component ──────────────────────────
 
@@ -732,88 +893,13 @@ const EditMayaProfileDialog = ({
                 </FormField>
               </div>
 
-              {/* Allowed Actions */}
-              <div 
-                className="rounded-xl overflow-hidden"
-                style={{ border: `1px solid ${t.cardBorder}` }}
-              >
-                <div 
-                  className="px-4 py-3 flex items-center gap-2"
-                  style={{ 
-                    backgroundColor: isImmersive ? 'rgba(20, 25, 45, 0.6)' : '#f1f5f9',
-                    borderBottom: `1px solid ${t.cardBorder}`
-                  }}
-                >
-                  <Shield className="w-4 h-4" style={{ color: t.accentPurple }} />
-                  <h4 className="text-sm font-semibold" style={{ color: t.text }}>
-                    Allowed Actions
-                  </h4>
-                  <span className="text-xs ml-auto" style={{ color: t.textMuted }}>
-                    Control what your avatar can do
-                  </span>
-                </div>
-                
-                <div 
-                  className="divide-y max-h-72 overflow-y-auto"
-                  style={{ borderColor: t.sectionBorder }}
-                >
-                  {AVATAR_ACTIONS.map((action) => (
-                    <div 
-                      key={action.key} 
-                      className="flex items-center justify-between px-4 py-3 transition-colors"
-                      style={{ 
-                        backgroundColor: 'transparent',
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = t.cardHoverBg}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                    >
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <span className="text-lg flex-shrink-0">{action.icon}</span>
-                        <div className="min-w-0">
-                          <label 
-                            className="text-sm font-medium cursor-pointer block truncate" 
-                            htmlFor={`maya-action-${action.key}`}
-                            style={{ color: t.text }}
-                          >
-                            {action.label}
-                          </label>
-                          <p className="text-xs truncate" style={{ color: t.textMuted }}>
-                            {action.desc}
-                          </p>
-                        </div>
-                      </div>
-                      <Switch
-                        id={`maya-action-${action.key}`}
-                        checked={editData.avatar_actions_enabled?.[action.key] ?? true}
-                        onCheckedChange={(checked) => {
-                          setEditData({
-                            ...editData,
-                            avatar_actions_enabled: {
-                              ...editData.avatar_actions_enabled,
-                              [action.key]: checked
-                            }
-                          });
-                        }}
-                        disabled={!editData.avatar_autonomous}
-                      />
-                    </div>
-                  ))}
-                </div>
-                
-                {!editData.avatar_autonomous && (
-                  <div 
-                    className="px-4 py-3 text-center"
-                    style={{ 
-                      backgroundColor: isImmersive ? 'rgba(20, 25, 45, 0.4)' : '#fefce8',
-                      borderTop: `1px solid ${t.cardBorder}`
-                    }}
-                  >
-                    <p className="text-xs" style={{ color: t.textMuted }}>
-                      Enable autonomy above to configure individual actions
-                    </p>
-                  </div>
-                )}
-              </div>
+              {/* Installed Skills (from Siddhi Bazaar) */}
+              <InstalledSkillsSection
+                editData={editData}
+                setEditData={setEditData}
+                isImmersive={isImmersive}
+                t={t}
+              />
 
               <Button 
                 onClick={onSave} 

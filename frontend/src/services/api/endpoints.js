@@ -88,6 +88,23 @@ export const endpoints = {
     connect: (platform) => `${API_BASE}/integrations/${platform}/connect`,
     disconnect: (platform) => `${API_BASE}/integrations/${platform}/disconnect`,
   },
+
+  // Siddhi Bazaar (Marketplace)
+  marketplace: {
+    skills: `${API_BASE}/marketplace/skills`,
+    skillDetail: (id) => `${API_BASE}/marketplace/skills/${id}`,
+    categories: `${API_BASE}/marketplace/categories`,
+    featured: `${API_BASE}/marketplace/featured`,
+    popular: `${API_BASE}/marketplace/popular`,
+    recommended: `${API_BASE}/marketplace/recommended`,
+    installed: `${API_BASE}/marketplace/installed`,
+    install: (id) => `${API_BASE}/marketplace/install/${id}`,
+    uninstall: (id) => `${API_BASE}/marketplace/uninstall/${id}`,
+    toggle: (id) => `${API_BASE}/marketplace/toggle/${id}`,
+    reviews: (id) => `${API_BASE}/marketplace/skills/${id}/reviews`,
+    submitReview: (id) => `${API_BASE}/marketplace/skills/${id}/review`,
+    gatewayStatus: `${API_BASE}/marketplace/gateway/status`,
+  },
 };
 
 export default endpoints;

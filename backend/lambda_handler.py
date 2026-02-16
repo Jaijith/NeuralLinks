@@ -115,6 +115,19 @@ try:
     # This is recommended for Lambda to avoid issues with connection pooling
     mangum_adapter = Mangum(app, lifespan="off")
     
+    # Seed Siddhi Bazaar catalog on cold start (idempotent, runs once per Lambda instance)
+    try:
+        import asyncio as _asyncio
+        from domain.marketplace.catalog import seed_catalog as _seed_catalog
+        from core.database import get_database as _get_db
+        _loop = _asyncio.new_event_loop()
+        _created = _loop.run_until_complete(_seed_catalog(_get_db()))
+        _loop.close()
+        if _created > 0:
+            logger.info(f"🔮 Siddhi Bazaar: {_created} new skills seeded (cold start)")
+    except Exception as _seed_err:
+        logger.warning(f"🔮 Siddhi Bazaar seed on cold start failed (non-fatal): {_seed_err}")
+    
     async def run_single_avatar_cycle(avatar_id: str, force_action: str = None):
         """Run autonomous cycle for a single avatar
         

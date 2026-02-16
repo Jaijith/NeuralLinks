@@ -71,6 +71,14 @@ from domain.avatar.decision import DecisionEngine
 from domain.avatar.character import CharacterProfile
 from domain.avatar.mcp.server import mcp_server
 from domain.avatar.memory import MemoryManager  # NEW: Memory integration
+
+# Siddhi Gateway (will be set from main.py if available)
+_siddhi_gateway = None
+
+def set_siddhi_gateway(gateway):
+    """Set the global Siddhi Gateway for state-aware agents"""
+    global _siddhi_gateway
+    _siddhi_gateway = gateway
 from domain.avatar.behavior_tree import (
     create_react_to_post_bt,
     create_initiate_social_interaction_bt,
@@ -171,7 +179,9 @@ class StateAwareAgent:
         self.character_profile: Optional[CharacterProfile] = None
         
         # MCP Server reference (all actions go through MCP tools)
+        # Use Siddhi Gateway if available, otherwise fall back to MCP server directly
         self.mcp_server = mcp_server
+        self.gateway = _siddhi_gateway
         
         # Visual indicator
         avatar_indicator = "✨" if self.is_user_avatar else "🤖"
@@ -324,9 +334,12 @@ class StateAwareAgent:
                     else:
                         character_dict = self.character_profile.to_dict() if self.character_profile else None
                         
-                        # Get permissions from user document
-                        user = await self.db.users.find_one({"id": self.bot_id})
-                        permissions = user.get("avatar_actions_enabled", {}) if user else {}
+                        # Get permissions — use gateway (marketplace) if available, else user document
+                        if self.gateway:
+                            permissions = await self.gateway.get_permissions_from_installations(self.bot_id)
+                        else:
+                            user = await self.db.users.find_one({"id": self.bot_id})
+                            permissions = user.get("avatar_actions_enabled", {}) if user else {}
                         
                         # Select action (now with memory context)
                         selected_action = await self.decision_engine.select_action(
@@ -346,7 +359,12 @@ class StateAwareAgent:
                             tool_name = self._map_action_to_tool(action_type)
                             
                             if tool_name:
-                                result = await self.mcp_server.call_tool(tool_name, self.bot_id, action_args)
+                                # Use gateway if available, else fallback to MCP server
+                                if self.gateway:
+                                    gw_result = await self.gateway.execute_tool(tool_name, self.bot_id, action_args, source="agent")
+                                    result = gw_result.data
+                                else:
+                                    result = await self.mcp_server.call_tool(tool_name, self.bot_id, action_args)
                                 
                                 if result.get('success'):
                                     logger.info(f"{avatar_indicator} {avatar_name} - ✅ {action_type}")
@@ -471,7 +489,10 @@ class StateAwareAgent:
             "message_friend": "message_friend",
             "discover_profiles": "discover_profiles",
             "read_messages": "read_messages",
-            "browse_feed": "browse_feed"  # Now has MCP tool
+            "browse_feed": "browse_feed",
+            "browse_web": "browse_web",
+            "search_images": "search_images",
+            "browse_and_share_news": "browse_and_share_news",
         }
         return mapping.get(action_type)
     
@@ -505,6 +526,17 @@ class StateAwareAgent:
                     internal_state.adjust_mood(MoodState.EXCITED, "Found new people")
                 else:
                     internal_state.adjust_mood(MoodState.BORED, "Found no one new")
+
+            elif action_type == "browse_and_share_news":
+                internal_state.creative_urge = max(0.0, internal_state.creative_urge - 0.3)
+                internal_state.time_since_last_action = timedelta(0)
+                if result.get('success'):
+                    internal_state.adjust_mood(MoodState.EXCITED, "Shared news with followers")
+
+            elif action_type in ("browse_web", "search_images"):
+                internal_state.time_since_last_action = timedelta(0)
+                if result.get('success'):
+                    internal_state.adjust_mood(MoodState.CURIOUS, "Browsed interesting content")
 
             elif action_type == "browse_feed":
                  # Do NOT reset time_since_last_action for browsing

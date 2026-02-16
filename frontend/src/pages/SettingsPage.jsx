@@ -4,23 +4,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Settings, Link2, Eye, User, Trash2, AlertTriangle } from "lucide-react";
+import { Settings, Link2, Eye, User, Trash2, AlertTriangle, Sparkles } from "lucide-react";
 import IntegrationsPage from "./IntegrationsPage";
 import AvatarVisualization from "./AvatarVisualization";
 import AppHeader from "@/components/AppHeader";
 import { useWorldMode } from "@/contexts/WorldModeContext";
 import useViewMode from "@/hooks/useViewMode";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { ImmersivePageWrapper } from "@/components/ambient";
+import { SiddhiBazaarTab } from "@/features/marketplace";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const SettingsPage = ({ user, setUser }) => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("avatar");
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'avatar';
+  const [activeTab, setActiveTab] = useState(initialTab);
   const { worldMode } = useWorldMode();
   const { isImmersive } = useViewMode();
   const isAvatarWorld = worldMode === 'avatar';
@@ -59,7 +62,7 @@ const SettingsPage = ({ user, setUser }) => {
 
         {/* Tabs - scrollable on mobile */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-4 sm:mb-6 h-auto">
+          <TabsList className="grid w-full grid-cols-4 mb-4 sm:mb-6 h-auto">
             <TabsTrigger 
               value="avatar" 
               className="flex items-center justify-center gap-1 sm:gap-2 px-2 py-2 sm:py-3 text-xs sm:text-sm min-h-[44px]"
@@ -67,6 +70,14 @@ const SettingsPage = ({ user, setUser }) => {
               <Eye className="w-4 h-4 flex-shrink-0" />
               <span className="hidden xs:inline">Avatar</span>
               <span className="xs:hidden">Avatar</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="siddhi" 
+              className="flex items-center justify-center gap-1 sm:gap-2 px-2 py-2 sm:py-3 text-xs sm:text-sm min-h-[44px]"
+            >
+              <Sparkles className="w-4 h-4 flex-shrink-0" />
+              <span className="hidden sm:inline">Siddhi Bazaar</span>
+              <span className="sm:hidden">Skills</span>
             </TabsTrigger>
             <TabsTrigger 
               value="integrations" 
@@ -97,6 +108,12 @@ const SettingsPage = ({ user, setUser }) => {
                 </div>
               </Card>
             )}
+          </TabsContent>
+
+          <TabsContent value="siddhi" className="mt-0">
+            <Card className="glass-morphism p-4 sm:p-6">
+              <SiddhiBazaarTab user={user} isImmersive={false} />
+            </Card>
           </TabsContent>
 
           <TabsContent value="integrations" className="mt-0">

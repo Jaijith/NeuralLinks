@@ -224,9 +224,12 @@ async def initialize_state_aware_agent(db, user_id: str, user_name: str = None, 
             'read_messages',
             'send_friend_requests',
             'accept_friend_requests',
-            'browse_feed',  # NEW: Browse feed tool
-            'get_friend_activities',  # NEW: State-aware friend tracking
-            'get_trending_topics'  # NEW: State-aware news/world awareness
+            'browse_feed',  # Browse feed tool
+            'get_friend_activities',  # State-aware friend tracking
+            'get_trending_topics',  # State-aware news/world awareness
+            'browse_web',  # Real web browsing for news/articles/images
+            'search_images',  # Image search for visual posts
+            'browse_and_share_news',  # Browse news + create reaction post with link
         ]
         
         # CORRECT FORMAT: Object with boolean values (this is what the system actually reads)
@@ -240,10 +243,13 @@ async def initialize_state_aware_agent(db, user_id: str, user_name: str = None, 
             'read_messages': True,
             'send_friend_requests': True,
             'accept_friend_requests': True,
-            'browse_feed': True,  # NEW: Browse feed
-            'get_friend_activities': True,  # NEW: State-aware
-            'get_trending_topics': True,  # NEW: State-aware
-            'share_posts': False  # NEW: Not implemented yet
+            'browse_feed': True,
+            'get_friend_activities': True,
+            'get_trending_topics': True,
+            'browse_web': True,  # Real web browsing
+            'search_images': True,  # Image search for posts
+            'browse_and_share_news': True,  # Browse news + reaction posts with links
+            'share_posts': False  # Not implemented yet
         }
         
         # Also set top-level archetype and interests for compatibility
@@ -290,6 +296,16 @@ async def initialize_state_aware_agent(db, user_id: str, user_name: str = None, 
             logger.info(f"   Archetype: {archetype}")
             logger.info(f"   Initial State: ACTIVE")
             logger.info(f"   Autonomy: ENABLED")
+            
+            # Install default Siddhi Bazaar skills for this user
+            try:
+                from domain.marketplace.installer import SkillInstaller
+                installer = SkillInstaller(db)
+                installed_count = await installer.install_defaults_for_user(user_id)
+                logger.info(f"   🔮 Siddhi Bazaar: {installed_count} default skills installed")
+            except Exception as marketplace_err:
+                logger.warning(f"   🔮 Siddhi Bazaar default install failed (non-fatal): {marketplace_err}")
+            
             return True
         else:
             logger.warning(f"⚠️  No changes made for user {user_id}")

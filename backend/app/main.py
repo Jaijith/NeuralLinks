@@ -107,9 +107,37 @@ from api.match_routes import router as match_router
 from api.agent_routes import router as agent_router
 from api.voice_routes import router as voice_router
 from app.routers.debug import router as debug_router
+from api.marketplace_routes import router as marketplace_router
 
 # NOTE: Workflow router is now in a SEPARATE Lambda function
 # Requests to /api/workflow/* are routed to WorkflowFunction by API Gateway
+
+# Initialize Siddhi Bazaar (Marketplace)
+from domain.marketplace.service import SiddhiBazaarService
+from domain.marketplace.gateway import SiddhiGateway
+from domain.marketplace.recommendation import SkillRecommender
+
+# Import MCP server for gateway
+from domain.avatar.mcp.server import mcp_server as avatar_mcp_server
+
+siddhi_gateway = SiddhiGateway(db=db, mcp_server=avatar_mcp_server)
+marketplace_service = SiddhiBazaarService(db=db, gateway=siddhi_gateway)
+skill_recommender = SkillRecommender(db=db)
+
+# Attach to app state so routes can access them
+app.state.marketplace_service = marketplace_service
+app.state.siddhi_gateway = siddhi_gateway
+app.state.skill_recommender = skill_recommender
+
+logger.info("🔮 Siddhi Bazaar marketplace initialized")
+
+# Wire gateway to state-aware agent module
+try:
+    from domain.avatar.state_aware_agent import set_siddhi_gateway
+    set_siddhi_gateway(siddhi_gateway)
+    logger.info("🔮 Siddhi Gateway wired to StateAwareAgent")
+except Exception as e:
+    logger.warning(f"Could not wire Siddhi Gateway to StateAwareAgent: {e}")
 
 app.include_router(auth_router)
 app.include_router(signup_router)
@@ -126,6 +154,7 @@ app.include_router(match_router)
 app.include_router(agent_router)
 app.include_router(voice_router)
 app.include_router(debug_router)
+app.include_router(marketplace_router)
 # NOTE: Workflow routes are handled by separate WorkflowFunction Lambda
 
 # Serve static files (uploads)
@@ -152,7 +181,18 @@ except OSError as e:
 
 @app.on_event("startup")
 async def startup_event():
-    """Resume autonomous agents on application startup"""
+    """Resume autonomous agents and seed marketplace on startup"""
+    # Seed Siddhi Bazaar catalog (idempotent)
+    try:
+        from domain.marketplace.catalog import seed_catalog
+        created = await seed_catalog(db)
+        if created > 0:
+            logger.info(f"🔮 Siddhi Bazaar: {created} new skills seeded")
+        else:
+            logger.info("🔮 Siddhi Bazaar catalog up to date")
+    except Exception as e:
+        logger.warning(f"🔮 Siddhi Bazaar seed failed (non-fatal): {e}")
+
     if agent_runner:
         # Run in background to not block startup
         asyncio.create_task(agent_runner.resume_all_enabled_agents())

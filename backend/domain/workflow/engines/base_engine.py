@@ -134,12 +134,14 @@ class BaseWorkflowEngine(ABC):
         db: AsyncIOMotorDatabase,
         mcp_server: Any,
         openai_client: Any = None,
-        intelligent_avatar: Any = None
+        intelligent_avatar: Any = None,
+        gateway: Any = None
     ):
         self.db = db
         self.mcp_server = mcp_server
         self.openai_client = openai_client
         self.intelligent_avatar = intelligent_avatar
+        self.gateway = gateway  # Siddhi Gateway (if available)
         
         # Build the workflow graph
         self.workflow_graph = self._build_workflow_graph()
@@ -301,7 +303,10 @@ class BaseWorkflowEngine(ABC):
         avatar_id: str, 
         **kwargs
     ) -> Dict[str, Any]:
-        """Call an MCP tool"""
+        """Call an MCP tool — routes through Siddhi Gateway if available"""
+        if self.gateway:
+            gw_result = await self.gateway.execute_tool(tool_name, avatar_id, kwargs, source="workflow")
+            return gw_result.data
         return await self.mcp_server.call_tool(tool_name, avatar_id, **kwargs)
     
     async def _update_mission_status(self, mission_id: str, status: str):
