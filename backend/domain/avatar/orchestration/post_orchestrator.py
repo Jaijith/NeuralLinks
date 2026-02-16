@@ -96,7 +96,14 @@ class PostOrchestrator:
                     styled, verification.get("issues", []), context
                 )
 
-            return {
+            # --- Agent 7: IMAGE FINDER ---
+            # Every post should have an image.  Extract the topic from the
+            # ideation step and search for a relevant photo.
+            image_url = await self._find_image_for_post(
+                final_text, intent, idea, context
+            )
+
+            result = {
                 "text": final_text,
                 "quality_score": verification.get("score", 0.8),
                 "metadata": {
@@ -107,6 +114,10 @@ class PostOrchestrator:
                     "generated_at": datetime.now(timezone.utc).isoformat(),
                 },
             }
+            if image_url:
+                result["image_url"] = image_url
+
+            return result
 
         except Exception as e:
             logger.error(f"Post orchestrator error: {e}")
@@ -130,18 +141,10 @@ class PostOrchestrator:
     ) -> Dict[str, Any]:
         """
         Generate a post reacting to REAL news or sharing a real fact.
-        
-        This is fundamentally different from life-moment posts:
-        - The CONTENT is real (news headline, URL, fact)
-        - The avatar adds their EMOTIONAL REACTION and personal take
-        - The URL is included so people can read the source
-        
-        Examples of what this produces:
-        - "just read this — AI can now restore people's voices after MND. 
-           this is incredible. humanity at its best 🙏 [link]"
-        - "okay apparently there's a fish that's been living 4000m below 
-           the surface this whole time?? we know more about Mars than our 
-           own ocean. wild. [link]"
+
+        CRITICAL: Every avatar MUST sound like their real user — different
+        vocabulary, sentence structure, tone, and personality.  Never start
+        with the same opener twice.
         """
         import random
 
@@ -153,89 +156,171 @@ class PostOrchestrator:
         interests = context.get("interests", [])
         traits = context.get("traits", [])
         values = context.get("values", [])
-        samples = context.get("writing_samples", [])[:4]
-        samples_text = "\n---\n".join(f'"{s[:200]}"' for s in samples if s)
+        personality_prompt = context.get("personality_prompt", "")
+        samples = context.get("writing_samples", [])[:6]
+        samples_text = "\n---\n".join(f'"{s[:250]}"' for s in samples if s)
+        style = context.get("style_profile", {})
+        user_profile = context.get("user_profile", {})
+        recent_avatar_posts = context.get("recent_avatar_posts", [])
 
-        # Pick a reaction style randomly for variety
-        reaction_styles = [
-            "genuine_shock: You can't believe this is real. Express surprise/amazement.",
-            "happy_news: This is good news and you're genuinely glad. Share the warmth.",
-            "thought_provoking: This makes you think. Share the insight it triggered.",
-            "mind_blown: A rare fact or discovery that changes how you see things.",
-            "concerned: This worries you or raises questions. Be honest about it.",
-            "inspired: This motivates or inspires you. Share what it sparks in you.",
-            "sarcastic_take: A witty or dry reaction that's still thoughtful.",
-            "personal_connection: This connects to something in your life. Share how.",
+        # Build a VOICE IDENTITY from all available data
+        voice_parts = []
+        name = user_profile.get("name", "")
+        avatar_name = user_profile.get("avatar_name", "")
+        if name:
+            voice_parts.append(f"Name: {name}")
+        if avatar_name and avatar_name != name:
+            voice_parts.append(f"Known as: {avatar_name}")
+
+        cp = user_profile.get("avatar_character_profile", {})
+        if cp.get("archetype"):
+            voice_parts.append(f"Archetype: {cp['archetype']}")
+
+        # Build style fingerprint from quantified data
+        style_notes = []
+        if style.get("avg_post_length"):
+            style_notes.append(f"Posts average ~{int(style['avg_post_length'])} words")
+        ef = style.get("emoji_frequency", 0)
+        if ef > 1.0:
+            style_notes.append("Heavy emoji user (multiple per post)")
+        elif ef > 0.3:
+            style_notes.append("Moderate emoji user")
+        elif ef < 0.1:
+            style_notes.append("Rarely uses emojis — raw text only")
+        if style.get("lowercase_rate", 0) > 0.5:
+            style_notes.append("Often writes in all lowercase")
+        if style.get("exclamation_rate", 0) > 0.5:
+            style_notes.append("Loves exclamation marks!")
+        elif style.get("exclamation_rate", 0) < 0.1:
+            style_notes.append("Almost never uses exclamation marks")
+        if style.get("question_rate", 0) > 0.3:
+            style_notes.append("Asks a lot of questions in posts")
+        if style.get("ellipsis_rate", 0) > 0.4:
+            style_notes.append("Uses ... (ellipsis) frequently")
+        if style.get("common_phrases"):
+            style_notes.append(f"Signature phrases: {', '.join(style['common_phrases'][:5])}")
+        style_fingerprint = "\n".join(style_notes) if style_notes else ""
+
+        voice_identity = "\n".join(voice_parts)
+
+        # Pick a reaction STRUCTURE randomly to force different post shapes
+        structures = [
+            ("opinion_first", "Start with your strong opinion. Then explain what happened. Link at end."),
+            ("news_then_take", "State the news fact in one line. Then give your personal take. Link at end."),
+            ("question_opener", "Open with a rhetorical question about the news. Answer it yourself. Link at end."),
+            ("personal_tie", "Connect this news to something specific from YOUR life or interests first. Then mention the news. Link at end."),
+            ("one_liner_punch", "One punchy sentence reaction. Then the news detail. Link at end."),
+            ("storytelling", "Tell it like you're explaining to a friend — casual, with your personality. Link at end."),
         ]
-        chosen_style = random.choice(reaction_styles)
+        chosen_structure_name, chosen_structure_desc = random.choice(structures)
 
-        prompt = f"""You are writing a social media post REACTING to real news/a real fact.
-This is NOT fiction — this is a real story. You're sharing it with your followers.
+        # Pick reaction tone
+        reaction_tones = [
+            "genuine_shock", "happy", "thought_provoking", "impressed",
+            "concerned", "inspired", "witty", "personal_connection",
+            "skeptical", "passionate",
+        ]
+        chosen_tone = random.choice(reaction_tones)
 
-=== THE REAL NEWS/FACT ===
-Title: {news_title}
+        # Recent posts to NOT repeat
+        recent_openers = [p[:40].lower() for p in recent_avatar_posts[:5] if p]
+
+        prompt = f"""You are {name or avatar_name or 'a real person'} posting on social media about news you saw.
+
+=== YOUR IDENTITY ===
+{voice_identity}
+{personality_prompt}
+
+Personality: {', '.join(traits[:6]) if traits else 'unique individual'}
+What matters to you: {', '.join(values[:5]) if values else 'being real'}
+Your world: {', '.join(interests[:10]) if interests else 'life'}
+{style_fingerprint}
+
+=== HOW YOU WRITE (match this voice EXACTLY) ===
+{samples_text if samples_text else "You write naturally, conversationally — like texting a friend."}
+
+=== THE NEWS ===
+{news_title}
+{news_snippet}
 Source: {news_source}
-Details: {news_snippet}
-Link: {news_url}
+URL: {news_url}
 
-=== WHO YOU ARE ===
-Interests: {', '.join(interests[:8])}
-Personality: {', '.join(traits) if traits else 'authentic, expressive'}
-Values: {', '.join(values) if values else 'genuine, curious'}
-Current mood: {mood} | Energy: {energy:.1f}
+=== POST STRUCTURE: {chosen_structure_name} ===
+{chosen_structure_desc}
 
-=== YOUR REACTION STYLE FOR THIS POST ===
-{chosen_style}
+=== TONE: {chosen_tone} ===
 
-=== WRITING SAMPLES (match this voice) ===
-{samples_text or "No samples — write naturally."}
+=== RULES ===
+1. You are {name or avatar_name or 'a specific person'}, NOT a brand account.
+   Your reaction must show YOUR specific lens — as someone into {', '.join(interests[:3]) if interests else 'your thing'}.
 
-=== RULES FOR NEWS REACTION POSTS ===
-1. Start with your EMOTIONAL REACTION — how you feel reading this.
-   Examples: "just read this and honestly wow", "okay this is actually incredible",
-   "ngl this hit different", "happy to see this kind of news", "this is wild",
-   "can't believe this is real", "unbelievable what's happening"
-2. Briefly mention WHAT the news/fact is (1-2 sentences, in your own words)
-3. Add your PERSONAL TAKE — what it means to you, why it matters, what it makes you think
-4. ALWAYS include the link at the end so people can read it
-5. If it connects to one of your interests, mention that naturally
-6. Keep it 60-150 words — punchy, not an essay
-7. Sound like YOU, not a news anchor. Phone-typed energy.
-8. NO hashtags unless the person uses them in their samples
+2. ABSOLUTELY BANNED PHRASES (if you use ANY of these, the post is rejected):
+   "how is nobody talking about this"
+   "just read this"
+   "just saw this"
+   "hey everyone"
+   "hey friends"
+   "exciting news"
+   "can't believe"
+   "it's always inspiring"
+   "what an amazing opportunity"
+   "it's fascinating"
+   "can't wait to see"
+   "shining a light on"
+   "check it out"
+   "this is wild"
+   "I'm shook"
+   "lowkey obsessed"
+   Do NOT use ANY of these or similar template phrases.
 
-=== FORMAT ===
-Your reaction text here... [include the actual URL at the end]
+3. CONNECT the news to YOUR world. If you're into {interests[0] if interests else 'something specific'},
+   relate it to that. The reader should think "only THIS person would say it this way."
 
-Return ONLY the post text with the link. Nothing else."""
+4. URL goes at the end on its own line. No intro for it.
+
+5. 30-80 words. Short. Like a text to a friend.
+
+6. NO hashtags.
+
+7. Your recent post openings (do NOT repeat):
+{chr(10).join(f'   - "{o}"' for o in recent_openers[:5]) if recent_openers else '   (none yet)'}
+
+ONLY the post text. Nothing else."""
 
         try:
             response = await self.openai.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": (
-                        "You write social media posts reacting to real news and facts. "
-                        "You sound like a real person who just read something and needs to share it. "
-                        "Not a journalist, not a news bot — a human with opinions and feelings. "
-                        "Always include the source link. Be genuine, not performative."
+                        f"You are writing as {name or avatar_name or 'a specific person'}. "
+                        f"They are {', '.join(traits[:3]) if traits else 'a real individual'} "
+                        f"whose life revolves around {', '.join(interests[:3]) if interests else 'specific passions'}. "
+                        "Write like THEY would actually type — match their energy, vocabulary, and style. "
+                        "If they're analytical, write analytically. If casual, be casual. If poetic, be poetic. "
+                        "CRITICAL: Do NOT default to generic excited social media voice. "
+                        "Do NOT use phrases like 'how is nobody talking about this', 'just read this', "
+                        "'hey everyone', 'I'm shook', or 'lowkey obsessed' — those are cliche. "
+                        "Instead, have a GENUINE personal reaction based on this person's worldview. "
+                        "The post must include the news source URL at the end."
                     )},
                     {"role": "user", "content": prompt}
                 ],
-                temperature=0.85,
+                temperature=0.95,
             )
             draft = response.choices[0].message.content.strip().strip('"')
 
-            # Ensure the URL is in the post (if the LLM dropped it)
+            # Ensure the URL is in the post
             if news_url and news_url not in draft:
                 draft = draft.rstrip() + f"\n\n{news_url}"
 
-            # Style transfer to match the user's voice
-            styled = await self._style_transfer_agent(draft, context)
+            # SKIP style transfer for news reactions — it genericizes the voice.
+            # The prompt already has all the voice cues baked in.
+            styled = draft
 
-            # Re-ensure URL survived style transfer
-            if news_url and news_url not in styled:
-                styled = styled.rstrip() + f"\n\n{news_url}"
+            # Find an image for this news post
+            image_url = await self._find_image_for_news(news_title, news_source)
 
-            return {
+            result = {
                 "text": styled,
                 "quality_score": 0.85,
                 "metadata": {
@@ -243,20 +328,178 @@ Return ONLY the post text with the link. Nothing else."""
                     "news_title": news_title,
                     "news_url": news_url,
                     "news_source": news_source,
-                    "reaction_style": chosen_style.split(":")[0],
+                    "reaction_style": chosen_tone,
+                    "post_structure": chosen_structure_name,
                     "generated_at": datetime.now(timezone.utc).isoformat(),
                 },
             }
+            if image_url:
+                result["image_url"] = image_url
+
+            return result
 
         except Exception as e:
             logger.error(f"News reaction post error: {e}")
-            # Fallback: simple reaction with link
             fallback = f"{news_title}\n\n{news_url}" if news_url else news_title
             return {
                 "text": fallback,
                 "quality_score": 0.3,
                 "metadata": {"error": str(e), "pipeline": "news_reaction_fallback"},
             }
+
+    # ------------------------------------------------------------------
+    # IMAGE FINDER AGENTS
+    # ------------------------------------------------------------------
+
+    async def _generate_image_query(self, post_text: str, context: Dict[str, Any]) -> str:
+        """
+        Use the LLM to create a natural visual search query from the post.
+        E.g. a post about missing family → 'family together warm sunset'
+        E.g. a post about hiking trip → 'mountain trail sunrise nature'
+        """
+        try:
+            interests = context.get("interests", [])[:5]
+            response = await self.openai.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": (
+                        "You generate image search queries. Given a social media post, "
+                        "output a short (3-6 word) photo search query that would find "
+                        "a beautiful, authentic image matching the post's MOOD and SUBJECT. "
+                        "Think like a photographer — describe the SCENE, not abstract concepts. "
+                        "Output ONLY the search query, nothing else."
+                    )},
+                    {"role": "user", "content": (
+                        f"Post: {post_text[:200]}\n"
+                        f"Person's interests: {', '.join(interests)}\n\n"
+                        "What image search query would find a beautiful photo "
+                        "that matches this post's vibe? (3-6 words, visual/concrete)"
+                    )}
+                ],
+                temperature=0.7,
+                max_tokens=30,
+            )
+            query = response.choices[0].message.content.strip().strip('"').strip("'")
+            if query and len(query) > 3:
+                logger.info(f"LLM image query: '{query}'")
+                return query
+        except Exception as e:
+            logger.warning(f"LLM image query generation failed: {e}")
+
+        return ""
+
+    async def _search_image_with_fallbacks(
+        self,
+        primary_query: str,
+        fallback_queries: List[str],
+    ) -> Optional[str]:
+        """
+        Search for an image with multiple fallback queries.
+        Returns the first valid image URL found.
+        """
+        import random
+        try:
+            from services.web_browsing_service import WebBrowsingService
+            web_service = WebBrowsingService(self.db)
+
+            all_queries = [primary_query] + fallback_queries
+            for query in all_queries:
+                if not query:
+                    continue
+                try:
+                    images = await web_service.search_images(
+                        query, max_results=5, type_image="photo", size="Medium"
+                    )
+                    if images:
+                        pick = random.choice(images[:3])
+                        url = pick.get("image_url", "")
+                        if url and url.startswith("http"):
+                            logger.info(f"Image found for '{query}': {url[:80]}...")
+                            return url
+                except Exception as e:
+                    logger.debug(f"Image search failed for '{query}': {e}")
+                    continue
+
+        except Exception as e:
+            logger.warning(f"Image search with fallbacks failed: {e}")
+
+        return None
+
+    async def _find_image_for_post(
+        self,
+        post_text: str,
+        intent: Dict[str, Any],
+        idea: Dict[str, Any],
+        context: Dict[str, Any],
+    ) -> Optional[str]:
+        """
+        Find a relevant, authentic image for a life-moment post.
+
+        Strategy:
+        1. Use LLM to generate a natural visual query from the post text
+        2. Fallback to setup/moment description from ideation
+        3. Fallback to interest + mood based query
+        4. Last resort: random interest photography
+        """
+        import random
+
+        # Strategy 1: LLM-generated visual query (best results)
+        llm_query = await self._generate_image_query(post_text, context)
+
+        # Strategy 2: scene description from ideation
+        setup = idea.get("setup", "")
+        moment = idea.get("moment", "")
+        scene_query = ""
+        if setup and moment:
+            scene_query = f"{setup[:30]} {moment[:30]}"
+        elif setup:
+            scene_query = setup[:50]
+
+        # Strategy 3: interest + emotional tone
+        interests = context.get("interests", [])
+        tone = idea.get("tone", "beautiful")
+        interest_query = ""
+        if interests:
+            picked = random.choice(interests[:5])
+            interest_query = f"{picked} {tone} photography"
+
+        # Strategy 4: pure interest fallback
+        generic_query = ""
+        if interests:
+            generic_query = f"{random.choice(interests[:8])} beautiful photo"
+
+        return await self._search_image_with_fallbacks(
+            llm_query,
+            [scene_query, interest_query, generic_query],
+        )
+
+    async def _find_image_for_news(
+        self,
+        news_title: str,
+        news_source: str,
+    ) -> Optional[str]:
+        """
+        Find an image for a news reaction post.
+
+        Strategy:
+        1. Search with the news headline
+        2. Fallback to keywords extracted from headline
+        3. Fallback to news source + topic
+        """
+        # Primary: full headline
+        primary = news_title[:60] if news_title else news_source
+
+        # Fallback: first meaningful chunk of the headline
+        words = news_title.split()[:5] if news_title else []
+        fallback1 = " ".join(words) if words else ""
+
+        # Fallback: source + subject
+        fallback2 = f"{news_source} news" if news_source else ""
+
+        return await self._search_image_with_fallbacks(
+            primary,
+            [fallback1, fallback2],
+        )
 
     # ------------------------------------------------------------------
     # CONTEXT LOADER
@@ -273,6 +516,7 @@ Return ONLY the post text with the link. Nothing else."""
             self._get_personality_prompt(user_id),
             self._get_full_personality(user_id),
             self._get_recent_avatar_posts(user_id),
+            self._get_user_profile(user_id),
             return_exceptions=True,
         )
 
@@ -281,8 +525,54 @@ Return ONLY the post text with the link. Nothing else."""
         personality = results[2] if not isinstance(results[2], Exception) else ""
         persona = results[3] if not isinstance(results[3], Exception) else {}
         recent_avatar = results[4] if not isinstance(results[4], Exception) else []
+        user_profile = results[5] if not isinstance(results[5], Exception) else {}
 
-        # Build temporal context — what time of day / day of week is it?
+        # Build writing samples: prefer real posts, fallback to filtered avatar posts
+        real_samples = [p.get("text", "") for p in posts[:8] if p.get("text")]
+
+        if len(real_samples) < 3:
+            # Fallback: use avatar posts but filter out generic/template-y ones
+            _poisoned = [
+                "how is nobody", "just read this", "just saw this",
+                "hey everyone", "hey friends", "okay this is",
+                "wow just", "can't believe",
+            ]
+            for av_text in recent_avatar:
+                if len(real_samples) >= 8:
+                    break
+                lower = av_text.lower()[:50]
+                if not any(p in lower for p in _poisoned):
+                    real_samples.append(av_text)
+
+        # Build personality fallback from user profile if prompt is empty
+        if not personality and user_profile:
+            cp = user_profile.get("avatar_character_profile", {})
+            parts = []
+            if user_profile.get("name"):
+                parts.append(f"Name: {user_profile['name']}")
+            if user_profile.get("avatar_name"):
+                parts.append(f"Goes by: {user_profile['avatar_name']}")
+            if user_profile.get("bio"):
+                parts.append(f"Bio: {user_profile['bio']}")
+            if user_profile.get("job_title"):
+                parts.append(f"Job: {user_profile['job_title']}")
+            if user_profile.get("location"):
+                parts.append(f"Location: {user_profile['location']}")
+            if cp.get("personality_traits"):
+                parts.append(f"Personality: {', '.join(cp['personality_traits'][:6])}")
+            if cp.get("interests"):
+                parts.append(f"Interests: {', '.join(cp['interests'][:8])}")
+            cs = cp.get("communication_style")
+            if cs and isinstance(cs, dict):
+                parts.append(f"Communication style: {json.dumps(cs)}")
+            elif cs and isinstance(cs, str):
+                parts.append(f"Communication style: {cs}")
+            if cp.get("archetype"):
+                parts.append(f"Archetype: {cp['archetype']}")
+            if parts:
+                personality = "\n".join(parts)
+
+        # Build temporal context
         now = datetime.now(timezone.utc)
         hour = now.hour
         if 5 <= hour < 9:
@@ -303,16 +593,40 @@ Return ONLY the post text with the link. Nothing else."""
         day_name = now.strftime("%A")
         is_weekend = day_name in ("Saturday", "Sunday")
 
+        # Fallback interests/traits from user profile if graph_nodes are empty
+        interests = persona.get("interests", [])
+        traits = persona.get("traits", [])
+        values = persona.get("values", [])
+        experiences = persona.get("experiences", [])
+
+        if not interests and user_profile:
+            cp = user_profile.get("avatar_character_profile", {})
+            if cp.get("interests"):
+                interests = cp["interests"]
+        if not traits and user_profile:
+            cp = user_profile.get("avatar_character_profile", {})
+            if cp.get("personality_traits"):
+                traits = cp["personality_traits"]
+
+        # Last resort: extract interests from personality_prompt text
+        if not interests and personality:
+            import re
+            m = re.search(r"(?:interests?|into|passions?)[:\s]+([^\n]+)", personality, re.I)
+            if m:
+                raw = m.group(1)
+                interests = [x.strip() for x in raw.split(",") if x.strip()][:10]
+
         return {
             "style_profile": style or {},
             "recent_posts": posts,
             "personality_prompt": personality,
-            "interests": persona.get("interests", []),
-            "traits": persona.get("traits", []),
-            "values": persona.get("values", []),
-            "experiences": persona.get("experiences", []),
-            "writing_samples": [p.get("text", "") for p in posts[:8] if p.get("text")],
+            "interests": interests,
+            "traits": traits,
+            "values": values,
+            "experiences": experiences,
+            "writing_samples": real_samples,
             "recent_avatar_posts": recent_avatar,
+            "user_profile": user_profile,
             # Temporal context for life-moment realism
             "time_vibe": time_vibe,
             "day_name": day_name,
@@ -383,6 +697,20 @@ Return ONLY the post text with the link. Nothing else."""
         except Exception as e:
             logger.warning(f"Could not get recent avatar posts: {e}")
             return []
+
+    async def _get_user_profile(self, user_id: str) -> Dict[str, Any]:
+        """Get the full user document for personality fallback."""
+        try:
+            doc = await self.db.users.find_one(
+                {"id": user_id},
+                {"_id": 0, "name": 1, "avatar_name": 1, "bio": 1,
+                 "job_title": 1, "location": 1, "age": 1,
+                 "avatar_character_profile": 1}
+            )
+            return doc or {}
+        except Exception as e:
+            logger.warning(f"Could not get user profile: {e}")
+            return {}
 
     # ------------------------------------------------------------------
     # AGENT 1: LIFE MOMENT (replaces the old "intent" agent)

@@ -408,6 +408,10 @@ class CreatePostTool(AvatarMCPTool):
                     
                     post_text = result.get("text", "")
                     quality_score = result.get("quality_score", 0.5)
+                    # Use image from orchestrator if we don't already have one
+                    if not image_url and result.get("image_url"):
+                        image_url = result["image_url"]
+                        logger.info(f"Using image from orchestrator: {image_url[:80]}...")
                     logger.info(f"PostOrchestrator generated text (quality={quality_score:.2f})")
             except Exception as e:
                 logger.warning(f"PostOrchestrator failed, falling back to IntelligentAvatar: {e}")
@@ -438,11 +442,51 @@ class CreatePostTool(AvatarMCPTool):
         
         if not post_text:
             return {"success": False, "error": "Failed to generate post content"}
-        
+
         # Limit length
         if len(post_text) > 500:
             post_text = post_text[:497] + "..."
-        
+
+        # --- Ensure we have an image (fallback search if orchestrator didn't provide one) ---
+        if not image_url:
+            try:
+                from domain.avatar.orchestration.post_orchestrator import PostOrchestrator
+                from core.config import get_openai_client
+
+                openai_client = get_openai_client()
+                if openai_client:
+                    orch = PostOrchestrator(db, openai_client)
+                    ctx = {"interests": []}
+                    try:
+                        user_doc = await db.users.find_one(
+                            {"id": avatar_id},
+                            {"_id": 0, "avatar_character_profile.interests": 1}
+                        )
+                        if user_doc:
+                            ctx["interests"] = user_doc.get(
+                                "avatar_character_profile", {}
+                            ).get("interests", [])
+                    except Exception:
+                        pass
+
+                    llm_query = await orch._generate_image_query(post_text, ctx)
+                    if llm_query:
+                        fallbacks = []
+                        if ctx["interests"]:
+                            import random as _r
+                            fallbacks.append(
+                                f"{_r.choice(ctx['interests'][:5])} photography"
+                            )
+                        image_url = await orch._search_image_with_fallbacks(
+                            llm_query, fallbacks
+                        ) or ""
+                        if image_url:
+                            logger.info(
+                                f"Fallback image found for post: {image_url[:80]}..."
+                            )
+            except Exception as img_e:
+                logger.warning(f"Fallback image search failed: {img_e}")
+
         # Create post
         post = {
             "id": f"post-{avatar_id}-{datetime.now(timezone.utc).timestamp()}",
@@ -1375,8 +1419,23 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
                     "error": "Post generation returned empty text",
                 }
 
-            # Step 4: Save the post
-            image_url = chosen.get("image", "")
+            # Step 4: Find an image
+            # Priority: orchestrator result > news item image > image search fallback
+            image_url = result.get("image_url", "")
+            if not image_url:
+                image_url = chosen.get("image", "")
+            if not image_url or not image_url.startswith("http"):
+                try:
+                    search_q = news_context["title"][:60]
+                    img_results = await service.search_images(
+                        search_q, max_results=3, type_image="photo", size="Medium"
+                    )
+                    if img_results:
+                        image_url = img_results[0].get("image_url", "")
+                except Exception:
+                    pass
+
+            # Step 5: Save the post
             post_data = {
                 "id": str(__import__('uuid').uuid4()),
                 "user_id": avatar_id,
@@ -1393,8 +1452,9 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
                     "reaction_style": result.get("metadata", {}).get("reaction_style", ""),
                 },
             }
-            if image_url:
+            if image_url and image_url.startswith("http"):
                 post_data["image_url"] = image_url
+                post_data["has_image"] = True
 
             await db.posts.insert_one(post_data)
 
