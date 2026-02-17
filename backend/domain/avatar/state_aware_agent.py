@@ -121,6 +121,12 @@ class StateAwareAgent:
         # Track if this is a user avatar (not a bot)
         self.is_user_avatar = not bot.get('is_bot', False)
         
+        # AI Agent mode: domain-restricted behavior
+        self.is_ai_agent = bot.get('is_ai_agent', False)
+        self.agent_domain = bot.get('agent_domain')
+        self.agent_domain_label = bot.get('agent_domain_label', '')
+        self.agent_expertise = bot.get('agent_expertise', [])
+        
         # Get activity level configuration
         activity_level = bot.get('avatar_activity_level', 'medium')
         self.activity_config = ACTIVITY_LEVEL_CONFIG.get(activity_level, ACTIVITY_LEVEL_CONFIG['medium'])
@@ -174,7 +180,10 @@ class StateAwareAgent:
             state_machine=self.state_machine,
             perception_engine=self.perception_engine,
             mcp_client=None,  # We'll use mcp_server directly
-            memory_manager=self.memory_manager  # NEW: Pass memory manager
+            memory_manager=self.memory_manager,  # NEW: Pass memory manager
+            is_ai_agent=self.is_ai_agent,
+            agent_domain=self.agent_domain or "",
+            agent_domain_label=self.agent_domain_label or "",
         )
         self.character_profile: Optional[CharacterProfile] = None
         
@@ -358,6 +367,11 @@ class StateAwareAgent:
                             # Map action types to MCP tool names
                             tool_name = self._map_action_to_tool(action_type)
                             
+                            # For AI agents, ensure domain focus is passed to browse_and_share_news
+                            if self.is_ai_agent and tool_name == "browse_and_share_news" and self.agent_domain:
+                                if not action_args.get("focus"):
+                                    action_args["focus"] = self.agent_domain_label or self.agent_domain
+                            
                             if tool_name:
                                 # Use gateway if available, else fallback to MCP server
                                 if self.gateway:
@@ -493,6 +507,7 @@ class StateAwareAgent:
             "browse_web": "browse_web",
             "search_images": "search_images",
             "browse_and_share_news": "browse_and_share_news",
+            "consult_agent": "consult_agent",
         }
         return mapping.get(action_type)
     
@@ -701,6 +716,12 @@ class StateAwareAgent:
                     tool_name = self._map_action_to_tool(action_type)
                     logger.info(f"{avatar_indicator} {avatar_name} - 🔧 Executing {action_type} via MCP tool: {tool_name}")
                     logger.info(f"{avatar_indicator} {avatar_name} - 🔍 Calling MCP with avatar_id: {self.bot_id}, action_args: {action_args}")
+                    
+                    # For AI agents, ensure domain focus is passed to browse_and_share_news
+                    if self.is_ai_agent and tool_name == "browse_and_share_news" and self.agent_domain:
+                        if not action_args.get("focus"):
+                            action_args["focus"] = self.agent_domain_label or self.agent_domain
+                        logger.info(f"{avatar_indicator} {avatar_name} - 🎯 AI Agent browsing for {self.agent_domain_label} content")
                     
                     if tool_name:
                         step_start = time.time()

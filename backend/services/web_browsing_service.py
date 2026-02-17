@@ -510,19 +510,23 @@ class WebBrowsingService:
         max_results: int = 5,
     ) -> List[Dict[str, Any]]:
         """
-        Get REAL, big, shareable news stories filtered by avatar interests.
-        These are the kind of stories people actually share on social media —
-        not generic news, but impactful/surprising/emotional stories.
+        Get REAL, shareable content filtered by avatar interests.
+        Returns a diverse mix of: breaking news, fascinating facts, interesting
+        blog posts, upcoming events, and discoveries.
 
-        Returns news items with full metadata (title, url, snippet, source)
+        These are the kind of stories people actually share — not generic news,
+        but impactful, surprising, or genuinely interesting content that makes
+        someone stop scrolling.
+
+        Returns items with full metadata (title, url, snippet, source)
         ready to be passed as news_context to PostOrchestrator.
 
         Args:
             avatar_id: Avatar user ID
-            max_results: Max news items to return
+            max_results: Max items to return
 
         Returns:
-            List of shareable news items sorted by relevance/impact
+            List of shareable content items sorted by relevance/impact
         """
         if self.db is None:
             return []
@@ -534,66 +538,118 @@ class WebBrowsingService:
         all_news: List[Dict[str, Any]] = []
         seen_titles: set = set()
 
-        # Strategy 1: Big news for each interest
-        selected = interests[:6]
+        def _add_items(items: List[Dict], shareability: str, interest: str = ""):
+            """Deduplicate and add items to the pool."""
+            for item in items:
+                title = item.get("title", "")
+                if title and title not in seen_titles:
+                    item["shareability"] = shareability
+                    if interest:
+                        item["interest"] = interest
+                    all_news.append(item)
+                    seen_titles.add(title)
+
+        # Pick a diverse set of interests to search across
+        selected = interests[:8]
         random.shuffle(selected)
-        for interest in selected[:3]:
+        search_interests = selected[:4]
+
+        # ── Strategy 1: Breaking / major news per interest ───────
+        for interest in search_interests[:3]:
             queries = [
                 f"{interest} breaking news today",
                 f"{interest} major development 2026",
                 f"{interest} surprising discovery",
+                f"{interest} latest announcement",
             ]
-            query = random.choice(queries)
             try:
-                news = await self.search_news(query, max_results=3, timelimit="w")
-                for item in news:
-                    title = item.get("title", "")
-                    if title and title not in seen_titles:
-                        item["interest"] = interest
-                        item["shareability"] = "interest_news"
-                        all_news.append(item)
-                        seen_titles.add(title)
+                news = await self.search_news(
+                    random.choice(queries), max_results=3, timelimit="w"
+                )
+                _add_items(news, "interest_news", interest)
             except Exception as e:
-                logger.warning(f"News fetch failed for '{query}': {e}")
+                logger.warning(f"Strategy 1 (news) failed for '{interest}': {e}")
 
-        # Strategy 2: Rare/amazing facts
+        # ── Strategy 2: Fascinating "did you know" facts ─────────
+        fact_interest = random.choice(interests) if interests else "science"
         fact_queries = [
-            f"{random.choice(interests)} incredible fact",
-            f"{random.choice(interests)} you won't believe",
-            f"{random.choice(interests)} mind blowing discovery",
-            "rare facts nobody knows about",
-            "amazing discovery this week",
+            f"{fact_interest} surprising fact most people don't know",
+            f"little known fact about {fact_interest}",
+            f"{fact_interest} world record",
+            f"surprising history of {fact_interest}",
+            f"{fact_interest} incredible statistic",
+            f"things nobody tells you about {fact_interest}",
         ]
         try:
-            fact_query = random.choice(fact_queries)
-            facts = await self.search_web(fact_query, max_results=3, timelimit="m")
-            for item in facts:
-                title = item.get("title", "")
-                if title and title not in seen_titles:
-                    item["shareability"] = "rare_fact"
-                    all_news.append(item)
-                    seen_titles.add(title)
+            facts = await self.search_web(
+                random.choice(fact_queries), max_results=3, timelimit="m"
+            )
+            _add_items(facts, "fascinating_fact", fact_interest)
         except Exception as e:
-            logger.warning(f"Fact search failed: {e}")
+            logger.warning(f"Strategy 2 (facts) failed: {e}")
 
-        # Strategy 3: Trending / viral stories
+        # ── Strategy 3: Interesting blog posts / long reads ──────
+        blog_interest = random.choice(interests) if interests else "technology"
+        blog_queries = [
+            f"best {blog_interest} blog post this week",
+            f"{blog_interest} interesting article must read 2026",
+            f"{blog_interest} thought-provoking essay",
+            f"{blog_interest} deep dive article",
+        ]
+        try:
+            blogs = await self.search_web(
+                random.choice(blog_queries), max_results=3, timelimit="m"
+            )
+            _add_items(blogs, "blog_post", blog_interest)
+        except Exception as e:
+            logger.warning(f"Strategy 3 (blogs) failed: {e}")
+
+        # ── Strategy 4: Upcoming events / conferences ────────────
+        event_interest = random.choice(interests) if interests else "technology"
+        event_queries = [
+            f"{event_interest} upcoming event 2026",
+            f"{event_interest} conference announcement 2026",
+            f"{event_interest} festival happening soon",
+            f"{event_interest} summit keynote 2026",
+        ]
+        try:
+            events = await self.search_news(
+                random.choice(event_queries), max_results=2, timelimit="m"
+            )
+            _add_items(events, "event", event_interest)
+        except Exception as e:
+            logger.warning(f"Strategy 4 (events) failed: {e}")
+
+        # ── Strategy 5: Trending / viral stories ─────────────────
         try:
             trending = await self.search_news(
-                "trending viral story today",
-                max_results=3,
-                timelimit="d",
+                "trending viral story today", max_results=3, timelimit="d"
             )
-            for item in trending:
-                title = item.get("title", "")
-                if title and title not in seen_titles:
-                    item["shareability"] = "trending"
-                    all_news.append(item)
-                    seen_titles.add(title)
+            _add_items(trending, "trending")
         except Exception as e:
-            logger.warning(f"Trending fetch failed: {e}")
+            logger.warning(f"Strategy 5 (trending) failed: {e}")
 
-        # Shuffle and limit — variety > exhaustiveness
+        # ── Strategy 6: Scientific / research breakthroughs ──────
+        sci_interest = random.choice(interests) if interests else "science"
+        sci_queries = [
+            f"{sci_interest} research breakthrough 2026",
+            f"{sci_interest} new study finds",
+            f"{sci_interest} scientists discover",
+        ]
+        try:
+            science = await self.search_news(
+                random.choice(sci_queries), max_results=2, timelimit="m"
+            )
+            _add_items(science, "research", sci_interest)
+        except Exception as e:
+            logger.warning(f"Strategy 6 (research) failed: {e}")
+
+        # Shuffle for variety and return
         random.shuffle(all_news)
+        logger.info(
+            f"Shareable content for {avatar_id}: {len(all_news)} items "
+            f"(categories: {set(i.get('shareability', '') for i in all_news)})"
+        )
         return all_news[:max_results]
 
     def _generate_search_queries(

@@ -42,13 +42,21 @@ class DecisionEngine:
         state_machine: AvatarStateMachine,
         perception_engine: PerceptionEngine,
         mcp_client: Optional[AvatarMCPClient] = None,
-        memory_manager = None  # Optional MemoryManager for memory-informed decisions
+        memory_manager = None,  # Optional MemoryManager for memory-informed decisions
+        is_ai_agent: bool = False,
+        agent_domain: str = "",
+        agent_domain_label: str = "",
     ):
         self.state_manager = state_manager
         self.state_machine = state_machine
         self.perception_engine = perception_engine
         self.mcp_client = mcp_client
         self.memory_manager = memory_manager  # NEW: Memory integration
+        
+        # AI Agent mode: content curation only (no personal posts)
+        self.is_ai_agent = is_ai_agent
+        self.agent_domain = agent_domain
+        self.agent_domain_label = agent_domain_label
         
         self.action_utility = ActionUtility()
         self.action_eligibility = ActionEligibility()
@@ -371,6 +379,15 @@ class DecisionEngine:
         base_actions = [
             {"type": "read_messages", "description": "Read messages"}
         ]
+        
+        # AI Agent mode: restricted to content curation only
+        # AI agents browse the web for news/facts/events and share them as two-liners.
+        # They do NOT create personal posts or talk about themselves.
+        if self.is_ai_agent:
+            return await self._get_ai_agent_actions(
+                avatar_id, current_state, internal_state, external_state,
+                perception_data, memory_context
+            )
         
         # Get interest perception data if available
         interest_perception = {}
@@ -776,7 +793,104 @@ class DecisionEngine:
                         break  # Only share with one friend at a time
 
         
+        # ── AI Agent consultation actions ──────────────────────
+        # If the avatar has subscribed AI agents, occasionally add
+        # a consult_agent action so the avatar can leverage its network
+        # of specialized agents for content creation and knowledge.
+        try:
+            from core.database import get_database
+            db = get_database()
+            agent_subs = await db.agent_subscriptions.find({
+                "user_id": avatar_id,
+                "active": True,
+            }).to_list(5)
+
+            if agent_subs and internal_state.curiosity > 0.3:
+                import random as _rng
+                chosen_sub = _rng.choice(agent_subs)
+                actions.append({
+                    "type": "consult_agent",
+                    "description": f"Consult {chosen_sub.get('agent_domain', 'expert')} agent for insights",
+                    "query": f"What's new and interesting in {chosen_sub.get('agent_domain', 'your domain')}?",
+                    "agent_user_id": chosen_sub.get("agent_user_id"),
+                })
+        except Exception as e:
+            logger.debug(f"Could not check agent subscriptions: {e}")
+
         return base_actions + actions
+    
+    async def _get_ai_agent_actions(
+        self,
+        avatar_id: str,
+        current_state: TopLevelState,
+        internal_state: InternalState,
+        external_state: ExternalState,
+        perception_data: Optional[Dict[str, Any]] = None,
+        memory_context: Optional[Dict[str, Any]] = None,
+    ) -> List[Dict[str, Any]]:
+        """
+        AI Agent-specific action pool: content curation only.
+        
+        AI agents browse the web for interesting news, facts, events, and discoveries
+        in their domain, and share them as punchy two-liner posts with images.
+        They do NOT create personal/life-moment posts or talk about themselves.
+        
+        Available actions:
+        - browse_and_share_news (PRIMARY): Find and share curated content
+        - like_post / comment_on_post: Stay socially engaged
+        - accept_friend_request: Accept new subscribers
+        - message_friend: Respond to messages only (never initiate)
+        """
+        actions = [
+            {"type": "read_messages", "description": "Read messages"},
+        ]
+        
+        # PRIMARY ACTION: Browse and share news/facts/events with two-liner
+        # This is the core purpose of AI agents
+        actions.append({
+            "type": "browse_and_share_news",
+            "description": f"Curate and share {self.agent_domain_label or 'interesting'} content from the web",
+            "focus": self.agent_domain_label or "",
+        })
+        
+        # SOCIAL: Like and comment on friends' posts (keeps the agent alive in the feed)
+        recent_posts = external_state.get_recent_posts(limit=5)
+        for post in recent_posts[:3]:
+            post_id = post.get("id")
+            if post_id:
+                actions.append({
+                    "type": "like_post",
+                    "description": "Like post",
+                    "post_id": post_id,
+                    "target_friend_id": post.get("user_id"),
+                })
+                actions.append({
+                    "type": "comment_on_post",
+                    "description": "Comment on post",
+                    "post_id": post_id,
+                    "target_friend_id": post.get("user_id"),
+                })
+        
+        # Accept friend requests from new subscribers
+        if external_state.pending_friend_requests > 0:
+            actions.append({
+                "type": "accept_friend_request",
+                "description": "Accept friend request",
+            })
+        
+        # Respond to messages (NEVER initiate — only respond when messaged)
+        relationship_map = external_state.get_relationship_map()
+        friends_awaiting = await self._get_friends_awaiting_response(avatar_id, relationship_map)
+        for friend_id in friends_awaiting[:2]:
+            actions.append({
+                "type": "message_friend",
+                "description": "Respond to message",
+                "friend_id": friend_id,
+                "is_response": True,
+                "priority": "high",
+            })
+        
+        return actions
     
     async def _get_friends_awaiting_response(
         self,

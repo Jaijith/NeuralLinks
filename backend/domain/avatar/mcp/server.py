@@ -1365,13 +1365,21 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
         try:
             service = WebBrowsingService(db)
 
-            # Step 1: Fetch shareable news for this avatar
+            # ── Detect if this avatar is an AI agent ─────────────
+            user_doc = await db.users.find_one(
+                {"id": avatar_id},
+                {"is_ai_agent": 1, "agent_domain": 1, "agent_domain_label": 1},
+            )
+            is_ai_agent = user_doc.get("is_ai_agent", False) if user_doc else False
+            agent_domain = user_doc.get("agent_domain", "") if user_doc else ""
+            agent_domain_label = user_doc.get("agent_domain_label", "") if user_doc else ""
+
+            # ── Step 1: Fetch shareable news for this avatar ─────
             news_items = await service.get_shareable_news_for_avatar(
                 avatar_id, max_results=5
             )
 
             if not news_items:
-                # Fallback: try a direct news search with the focus
                 query = focus or "biggest news today"
                 news_items = await service.search_news(query, max_results=5, timelimit="w")
 
@@ -1381,7 +1389,7 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
                     "error": "Could not find any news to share right now. Try again later.",
                 }
 
-            # Step 2: Pick the best story (random for variety)
+            # ── Step 2: Pick a story (random for variety) ────────
             chosen = _rng.choice(news_items)
 
             news_context = {
@@ -1391,7 +1399,26 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
                 "source": chosen.get("source", ""),
             }
 
-            # Step 3: Generate a reaction post via PostOrchestrator
+            # ── Step 3: For AI agents, fetch cross-agent recent posts for dedup ──
+            cross_agent_recent_posts = []
+            if is_ai_agent:
+                try:
+                    ai_agent_ids = await db.users.distinct("id", {"is_ai_agent": True})
+                    if ai_agent_ids:
+                        other_agent_ids = [aid for aid in ai_agent_ids if aid != avatar_id]
+                        if other_agent_ids:
+                            cursor = db.posts.find(
+                                {"user_id": {"$in": other_agent_ids}, "post_type": "avatar"},
+                                {"_id": 0, "text": 1},
+                            ).sort("created_at", -1).limit(30)
+                            other_posts = await cursor.to_list(30)
+                            cross_agent_recent_posts = [
+                                p.get("text", "") for p in other_posts if p.get("text")
+                            ]
+                except Exception as e:
+                    logger.warning(f"Cross-agent dedup fetch failed: {e}")
+
+            # ── Step 4: Generate the post via PostOrchestrator ───
             from domain.avatar.orchestration.post_orchestrator import PostOrchestrator
             from core.config import get_openai_client
 
@@ -1410,6 +1437,10 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
                 mood=mood,
                 energy_level=0.7,
                 news_context=news_context,
+                is_ai_agent=is_ai_agent,
+                agent_domain=agent_domain,
+                agent_domain_label=agent_domain_label,
+                cross_agent_recent_posts=cross_agent_recent_posts,
             )
 
             post_text = result.get("text", "")
@@ -1419,23 +1450,45 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
                     "error": "Post generation returned empty text",
                 }
 
-            # Step 4: Find an image
-            # Priority: orchestrator result > news item image > image search fallback
+            # ── Step 5: Find an image (mandatory — try multiple strategies) ──
             image_url = result.get("image_url", "")
             if not image_url:
                 image_url = chosen.get("image", "")
             if not image_url or not image_url.startswith("http"):
+                # Fallback 1: search by headline
                 try:
                     search_q = news_context["title"][:60]
                     img_results = await service.search_images(
-                        search_q, max_results=3, type_image="photo", size="Medium"
+                        search_q, max_results=5, type_image="photo", size="Medium"
+                    )
+                    if img_results:
+                        image_url = _rng.choice(img_results[:3]).get("image_url", "")
+                except Exception:
+                    pass
+            if not image_url or not image_url.startswith("http"):
+                # Fallback 2: search by first few words of headline
+                try:
+                    words = news_context["title"].split()[:4]
+                    img_results = await service.search_images(
+                        " ".join(words), max_results=3, type_image="photo", size="Medium"
+                    )
+                    if img_results:
+                        image_url = img_results[0].get("image_url", "")
+                except Exception:
+                    pass
+            if not image_url or not image_url.startswith("http"):
+                # Fallback 3: search by domain/focus
+                try:
+                    fallback_q = focus or agent_domain_label or "news today"
+                    img_results = await service.search_images(
+                        fallback_q, max_results=3, type_image="photo", size="Medium"
                     )
                     if img_results:
                         image_url = img_results[0].get("image_url", "")
                 except Exception:
                     pass
 
-            # Step 5: Save the post
+            # ── Step 6: Save the post ────────────────────────────
             post_data = {
                 "id": str(__import__('uuid').uuid4()),
                 "user_id": avatar_id,
@@ -1458,8 +1511,10 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
 
             await db.posts.insert_one(post_data)
 
+            pipeline_name = result.get("metadata", {}).get("pipeline", "news_reaction")
             logger.info(
-                f"Avatar {avatar_id} shared news: {news_context['title'][:60]}..."
+                f"Avatar {avatar_id} shared news [{pipeline_name}]: "
+                f"{news_context['title'][:60]}..."
             )
 
             return {
@@ -1469,6 +1524,7 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
                 "post_text": post_text[:300],
                 "news_title": news_context["title"],
                 "news_url": news_context["url"],
+                "has_image": bool(image_url and image_url.startswith("http")),
             }
 
         except Exception as e:
@@ -1694,6 +1750,68 @@ class BrowseFeedTool(AvatarMCPTool):
             }
 
 
+class ConsultAgentTool(AvatarMCPTool):
+    """
+    Tool for consulting AI Agent Assistants via A2A protocol.
+    Bridges MCP tool calls to the A2A service for inter-agent communication.
+    """
+
+    def __init__(self):
+        super().__init__(
+            name="consult_agent",
+            description="Consult a specialized AI Agent Assistant for expert advice. "
+                        "Use when you need domain-specific information (technology, travel, "
+                        "fitness, cooking, etc.) from a subscribed AI agent friend. "
+                        "If no agent_user_id is provided, the system auto-selects the best agent.",
+            action_key="consult_agent"
+        )
+
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Your question or topic to consult the agent about"
+                },
+                "agent_user_id": {
+                    "type": "string",
+                    "description": "Optional: Specific agent's user ID. If not provided, "
+                                   "auto-selects the best agent for the query."
+                },
+            },
+            "required": ["query"]
+        }
+
+    async def _execute_action(self, avatar_id: str, **kwargs) -> Dict[str, Any]:
+        """Consult an AI agent via A2A protocol."""
+        from domain.marketplace.agent_a2a_service import A2AService
+
+        query = kwargs.get("query", "")
+        agent_user_id = kwargs.get("agent_user_id")
+
+        if not query:
+            return {"success": False, "error": "Query is required"}
+
+        a2a = A2AService(db)
+
+        if agent_user_id:
+            result = await a2a.consult(
+                client_agent_id=avatar_id,
+                remote_agent_id=agent_user_id,
+                query=query,
+                source="mcp_tool",
+            )
+        else:
+            result = await a2a.consult_best_agent(
+                client_agent_id=avatar_id,
+                query=query,
+                source="mcp_tool",
+            )
+
+        return result
+
+
 class AvatarMCPServer:
     """MCP Server for Avatar Actions"""
     
@@ -1718,7 +1836,8 @@ class AvatarMCPServer:
             "search_images": SearchImagesTool(),          # Image search for posts
             "browse_and_share_news": BrowseAndShareNewsTool(),  # Browse news + create reaction post
             "get_friend_activities": GetFriendActivitiesTool(),  # State-aware
-            "get_trending_topics": GetTrendingTopicsTool()  # State-aware
+            "get_trending_topics": GetTrendingTopicsTool(),  # State-aware
+            "consult_agent": ConsultAgentTool(),  # A2A agent consultation
         }
     
     def get_tools_list(self) -> List[Dict[str, Any]]:

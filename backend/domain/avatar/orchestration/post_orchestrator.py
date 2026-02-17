@@ -39,6 +39,10 @@ class PostOrchestrator:
         mood: str = "neutral",
         energy_level: float = 0.5,
         news_context: Optional[Dict[str, Any]] = None,
+        is_ai_agent: bool = False,
+        agent_domain: str = "",
+        agent_domain_label: str = "",
+        cross_agent_recent_posts: Optional[List[str]] = None,
     ) -> Dict[str, Any]:
         """
         Main entry: generate an authentic post through the full pipeline.
@@ -52,6 +56,10 @@ class PostOrchestrator:
             energy_level: Current avatar energy
             news_context: Optional real news/fact to react to
                          {"title": str, "url": str, "snippet": str, "source": str}
+            is_ai_agent: Whether this is an AI agent (content curator mode)
+            agent_domain: AI agent's domain code (e.g., "technology")
+            agent_domain_label: AI agent's domain label (e.g., "Technology & AI")
+            cross_agent_recent_posts: Recent posts from OTHER AI agents for dedup
 
         Returns:
             {"text": str, "quality_score": float, "metadata": dict}
@@ -61,7 +69,23 @@ class PostOrchestrator:
             context = await self._load_context(user_id)
 
             # ============================================================
-            # FAST PATH: News/fact reaction post
+            # AI AGENT PATH: Two-liner curator posts
+            # AI agents don't post about themselves. They curate interesting
+            # news, facts, events, and discoveries from the web and share
+            # them as punchy two-liner posts with images.
+            # ============================================================
+            if is_ai_agent and news_context and news_context.get("title"):
+                own_recent = context.get("recent_avatar_posts", [])
+                return await self._generate_agent_curator_post(
+                    news=news_context,
+                    agent_domain=agent_domain,
+                    agent_domain_label=agent_domain_label,
+                    cross_agent_recent_posts=cross_agent_recent_posts or [],
+                    own_recent_posts=own_recent,
+                )
+
+            # ============================================================
+            # FAST PATH: News/fact reaction post (for regular avatars)
             # When we have real news to share, skip the full life-moment
             # pipeline and go straight to a news reaction draft.
             # ============================================================
@@ -345,6 +369,208 @@ ONLY the post text. Nothing else."""
                 "text": fallback,
                 "quality_score": 0.3,
                 "metadata": {"error": str(e), "pipeline": "news_reaction_fallback"},
+            }
+
+    # ------------------------------------------------------------------
+    # AI AGENT CURATOR POST (two-liner — real news/facts, no self-reference)
+    # ------------------------------------------------------------------
+
+    async def _generate_agent_curator_post(
+        self,
+        news: Dict[str, Any],
+        agent_domain: str,
+        agent_domain_label: str,
+        cross_agent_recent_posts: List[str] = None,
+        own_recent_posts: List[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Generate a punchy two-liner curator post for AI agents.
+
+        AI agents don't post about themselves — they curate interesting
+        news, facts, events, and discoveries from the web and present them
+        as sharp, attention-grabbing two-sentence posts with images.
+
+        Each two-liner must be:
+        - Exactly 2 sentences (hook + kicker)
+        - Unique (different opener from own history AND all other agents)
+        - Natural and authentic (like a well-read friend at dinner)
+        - Not self-referential (no "I found", "I think", "check this out")
+        - Factual but intriguing — let the facts do the talking
+        """
+        import random
+
+        news_title = news.get("title", "")
+        news_url = news.get("url", "")
+        news_snippet = news.get("snippet", "")
+        news_source = news.get("source", "")
+
+        # ── Opener style variety system ──────────────────────────
+        opener_styles = [
+            (
+                "fact_drop",
+                "Start with a concrete fact or number from the news. "
+                "Example: 'Scientists just figured out how to turn CO2 into jet fuel.'",
+            ),
+            (
+                "question_hook",
+                "Start with a short intriguing question that the second sentence answers or deepens. "
+                "Example: 'What happens when you let AI design a bridge?'",
+            ),
+            (
+                "scene_setter",
+                "Paint a quick, vivid scene in one sentence. "
+                "Example: 'In a tiny lab in Kyoto, a team just grew a full human ear from scratch.'",
+            ),
+            (
+                "contrast",
+                "Start with a surprising contrast or juxtaposition. "
+                "Example: 'The world's most expensive coffee costs $1,200 a cup — and it's made from elephant dung.'",
+            ),
+            (
+                "person_focus",
+                "Start with a person doing something remarkable. "
+                "Example: 'A 92-year-old grandmother just broke the Tokyo marathon record.'",
+            ),
+            (
+                "number_lead",
+                "Start with a striking number or statistic. "
+                "Example: '40% of all food produced on Earth never gets eaten.'",
+            ),
+            (
+                "time_anchor",
+                "Start with a time reference that builds intrigue. "
+                "Example: 'Three years ago nobody had heard of this town — now it's the world's top dark-sky destination.'",
+            ),
+            (
+                "quiet_reveal",
+                "State something matter-of-factly that slowly lands as extraordinary. "
+                "Example: 'A librarian in rural Ohio has been secretly paying students' overdue lunch fees for 11 years.'",
+            ),
+        ]
+        chosen_style_name, chosen_style_desc = random.choice(opener_styles)
+
+        # ── Second-line (kicker) variety system ──────────────────
+        kicker_styles = [
+            "Add an unexpected twist, catch, or irony that reframes the first sentence.",
+            "Add a vivid specific detail that makes the story feel real and concrete.",
+            "Add context that reveals why this matters on a bigger scale.",
+            "Hint at what this means for the future — make the reader think ahead.",
+            "End with something that lands like a quiet punchline.",
+            "Add the human element — who does this affect and how.",
+        ]
+        chosen_kicker = random.choice(kicker_styles)
+
+        # ── Build dedup list from own + cross-agent recent posts ─
+        recent_openers = []
+        if own_recent_posts:
+            for p in (own_recent_posts or [])[:10]:
+                first_sentence = p.split(".")[0][:60].strip() if p else ""
+                if first_sentence:
+                    recent_openers.append(f"[own] {first_sentence}")
+        if cross_agent_recent_posts:
+            for p in (cross_agent_recent_posts or [])[:20]:
+                first_sentence = p.split(".")[0][:60].strip() if p else ""
+                if first_sentence:
+                    recent_openers.append(f"[other agent] {first_sentence}")
+
+        recent_openers_text = (
+            "\n".join(f"  - {o}" for o in recent_openers[:20])
+            if recent_openers
+            else "  (none yet)"
+        )
+
+        # ── Prompt ───────────────────────────────────────────────
+        prompt = f"""Write a two-sentence social media post sharing this news or fact.
+
+=== THE CONTENT ===
+Headline: {news_title}
+Details: {news_snippet}
+Source: {news_source}
+
+=== YOUR DOMAIN ===
+{agent_domain_label or 'General knowledge'} curator
+
+=== FORMAT ===
+EXACTLY 2 sentences. No more, no less.
+Sentence 1 (the hook): {chosen_style_desc}
+Sentence 2 (the kicker): {chosen_kicker}
+
+=== ABSOLUTE RULES ===
+1. NO self-reference: Never say "I found", "I read", "I think", "just came across",
+   "just discovered", "check this out", "you should read", "you won't believe",
+   "stumbled upon", "here's something", "sharing this"
+2. NO generic reactions: Never say "this is amazing", "how cool", "mind-blowing",
+   "game-changer", "incredible", "wow", "fascinating", "what a time to be alive",
+   "this changes everything"
+3. NO hashtags, NO emojis
+4. Maximum ONE exclamation mark in the entire post — and only if it genuinely fits
+5. NO filler: "actually", "basically", "literally", "honestly", "interestingly"
+6. Do NOT include the URL — it will be added after your text automatically
+7. Total: 15-35 words. Tight and punchy.
+8. Sound like a sharp, well-read friend casually mentioning something over dinner —
+   not a news anchor, not a bot, not a brand account
+9. Be factual. Let the story speak for itself. No editorializing.
+10. The two sentences must work as a unit — first hooks, second completes the thought.
+
+=== DO NOT START LIKE ANY OF THESE RECENT POSTS ===
+{recent_openers_text}
+
+=== OUTPUT ===
+ONLY the 2 sentences. Nothing else. No quotes around them."""
+
+        try:
+            response = await self.openai.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "You write punchy two-sentence social media posts that share real news and facts. "
+                            "You sound like a knowledgeable, interesting friend — never like an AI, a news bot, "
+                            "or a brand account. You never reference yourself. You let the facts do the talking. "
+                            "Every post you write has a different structure and opening from the last. "
+                            "You are sharp, concise, and make people want to click the link."
+                        ),
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.95,
+                max_tokens=120,
+            )
+            two_liner = response.choices[0].message.content.strip().strip('"').strip("'")
+
+            # Append the source URL on its own line
+            if news_url and news_url not in two_liner:
+                two_liner = two_liner.rstrip() + f"\n\n{news_url}"
+
+            # Find an image for this news
+            image_url = await self._find_image_for_news(news_title, news_source)
+
+            return {
+                "text": two_liner,
+                "quality_score": 0.9,
+                "metadata": {
+                    "pipeline": "agent_curator_two_liner",
+                    "news_title": news_title,
+                    "news_url": news_url,
+                    "news_source": news_source,
+                    "opener_style": chosen_style_name,
+                    "agent_domain": agent_domain,
+                    "generated_at": datetime.now(timezone.utc).isoformat(),
+                },
+                "image_url": image_url,
+            }
+
+        except Exception as e:
+            logger.error(f"Agent curator post error: {e}")
+            # Fallback: headline + URL
+            fallback = news_title
+            if news_url:
+                fallback += f"\n\n{news_url}"
+            return {
+                "text": fallback,
+                "quality_score": 0.3,
+                "metadata": {"error": str(e), "pipeline": "agent_curator_fallback"},
             }
 
     # ------------------------------------------------------------------
