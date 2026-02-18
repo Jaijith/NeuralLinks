@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Bot } from 'lucide-react';
+import { Bot, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 /**
@@ -80,12 +80,17 @@ const UserListItem = React.memo(({
           <span className={cn("font-medium text-gray-900 truncate", sizeClasses[size].text)}>
             {displayName || 'Unknown User'}
           </span>
-          {user.isBot && (
+          {user.friend_type === 'ai_agent' || user.is_ai_agent ? (
+            <Badge className="text-xs px-1.5 py-0 border-0 bg-emerald-100 text-emerald-700">
+              <Sparkles className="w-3 h-3 mr-0.5" />
+              AI Agent
+            </Badge>
+          ) : user.isBot || user.is_bot ? (
             <Badge className="text-xs px-1.5 py-0 border-0 bg-purple-100 text-purple-700">
               <Bot className="w-3 h-3 mr-0.5" />
               AI
             </Badge>
-          )}
+          ) : null}
         </div>
       </div>
 

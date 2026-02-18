@@ -250,11 +250,11 @@ class PostService:
     
     async def get_feed_posts(self, user_id: str, post_type: str = "real", limit: int = 20, skip: int = 0) -> Dict[str, Any]:
         """Get feed posts (posts from friends and user) with pagination"""
-        # Get user's friends
+        # Get user's accepted friends only
         friendships = await self.db.friendships.find({
             "$or": [
-                {"user_id": user_id},
-                {"friend_id": user_id}
+                {"user_id": user_id, "status": "accepted"},
+                {"friend_id": user_id, "status": "accepted"}
             ]
         }).to_list(1000)
         

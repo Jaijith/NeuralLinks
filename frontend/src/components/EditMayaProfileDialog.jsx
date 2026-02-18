@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { useInstalledSkills } from "@/features/marketplace/hooks/useInstalledSkills";
 import { useSkillInstall } from "@/features/marketplace/hooks/useSkillInstall";
+import { useAgentSubscription } from "@/features/marketplace/hooks/useAgentSubscription";
 import { getIcon } from "@/features/marketplace/components/SkillCard";
 
 // ── Sub-components rendered inside the dialog ──────────────────────────
@@ -426,13 +427,130 @@ const FALLBACK_AVATAR_ACTIONS = [
 
 // ── Installed Skills Section (synced with Siddhi Bazaar) ──────────
 
+const AgentSubscriptionsSection = ({ editData, isImmersive, t }) => {
+  const { subscribedAgents, loading, toggleAgent, toggling } = useAgentSubscription();
+
+  if (loading || subscribedAgents.length === 0) return null;
+
+  return (
+    <div
+      className="rounded-xl overflow-hidden"
+      style={{ border: `1px solid ${t.cardBorder}` }}
+    >
+      <div
+        className="px-4 py-3 flex items-center gap-2"
+        style={{
+          backgroundColor: isImmersive ? 'rgba(16, 185, 129, 0.08)' : '#ecfdf5',
+          borderBottom: `1px solid ${t.cardBorder}`,
+        }}
+      >
+        <span style={{ color: '#10b981', fontSize: '16px' }}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+        </span>
+        <h4 className="text-sm font-semibold" style={{ color: t.text }}>
+          AI Agent Friends
+        </h4>
+        <Badge variant="outline" className="text-[10px] ml-1 px-1.5 py-0" style={{ borderColor: '#10b98140', color: '#10b981' }}>
+          {subscribedAgents.length} active
+        </Badge>
+      </div>
+
+      <div
+        className="divide-y max-h-60 overflow-y-auto"
+        style={{ borderColor: t.sectionBorder }}
+      >
+        {subscribedAgents.map((sub) => {
+          const agent = sub.agent || {};
+          const skill = sub.skill || {};
+          const subscription = sub.subscription || {};
+          const isActive = subscription.active !== false;
+          const name = agent.name || skill.name || 'Agent';
+          const domain = agent.domain_label || subscription.agent_domain || '';
+
+          return (
+            <div
+              key={subscription.id || skill.id}
+              className="flex items-center justify-between px-4 py-3 transition-colors"
+              style={{ backgroundColor: 'transparent' }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = t.cardHoverBg)}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+            >
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                {agent.picture ? (
+                  <img
+                    src={agent.picture}
+                    alt={name}
+                    className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                    style={{ border: `2px solid ${skill.color || '#10b981'}` }}
+                  />
+                ) : (
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: `${skill.color || '#10b981'}20`, border: `2px solid ${skill.color || '#10b981'}` }}
+                  >
+                    <span className="text-xs font-bold" style={{ color: skill.color || '#10b981' }}>
+                      {name.charAt(0)}
+                    </span>
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <label
+                    className="text-sm font-medium cursor-pointer block truncate"
+                    style={{ color: t.text }}
+                  >
+                    {name}
+                    {domain && (
+                      <span className="text-[9px] ml-1.5 px-1 py-0 rounded-full" style={{ backgroundColor: `${skill.color || '#10b981'}15`, color: skill.color || '#10b981' }}>
+                        {domain}
+                      </span>
+                    )}
+                  </label>
+                  <p className="text-xs truncate" style={{ color: t.textMuted }}>
+                    {(agent.expertise || []).slice(0, 2).join(', ') || skill.tagline || ''}
+                  </p>
+                </div>
+              </div>
+              <Switch
+                checked={isActive}
+                onCheckedChange={(checked) => toggleAgent(skill.id, checked)}
+                disabled={!editData.avatar_autonomous || toggling === skill.id}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        className="px-4 py-2.5 flex items-center justify-between"
+        style={{
+          backgroundColor: isImmersive ? 'rgba(16, 185, 129, 0.04)' : '#f0fdf4',
+          borderTop: `1px solid ${t.cardBorder}`,
+        }}
+      >
+        <p className="text-xs" style={{ color: t.textMuted }}>
+          Subscribe to more agents in Siddhi Bazaar
+        </p>
+        <a
+          href="/settings?tab=siddhi"
+          className="text-xs flex items-center gap-1 hover:underline"
+          style={{ color: '#10b981' }}
+        >
+          Browse Agents
+        </a>
+      </div>
+    </div>
+  );
+};
+
 const InstalledSkillsSection = ({ editData, setEditData, isImmersive, t }) => {
   const { installedSkills, loading } = useInstalledSkills();
   const { toggleSkill, toggling } = useSkillInstall();
-  const hasMarketplace = !loading && installedSkills.length > 0;
+  // Filter out ai_agent type skills — those are managed in AgentSubscriptionsSection
+  const nonAgentSkills = installedSkills.filter((s) => s.type !== 'ai_agent');
+  const hasMarketplace = !loading && nonAgentSkills.length > 0;
 
   const actions = hasMarketplace
-    ? installedSkills.map((s) => ({
+    ? nonAgentSkills.map((s) => ({
         key: s.permission_key || s.slug,
         label: s.name,
         desc: s.tagline || s.description?.slice(0, 60) || '',
@@ -897,6 +1015,13 @@ const EditMayaProfileDialog = ({
               <InstalledSkillsSection
                 editData={editData}
                 setEditData={setEditData}
+                isImmersive={isImmersive}
+                t={t}
+              />
+
+              {/* AI Agent Assistants */}
+              <AgentSubscriptionsSection
+                editData={editData}
                 isImmersive={isImmersive}
                 t={t}
               />

@@ -9,19 +9,27 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { Sparkles, Search, ChevronDown, ChevronUp, Shield, Activity, CheckCircle, AlertTriangle, XCircle, Package } from 'lucide-react';
+import { Sparkles, Search, ChevronDown, ChevronUp, Shield, Activity, CheckCircle, AlertTriangle, XCircle, Package, Bot } from 'lucide-react';
 import { toast } from 'sonner';
 import SkillCard, { getIcon } from './SkillCard';
+import AgentCard from './AgentCard';
 import SkillDetailDialog from './SkillDetailDialog';
 import { useInstalledSkills } from '../hooks/useInstalledSkills';
 import { useMarketplace } from '../hooks/useMarketplace';
 import { useSkillInstall } from '../hooks/useSkillInstall';
+import { useAgentSubscription } from '../hooks/useAgentSubscription';
 import marketplaceService from '@/services/api/marketplaceService';
 
 const SiddhiBazaarTab = ({ user, isImmersive = false }) => {
   const { installedSkills, loading: installedLoading } = useInstalledSkills();
   const { categories, featured, recommended, loading: catalogLoading } = useMarketplace();
   const { installSkill, uninstallSkill, toggleSkill, installing, toggling } = useSkillInstall();
+  const {
+    agents, subscribedAgents, loading: agentsLoading,
+    subscribing, toggling: agentToggling,
+    subscribeAgent, unsubscribeAgent, toggleAgent,
+    isAgentSubscribed, isAgentEnabled,
+  } = useAgentSubscription();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState(null);
@@ -103,9 +111,29 @@ const SiddhiBazaarTab = ({ user, isImmersive = false }) => {
     }
   };
 
+  const handleSubscribeAgent = async (skill) => {
+    try {
+      await subscribeAgent(skill.id);
+      toast.success(`Hired ${skill.name}! They've been added as your AI friend.`);
+    } catch { toast.error('Hiring failed'); }
+  };
+
+  const handleUnsubscribeAgent = async (skill) => {
+    try {
+      await unsubscribeAgent(skill.id);
+      toast.success(`Unsubscribed from ${skill.name}`);
+    } catch { toast.error('Unsubscribe failed'); }
+  };
+
+  const handleToggleAgent = async (skill, enabled) => {
+    try {
+      await toggleAgent(skill.id, enabled);
+    } catch { toast.error('Toggle failed'); }
+  };
+
   const viewDetail = (skill) => { setSelectedSkill(skill); setDetailOpen(true); };
 
-  const loading = installedLoading || catalogLoading;
+  const loading = installedLoading || catalogLoading || agentsLoading;
 
   if (loading) {
     return (
@@ -158,6 +186,44 @@ const SiddhiBazaarTab = ({ user, isImmersive = false }) => {
                 onInstall={handleInstall} onToggle={handleToggle} onViewDetail={viewDetail}
                 installing={installing} toggling={toggling} isImmersive={isImmersive} />
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* AI Assistants */}
+      {agents.length > 0 && (
+        <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${borderColor}` }}>
+          <div className="px-4 py-3 flex items-center gap-2" style={{ backgroundColor: isImmersive ? 'rgba(16, 185, 129, 0.1)' : '#ecfdf5', borderBottom: `1px solid ${borderColor}` }}>
+            <Bot className="w-4 h-4" style={{ color: '#10b981' }} />
+            <h4 className="text-sm font-semibold" style={{ color: textPrimary }}>AI Agent Assistants</h4>
+            <Badge variant="outline" className="text-[10px] ml-auto" style={{ borderColor: '#10b98140', color: '#10b981' }}>
+              {subscribedAgents.length} hired
+            </Badge>
+          </div>
+          <div className="p-3 space-y-2 max-h-96 overflow-y-auto">
+            <p className="text-xs px-1 mb-2" style={{ color: textMuted }}>
+              Hire expert AI agents who join your circle as friends and share domain knowledge.
+            </p>
+            {agents.map((item) => {
+              const skill = item.skill || item;
+              const agent = item.agent || null;
+              return (
+                <AgentCard
+                  key={skill.id}
+                  agentSkill={skill}
+                  agentUser={agent}
+                  isSubscribed={isAgentSubscribed(skill)}
+                  isEnabled={isAgentEnabled(skill)}
+                  onSubscribe={handleSubscribeAgent}
+                  onUnsubscribe={handleUnsubscribeAgent}
+                  onToggle={handleToggleAgent}
+                  onViewDetail={viewDetail}
+                  subscribing={subscribing}
+                  toggling={agentToggling}
+                  isImmersive={isImmersive}
+                />
+              );
+            })}
           </div>
         </div>
       )}

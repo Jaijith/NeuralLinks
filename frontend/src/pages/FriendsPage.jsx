@@ -269,6 +269,11 @@ const FriendsPage = ({ user }) => {
                       </AvatarFallback>
                     </Avatar>
                     <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1">{displayName}</h3>
+                    {(friend.friend_type === 'ai_agent' || friend.is_ai_agent) && (
+                      <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-semibold mb-1.5">
+                        AI Agent {friend.agent_domain_label ? `· ${friend.agent_domain_label}` : ''}
+                      </span>
+                    )}
                     <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
                       {friend.age} • {isAvatarWorld ? (friend.avatar_location || friend.location) : friend.location}
                     </p>

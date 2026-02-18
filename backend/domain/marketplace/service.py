@@ -6,8 +6,9 @@ Core CRUD operations for browsing, searching, and managing skills.
 import logging
 import math
 from typing import Dict, List, Any, Optional
-from domain.marketplace.models import SKILL_CATEGORIES, make_review_doc, now_iso
+from domain.marketplace.models import SKILL_CATEGORIES, make_review_doc, now_iso, SkillType
 from domain.marketplace.installer import SkillInstaller, InstallResult
+from domain.marketplace.agent_subscription import AgentSubscriptionService
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,7 @@ class SiddhiBazaarService:
         self.db = db
         self.gateway = gateway
         self.installer = SkillInstaller(db, gateway)
+        self.agent_subscription = AgentSubscriptionService(db, gateway)
 
     async def search_skills(
         self,
@@ -127,7 +129,14 @@ class SiddhiBazaarService:
         return await self.installer.toggle_skill(user_id, skill_id, enabled)
 
     async def get_installed_skills(self, user_id: str) -> List[Dict[str, Any]]:
-        """Get all installed skills for an avatar with full skill details"""
+        """Get all installed skills for an avatar with full skill details.
+        Lazily migrates existing avatar_actions_enabled for users who have
+        never accessed the marketplace before.
+        """
+        count = await self.db.siddhi_installations.count_documents({"user_id": user_id})
+        if count == 0:
+            await self.installer.sync_from_legacy(user_id)
+
         installations = await self.db.siddhi_installations.find({
             "user_id": user_id,
         }).to_list(None)
@@ -212,3 +221,46 @@ class SiddhiBazaarService:
     async def install_defaults_for_user(self, user_id: str) -> int:
         """Install default skills for a new user"""
         return await self.installer.install_defaults_for_user(user_id)
+
+    # ── AI Agent Subscription ─────────────────────────────
+
+    async def subscribe_agent(self, user_id: str, skill_id: str) -> Dict[str, Any]:
+        """Subscribe to an AI Agent Assistant"""
+        return await self.agent_subscription.subscribe(user_id, skill_id)
+
+    async def unsubscribe_agent(self, user_id: str, skill_id: str) -> Dict[str, Any]:
+        """Unsubscribe from an AI Agent Assistant"""
+        return await self.agent_subscription.unsubscribe(user_id, skill_id)
+
+    async def toggle_agent(self, user_id: str, skill_id: str, enabled: bool) -> Dict[str, Any]:
+        """Toggle an agent on/off"""
+        return await self.agent_subscription.toggle_agent(user_id, skill_id, enabled)
+
+    async def get_subscribed_agents(self, user_id: str) -> List[Dict[str, Any]]:
+        """Get all subscribed agents for a user"""
+        return await self.agent_subscription.get_subscribed_agents(user_id)
+
+    async def get_ai_agents(self) -> List[Dict[str, Any]]:
+        """Get all available AI Agent skills"""
+        agents = await self.db.siddhi_skills.find({
+            "type": SkillType.AI_AGENT.value
+        }).sort("sort_order", 1).to_list(None)
+
+        result = []
+        for agent_skill in agents:
+            agent_skill.pop("_id", None)
+            agent_user_id = agent_skill.get("binding", {}).get("agent_user_id")
+            agent_user = None
+            if agent_user_id:
+                agent_user = await self.db.users.find_one(
+                    {"id": agent_user_id},
+                    {"_id": 0, "id": 1, "avatar_name": 1, "avatar_picture": 1,
+                     "avatar_bio": 1, "agent_domain": 1, "agent_domain_label": 1,
+                     "agent_expertise": 1, "is_ai_agent": 1}
+                )
+            result.append({
+                "skill": agent_skill,
+                "agent": agent_user,
+            })
+
+        return result

@@ -32,10 +32,20 @@ class SkillInstaller:
         self.gateway = gateway
 
     async def install(self, user_id: str, skill_id: str) -> InstallResult:
-        """Install a skill for an avatar"""
+        """Install a skill for an avatar. Delegates to AgentSubscriptionService for AI agents."""
         skill = await self.db.siddhi_skills.find_one({"id": skill_id})
         if not skill:
             return InstallResult(success=False, reason="Skill not found")
+
+        if skill.get("type") == "ai_agent":
+            from domain.marketplace.agent_subscription import AgentSubscriptionService
+            agent_svc = AgentSubscriptionService(self.db, self.gateway)
+            result = await agent_svc.subscribe(user_id, skill_id)
+            return InstallResult(
+                success=result.get("success", False),
+                installation_id=result.get("installation_id"),
+                reason=result.get("message") or result.get("error"),
+            )
 
         return await self._install_skill(user_id, skill)
 
@@ -164,4 +174,56 @@ class SkillInstaller:
                 installed += 1
 
         logger.info(f"🔮 Installed {installed} default skills for user {user_id[:8]}...")
+        return installed
+
+    async def sync_from_legacy(self, user_id: str) -> int:
+        """
+        Migrate existing avatar_actions_enabled permissions to siddhi_installations.
+        Called lazily on first marketplace access for users who have permissions
+        but no installation records. Idempotent — skips already-installed skills.
+        """
+        existing_count = await self.db.siddhi_installations.count_documents({"user_id": user_id})
+        if existing_count > 0:
+            return 0
+
+        user = await self.db.users.find_one({"id": user_id})
+        if not user:
+            return 0
+
+        actions_enabled = user.get("avatar_actions_enabled", {})
+        if not actions_enabled:
+            return await self.install_defaults_for_user(user_id)
+
+        enabled_keys = {k for k, v in actions_enabled.items() if v}
+        if not enabled_keys:
+            return await self.install_defaults_for_user(user_id)
+
+        all_skills = await self.db.siddhi_skills.find({}).to_list(None)
+        perm_to_skill = {}
+        for skill in all_skills:
+            perm_key = skill.get("binding", {}).get("permission_key")
+            if perm_key:
+                perm_to_skill[perm_key] = skill
+
+        installed = 0
+        for perm_key, skill in perm_to_skill.items():
+            enabled = perm_key in enabled_keys
+            doc = make_installation_doc(user_id, skill)
+            doc["enabled"] = enabled
+            try:
+                await self.db.siddhi_installations.insert_one(doc)
+                installed += 1
+            except Exception as e:
+                if "duplicate key" in str(e).lower() or "E11000" in str(e):
+                    continue
+                raise
+
+        logger.info(
+            f"🔮 Legacy sync for user {user_id[:8]}...: "
+            f"migrated {installed} skills from avatar_actions_enabled"
+        )
+
+        if self.gateway:
+            self.gateway.invalidate_cache(user_id)
+
         return installed

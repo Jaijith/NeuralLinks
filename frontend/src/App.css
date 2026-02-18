@@ -163,9 +163,8 @@ body {
   }
 }
 
-/* Avatar World Styles */
+/* Avatar World Styles - background defined in index.css */
 body.avatar-world {
-  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 25%, #ffffff 50%, #f8fafc 75%, #f1f5f9 100%);
   color: #111827;
 }
 
@@ -344,36 +343,32 @@ body.avatar-world .card-hover:hover {
   }
 }
 
-/* Scrollbar Styling */
+/* Scrollbar Styling - Subtle and consistent */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-body.avatar-world ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.5);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
-  border-radius: 10px;
-}
-
-body.avatar-world ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #db2777 0%, #7c3aed 100%);
+  background: rgba(156, 163, 175, 0.6);
 }
 
-body.avatar-world ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+/* Avatar world classic - subtle blue scrollbar */
+body.avatar-world.view-classic ::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 3px;
+}
+
+body.avatar-world.view-classic ::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
 }
 

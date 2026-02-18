@@ -23,8 +23,20 @@ export function useMarketplace() {
       ]);
 
       setCategories(catRes.data || catRes || []);
-      setFeatured(featRes.data || featRes || []);
-      setRecommended(recRes.data || recRes || []);
+
+      // Deduplicate by slug (guard against multiple seed runs)
+      const dedup = (arr) => {
+        const seen = new Set();
+        return (Array.isArray(arr) ? arr : []).filter((s) => {
+          const key = s.slug || s.id;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      };
+
+      setFeatured(dedup(featRes.data || featRes));
+      setRecommended(dedup(recRes.data || recRes));
       setError(null);
     } catch (err) {
       console.error('Failed to load marketplace:', err);

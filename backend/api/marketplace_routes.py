@@ -46,6 +46,12 @@ class ReviewRequest(BaseModel):
     review_text: str = ""
 
 
+class ConsultRequest(BaseModel):
+    query: str
+    agent_user_id: Optional[str] = None
+    source: str = "chat"
+
+
 # ── Catalog ────────────────────────────────────────────
 
 @router.get("/skills")
@@ -196,6 +202,131 @@ async def submit_review(request: Request, skill_id: str, body: ReviewRequest):
     service = get_service(request)
     review = await service.rate_skill(extract_user_id(user), skill_id, body.rating, body.review_text)
     return review
+
+
+# ── AI Agent Subscriptions ─────────────────────────────
+
+@router.get("/agents")
+async def get_ai_agents(request: Request):
+    """Get all available AI Agent Assistants"""
+    service = get_service(request)
+    return await service.get_ai_agents()
+
+
+@router.get("/agents/subscribed")
+async def get_subscribed_agents(request: Request):
+    """Get the current user's subscribed agents"""
+    user = await get_user_from_request(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    service = get_service(request)
+    return await service.get_subscribed_agents(extract_user_id(user))
+
+
+@router.post("/agents/subscribe/{skill_id}")
+async def subscribe_agent(request: Request, skill_id: str):
+    """Subscribe to an AI Agent Assistant"""
+    user = await get_user_from_request(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    service = get_service(request)
+    result = await service.subscribe_agent(extract_user_id(user), skill_id)
+
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("error", "Failed to subscribe"))
+
+    return result
+
+
+@router.post("/agents/unsubscribe/{skill_id}")
+async def unsubscribe_agent(request: Request, skill_id: str):
+    """Unsubscribe from an AI Agent Assistant"""
+    user = await get_user_from_request(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    service = get_service(request)
+    result = await service.unsubscribe_agent(extract_user_id(user), skill_id)
+
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("error", "Failed to unsubscribe"))
+
+    return result
+
+
+@router.patch("/agents/toggle/{skill_id}")
+async def toggle_agent(request: Request, skill_id: str, body: ToggleRequest):
+    """Toggle an AI Agent on/off"""
+    user = await get_user_from_request(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    service = get_service(request)
+    result = await service.toggle_agent(extract_user_id(user), skill_id, body.enabled)
+
+    if not result.get("success"):
+        raise HTTPException(status_code=404, detail=result.get("error", "Agent not found"))
+
+    return result
+
+
+# ── A2A Consultation ──────────────────────────────────
+
+@router.post("/agents/consult")
+async def consult_agent(request: Request, body: ConsultRequest):
+    """
+    Consult an AI Agent Assistant via A2A protocol.
+    If agent_user_id is provided, consults that specific agent.
+    Otherwise, auto-selects the best agent for the query.
+    """
+    user = await get_user_from_request(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    from domain.marketplace.agent_a2a_service import A2AService
+    from core.database import get_database
+    db = get_database()
+    a2a = A2AService(db)
+    user_id = extract_user_id(user)
+
+    if body.agent_user_id:
+        result = await a2a.consult(
+            client_agent_id=user_id,
+            remote_agent_id=body.agent_user_id,
+            query=body.query,
+            source=body.source,
+        )
+    else:
+        result = await a2a.consult_best_agent(
+            client_agent_id=user_id,
+            query=body.query,
+            source=body.source,
+        )
+
+    if not result.get("success"):
+        raise HTTPException(
+            status_code=400,
+            detail=result.get("error", "Consultation failed")
+        )
+
+    return result
+
+
+@router.get("/agents/tasks")
+async def get_agent_tasks(request: Request, limit: int = Query(default=20, ge=1, le=100)):
+    """Get recent A2A consultation tasks for the current user"""
+    user = await get_user_from_request(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    from domain.marketplace.agent_a2a_service import A2AService
+    from core.database import get_database
+    db = get_database()
+    a2a = A2AService(db)
+
+    return await a2a.get_user_tasks(extract_user_id(user), limit=limit)
 
 
 # ── Admin ──────────────────────────────────────────────

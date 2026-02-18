@@ -14,6 +14,7 @@ class SkillType(str, Enum):
     MCP_TOOL = "mcp_tool"
     WORKFLOW_ENGINE = "workflow_engine"
     SKILL_BUNDLE = "skill_bundle"
+    AI_AGENT = "ai_agent"
 
 
 class SkillTier(str, Enum):
@@ -83,6 +84,12 @@ SKILL_CATEGORIES = {
         "icon": "package",
         "color": "#84cc16",
         "description": "Curated skill packs"
+    },
+    "ai_assistants": {
+        "name": "AI Assistants",
+        "icon": "bot",
+        "color": "#10b981",
+        "description": "Specialized AI agents that join your circle as expert friends"
     }
 }
 
@@ -131,6 +138,11 @@ def make_skill_doc(
             "engine_mission_types": binding.get("engine_mission_types", []),
             "bundled_skill_ids": binding.get("bundled_skill_ids", []),
             "workflow_tools_included": binding.get("workflow_tools_included", []),
+            # AI Agent fields
+            "agent_user_id": binding.get("agent_user_id"),
+            "agent_domain": binding.get("agent_domain"),
+            "agent_expertise": binding.get("agent_expertise", []),
+            "consultation_prompt": binding.get("consultation_prompt"),
         },
         "gateway_config": gateway_config or {
             "rate_limit": {"max_per_hour": None, "max_per_day": None, "cooldown_seconds": 0},
@@ -206,6 +218,72 @@ def make_review_doc(skill_id: str, user_id: str, avatar_name: str, rating: int, 
         "rating": max(1, min(5, rating)),
         "review_text": review_text,
         "created_at": now_iso(),
+    }
+
+
+class A2ATaskStatus(str, Enum):
+    SUBMITTED = "submitted"
+    WORKING = "working"
+    INPUT_REQUIRED = "input-required"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+
+def make_a2a_task_doc(
+    client_agent_id: str,
+    remote_agent_id: str,
+    remote_agent_slug: str,
+    query: str,
+    source: str = "chat",
+    skill_id: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Create an A2A task document following the Agent2Agent protocol."""
+    return {
+        "id": new_id(),
+        "client_agent_id": client_agent_id,
+        "remote_agent_id": remote_agent_id,
+        "remote_agent_slug": remote_agent_slug,
+        "status": A2ATaskStatus.SUBMITTED.value,
+        "messages": [
+            {
+                "role": "user",
+                "parts": [{"type": "text", "text": query}],
+                "timestamp": now_iso(),
+            }
+        ],
+        "artifacts": [],
+        "metadata": {
+            "source": source,
+            "skill_id": skill_id,
+            "tokens_used": 0,
+            "latency_ms": 0.0,
+        },
+        "created_at": now_iso(),
+        "updated_at": now_iso(),
+    }
+
+
+def make_agent_card(
+    name: str,
+    description: str,
+    agent_user_id: str,
+    domain: str,
+    skills: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Create an A2A Agent Card following the Agent2Agent protocol."""
+    return {
+        "name": name,
+        "description": description,
+        "url": f"internal://agents/{agent_user_id}",
+        "version": "1.0.0",
+        "capabilities": {
+            "streaming": False,
+            "pushNotifications": False,
+        },
+        "skills": skills,
+        "defaultInputModes": ["text"],
+        "defaultOutputModes": ["text"],
+        "domain": domain,
     }
 
 

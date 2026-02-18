@@ -112,7 +112,7 @@ const SettingsPage = ({ user, setUser }) => {
 
           <TabsContent value="siddhi" className="mt-0">
             <Card className="glass-morphism p-4 sm:p-6">
-              <SiddhiBazaarTab user={user} isImmersive={false} />
+              <SiddhiBazaarTab user={user} isImmersive={isImmersive} />
             </Card>
           </TabsContent>
 

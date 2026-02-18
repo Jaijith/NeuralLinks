@@ -131,7 +131,14 @@ const AppHeader = ({ user, setUser, currentPage = 'home' }) => {
 
   return (
     <>
-      <header className={`shadow-sm fixed top-0 left-0 right-0 z-50 border-b ${
+      {/* Skip to content link for keyboard navigation */}
+      <a href="#main-content" className="skip-to-content">
+        Skip to content
+      </a>
+      <header 
+        role="banner"
+        aria-label="Main navigation"
+        className={`shadow-sm fixed top-0 left-0 right-0 z-50 border-b ${
         isDarkMode 
           ? 'border-blue-500/30' 
           : 'border-gray-200'

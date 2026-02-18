@@ -157,11 +157,14 @@ class FriendService:
         }).to_list(1000)
         
         friend_ids = []
+        friend_type_map = {}
         for f in friendships:
             if f['user_id'] == user_id:
-                friend_ids.append(f['friend_id'])
+                fid = f['friend_id']
             else:
-                friend_ids.append(f['user_id'])
+                fid = f['user_id']
+            friend_ids.append(fid)
+            friend_type_map[fid] = f.get('friend_type', 'human')
         
         if not friend_ids:
             return []
@@ -185,11 +188,19 @@ class FriendService:
                 "avatar_job_title": 1,
                 "job_title": 1,
                 "age": 1,
-                "is_bot": 1
+                "is_bot": 1,
+                "is_ai_agent": 1,
+                "agent_domain": 1,
+                "agent_domain_label": 1,
+                "agent_expertise": 1,
             }
         ).to_list(1000)
         
-        # Sort by name for consistency
+        # Attach friend_type from friendship document
+        for friend in friends:
+            friend["friend_type"] = friend_type_map.get(friend["id"], "human")
+        
+        # Sort alphabetically by name (frontend handles recency-based ordering)
         friends.sort(key=lambda x: (x.get('avatar_name') or x.get('name') or '').lower())
         
         return friends

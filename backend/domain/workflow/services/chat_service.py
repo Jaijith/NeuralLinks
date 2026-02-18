@@ -123,6 +123,10 @@ class ChatService:
                     avatar_response = await self._generate_mission_confirmation(
                         session, mission_created
                     )
+            elif intent == "ask_agent" and intent_confidence > 0.6:
+                avatar_response = await self._consult_agent_for_chat(
+                    session.user_id, session.avatar_id, content
+                )
             else:
                 avatar_response = await self._generate_avatar_response(session, content)
             
@@ -167,6 +171,8 @@ class ChatService:
                 return "check_status", 0.7
             if any(kw in lower for kw in ["stop", "cancel", "pause"]):
                 return "control_mission", 0.7
+            if any(kw in lower for kw in ["ask my agent", "consult agent", "ask the expert", "what does my"]):
+                return "ask_agent", 0.8
             return "general_chat", 0.5
         
         # Use LLM for intent detection
@@ -181,6 +187,7 @@ Possible intents:
 - start_mission: User wants to start a workflow (find matches, search leads, etc.)
 - check_status: User asking about mission progress or status
 - control_mission: User wants to pause, cancel, or modify a mission
+- ask_agent: User wants to consult a specialized AI agent for domain expertise (tech, travel, fitness, etc.)
 - ask_question: User asking a question about something
 - give_feedback: User providing feedback on results
 - general_chat: General conversation
@@ -397,6 +404,42 @@ Infer values from the request. Use user's interests if relevant."""
             logger.error(f"Failed to parse mission params: {e}")
             return None
     
+    async def _consult_agent_for_chat(
+        self,
+        user_id: str,
+        avatar_id: str,
+        user_message: str,
+    ) -> str:
+        """Consult an AI Agent via A2A protocol for a chat response."""
+        try:
+            from domain.marketplace.agent_a2a_service import A2AService
+            a2a = A2AService(self.db)
+
+            result = await a2a.consult_best_agent(
+                client_agent_id=user_id,
+                query=user_message,
+                source="chat",
+            )
+
+            if result.get("success"):
+                agent_name = result.get("agent_name", "the expert")
+                response = result.get("response", "")
+                return (
+                    f"I checked with {agent_name} for you. "
+                    f"Here's what they shared:\n\n{response}"
+                )
+            else:
+                error = result.get("error", "")
+                if "No agents available" in error:
+                    return (
+                        "You don't have any AI Agent friends subscribed yet. "
+                        "Head to the Siddhi Bazaar in Settings to subscribe to expert agents!"
+                    )
+                return f"I tried to reach an expert, but: {error}. Let me help you myself."
+        except Exception as e:
+            logger.error(f"Chat agent consultation failed: {e}")
+            return "I had trouble reaching the expert. Let me try to help you myself."
+
     async def _generate_avatar_response(
         self,
         session: AvatarChatSession,

@@ -115,18 +115,11 @@ try:
     # This is recommended for Lambda to avoid issues with connection pooling
     mangum_adapter = Mangum(app, lifespan="off")
     
-    # Seed Siddhi Bazaar catalog on cold start (idempotent, runs once per Lambda instance)
-    try:
-        import asyncio as _asyncio
-        from domain.marketplace.catalog import seed_catalog as _seed_catalog
-        from core.database import get_database as _get_db
-        _loop = _asyncio.new_event_loop()
-        _created = _loop.run_until_complete(_seed_catalog(_get_db()))
-        _loop.close()
-        if _created > 0:
-            logger.info(f"🔮 Siddhi Bazaar: {_created} new skills seeded (cold start)")
-    except Exception as _seed_err:
-        logger.warning(f"🔮 Siddhi Bazaar seed on cold start failed (non-fatal): {_seed_err}")
+    # NOTE: Siddhi Bazaar catalog seeding is NOT done during cold start
+    # because running async code on a temporary event loop poisons the
+    # shared AsyncIOMotorClient singleton (futures get attached to a
+    # different loop than the one Mangum uses for HTTP requests).
+    # Seed via: POST /api/marketplace/admin/seed
     
     async def run_single_avatar_cycle(avatar_id: str, force_action: str = None):
         """Run autonomous cycle for a single avatar
@@ -246,12 +239,20 @@ try:
             local_intelligent_avatar = IntelligentAvatar(db, openai_client, openai_model, graph_rag)
         
         try:
-            # Find all users with autonomy enabled (including bots for testing)
+            # Find all users with autonomy enabled OR AI agents
+            # AI agents always run (they are content curators)
             query = {
-                "avatar_autonomous": True,
-                "avatar_name": {"$exists": True, "$ne": None},
-                "avatar_picture": {"$exists": True, "$ne": None}
-                # Note: Removed is_bot filter to include bot avatars
+                "$or": [
+                    {
+                        "avatar_autonomous": True,
+                        "avatar_name": {"$exists": True, "$ne": None},
+                        "avatar_picture": {"$exists": True, "$ne": None},
+                    },
+                    {
+                        "is_ai_agent": True,
+                        "avatar_name": {"$exists": True, "$ne": None},
+                    },
+                ],
             }
             
             users = await db.users.find(query, {"_id": 0}).to_list(100)

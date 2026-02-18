@@ -466,15 +466,14 @@ const AvatarStoriesRow = ({ currentUser, className = '', style = {} }) => {
     const fetchFriends = async () => {
       try {
         const data = await friendService.getFriends();
-        const limitedFriends = data.slice(0, 15);
         
-        // Fetch latest post for each friend to determine ordering
+        // Fetch latest post for ALL friends to determine ordering by recency
+        // (don't pre-slice — we need recency info from all friends first)
         const postType = isAvatarWorld ? 'avatar' : 'real';
         const friendsWithLatest = await Promise.all(
-          limitedFriends.map(async (friend) => {
+          data.map(async (friend) => {
             try {
               const response = await postService.getUserPosts(friend.id, postType, 1, 0);
-              // Backend returns { posts: [...], total, has_more } - extract the posts array
               const posts = response?.posts || (Array.isArray(response) ? response : []);
               const latestPost = posts[0];
               return {
@@ -487,9 +486,9 @@ const AvatarStoriesRow = ({ currentUser, className = '', style = {} }) => {
           })
         );
         
-        // Sort: most recent post first
+        // Sort by most recent post first, then take top 15 for display
         friendsWithLatest.sort((a, b) => b._latestPostTime - a._latestPostTime);
-        setFriends(friendsWithLatest);
+        setFriends(friendsWithLatest.slice(0, 15));
       } catch (error) {
         console.error('Error fetching friends for stories:', error);
       } finally {

@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { Heart, MessageCircle, Share2, PenTool, Newspaper, Image, UserPlus, UserCheck, Mail, Inbox, Compass, Rss, Globe, Activity, TrendingUp, Search, Tag, Filter, BarChart, Brain, Send, MessageSquarePlus, Bell, FileText, Save, Eye, Loader, Network, Database, Megaphone, Link, Crown, Sparkles, Map, Palette, Package, Target, HeartHandshake } from 'lucide-react';
+import { Heart, MessageCircle, Share2, PenTool, Newspaper, Image, UserPlus, UserCheck, Mail, Inbox, Compass, Rss, Globe, Activity, TrendingUp, Search, Tag, Filter, BarChart, Brain, Send, MessageSquarePlus, Bell, FileText, Save, Eye, Loader, Network, Database, Megaphone, Link, Crown, Sparkles, Map, Palette, Package, Target, HeartHandshake, Cpu, Plane, Music, Film, Gamepad2, BookOpen, Shirt, Dumbbell, UtensilsCrossed, Waves, Footprints, Telescope, HeartPulse, Bot, Brush } from 'lucide-react';
 
 const ICON_MAP = {
   'heart': Heart, 'message-circle': MessageCircle, 'share-2': Share2,
@@ -21,6 +21,13 @@ const ICON_MAP = {
   'user-search': Search, 'user-plus-2': UserPlus,
   'message-square': MessageCircle, 'git-merge': Link,
   'bar-chart-3': BarChart,
+  // AI Agent icons
+  'cpu': Cpu, 'plane': Plane, 'music': Music, 'film': Film,
+  'gamepad-2': Gamepad2, 'book-open': BookOpen, 'shirt': Shirt,
+  'dumbbell': Dumbbell, 'utensils': UtensilsCrossed, 'waves': Waves,
+  'footprints': Footprints, 'telescope': Telescope,
+  'heart-pulse': HeartPulse, 'bot': Bot, 'brush': Brush,
+  'pen-line': PenTool, 'chef-hat': UtensilsCrossed, 'lotus': Sparkles,
 };
 
 function getIcon(iconName) {

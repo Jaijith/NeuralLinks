@@ -122,7 +122,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-[#0a0a0f] overflow-hidden relative ${isAvatarWorld ? 'landing-page-avatar-world' : ''}`}>
+    <div className={`min-h-[100dvh] bg-[#0a0a0f] overflow-hidden relative ${isAvatarWorld ? 'landing-page-avatar-world' : ''}`}>
       {/* Gradient Orbs Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[120px] animate-pulse"></div>
@@ -155,8 +155,16 @@ const LandingPage = () => {
         ))}
       </div>
 
-      {/* Header - Sticky */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5">
+      {/* Header - Sticky (with PWA safe-area support) */}
+      <header
+        className="fixed top-0 left-0 right-0 z-50 px-6 bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5"
+        style={{
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
+          paddingBottom: '16px',
+          paddingLeft: 'calc(env(safe-area-inset-left, 0px) + 24px)',
+          paddingRight: 'calc(env(safe-area-inset-right, 0px) + 24px)',
+        }}
+      >
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-xl overflow-hidden ring-1 ring-cyan-500/30 shadow-lg shadow-cyan-500/20">
@@ -191,8 +199,11 @@ const LandingPage = () => {
         </div>
       </header>
 
-      {/* Hero Section - Full Screen */}
-      <section className="relative min-h-screen flex items-center justify-center pt-20">
+      {/* Hero Section - Full Screen (pt accounts for header + safe-area) */}
+      <section
+        className="relative min-h-screen flex items-center justify-center"
+        style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 80px)' }}
+      >
         <div className="max-w-7xl mx-auto px-6 py-20">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left - Content */}
@@ -539,8 +550,14 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative z-10 py-12 px-6 border-t border-white/5">
+      {/* Footer (with PWA safe-area bottom support) */}
+      <footer
+        className="relative z-10 px-6 border-t border-white/5"
+        style={{
+          paddingTop: '48px',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 48px)',
+        }}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">

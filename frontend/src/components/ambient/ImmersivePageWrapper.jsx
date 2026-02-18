@@ -53,13 +53,13 @@ const getGlobalStyles = (isImmersive, containerId) => {
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
       }
       
-      /* White backgrounds to dark */
-      #${id} [class*="bg-white"]:not([class*="bg-white/"]) {
+      /* White backgrounds to dark (including opacity variants like bg-white/70) */
+      #${id} [class*="bg-white"] {
         background: var(--card-bg) !important;
       }
       
-      /* Generic card backgrounds - exclude colored cards */
-      #${id} [class*="bg-card"]:not([class*="bg-blue-"]):not([class*="bg-purple-"]):not([class*="bg-pink-"]):not([class*="bg-green-"]):not([class*="bg-red-"]):not([class*="bg-yellow-"]):not([class*="bg-gradient"]) {
+      /* Generic card backgrounds */
+      #${id} [class*="bg-card"] {
         background: var(--card-bg) !important;
       }
       
@@ -125,27 +125,70 @@ const getGlobalStyles = (isImmersive, containerId) => {
         color: rgba(255, 255, 255, 0.4) !important;
       }
       
-      /* Preserve colored backgrounds/badges - don't override these */
-      #${id} [class*="bg-gradient"],
-      #${id} [class*="from-pink"],
-      #${id} [class*="from-purple"],
-      #${id} [class*="from-green"],
-      #${id} [class*="from-blue"],
-      #${id} [class*="bg-purple-100"],
-      #${id} [class*="bg-blue-100"],
-      #${id} [class*="bg-yellow-100"],
+      /* Darken pastel backgrounds for readability in immersive mode */
+      #${id} [class*="bg-yellow-50"],
+      #${id} [class*="bg-yellow-100"] {
+        background: rgba(234, 179, 8, 0.15) !important;
+      }
+      #${id} [class*="bg-purple-50"],
+      #${id} [class*="bg-purple-100"] {
+        background: rgba(139, 92, 246, 0.15) !important;
+      }
+      #${id} [class*="bg-green-50"],
       #${id} [class*="bg-green-100"],
-      #${id} [class*="bg-red-"],
-      #${id} [class*="bg-blue-5"],
-      #${id} [class*="bg-purple-5"],
-      #${id} [class*="bg-blue-50"] {
-        /* Don't override colored backgrounds */
+      #${id} [class*="bg-emerald-50"],
+      #${id} [class*="bg-emerald-100"] {
+        background: rgba(16, 185, 129, 0.15) !important;
+      }
+      #${id} [class*="bg-red-50"],
+      #${id} [class*="bg-red-100"] {
+        background: rgba(239, 68, 68, 0.15) !important;
+      }
+      #${id} [class*="bg-blue-50"],
+      #${id} [class*="bg-blue-100"] {
+        background: rgba(59, 130, 246, 0.15) !important;
+      }
+      
+      /* Preserve actual colored solid backgrounds (500-level and gradients) */
+      #${id} [class*="bg-gradient"],
+      #${id} [class*="bg-blue-500"],
+      #${id} [class*="bg-blue-600"],
+      #${id} [class*="bg-purple-500"],
+      #${id} [class*="bg-purple-600"],
+      #${id} [class*="bg-green-500"],
+      #${id} [class*="bg-green-600"],
+      #${id} [class*="bg-red-500"],
+      #${id} [class*="bg-red-600"],
+      #${id} [class*="bg-yellow-400"],
+      #${id} [class*="bg-yellow-500"] {
+        /* Keep vivid colored backgrounds as-is */
+      }
+      
+      /* Buttons with colored backgrounds keep white text */
+      #${id} button[class*="bg-blue-5"],
+      #${id} button[class*="bg-green-5"],
+      #${id} button[class*="bg-purple-5"],
+      #${id} button[class*="bg-red-5"],
+      #${id} button[class*="bg-yellow-5"],
+      #${id} .btn-primary,
+      #${id} button[class*="bg-gradient"] {
+        color: rgb(255, 255, 255) !important;
       }
       
       /* Hover states */
       #${id} [class*="hover\\:bg-gray"]:hover,
-      #${id} [class*="hover\\:bg-purple-50"]:hover {
+      #${id} [class*="hover\\:bg-slate"]:hover,
+      #${id} [class*="hover\\:bg-purple-50"]:hover,
+      #${id} [class*="hover\\:bg-violet-50"]:hover {
         background: rgba(255, 255, 255, 0.08) !important;
+      }
+      
+      #${id} [class*="hover\\:bg-red-50"]:hover {
+        background: rgba(239, 68, 68, 0.2) !important;
+      }
+      
+      #${id} [class*="hover\\:bg-green"]:hover {
+        background: rgba(16, 185, 129, 0.2) !important;
       }
     `;
   } else {

@@ -335,7 +335,8 @@ class StateAwareAgent:
                 memory_context = await self.memory_manager.get_full_memory_context(self.bot_id)
                 
                 # Step 6: Select and execute action (only if not in RESTING state)
-                if current_state.value != "resting":
+                # AI agents always act — they are content curators, not mood-driven avatars
+                if current_state.value != "resting" or self.is_ai_agent:
                     # Check if we're allowed to take action (activity level constraints)
                     can_act, reason = self._can_take_action()
                     if not can_act:
@@ -671,7 +672,8 @@ class StateAwareAgent:
             logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Character profile: {time.time() - step_start:.2f}s")
             
             # Step 5: Select and execute action (only if not in RESTING state, unless force_action)
-            if current_state.value != "resting" or force_action:
+            # AI agents always act — they are content curators, not mood-driven avatars
+            if current_state.value != "resting" or force_action or self.is_ai_agent:
                 # Check if we're allowed to take action (activity level constraints)
                 # Skip cooldown check if force_action is specified
                 if force_action:

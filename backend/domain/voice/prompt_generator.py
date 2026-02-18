@@ -166,6 +166,34 @@ class VoicePromptGenerator:
             except Exception as e:
                 logger.warning(f"Could not fetch context: {e}")
         
+        # Fetch subscribed AI agents for agent consultation context
+        subscribed_agents_text = ""
+        try:
+            agent_subs = await self.db.agent_subscriptions.find({
+                "user_id": user_id,
+                "active": True,
+            }).to_list(None)
+            if agent_subs:
+                agent_lines = []
+                for sub in agent_subs:
+                    agent_user = await self.db.users.find_one({"id": sub["agent_user_id"]})
+                    if agent_user:
+                        name = agent_user.get("avatar_name", "Agent")
+                        domain_label = agent_user.get("agent_domain_label", sub.get("agent_domain", ""))
+                        agent_lines.append(
+                            f"- {name} ({domain_label}): ID = {sub['agent_user_id']}"
+                        )
+                if agent_lines:
+                    subscribed_agents_text = (
+                        f"\n**Your AI Agent Friends:**\n"
+                        f"{user_name} has subscribed to these expert AI agents. "
+                        f"When they ask about a topic one of these agents specializes in, "
+                        f"use the consult_agent tool to get expert advice.\n"
+                        + "\n".join(agent_lines)
+                    )
+        except Exception as e:
+            logger.warning(f"Could not fetch subscribed agents: {e}")
+
         # Generate each section (identity is hardcoded in the prompt template)
         task = self._generate_task(bonding_state)
         demeanor = self._generate_demeanor(internal_state.mood, internal_state.energy_level)
@@ -271,6 +299,7 @@ You laugh easily. You tease playfully. You get excited about small things. You n
 {social_context}
 
 {social_instructions}
+{subscribed_agents_text}
 {knowledge_gap_section}
 {post_threads_section}
 

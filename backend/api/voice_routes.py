@@ -989,3 +989,72 @@ async def get_voice_memory(
             "formatted": "",
             "error": str(e)
         }
+
+
+# ── A2A Agent Consultation (Voice) ────────────────────
+
+
+class VoiceConsultRequest(BaseModel):
+    """Request to consult an AI agent during voice session"""
+    avatar_id: str = Field(..., description="Avatar ID")
+    query: str = Field(..., description="Question for the agent")
+    agent_user_id: Optional[str] = Field(None, description="Specific agent ID (auto-selects if not provided)")
+
+
+@router.post("/consult")
+async def voice_consult_agent(req: VoiceConsultRequest, request: Request):
+    """
+    Consult an AI Agent during a voice session via A2A protocol.
+    Called when the voice model triggers the consult_agent function tool.
+    """
+    try:
+        user = await require_auth(request)
+        user_id = user.id
+
+        from domain.marketplace.agent_a2a_service import A2AService
+        a2a = A2AService(db)
+
+        if req.agent_user_id:
+            result = await a2a.consult(
+                client_agent_id=user_id,
+                remote_agent_id=req.agent_user_id,
+                query=req.query,
+                source="voice",
+            )
+        else:
+            result = await a2a.consult_best_agent(
+                client_agent_id=user_id,
+                query=req.query,
+                source="voice",
+            )
+
+        if not result.get("success"):
+            return {
+                "success": False,
+                "error": result.get("error", "Agent consultation failed"),
+                "formatted_response": "I wasn't able to reach the agent right now. Let me try to help you myself.",
+            }
+
+        agent_name = result.get("agent_name", "the agent")
+        response_text = result.get("response", "")
+
+        return {
+            "success": True,
+            "response": response_text,
+            "agent_name": agent_name,
+            "domain": result.get("domain", ""),
+            "formatted_response": (
+                f"I checked with {agent_name}. Here's what they said: {response_text}"
+            ),
+            "latency_ms": result.get("latency_ms", 0),
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Voice agent consultation error: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "formatted_response": "Something went wrong reaching the agent. Let me help you myself.",
+        }

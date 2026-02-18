@@ -29,6 +29,16 @@ export const marketplaceService = {
   // Gateway
   getGatewayStatus: () => apiClient.get(`${BASE}/gateway/status`),
 
+  // AI Agents
+  getAiAgents: () => apiClient.get(`${BASE}/agents`),
+  getSubscribedAgents: () => apiClient.get(`${BASE}/agents/subscribed`),
+  subscribeAgent: (skillId) => apiClient.post(`${BASE}/agents/subscribe/${skillId}`),
+  unsubscribeAgent: (skillId) => apiClient.post(`${BASE}/agents/unsubscribe/${skillId}`),
+  toggleAgent: (skillId, enabled) => apiClient.patch(`${BASE}/agents/toggle/${skillId}`, { enabled }),
+  consultAgent: (query, agentUserId = null) =>
+    apiClient.post(`${BASE}/agents/consult`, { query, agent_user_id: agentUserId }),
+  getAgentTasks: (limit = 20) => apiClient.get(`${BASE}/agents/tasks`, { params: { limit } }),
+
   // Admin
   seedCatalog: () => apiClient.post(`${BASE}/admin/seed`),
   getStats: () => apiClient.get(`${BASE}/admin/stats`),

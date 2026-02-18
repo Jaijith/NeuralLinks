@@ -251,6 +251,41 @@ to keep the conversation flowing naturally. Show genuine effort to remember.""",
     },
     {
         "type": "function",
+        "name": "consult_agent",
+        "description": """Consult a specialized AI Agent friend for expert advice on a topic.
+
+USE THIS WHEN:
+- The user asks about a topic that a subscribed AI Agent specializes in
+  (e.g., technology, travel, fitness, cooking, music, books, design, etc.)
+- The user wants expert advice or in-depth information
+- The user says "ask my tech agent" or "what does my travel expert think"
+- You need domain-specific knowledge beyond your general abilities
+
+DO NOT USE THIS FOR:
+- Personal questions about the user's life (you already know those)
+- Simple greetings or casual chat
+- When you can answer the question from your existing knowledge
+- When the user hasn't subscribed to any agents
+
+When you call this, say something like "Let me ask [domain] expert about that..." 
+to keep the conversation natural. Share your own thoughts while waiting.""",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "The question or topic to consult the agent about"
+                },
+                "agent_user_id": {
+                    "type": "string",
+                    "description": "Optional: Specific agent ID. If not provided, auto-selects the best agent for the query."
+                }
+            },
+            "required": ["query"]
+        }
+    },
+    {
+        "type": "function",
         "name": "trigger_workflow",
         "description": """Trigger a workflow mission when the user CONFIRMS they want to start a task.
 

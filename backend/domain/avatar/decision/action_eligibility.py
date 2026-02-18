@@ -34,7 +34,8 @@ class ActionEligibility:
             "comment_on_post": timedelta(minutes=3),  # Can comment every 3 mins (was 5)
             "message_friend": timedelta(minutes=3),   # Can message every 3 mins (was 5) - now tracking SENT messages only
             "send_friend_request": timedelta(minutes=20),  # Friend request every 20 mins (was 30)
-            "discover_profiles": timedelta(minutes=15)     # Discover every 15 mins (was 10 - INCREASED to reduce spam)
+            "discover_profiles": timedelta(minutes=15),    # Discover every 15 mins (was 10 - INCREASED to reduce spam)
+            "browse_and_share_news": timedelta(minutes=30), # News curation every 30 mins
         }
         
         # Define state-based action availability
@@ -45,27 +46,29 @@ class ActionEligibility:
             TopLevelState.ACTIVE: [
                 "like_post", "comment_on_post", "react_to_post",
                 "message_friend", "read_messages", "discover_profiles",
-                "create_post"  # NEW: Allow posting from ACTIVE state too
+                "create_post", "browse_and_share_news",
             ],
             TopLevelState.SOCIAL: [
                 "message_friend", "read_messages", "respond_to_messages",
                 "send_friend_request", "review_friend_requests", "accept_friend_request",
-                "create_post",  # Can share thoughts while social
-                "like_post", "comment_on_post"  # Can engage with friends' posts
+                "create_post", "like_post", "comment_on_post",
+                "browse_and_share_news",
             ],
             TopLevelState.CREATIVE: [
-                "create_post",  # Primary action for CREATIVE
-                "message_friend"  # NEW: Can message to share creations
+                "create_post", "message_friend",
+                "browse_and_share_news",
             ],
             TopLevelState.EXPLORING: [
                 "discover_profiles", "discover_content", "browse_feed",
-                "create_post"  # NEW: Share discoveries
+                "create_post", "browse_and_share_news",
             ],
             TopLevelState.PASSIVE: [
-                "read_messages", "browse_feed",
-                "message_friend"  # NEW: Can reach out even when passive
+                "read_messages", "browse_feed", "message_friend",
+                "browse_and_share_news",
             ],
-            TopLevelState.RESTING: []  # No actions during rest
+            TopLevelState.RESTING: [
+                "browse_and_share_news",
+            ]
         }
         
         # Map action types to permission keys
@@ -79,6 +82,7 @@ class ActionEligibility:
             "accept_friend_request": "accept_friend_requests",
             "discover_profiles": "discover_profiles",
             "share_post": "share_posts",
+            "browse_and_share_news": "browse_and_share_news",
         }
     
     async def get_eligible_actions(
@@ -171,7 +175,7 @@ class ActionEligibility:
         cooldown = self.cooldowns[action_type]
         
         # Check appropriate temporal state
-        if action_type == "create_post":
+        if action_type in ["create_post", "browse_and_share_news"]:
             time_since = internal_state.time_since_last_post
         elif action_type == "message_friend":
             time_since = internal_state.time_since_last_conversation
@@ -203,7 +207,9 @@ class ActionEligibility:
             return len(recent_posts) > 0
         
         elif action_type == "create_post":
-            # Can always create posts
+            return True
+        
+        elif action_type == "browse_and_share_news":
             return True
         
         return True
@@ -246,7 +252,7 @@ class ActionEligibility:
         cooldown = self.cooldowns[action_type]
         
         # Get time since last action
-        if action_type == "create_post":
+        if action_type in ["create_post", "browse_and_share_news"]:
             time_since = internal_state.time_since_last_post
         elif action_type == "message_friend":
             time_since = internal_state.time_since_last_conversation

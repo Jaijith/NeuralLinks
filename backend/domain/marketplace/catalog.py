@@ -351,15 +351,18 @@ def build_skill_bundles(all_skills: List[Dict[str, Any]]) -> List[Dict[str, Any]
 
 
 def build_full_catalog() -> List[Dict[str, Any]]:
-    """Build the complete skill catalog"""
+    """Build the complete skill catalog including AI Agent Assistants"""
+    from domain.marketplace.agents_catalog import build_ai_agents
+
     avatar_tools = build_avatar_mcp_tools()
     workflow_tools = build_workflow_mcp_tools()
     engines = build_workflow_engines()
 
     all_skills = avatar_tools + workflow_tools + engines
     bundles = build_skill_bundles(all_skills)
+    agents = build_ai_agents()
 
-    return all_skills + bundles
+    return all_skills + bundles + agents
 
 
 async def seed_catalog(db) -> int:
@@ -403,6 +406,14 @@ async def seed_catalog(db) -> int:
     await db.siddhi_installations.create_index([("user_id", 1), ("skill_slug", 1)], unique=True)
     await db.siddhi_installations.create_index([("user_id", 1), ("enabled", 1)])
     await db.siddhi_installations.create_index("skill_id")
+
+    # AI Agent indexes
+    await db.agent_subscriptions.create_index([("user_id", 1), ("skill_id", 1)], unique=True)
+    await db.agent_subscriptions.create_index([("user_id", 1), ("active", 1)])
+    await db.agent_subscriptions.create_index("agent_user_id")
+    await db.a2a_tasks.create_index([("client_agent_id", 1), ("status", 1)])
+    await db.a2a_tasks.create_index("remote_agent_id")
+    await db.a2a_tasks.create_index("created_at")
 
     logger.info(f"🔮 Siddhi Bazaar catalog seeded: {created} new skills (total: {len(catalog)})")
     return created

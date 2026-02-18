@@ -155,6 +155,29 @@ code {
 }
 
 /* ========================================
+   SKIP TO CONTENT (Accessibility)
+   ======================================== */
+.skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 12px 24px;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-radius: 0 0 8px 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
+/* ========================================
    RESPONSIVE UTILITIES
    ======================================== */
 
@@ -470,9 +493,11 @@ button {
     }
     /* Avatar world - Immersive mode (dark cards) */
     body.avatar-world.view-immersive {
+        --background: 222 47% 6%;
+        --foreground: 0 0% 98%;
         --card: 217 33% 10%;
         --card-foreground: 0 0% 98%;
-        --popover: 217 33% 10%;
+        --popover: 222 47% 8%;
         --popover-foreground: 0 0% 98%;
         --primary: 217 91% 60%;
         --primary-foreground: 0 0% 98%;
@@ -501,6 +526,34 @@ button {
     }
     body {
         @apply bg-background text-foreground;
+    }
+
+    /* ============================================
+       ACCESSIBLE FOCUS STATES
+       Visible focus ring for keyboard navigation
+       ============================================ */
+    :focus-visible {
+        outline: 2px solid hsl(var(--ring));
+        outline-offset: 2px;
+    }
+
+    /* Buttons and interactive elements */
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible,
+    [role="tab"]:focus-visible,
+    [role="button"]:focus-visible,
+    [tabindex]:focus-visible {
+        outline: 2px solid hsl(var(--ring));
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+
+    /* Remove default focus outline (replaced by focus-visible) */
+    :focus:not(:focus-visible) {
+        outline: none;
     }
 }
 
@@ -734,25 +787,7 @@ body.avatar-world::before {
     50% { opacity: 1; }
 }
 
-/* Scrollbar Styling for Avatar World - Colorful */
-.avatar-world ::-webkit-scrollbar {
-    width: 10px;
-}
-
-.avatar-world ::-webkit-scrollbar-track {
-    background: rgba(196, 69, 105, 0.3);
-}
-
-.avatar-world ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #FF6B9D, #FFC107);
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
-}
-
-.avatar-world ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #FFC107, #FF6B9D);
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.9);
-}
+/* Scrollbar styling for avatar world is defined in App.css */
 
 /* Light Theme Text - Clean and Professional */
 .avatar-world h1,
@@ -772,7 +807,6 @@ body.avatar-world::before {
 .avatar-world label {
     color: rgb(55, 65, 81) !important; /* Medium gray */
     text-shadow: none !important;
-    font-weight: 400 !important;
 }
 
   /* Card backgrounds - White with glassmorphism */
@@ -820,7 +854,6 @@ body.avatar-world::before {
 .avatar-world button span,
 .avatar-world button div {
     text-shadow: none !important;
-    font-weight: 500 !important;
 }
 
 /* Input text - light theme */
@@ -852,7 +885,6 @@ body.avatar-world::before {
     color: rgb(37, 99, 235) !important; /* Blue */
     text-shadow: none !important;
     transition: all 0.3s ease;
-    font-weight: 500 !important;
 }
 
 .avatar-world a:hover {
@@ -1117,6 +1149,198 @@ body.avatar-world.view-immersive [class*="Badge"] {
 }
 
 /* ============================================
+   IMMERSIVE MODE - Pastel Background Overrides
+   Convert light pastels to dark-tinted versions
+   so forced-light text remains readable
+   ============================================ */
+
+/* White with opacity variants (bg-white/50, bg-white/70, bg-white/80) */
+body.avatar-world.view-immersive [class*="bg-white/"] {
+    background: rgba(15, 23, 42, 0.85) !important;
+}
+
+/* Pastel yellows → dark amber tint */
+body.avatar-world.view-immersive [class*="bg-yellow-50"],
+body.avatar-world.view-immersive [class*="bg-yellow-100"] {
+    background: rgba(234, 179, 8, 0.15) !important;
+}
+
+/* Pastel purples → dark purple tint */
+body.avatar-world.view-immersive [class*="bg-purple-50"],
+body.avatar-world.view-immersive [class*="bg-purple-100"] {
+    background: rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Pastel greens → dark green tint */
+body.avatar-world.view-immersive [class*="bg-green-50"],
+body.avatar-world.view-immersive [class*="bg-green-100"],
+body.avatar-world.view-immersive [class*="bg-emerald-50"],
+body.avatar-world.view-immersive [class*="bg-emerald-100"] {
+    background: rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Pastel reds → dark red tint */
+body.avatar-world.view-immersive [class*="bg-red-50"],
+body.avatar-world.view-immersive [class*="bg-red-100"] {
+    background: rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Pastel blues → dark blue tint */
+body.avatar-world.view-immersive [class*="bg-blue-50"],
+body.avatar-world.view-immersive [class*="bg-blue-100"] {
+    background: rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Neutral grays → very subtle transparency */
+body.avatar-world.view-immersive [class*="bg-gray-50"],
+body.avatar-world.view-immersive [class*="bg-gray-100"],
+body.avatar-world.view-immersive [class*="bg-slate-50"],
+body.avatar-world.view-immersive [class*="bg-slate-100"] {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Neutral gray-200 → slightly brighter for contrast */
+body.avatar-world.view-immersive [class*="bg-gray-200"] {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Glass morphism in immersive mode */
+body.avatar-world.view-immersive .glass-morphism {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border: 1px solid rgba(51, 65, 85, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* card-avatar in immersive mode */
+body.avatar-world.view-immersive .card-avatar {
+    background: rgba(15, 23, 42, 0.85) !important;
+    border: 1px solid rgba(51, 65, 85, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.avatar-world.view-immersive .card-avatar::before {
+    display: none !important;
+}
+
+/* ============================================
+   IMMERSIVE MODE - Semantic Text Color Overrides
+   Ensure colored text classes remain readable on dark backgrounds
+   ============================================ */
+
+/* Yellow text → bright yellow for dark bg */
+body.avatar-world.view-immersive [class*="text-yellow-600"],
+body.avatar-world.view-immersive [class*="text-yellow-700"],
+body.avatar-world.view-immersive [class*="text-yellow-800"],
+body.avatar-world.view-immersive [class*="text-yellow-900"] {
+    color: rgb(253, 224, 71) !important;
+}
+
+/* Purple text → light purple for dark bg (element-qualified for higher specificity) */
+body.avatar-world.view-immersive [class*="text-purple-600"],
+body.avatar-world.view-immersive [class*="text-purple-700"],
+body.avatar-world.view-immersive [class*="text-purple-800"],
+body.avatar-world.view-immersive span[class*="text-purple-600"],
+body.avatar-world.view-immersive span[class*="text-purple-700"],
+body.avatar-world.view-immersive p[class*="text-purple-700"] {
+    color: rgb(196, 181, 253) !important;
+}
+
+/* Violet text → light violet for dark bg */
+body.avatar-world.view-immersive [class*="text-violet-600"],
+body.avatar-world.view-immersive [class*="text-violet-700"],
+body.avatar-world.view-immersive span[class*="text-violet-600"],
+body.avatar-world.view-immersive span[class*="text-violet-700"] {
+    color: rgb(196, 181, 253) !important;
+}
+
+/* Green text → light green for dark bg (element-qualified for higher specificity) */
+body.avatar-world.view-immersive [class*="text-green-600"],
+body.avatar-world.view-immersive [class*="text-green-700"],
+body.avatar-world.view-immersive [class*="text-green-800"],
+body.avatar-world.view-immersive [class*="text-emerald-600"],
+body.avatar-world.view-immersive [class*="text-emerald-700"],
+body.avatar-world.view-immersive span[class*="text-emerald-700"],
+body.avatar-world.view-immersive span[class*="text-green-700"] {
+    color: rgb(110, 231, 183) !important;
+}
+
+/* Red text → light red for dark bg (element-qualified for higher specificity) */
+body.avatar-world.view-immersive [class*="text-red-500"],
+body.avatar-world.view-immersive [class*="text-red-600"],
+body.avatar-world.view-immersive [class*="text-red-700"],
+body.avatar-world.view-immersive [class*="text-red-800"],
+body.avatar-world.view-immersive span[class*="text-red-600"],
+body.avatar-world.view-immersive h4[class*="text-red-800"],
+body.avatar-world.view-immersive p[class*="text-red-700"] {
+    color: rgb(252, 165, 165) !important;
+}
+
+/* Blue text → light blue for dark bg (element-qualified for higher specificity) */
+body.avatar-world.view-immersive [class*="text-blue-600"],
+body.avatar-world.view-immersive [class*="text-blue-700"],
+body.avatar-world.view-immersive [class*="text-blue-800"],
+body.avatar-world.view-immersive [class*="text-blue-900"],
+body.avatar-world.view-immersive span[class*="text-blue-600"],
+body.avatar-world.view-immersive a[class*="text-blue-600"] {
+    color: rgb(147, 197, 253) !important;
+}
+
+/* Slate text → readable slate for dark bg */
+body.avatar-world.view-immersive [class*="text-slate-600"],
+body.avatar-world.view-immersive [class*="text-slate-500"] {
+    color: rgb(148, 163, 184) !important;
+}
+
+body.avatar-world.view-immersive [class*="text-slate-700"],
+body.avatar-world.view-immersive [class*="text-slate-800"],
+body.avatar-world.view-immersive [class*="text-slate-900"] {
+    color: rgb(226, 232, 240) !important;
+}
+
+/* Buttons with colored backgrounds should keep white text */
+body.avatar-world.view-immersive button[class*="bg-blue-5"],
+body.avatar-world.view-immersive button[class*="bg-green-5"],
+body.avatar-world.view-immersive button[class*="bg-purple-5"],
+body.avatar-world.view-immersive button[class*="bg-red-5"],
+body.avatar-world.view-immersive button[class*="bg-yellow-5"],
+body.avatar-world.view-immersive .btn-primary,
+body.avatar-world.view-immersive button[class*="bg-gradient"] {
+    color: rgb(255, 255, 255) !important;
+}
+
+/* Text-white should remain white, not off-white */
+body.avatar-world.view-immersive [class*="text-white"] {
+    color: rgb(255, 255, 255) !important;
+}
+
+/* ============================================
+   IMMERSIVE MODE - Hover State Overrides
+   ============================================ */
+
+body.avatar-world.view-immersive [class*="hover\\:bg-gray"]:hover,
+body.avatar-world.view-immersive [class*="hover\\:bg-slate"]:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.avatar-world.view-immersive [class*="hover\\:bg-red-50"]:hover {
+    background: rgba(239, 68, 68, 0.2) !important;
+}
+
+body.avatar-world.view-immersive [class*="hover\\:bg-green"]:hover {
+    background: rgba(16, 185, 129, 0.2) !important;
+}
+
+body.avatar-world.view-immersive [class*="hover\\:bg-purple"]:hover,
+body.avatar-world.view-immersive [class*="hover\\:bg-violet"]:hover {
+    background: rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Immersive mode button hover - subtle glow without transform */
+body.avatar-world.view-immersive button:hover {
+    transform: none !important;
+}
+
+/* ============================================
    SENSE WORLD (NON-AVATAR) IMMERSIVE OVERRIDES
    Dark professional theme for Sense world
    ============================================ */
@@ -1270,4 +1494,87 @@ body:not(.avatar-world).view-immersive [class*="Badge"] {
     background: rgba(59, 130, 246, 0.2) !important;
     color: rgb(147, 197, 253) !important;
     border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Sense immersive - Pastel background overrides */
+body:not(.avatar-world).view-immersive [class*="bg-white/"] {
+    background: rgba(15, 23, 42, 0.85) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="bg-yellow-50"],
+body:not(.avatar-world).view-immersive [class*="bg-yellow-100"] {
+    background: rgba(234, 179, 8, 0.15) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="bg-purple-50"],
+body:not(.avatar-world).view-immersive [class*="bg-purple-100"] {
+    background: rgba(139, 92, 246, 0.15) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="bg-green-50"],
+body:not(.avatar-world).view-immersive [class*="bg-green-100"],
+body:not(.avatar-world).view-immersive [class*="bg-emerald-50"],
+body:not(.avatar-world).view-immersive [class*="bg-emerald-100"] {
+    background: rgba(16, 185, 129, 0.15) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="bg-red-50"],
+body:not(.avatar-world).view-immersive [class*="bg-red-100"] {
+    background: rgba(239, 68, 68, 0.15) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="bg-blue-50"],
+body:not(.avatar-world).view-immersive [class*="bg-blue-100"] {
+    background: rgba(59, 130, 246, 0.15) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="bg-gray-50"],
+body:not(.avatar-world).view-immersive [class*="bg-gray-100"],
+body:not(.avatar-world).view-immersive [class*="bg-slate-50"],
+body:not(.avatar-world).view-immersive [class*="bg-slate-100"] {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+body:not(.avatar-world).view-immersive .glass-morphism {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border: 1px solid rgba(71, 85, 105, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="text-red-500"],
+body:not(.avatar-world).view-immersive [class*="text-red-600"],
+body:not(.avatar-world).view-immersive [class*="text-red-700"] {
+    color: rgb(252, 165, 165) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="text-green-600"],
+body:not(.avatar-world).view-immersive [class*="text-green-700"],
+body:not(.avatar-world).view-immersive [class*="text-emerald-700"] {
+    color: rgb(110, 231, 183) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="text-purple-600"],
+body:not(.avatar-world).view-immersive [class*="text-purple-700"] {
+    color: rgb(196, 181, 253) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="text-blue-600"],
+body:not(.avatar-world).view-immersive [class*="text-blue-700"] {
+    color: rgb(147, 197, 253) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="text-white"] {
+    color: rgb(255, 255, 255) !important;
+}
+
+body:not(.avatar-world).view-immersive button[class*="bg-blue-5"],
+body:not(.avatar-world).view-immersive button[class*="bg-green-5"],
+body:not(.avatar-world).view-immersive .btn-primary,
+body:not(.avatar-world).view-immersive button[class*="bg-gradient"] {
+    color: rgb(255, 255, 255) !important;
+}
+
+body:not(.avatar-world).view-immersive [class*="hover\\:bg-gray"]:hover,
+body:not(.avatar-world).view-immersive [class*="hover\\:bg-slate"]:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
 }
