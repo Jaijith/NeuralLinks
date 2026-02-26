@@ -1,0 +1,1122 @@
+[
+  {
+    "id": "fad4e8b5-e117-47dd-a535-01ed3b237dd1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "to_node_id": "8a79c640-fb4f-4e61-ad05-105f7c309cfd",
+    "relationship_type": "subsumes",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Software engineering is a sub-category of technology.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:17.498060+00:00"
+  },
+  {
+    "id": "8336b271-5fac-44c5-a20d-c31144956cf4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family-oriented",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_gatherings",
+    "relationship_type": "motivates",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Being family-oriented motivates interest in family gatherings.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:17.820099+00:00"
+  },
+  {
+    "id": "d9977081-f89d-41ce-a498-26a3f7e9643c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "1392b912-089c-4940-87e1-69590cac894a",
+    "to_node_id": "612fcc4c-a5bc-42de-80ad-b1594147ee48",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Curiosity is expressed through an interest in learning.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:18.102095+00:00"
+  },
+  {
+    "id": "b6e091f0-6e07-4cb7-bfce-e36fbba59151",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "079b0b96-ded4-4faa-89d9-e13c040d521e",
+    "to_node_id": "d1333b6d-47f6-4e41-88ba-0228408a81f2",
+    "relationship_type": "complements",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Authenticity as a value complements the trait of being authentic.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:18.383137+00:00"
+  },
+  {
+    "id": "acdabb45-370d-4767-b3fc-6c7484e60294",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_entrepreneurial",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_entrepreneurship",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Entrepreneurial trait is expressed through the value of entrepreneurship.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:18.664119+00:00"
+  },
+  {
+    "id": "082734c7-6ad0-49c4-8e82-b21c67d27346",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_importance",
+    "relationship_type": "complements",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Value of family complements the importance placed on family.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:18.945662+00:00"
+  },
+  {
+    "id": "25bc5ff5-6e65-4bc4-bf21-97ce78cc1b86",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_learning_ai",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Learning AI is related to technology.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:19.227576+00:00"
+  },
+  {
+    "id": "3a75e806-e3c5-4611-94e3-8d53f336aa29",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "ef51127c-e21f-4768-8467-6364e68e2329",
+    "to_node_id": "57d27394-c739-46a1-adc2-7a7d108fa7df",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Being spiritual is expressed through the value of spirituality.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:19.508862+00:00"
+  },
+  {
+    "id": "604aba08-6e8d-4169-a353-9c499af9bf92",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "9a4ff39b-29ec-48b6-b444-f938cd00eb28",
+    "to_node_id": "620816e9-bb0f-48d7-b9bb-c765e1e40b69",
+    "relationship_type": "shaped_by",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Persistence is shaped by experiencing hard times.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:19.789969+00:00"
+  },
+  {
+    "id": "bc89bac3-0d16-4384-8784-3203d0fcaaec",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_vasubhadra",
+    "to_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_s_dance_performance",
+    "relationship_type": "inspires",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Subhadra inspires the experience of her dance performance.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:20.071726+00:00"
+  },
+  {
+    "id": "af60a6b2-b41e-46da-bf54-4aef9942f879",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "8a79c640-fb4f-4e61-ad05-105f7c309cfd",
+    "to_node_id": "e270231c-fcd2-49a9-88de-dc16192307e0",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Software engineering is related to being a software engineer.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:20.548126+00:00"
+  },
+  {
+    "id": "e433417d-c5a0-4b45-ab35-9eca53bcf486",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "05fe9460-5537-4ea7-882b-21a515fc0ea4",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Innovation is related to technology.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:20.856978+00:00"
+  },
+  {
+    "id": "6fbb3d4b-3dc5-4731-b06a-55bd9788d094",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "caf7b806-47e3-408c-b731-18506b0694ed",
+    "to_node_id": "21c40c31-b778-4b9a-96fa-aa27dd9bc6f7",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Being friendly is expressed through an interest in connecting with others.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:21.213989+00:00"
+  },
+  {
+    "id": "e0af7772-33e3-4772-b6ec-5bf8468e4d76",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_digitalhunter",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Digitalhunter inspires an interest in technology.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:21.537477+00:00"
+  },
+  {
+    "id": "5afb77a4-c8da-47f9-a0e6-15baa5f5e9b5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "612fcc4c-a5bc-42de-80ad-b1594147ee48",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_education",
+    "relationship_type": "reflects",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Interest in learning reflects the value of education.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:21.819374+00:00"
+  },
+  {
+    "id": "92f96e3b-0a9c-4fba-a46e-deaebb4bd659",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_development",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "App development is related to technology.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:22.100501+00:00"
+  },
+  {
+    "id": "5f96b4c6-57e1-43de-8222-3887fffec5b0",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_events",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family-oriented",
+    "relationship_type": "reflects",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Interest in family events reflects being family-oriented.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:22.383279+00:00"
+  },
+  {
+    "id": "766650b5-0a6b-410a-af10-052204cbbd2a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "ea0ec0b9-6d4b-45a8-9c6b-1a40528b0b73",
+    "to_node_id": "05fe9460-5537-4ea7-882b-21a515fc0ea4",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Being open-minded is expressed through an interest in innovation.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:22.779821+00:00"
+  },
+  {
+    "id": "352d76cf-42f5-4e34-92e9-0c43b8627f01",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "d033c574-f6d3-49e5-a090-03af9324425c",
+    "to_node_id": "147cebbe-2cfe-4a38-ab7c-0789d75a9a18",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Interest in comedy and entertainment is expressed through being humorous.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:23.060719+00:00"
+  },
+  {
+    "id": "c56f91b4-8d51-4c74-bb9b-4d9436dce67a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_zara",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_gatherings",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Zara inspires interest in family gatherings.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:23.342386+00:00"
+  },
+  {
+    "id": "95f872b1-85d3-43d9-9751-b4a16d1117ab",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_reading",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_education",
+    "relationship_type": "reflects",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Interest in reading reflects the value of education.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:23.622592+00:00"
+  },
+  {
+    "id": "5d9535fe-a281-4430-8e46-918c904ba84f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_raman",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Raman inspires the value of family.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:23.903182+00:00"
+  },
+  {
+    "id": "d7b54774-eb5e-4ea3-a354-5185c0543e4b",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_south_indian_cuisine",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Fine dining is related to South Indian cuisine.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:24.184210+00:00"
+  },
+  {
+    "id": "805e32a5-d14d-49b3-bbf9-3c34f9889e1e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "6869af83-ed7e-4d6e-9e38-0d527a9d8aac",
+    "to_node_id": "b22bb065-fcb8-4405-a9e5-0171f9dd5b4c",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Being philosophical is expressed through an interest in spiritual content.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:24.464451+00:00"
+  },
+  {
+    "id": "2bab8049-75f8-4e92-8d6f-98a887e2c6fe",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "e9d2d3e5-9384-49bb-89c5-20f2f02e69b4",
+    "to_node_id": "620816e9-bb0f-48d7-b9bb-c765e1e40b69",
+    "relationship_type": "shaped_by",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Resilience is shaped by experiencing hard times.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:24.745582+00:00"
+  },
+  {
+    "id": "0426fe1c-fbd2-41a5-b591-497f6e2e307f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_jj",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "JJ inspires an interest in technology.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:25.026808+00:00"
+  },
+  {
+    "id": "e577a92b-ef18-465b-a089-adc3ec5f8a4f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_manju",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_importance",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Manju inspires the value of family importance.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:25.406590+00:00"
+  },
+  {
+    "id": "0a69b05d-3ed5-4803-be91-1c967825f253",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_srijit",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Sreejith inspires an interest in technology.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:25.688165+00:00"
+  },
+  {
+    "id": "92b98044-48a0-4437-b461-f16933ba546c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_maya",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_events",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Maya inspires interest in family events.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:25.969861+00:00"
+  },
+  {
+    "id": "d4d512f0-7b3f-409b-bd09-eb7b79271e21",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "9a4ff39b-29ec-48b6-b444-f938cd00eb28",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_entrepreneurship",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Persistence is expressed through the value of entrepreneurship.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:26.283261+00:00"
+  },
+  {
+    "id": "2de175cf-a724-4c25-84f3-29fc61ed397c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_ronnie",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Ronnie inspires the value of family.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:26.564449+00:00"
+  },
+  {
+    "id": "7cd90cdf-e089-4f45-81da-306d716f290f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "inspires",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Jaijith inspires an interest in technology.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:27.001553+00:00"
+  },
+  {
+    "id": "fdc77ef2-f217-48c8-a0ec-8dbea9933efc",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_gigi",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_gatherings",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Gigi inspires interest in family gatherings.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:27.288461+00:00"
+  },
+  {
+    "id": "93514537-72c2-4869-85ad-b778b21e942f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_vasubhadra",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_classical_indian_dance",
+    "relationship_type": "inspires",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Subhadra inspires an interest in classical Indian dance.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:27.569868+00:00"
+  },
+  {
+    "id": "4b1163a0-63ea-4445-a037-e976687a0d2f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_bio_i_am_a_easy_going_hacker",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Being a hacker is related to an interest in technology.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:27.851467+00:00"
+  },
+  {
+    "id": "df10ee49-009f-42b9-b02e-1778925eb818",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_origin_kerala_india",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_kerala_origin",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Origin from Kerala, India is related to Kerala origin.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:28.133618+00:00"
+  },
+  {
+    "id": "b80c27e3-58d2-44be-ae48-9dfde3a118e1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "01a1be53-9a92-4ef3-93af-4b0681f58dd4",
+    "to_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_nationality_indian",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Location in India is related to being Indian.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:28.413922+00:00"
+  },
+  {
+    "id": "abe60050-6daa-408a-b107-f5f7e01d456a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_city_thiruvananthapuram",
+    "to_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_region_kerala",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Thiruvananthapuram is a city in the region of Kerala.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:28.695111+00:00"
+  },
+  {
+    "id": "dfc1e7df-62d1-4fb2-9a32-c3e5d46186d5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_region_kerala_south_india",
+    "to_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_region_kerala",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Kerala, South India is related to the region of Kerala.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:28.977735+00:00"
+  },
+  {
+    "id": "0331eb7f-f64e-485b-9a75-7a887844be2c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "84566593-31ac-4453-bd3c-d6969d80120a",
+    "to_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_region_kerala",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Palakkad is a place in the region of Kerala.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:29.355442+00:00"
+  },
+  {
+    "id": "110defd6-4fc1-4e8c-abd1-d856279db148",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_user_s_daughter",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "User's daughter inspires the value of family.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:29.637970+00:00"
+  },
+  {
+    "id": "862e3fe0-06d5-49da-8305-414da7162fc9",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_vasubhadra",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_importance",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Vasubhadra inspires the value of family importance.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:29.921625+00:00"
+  },
+  {
+    "id": "8ed0d5b2-8a02-4aee-b57b-2ec204562862",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_name_jaijith",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "The name Jaijith is related to the connection Jaijith.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:30.202578+00:00"
+  },
+  {
+    "id": "843be78e-1511-4722-a285-afa255b28f30",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_jay",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_events",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Jay inspires interest in family events.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:30.689071+00:00"
+  },
+  {
+    "id": "363da3b7-5bd3-4ed6-9234-f2879716cf0f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_daughter",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Daughter inspires the value of family.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:30.973530+00:00"
+  },
+  {
+    "id": "6d7b8aec-0cdb-4085-a18c-b3e696e88c76",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "d1333b6d-47f6-4e41-88ba-0228408a81f2",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_communication",
+    "relationship_type": "expressed_through",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Authentic communication is a value expressed through the trait of being authentic.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:31.264251+00:00"
+  },
+  {
+    "id": "4836cf8a-fe8c-4b2c-9f77-76cc4547dbe5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "caf7b806-47e3-408c-b731-18506b0694ed",
+    "to_node_id": "d2a7ecf8-9a0e-4251-8d5d-8c34b64c7303",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Being friendly is related to an interest in social media.",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:05:31.543981+00:00"
+  },
+  {
+    "id": "5ce58a87-2e0b-4d09-8b97-fc2b8bdd13e2",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "05fe9460-5537-4ea7-882b-21a515fc0ea4",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_entrepreneurial_spirit",
+    "relationship_type": "reflects",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Interest in innovation reflects an entrepreneurial spirit.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:31.825369+00:00"
+  },
+  {
+    "id": "cf5bb0cc-541b-450c-bf74-5e5cd924bcfa",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "e9d2d3e5-9384-49bb-89c5-20f2f02e69b4",
+    "to_node_id": "0bebad69-040f-4724-aa8e-0f9d907a70a8",
+    "relationship_type": "shaped_by",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Resilience is often shaped by experiences of feeling lost.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:32.107671+00:00"
+  },
+  {
+    "id": "82fb70fa-4054-4dbf-8969-fcf62a00c306",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "d033c574-f6d3-49e5-a090-03af9324425c",
+    "to_node_id": "7f4a1f6d-09d7-480c-9f6b-acb9ab161a68",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "The Graham Norton Show is a form of comedy and entertainment.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:32.426876+00:00"
+  },
+  {
+    "id": "4f3b7a24-5102-43a5-a572-25d77e3e2983",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "9a4ff39b-29ec-48b6-b444-f938cd00eb28",
+    "to_node_id": "8a79c640-fb4f-4e61-ad05-105f7c309cfd",
+    "relationship_type": "shaped_by",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Persistence is shaped by the experience of software engineering.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:32.743624+00:00"
+  },
+  {
+    "id": "25d42f0a-4c0c-477f-9d7a-e6842408d87c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_zara",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Zara, as a connection, inspires the value of family.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:33.024103+00:00"
+  },
+  {
+    "id": "1c74d283-cb79-4cb0-bb59-e50a5cfd421f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "ef51127c-e21f-4768-8467-6364e68e2329",
+    "to_node_id": "b22bb065-fcb8-4405-a9e5-0171f9dd5b4c",
+    "relationship_type": "expressed_through",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Spiritual traits are expressed through an interest in spiritual content.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:33.303827+00:00"
+  },
+  {
+    "id": "f7a406d1-2feb-425c-988b-93a0cab114fc",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "d2a7ecf8-9a0e-4251-8d5d-8c34b64c7303",
+    "to_node_id": "21c40c31-b778-4b9a-96fa-aa27dd9bc6f7",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Social media is related to connecting with others.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:33.584381+00:00"
+  },
+  {
+    "id": "6d8edfa3-66ce-4119-b9c6-02b4248a4c16",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_importance",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_events",
+    "relationship_type": "motivates",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "The value of family importance motivates interest in family events.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:33.866091+00:00"
+  },
+  {
+    "id": "429c064d-5566-4b74-a185-45f79b93dadf",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_srijit",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Srijit, as a connection, inspires the value of family.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:34.147152+00:00"
+  },
+  {
+    "id": "5bf81c03-acd1-4bcb-9dc5-0de5ea7ecd8a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "e270231c-fcd2-49a9-88de-dc16192307e0",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Being a software engineer is closely related to an interest in technology.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:34.428451+00:00"
+  },
+  {
+    "id": "b8d34952-c64d-4412-a8bf-3b3f8e7c75f4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family-oriented",
+    "relationship_type": "complements",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "The value of family complements being family-oriented.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:34.715999+00:00"
+  },
+  {
+    "id": "6bc915c7-1428-4e1a-a294-42ef02c5a9c7",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "bdbbb70c-7ef4-4f0f-871c-c399d6b15ea4",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_learning_ai",
+    "relationship_type": "related_to",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "The Learning on Graphs Conference is related to learning AI.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:34.995762+00:00"
+  },
+  {
+    "id": "4e8acf79-f380-4ed6-94f6-59470c925f2a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_manju",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_gatherings",
+    "relationship_type": "inspires",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Manju, as a connection, inspires interest in family gatherings.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:35.277554+00:00"
+  },
+  {
+    "id": "b2ec7f28-5175-4353-aff7-c50948065575",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_development",
+    "to_node_id": "05fe9460-5537-4ea7-882b-21a515fc0ea4",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "App development is related to innovation.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:35.645603+00:00"
+  },
+  {
+    "id": "ce4a4727-dea4-43a6-8549-218839dff8ca",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_raman",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_gatherings",
+    "relationship_type": "inspires",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Raman, as a connection, inspires interest in family gatherings.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:35.925697+00:00"
+  },
+  {
+    "id": "58a496fb-28c6-4f20-bdf0-cb5269221ff3",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_digitalhunter",
+    "to_node_id": "05fe9460-5537-4ea7-882b-21a515fc0ea4",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Digitalhunter, as a connection, inspires an interest in innovation.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:36.206172+00:00"
+  },
+  {
+    "id": "19613cee-d4bd-4a03-b383-c0d1e7697740",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "57d27394-c739-46a1-adc2-7a7d108fa7df",
+    "to_node_id": "b22bb065-fcb8-4405-a9e5-0171f9dd5b4c",
+    "relationship_type": "motivates",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "The value of spirituality motivates interest in spiritual content.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:36.489515+00:00"
+  },
+  {
+    "id": "8d905c09-290e-4492-99f1-bf73bdef9b9a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "8a197e9e-10a1-451e-ab66-7f1904acc1f5",
+    "to_node_id": "221a915a-73c0-4e76-b6fa-5e4df469707e",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Coldplay is related to an interest in music.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:36.769516+00:00"
+  },
+  {
+    "id": "41fd8847-f51c-485d-841c-28000aaf2a2c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_vasubhadra",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Vasubhadra, as a connection, inspires the value of family.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:37.051130+00:00"
+  },
+  {
+    "id": "2dade477-9062-4648-9425-3fc465c0cc42",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "9a4ff39b-29ec-48b6-b444-f938cd00eb28",
+    "to_node_id": "eb7da8aa-2fe7-44c6-b547-afd07ecf097d",
+    "relationship_type": "shaped_by",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Persistence is shaped by the experience of coordinating multiple digital agents.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:37.342286+00:00"
+  },
+  {
+    "id": "96548dd4-b0e8-41eb-9a6c-6bf487768d75",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_gigi",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_importance",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Gigi, as a connection, inspires the value of family importance.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:37.649965+00:00"
+  },
+  {
+    "id": "23925098-83f6-41de-b872-31a5372120cb",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_reading",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_library_books",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Reading is related to an interest in library books.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:37.991077+00:00"
+  },
+  {
+    "id": "16d87417-cb3b-42fa-b391-3680672e8237",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "4a787c5b-6e32-4313-8614-1a5009d98b8f",
+    "to_node_id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Avatar-assisted task coordination is related to technology.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:38.357186+00:00"
+  },
+  {
+    "id": "739b027b-17a5-4de2-b909-f5b764624a50",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_south_indian_cuisine",
+    "relationship_type": "related_to",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Fine dining is related to an interest in South Indian cuisine.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:38.638184+00:00"
+  },
+  {
+    "id": "a3f649ad-a4f5-46f5-83e8-933f5ecbb49d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_hiking",
+    "to_node_id": "1392b912-089c-4940-87e1-69590cac894a",
+    "relationship_type": "expressed_through",
+    "weight": 0.6,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "An interest in hiking is expressed through the trait of being curious.",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:05:38.919645+00:00"
+  },
+  {
+    "id": "e4054070-1b85-4010-9966-76ef53ce53a5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "28919832-c7b1-4e73-89f0-79e30a9b5ee4",
+    "to_node_id": "b22bb065-fcb8-4405-a9e5-0171f9dd5b4c",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Eiro Motoki is related to an interest in spiritual content.",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:05:39.199926+00:00"
+  },
+  {
+    "id": "741ecb66-4141-41e1-87c6-fcb86c237604",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "f320bd73-1943-4387-8049-2ef847503c58",
+    "to_node_id": "d033c574-f6d3-49e5-a090-03af9324425c",
+    "relationship_type": "related_to",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "ManoramaMax is related to an interest in comedy and entertainment.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:39.564637+00:00"
+  },
+  {
+    "id": "40d373f6-18e3-471a-86a0-6d0058abdd8b",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "f8ba6c1d-080e-495e-b135-2cc2e6f915f6",
+    "to_node_id": "8a79c640-fb4f-4e61-ad05-105f7c309cfd",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Python is related to the experience of software engineering.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:39.899185+00:00"
+  },
+  {
+    "id": "4c5d8988-8ba5-442c-868b-bd167361be50",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "5ddb1d03-5421-4f46-aad6-94213623134f",
+    "to_node_id": "719c1e7a-37c1-4cdf-b52a-591bac1644cc",
+    "relationship_type": "subsumes",
+    "weight": 0.9,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Data science subsumes machine learning as a broader category.",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:05:40.180580+00:00"
+  },
+  {
+    "id": "58d3cffb-cb22-4d7d-a2fe-723a612ee55d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_user_s_daughter",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_importance",
+    "relationship_type": "inspires",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "User's daughter, as a connection, inspires the value of family importance.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:40.463203+00:00"
+  },
+  {
+    "id": "49f6ad74-3f49-4747-857c-ea89db5862c0",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "c00ab73d-5a2c-4b96-9eed-b51923670fcb",
+    "to_node_id": "221a915a-73c0-4e76-b6fa-5e4df469707e",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Shadow Music is related to an interest in music.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:40.743502+00:00"
+  },
+  {
+    "id": "1a58b031-9ce5-4766-818b-93ddb27acc39",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_ronnie",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_importance",
+    "relationship_type": "inspires",
+    "weight": 0.8,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Ronnie, as a connection, inspires the value of family importance.",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:05:41.023685+00:00"
+  },
+  {
+    "id": "047378c5-1a27-4971-9a52-bacc5028a18e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_bio_i_am_a_easy_going_hacker",
+    "to_node_id": "d1333b6d-47f6-4e41-88ba-0228408a81f2",
+    "relationship_type": "expressed_through",
+    "weight": 0.7,
+    "properties": {
+      "source": "graph_cleanup_llm_inference",
+      "reasoning": "Being an easy-going hacker is expressed through the trait of being authentic.",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:05:41.303343+00:00"
+  }
+]

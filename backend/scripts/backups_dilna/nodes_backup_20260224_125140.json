@@ -1,0 +1,1281 @@
+[
+  {
+    "id": "02c6fdb3-449a-410e-b9e3-3e6669553169",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "mystery",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491662+00:00",
+    "updated_at": "2026-01-20T17:17:46.491680+00:00"
+  },
+  {
+    "id": "99c8ca28-852e-4151-a137-b6a5fa64c684",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "simplicity",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491693+00:00",
+    "updated_at": "2026-01-20T17:17:46.491695+00:00"
+  },
+  {
+    "id": "21d1d943-69fd-468a-8648-31d8df17caff",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "reflective",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491703+00:00",
+    "updated_at": "2026-01-20T17:17:46.491706+00:00"
+  },
+  {
+    "id": "a6dd9518-0d3a-43e0-bff2-6d77121a4488",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "introspective",
+    "properties": {
+      "confidence": 0.85,
+      "source": "post",
+      "last_mentioned": "2026-01-20T17:29:32.663670+00:00",
+      "strength": 1.5
+    },
+    "created_at": "2026-01-20T17:17:46.491714+00:00",
+    "updated_at": "2026-01-20T17:29:32.663684+00:00"
+  },
+  {
+    "id": "6622e961-a1b0-4acf-865d-ae6f89420d63",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "authenticity",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491724+00:00",
+    "updated_at": "2026-01-20T17:17:46.491726+00:00"
+  },
+  {
+    "id": "f448fb94-d642-4a85-8dff-f9da7a203eb9",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "calmness",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491734+00:00",
+    "updated_at": "2026-01-20T17:17:46.491736+00:00"
+  },
+  {
+    "id": "99d97bc4-47a5-4349-adbd-b0700d1cc3b9",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "innocence",
+    "properties": {
+      "importance": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491744+00:00",
+    "updated_at": "2026-01-20T17:17:46.491746+00:00"
+  },
+  {
+    "id": "24536715-e635-442d-b1c1-9846235c9b54",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "childhood_innocence",
+    "properties": {
+      "stage": "child",
+      "impact": "positive",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491754+00:00",
+    "updated_at": "2026-01-20T17:17:46.491756+00:00"
+  },
+  {
+    "id": "83efc2bb-b6d8-472a-b004-e26cc8fb01e9",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "loss_of_innocence",
+    "properties": {
+      "stage": "transition_to_adulthood",
+      "impact": "growth",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491763+00:00",
+    "updated_at": "2026-01-20T17:17:46.491766+00:00"
+  },
+  {
+    "id": "66374273-debe-4296-967d-6949bf7cf145",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "preference",
+    "label": "embrace_uncertainty",
+    "properties": {
+      "level": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491773+00:00",
+    "updated_at": "2026-01-20T17:17:46.491775+00:00"
+  },
+  {
+    "id": "d9a44140-6c29-4cf6-93ad-d90286ef6874",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "wisdom",
+    "properties": {
+      "importance": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491782+00:00",
+    "updated_at": "2026-01-20T17:17:46.491784+00:00"
+  },
+  {
+    "id": "9544acc0-f85b-4fd0-8fe2-4ab0c7a8b14c",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "first glimpse of snow",
+    "properties": {
+      "emotion": "awe",
+      "setting": "snowy landscape",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661126+00:00",
+    "updated_at": "2026-01-20T17:37:33.661170+00:00"
+  },
+  {
+    "id": "e7f364a8-ac40-4547-ad8e-7d2a20262b13",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "snow",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661188+00:00",
+    "updated_at": "2026-01-20T17:37:33.661190+00:00"
+  },
+  {
+    "id": "8b5cfc28-9cac-4a3a-bef5-42a899a49ec8",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "snow-covered mountains",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661200+00:00",
+    "updated_at": "2026-01-20T17:37:33.661203+00:00"
+  },
+  {
+    "id": "57feaadb-7124-427a-b5a3-9e2c74acde58",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "adventurous",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661211+00:00",
+    "updated_at": "2026-01-20T17:37:33.661213+00:00"
+  },
+  {
+    "id": "dbcdcef1-a1a1-44da-94d8-d70709668517",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "wonder",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661221+00:00",
+    "updated_at": "2026-01-20T17:37:33.661223+00:00"
+  },
+  {
+    "id": "0ac57b20-a06e-4d34-b4ab-e935ab1a364f",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "painting",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338756+00:00",
+    "updated_at": "2026-01-30T14:15:05.338797+00:00"
+  },
+  {
+    "id": "734f04fe-52dc-488c-a53e-f12f0a249385",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "landscape painting",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338813+00:00",
+    "updated_at": "2026-01-30T14:15:05.338816+00:00"
+  },
+  {
+    "id": "8ec1b124-b008-470e-8d09-bd4e13e0ac47",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "creative",
+    "properties": {
+      "confidence": 0.9,
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338825+00:00",
+    "updated_at": "2026-01-30T14:15:05.338827+00:00"
+  },
+  {
+    "id": "07223625-1baf-431f-bcb9-c7d60d36496b",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "calm",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338836+00:00",
+    "updated_at": "2026-01-30T14:15:05.338838+00:00"
+  },
+  {
+    "id": "01676f58-7f9d-484d-a244-24400496b203",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "serenity",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338847+00:00",
+    "updated_at": "2026-01-30T14:15:05.338850+00:00"
+  },
+  {
+    "id": "4bec4a3c-7d38-4fc5-a8bd-3025db417dfb",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "returning to painting",
+    "properties": {
+      "recency": "recent",
+      "frequency": "occasional",
+      "method": "self-guided",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338858+00:00",
+    "updated_at": "2026-01-30T14:15:05.338860+00:00"
+  },
+  {
+    "id": "d34d96f1-c50b-49e8-8e78-92bb894be1a4",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "preference",
+    "label": "landscape painting",
+    "properties": {
+      "priority": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338868+00:00",
+    "updated_at": "2026-01-30T14:15:05.338871+00:00"
+  },
+  {
+    "id": "86ef7c2b-c380-43ce-a277-30fc867845d1",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "sunrise and sunset",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:36.664738+00:00",
+    "updated_at": "2026-01-30T14:15:36.664780+00:00"
+  },
+  {
+    "id": "2dce1694-9742-45e1-b1de-6d5499ac256e",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "observant",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:36.664797+00:00",
+    "updated_at": "2026-01-30T14:15:36.664800+00:00"
+  },
+  {
+    "id": "d949e57f-3ce4-413d-86e9-3d3ac3072a1f",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "mindfulness",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:36.664809+00:00",
+    "updated_at": "2026-01-30T14:15:36.664811+00:00"
+  },
+  {
+    "id": "39ea9592-ac44-46b0-990f-3e281c24eae6",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "gifted_watch_to_mom",
+    "properties": {
+      "emotional_significance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:16:54.343483+00:00",
+    "updated_at": "2026-02-02T04:16:54.343525+00:00"
+  },
+  {
+    "id": "51e03bfb-23d4-49a5-8f32-956118f492b2",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "sentimental",
+    "properties": {
+      "confidence": 0.75,
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:16:54.343543+00:00",
+    "updated_at": "2026-02-02T04:16:54.343546+00:00"
+  },
+  {
+    "id": "0401f65b-7f8e-40ff-b0bc-a8ccbc66b8ba",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "proud",
+    "properties": {
+      "intensity": 0.9,
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:16:54.343556+00:00",
+    "updated_at": "2026-02-02T04:16:54.343558+00:00"
+  },
+  {
+    "id": "b71058ff-2b33-4f40-bd82-65527482a0b3",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "family",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:16:54.343566+00:00",
+    "updated_at": "2026-02-02T04:16:54.343569+00:00"
+  },
+  {
+    "id": "68000899-520e-4199-8c64-a37c27994187",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "present-moment-awareness",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:27:33.066973+00:00",
+    "updated_at": "2026-02-02T04:27:33.066989+00:00"
+  },
+  {
+    "id": "f4639028-222e-42e7-9fab-abc6560d2ece",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "eye-contact",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:27:33.067001+00:00",
+    "updated_at": "2026-02-02T04:27:33.067004+00:00"
+  },
+  {
+    "id": "d404bf29-5501-4386-a9a5-6595ce7736f3",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "resilient",
+    "properties": {
+      "confidence": 0.85,
+      "source": "post"
+    },
+    "created_at": "2026-02-02T05:23:21.518580+00:00",
+    "updated_at": "2026-02-02T05:23:21.518591+00:00"
+  },
+  {
+    "id": "ed750ea6-2605-409a-8f2e-3eecd2c86184",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "perseverance",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T05:23:21.518603+00:00",
+    "updated_at": "2026-02-02T05:23:21.518605+00:00"
+  },
+  {
+    "id": "bf8ba0a2-b44e-483f-9e0a-61a345eefa8e",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "optimism",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T05:23:21.518614+00:00",
+    "updated_at": "2026-02-02T05:23:21.518617+00:00"
+  },
+  {
+    "id": "ae1aa8dd-bb25-4c3e-aef3-b973e82dc39d",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "breakfast",
+    "properties": {
+      "time": "morning",
+      "source": "post"
+    },
+    "created_at": "2026-02-09T03:51:58.668111+00:00",
+    "updated_at": "2026-02-09T03:51:58.668128+00:00"
+  },
+  {
+    "id": "fe7a6731-4e0b-4aa2-aaab-35809fd6d226",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "breakfast with blikker and seven",
+    "properties": {
+      "companions": [
+        "Blikker",
+        "Seven"
+      ],
+      "source": "post"
+    },
+    "created_at": "2026-02-09T03:51:58.668139+00:00",
+    "updated_at": "2026-02-09T03:51:58.668142+00:00"
+  },
+  {
+    "id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_mom",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "connection",
+    "label": "mom",
+    "display_label": "Mom",
+    "strength": 0.9,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.9,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P4:gifted_mom_a_watch_happiest_moment"
+      ],
+      "relationship": "mother",
+      "relationship_type": "daughter_of",
+      "details": "Mother. Dilna gifted her a watch - one of the happiest moments, the little girl in me was proud. Felt profound pride and joy."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_blikker",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "connection",
+    "label": "blikker",
+    "display_label": "Blikker",
+    "strength": 0.7,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.7,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P1:morning_breakfast_together"
+      ],
+      "relationship": "friend",
+      "details": "Friend on the platform. Sreejith Sreekantan's avatar _bLikker. Had breakfast together with Dilna and Seven."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_seven",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "connection",
+    "label": "seven",
+    "display_label": "Seven",
+    "strength": 0.7,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.7,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P1:morning_breakfast_together"
+      ],
+      "relationship": "friend",
+      "details": "Friend on the platform. Rafseena Sedeed's avatar. Had breakfast together with Dilna and Blikker."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_name_dilna_m_p",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "demographic",
+    "label": "name:dilna m.p",
+    "display_label": "Dilna M.P",
+    "strength": 1.0,
+    "mention_count": 1,
+    "properties": {
+      "source": "profile",
+      "strength": 1.0,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "PROF:name"
+      ],
+      "category": "name",
+      "value": "Dilna M.P"
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_email_dilnadil67_gmail_com",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "demographic",
+    "label": "email:dilnadil67@gmail.com",
+    "display_label": "dilnadil67@gmail.com",
+    "strength": 0.7,
+    "mention_count": 1,
+    "properties": {
+      "source": "profile",
+      "strength": 0.7,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "PROF:email"
+      ],
+      "category": "email",
+      "value": "dilnadil67@gmail.com"
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_avatar_aera",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "demographic",
+    "label": "avatar:aera",
+    "display_label": "Aera",
+    "strength": 0.9,
+    "mention_count": 1,
+    "properties": {
+      "source": "profile",
+      "strength": 0.9,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "PROF:avatar_name"
+      ],
+      "category": "avatar",
+      "value": "Aera"
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_avatar_bio_existing_between_reality_and_virtual_re",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "demographic",
+    "label": "avatar_bio:existing between reality and virtual realm",
+    "display_label": "Existing between reality and virtual realm//",
+    "strength": 0.85,
+    "mention_count": 1,
+    "properties": {
+      "source": "profile",
+      "strength": 0.85,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "PROF:avatar_bio"
+      ],
+      "category": "avatar_bio",
+      "value": "Existing between reality and virtual realm//"
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_gender_female",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "demographic",
+    "label": "gender:female",
+    "display_label": "Female",
+    "strength": 0.8,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.8,
+      "confidence": 0.9,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P4:the_little_girl_in_me"
+      ],
+      "category": "gender",
+      "value": "Female"
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_archetype_casual_observer",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "demographic",
+    "label": "archetype:casual_observer",
+    "display_label": "Casual Observer",
+    "strength": 0.7,
+    "mention_count": 1,
+    "properties": {
+      "source": "profile",
+      "strength": 0.7,
+      "confidence": 0.9,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "PROF:archetype"
+      ],
+      "category": "archetype",
+      "value": "casual_observer",
+      "note": "Profile says the_jester but behavior is casual_observer"
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_account_created_2026_01_20",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "demographic",
+    "label": "account_created:2026-01-20",
+    "display_label": "Account Created 2026-01-20",
+    "strength": 0.6,
+    "mention_count": 1,
+    "properties": {
+      "source": "profile",
+      "strength": 0.6,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "PROF:account_created"
+      ],
+      "category": "account_created",
+      "value": "2026-01-20"
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_first_glimpse_of_snow",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "first glimpse of snow",
+    "display_label": "First Glimpse of Snow",
+    "strength": 0.95,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.95,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P7:everything_went_quiet_something_softened"
+      ],
+      "details": "Profound moment - first glimpse of snow. Everything went quiet, something inside me softened. Jan 20."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_gifted_mom_a_watch",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "gifted mom a watch",
+    "display_label": "Gifted Mom a Watch",
+    "strength": 0.9,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.9,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P4:one_of_the_happiest_moments_little_girl_proud"
+      ],
+      "details": "Gifted her mother a watch - one of the happiest moments, the little girl in me was proud. Feb 2."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_morning_breakfast_with_blikker_and_seven",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "morning breakfast with blikker and seven",
+    "display_label": "Morning Breakfast with Blikker and Seven",
+    "strength": 0.7,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.7,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P1:breakfast_with_friends"
+      ],
+      "details": "Social moment - morning breakfast with friends Blikker and Seven. Feb 9."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_work_keeping_from_painting",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "work keeping from painting",
+    "display_label": "Work Keeping from Painting",
+    "strength": 0.85,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.85,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P6:work_has_kept_me_busy_hobby_slipped_into_background"
+      ],
+      "details": "Work has kept her busy - my favorite hobby slipped quietly into the background. Jan 30."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_emotional_moment_seeing_her_smile",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "emotional moment seeing her smile",
+    "display_label": "Emotional Moment Seeing Her Smile",
+    "strength": 0.8,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.8,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P3:my_eyes_locked_to_see_her_smile"
+      ],
+      "details": "Deeply emotional moment - my eyes locked to see her smile. Feb 2."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_painting",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "painting",
+    "display_label": "Painting",
+    "strength": 0.95,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.95,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P6:described_as_home_favorite_hobby"
+      ],
+      "category": "core_hobby",
+      "details": "Core hobby and identity - described as home, her favorite hobby. HIGH affinity."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_landscape_painting",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "landscape painting",
+    "display_label": "Landscape Painting",
+    "strength": 0.85,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.85,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P6:especially_to_paint_a_landscape"
+      ],
+      "category": "specific_hobby",
+      "details": "Specific preference within painting - especially to paint a landscape."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_nature_and_natural_beauty",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "nature and natural beauty",
+    "display_label": "Nature & Natural Beauty",
+    "strength": 0.9,
+    "mention_count": 3,
+    "properties": {
+      "source": "post",
+      "strength": 0.9,
+      "confidence": 1.0,
+      "evidence_count": 3,
+      "evidence_sources": [
+        "P5:beauty_of_nature",
+        "P6:nature_landscape",
+        "P7:snow_mountains_wonder"
+      ],
+      "category": "aesthetic",
+      "details": "Recurring theme across multiple posts - natural beauty, landscapes, snow, sunrise."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_sunrise_and_sunset",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "sunrise and sunset",
+    "display_label": "Sunrise & Sunset",
+    "strength": 0.7,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.7,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P5:how_often_do_we_notice_that"
+      ],
+      "category": "aesthetic",
+      "details": "Observational appreciation - how often do we notice that."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_snow_covered_mountains",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "snow-covered mountains",
+    "display_label": "Snow-Covered Mountains",
+    "strength": 0.85,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.85,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P7:couldnt_stop_staring_at_this_wonder"
+      ],
+      "category": "aesthetic",
+      "details": "Profound response to snow-covered mountains - couldn't stop staring at this wonder."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_travel_and_exploring",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "travel and exploring",
+    "display_label": "Travel & Exploring",
+    "strength": 0.7,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.7,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P7:whole_world_is_waiting_for_me"
+      ],
+      "category": "lifestyle",
+      "details": "Expressed desire to explore - whole world is waiting for me, to see more of its wonders."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_introspective",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "introspective",
+    "display_label": "Introspective",
+    "strength": 0.9,
+    "mention_count": 4,
+    "properties": {
+      "source": "post",
+      "strength": 0.9,
+      "confidence": 1.0,
+      "evidence_count": 4,
+      "evidence_sources": [
+        "P4:inner_reflection",
+        "P5:contemplation",
+        "P6:quiet_reflection",
+        "P7:something_inside_me_softened"
+      ],
+      "details": "Deep inner contemplation across multiple posts. Consistently turns outward experiences into inward reflections."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_creative",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "creative",
+    "display_label": "Creative",
+    "strength": 0.95,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.95,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P6:painting_is_home_core_identity"
+      ],
+      "details": "Painting is core to her identity - described as home. Creativity is fundamental to who she is."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_sentimental",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "sentimental",
+    "display_label": "Sentimental",
+    "strength": 0.85,
+    "mention_count": 2,
+    "properties": {
+      "source": "post",
+      "strength": 0.85,
+      "confidence": 1.0,
+      "evidence_count": 2,
+      "evidence_sources": [
+        "P4:deeply_moved_gifting_mom",
+        "P3:eyes_locked_to_see_her_smile"
+      ],
+      "details": "Deeply moved by gifting mom a watch and by seeing her smile. Emotional depth in personal moments."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_observant",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "observant",
+    "display_label": "Observant",
+    "strength": 0.75,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.75,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P5:how_often_do_we_notice_that"
+      ],
+      "details": "Notices what others miss - how often do we notice that. Attentive to everyday beauty."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_resilient",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "resilient",
+    "display_label": "Resilient",
+    "strength": 0.8,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.8,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P6:when_life_shuts_a_door_open_it_again"
+      ],
+      "details": "When life shuts a door.. open it again. Its a door. Thats how they work!! Bounces back with humor."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_optimistic",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "optimistic",
+    "display_label": "Optimistic",
+    "strength": 0.75,
+    "mention_count": 2,
+    "properties": {
+      "source": "post",
+      "strength": 0.75,
+      "confidence": 1.0,
+      "evidence_count": 2,
+      "evidence_sources": [
+        "P6:doors_can_be_reopened",
+        "P7:world_is_waiting"
+      ],
+      "details": "Doors can be reopened, world is waiting. Forward-looking and hopeful perspective."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_adventurous",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "adventurous",
+    "display_label": "Adventurous",
+    "strength": 0.7,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.7,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P7:whole_world_is_waiting_for_me_to_see_wonders"
+      ],
+      "details": "Whole world is waiting for me, to see more of its wonders. Drawn to exploration and new experiences."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_calm_seeking",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "calm-seeking",
+    "display_label": "Calm-Seeking",
+    "strength": 0.8,
+    "mention_count": 2,
+    "properties": {
+      "source": "post",
+      "strength": 0.8,
+      "confidence": 1.0,
+      "evidence_count": 2,
+      "evidence_sources": [
+        "P6:the_calm_and_the_quiet_joy",
+        "P7:beauty_and_calmness"
+      ],
+      "details": "Gravitates toward beauty and calmness. Finds quiet joy in painting and natural beauty."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_family",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "family",
+    "display_label": "Family",
+    "strength": 0.9,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.9,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P4:gifting_mom_was_happiest_moment"
+      ],
+      "details": "Gifting mom was one of the happiest moments. Family connection is deeply valued."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_calmness_and_inner_peace",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "calmness and inner peace",
+    "display_label": "Calmness & Inner Peace",
+    "strength": 0.85,
+    "mention_count": 2,
+    "properties": {
+      "source": "post",
+      "strength": 0.85,
+      "confidence": 1.0,
+      "evidence_count": 2,
+      "evidence_sources": [
+        "P7:the_beauty_and_calmness_it_holds",
+        "P6:the_calm_and_the_quiet_joy"
+      ],
+      "details": "The beauty and calmness it holds, the calm, and the quiet joy. Seeks inner peace and serenity."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_perseverance",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "perseverance",
+    "display_label": "Perseverance",
+    "strength": 0.8,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.8,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P6:open_it_again_its_a_door_thats_how_they_work"
+      ],
+      "details": "Open it again. Its a door. Thats how they work!! Believes in pushing through obstacles."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_wonder_and_awe",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "wonder and awe",
+    "display_label": "Wonder & Awe",
+    "strength": 0.85,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.85,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P7:couldnt_stop_staring_at_this_wonder"
+      ],
+      "details": "Couldn't stop staring at this wonder. Deep capacity for awe at natural beauty."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_mindfulness_and_being_present",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "mindfulness and being present",
+    "display_label": "Mindfulness & Being Present",
+    "strength": 0.75,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.75,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P5:noticing_everyday_beauty"
+      ],
+      "details": "Noticing everyday beauty - sunrise, sunset. Being present in the moment."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_small_moments_matter",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "small moments matter",
+    "display_label": "Small Moments Matter",
+    "strength": 0.85,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.85,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P3:though_its_a_small_moment_but_holds_something_more"
+      ],
+      "details": "Though its a small moment, but it holds something more than that. Values significance in the everyday."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "preference_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_landscape_painting_style",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "preference",
+    "label": "landscape painting style",
+    "display_label": "Landscape Painting Style",
+    "strength": 0.85,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.85,
+      "confidence": 1.0,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "P6:especially_to_paint_a_landscape"
+      ],
+      "details": "Specific preference for landscape painting. Especially to paint a landscape."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "preference_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_lowercase_casual_writing",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "preference",
+    "label": "lowercase casual writing",
+    "display_label": "Lowercase Casual Writing",
+    "strength": 0.65,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.65,
+      "confidence": 0.9,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "STYLE:71pct_lowercase_casual_tone"
+      ],
+      "details": "71% lowercase usage, casual tone (71.4%). Relaxed, informal writing style."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "preference_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_poetic_expression",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "preference",
+    "label": "poetic expression",
+    "display_label": "Poetic Expression",
+    "strength": 0.7,
+    "mention_count": 1,
+    "properties": {
+      "source": "post",
+      "strength": 0.7,
+      "confidence": 0.9,
+      "evidence_count": 1,
+      "evidence_sources": [
+        "STYLE:short_poetic_posts_with_ellipsis"
+      ],
+      "details": "Short poetic posts with ellipsis. Avg 32.3 words, avg sentence 7.5 words, emoji freq 0.29."
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00",
+    "updated_at": "2026-02-24T05:51:34.180590+00:00"
+  }
+]

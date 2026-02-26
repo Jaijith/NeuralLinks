@@ -1,0 +1,2497 @@
+{
+  "nodes": [
+    {
+      "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_chechi",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "connection",
+      "label": "chechi",
+      "display_label": "Chechi",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.7,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T2:household_helper_cooks_cleans"
+        ],
+        "relationship": "household_helper",
+        "relationship_type": "household_helper",
+        "details": "Household helper who cooks and cleans. NOT a sister. Rafseena mentions her cooking chapati and egg curry."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_mom",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "connection",
+      "label": "mom",
+      "display_label": "Mom / Mommy",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T9:mom_reference"
+        ],
+        "relationship": "mother",
+        "relationship_type": "daughter_of",
+        "details": "Rafseena's mother. Referenced in conversation transcript T9."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_sreejith_sreekantan",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "connection",
+      "label": "sreejith sreekantan",
+      "display_label": "Sreejith Sreekantan",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "web",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "WEB:co_principal_architect_vili_ve"
+        ],
+        "relationship": "colleague",
+        "relationship_type": "colleague_of",
+        "details": "Co-principal architect at Vili & V\u00e9 Architecture Studio. Colleague of Rafseena."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_abdul_jaleel",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "connection",
+      "label": "abdul jaleel",
+      "display_label": "Abdul Jaleel",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "web",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "WEB:co_principal_architect_vili_ve"
+        ],
+        "relationship": "colleague",
+        "relationship_type": "colleague_of",
+        "details": "Co-principal architect at Vili & V\u00e9 Architecture Studio. Colleague of Rafseena."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_veronica_henry",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "connection",
+      "label": "veronica henry",
+      "display_label": "Veronica Henry",
+      "strength": 0.6,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.6,
+        "confidence": 0.9,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T3:reading_The_Secret_Beach_by_Veronica_Henry"
+        ],
+        "relationship": "author_she_reads",
+        "relationship_type": "reader_of",
+        "details": "Author of 'The Secret Beach' which Rafseena is currently reading and finds 'quite interesting'."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_muhammed_sabique",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "connection",
+      "label": "muhammed sabique",
+      "display_label": "Muhammed Sabique",
+      "strength": 0.8,
+      "mention_count": 2,
+      "properties": {
+        "source": "web",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "WEB:ArchDaily_Elance_custom_wall_art",
+          "WEB:ArchitectureUpdate_team_member"
+        ],
+        "relationship": "colleague",
+        "relationship_type": "colleague_of",
+        "details": "Colleague at Vili & V\u00e9. Did Custom Wall Art for Elance Learning HQ project. Also on 2n1 platform as 'Sabtrack'."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "name:rafseena sedeed",
+      "display_label": "Rafseena Sedeed",
+      "strength": 1.0,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:name"
+        ],
+        "category": "name",
+        "value": "Rafseena Sedeed"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_preferred_name_rafsi",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "preferred_name:rafsi",
+      "display_label": "Rafsi",
+      "strength": 0.95,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T14:Now_onwards_you_call_me_Rafsi_only_okay"
+        ],
+        "category": "preferred_name",
+        "value": "Rafsi",
+        "details": "She insisted: 'Now onwards you call me Rafsi only, okay?'"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_email_rafseenasedeed7_gmail_com",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "email:rafseenasedeed7@gmail.com",
+      "display_label": "rafseenasedeed7@gmail.com",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:email"
+        ],
+        "category": "email",
+        "value": "rafseenasedeed7@gmail.com"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_location_kozhikode_kerala_india",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "location:kozhikode, kerala, india",
+      "display_label": "Kozhikode, Kerala, India",
+      "strength": 1.0,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:location_KOZHIKODE"
+        ],
+        "category": "location",
+        "value": "Kozhikode, Kerala, India"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_bio_architect_and_creative_designer",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "bio:architect and creative designer",
+      "display_label": "I'm an architect and creative designer",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "bio",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:bio"
+        ],
+        "category": "bio",
+        "value": "I'm an architect and creative designer"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_job_architect_at_vili_v",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "job:architect at vili & v\u00e9",
+      "display_label": "Architect / Co-Principal Architect at Vili & V\u00e9",
+      "strength": 1.0,
+      "mention_count": 2,
+      "properties": {
+        "source": "web",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "PROF:bio_architect",
+          "WEB:co_principal_architect_vili_ve"
+        ],
+        "category": "job_title",
+        "value": "Architect / Co-Principal Architect at Vili & V\u00e9 Architecture Studio"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_avatar_seven",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "avatar:seven",
+      "display_label": "Seven",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:avatar_name"
+        ],
+        "category": "avatar",
+        "value": "Seven"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_language_malayalam",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "language:malayalam",
+      "display_label": "Malayalam",
+      "strength": 0.95,
+      "mention_count": 7,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 7,
+        "evidence_sources": [
+          "T3:asked_for_Malayalam",
+          "T4:Malayalam_storytelling",
+          "T5:Malayalam_insistence",
+          "T6:Malayalam_insistence",
+          "T7:Malayalam_insistence",
+          "T13:Malayalam_conversation",
+          "T14:Malayalam_conversation"
+        ],
+        "category": "language",
+        "value": "Malayalam (native)"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_gender_female",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "gender:female",
+      "display_label": "Female",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "web",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "WEB:Ar_Rafseena_title"
+        ],
+        "category": "gender",
+        "value": "Female"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_archetype_casual_observer",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "demographic",
+      "label": "archetype:casual_observer",
+      "display_label": "Casual Observer",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 0.7,
+        "confidence": 0.9,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:archetype"
+        ],
+        "category": "archetype",
+        "value": "casual_observer"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_trip_to_sikkim",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "experience",
+      "label": "trip to sikkim",
+      "display_label": "Trip to Sikkim",
+      "strength": 0.95,
+      "mention_count": 3,
+      "properties": {
+        "source": "post",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "RP2:lifelong_dream_bucket_list",
+          "RP2:first_snow_pure_bliss",
+          "RP2:shared_with_people_I_love_most"
+        ],
+        "details": "Lifelong dream from bucket list. First snow. 'Pure bliss.' Shared with the people she loves most."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architect_career_at_vili_v",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "experience",
+      "label": "architect career at vili & v\u00e9",
+      "display_label": "Architect Career at Vili & V\u00e9",
+      "strength": 1.0,
+      "mention_count": 2,
+      "properties": {
+        "source": "web",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "WEB:co_principal_architect_vili_ve",
+          "PROF:bio_architect"
+        ],
+        "details": "Co-principal architect at Vili & V\u00e9 Architecture Studio in Kozhikode."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_custom_paintings_for_elance_learning",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "experience",
+      "label": "custom paintings for elance learning",
+      "display_label": "Custom Paintings for Elance Learning",
+      "strength": 0.85,
+      "mention_count": 2,
+      "properties": {
+        "source": "web",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "WEB:ArchDaily_Elance_Learning_custom_paintings",
+          "WEB:CommercialDesignIndia_cubist_paintings_in_various_spaces"
+        ],
+        "details": "Created custom cubist paintings for the Elance Learning HQ. Also served as Project Coordinator. Featured on ArchDaily, Archello, CommercialDesignIndia, ArchitectureUpdate."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reading_the_secret_beach",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "experience",
+      "label": "reading the secret beach",
+      "display_label": "Reading 'The Secret Beach' by Veronica Henry",
+      "strength": 0.75,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.75,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T3:quite_interesting_I_like_it"
+        ],
+        "details": "Currently reading 'The Secret Beach' by Veronica Henry. 'Quite interesting, I like it.'"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_joined_2n1_platform",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "experience",
+      "label": "joined 2n1 platform",
+      "display_label": "Joined 2n1 Platform",
+      "strength": 0.6,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.6,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "RP1:joined_Jan_19_2026"
+        ],
+        "details": "Joined the 2n1 social platform, Jan 19, 2026."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_malayalam_language",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "malayalam language",
+      "display_label": "Malayalam Language",
+      "strength": 1.0,
+      "mention_count": 7,
+      "properties": {
+        "source": "conversation",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 7,
+        "evidence_sources": [
+          "T3:asked_for_Malayalam",
+          "T4:Malayalam_storytelling",
+          "T5:Malayalam_insistence",
+          "T6:Malayalam_insistence",
+          "T7:Malayalam_insistence",
+          "T13:Malayalam_conversation",
+          "T14:Malayalam_conversation"
+        ],
+        "category": "language_culture",
+        "details": "HIGH priority. Asked to speak Malayalam in 6+ sessions. Insists on Malayalam conversation."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reading",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "reading",
+      "display_label": "Reading",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T3:currently_reading_The_Secret_Beach"
+        ],
+        "category": "intellectual",
+        "details": "HIGH. Currently reading The Secret Beach by Veronica Henry."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_harry_potter",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "harry potter",
+      "display_label": "Harry Potter",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T6:I_want_Harry_Potter_story"
+        ],
+        "category": "entertainment",
+        "details": "MEDIUM. 'I want Harry Potter story.' Requested a Harry Potter story in conversation."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_storytelling",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "storytelling",
+      "display_label": "Storytelling",
+      "strength": 0.9,
+      "mention_count": 3,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "T4:story_request_Malayalam",
+          "T5:story_request_Malayalam",
+          "T6:Harry_Potter_story_request"
+        ],
+        "category": "entertainment",
+        "details": "HIGH. Multiple requests for stories in Malayalam across sessions."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_food",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "food",
+      "display_label": "Food",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T2:Good_food_makes_me_happy_all_the_time"
+        ],
+        "category": "lifestyle",
+        "details": "HIGH. 'Good food makes me happy all the time.' Core source of happiness."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_singing",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "singing",
+      "display_label": "Singing",
+      "strength": 0.7,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "T11:sang_Tum_Hi_Ho_for_avatar",
+          "T12:singing_continuation"
+        ],
+        "category": "creative",
+        "details": "MEDIUM. Sang 'Tum Hi Ho' for her avatar. Willing to perform."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_hindi_songs",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "hindi songs",
+      "display_label": "Hindi Songs",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T11:Do_you_know_Hindi_songs"
+        ],
+        "category": "music",
+        "details": "MEDIUM. 'Do you know Hindi songs?' Enjoys Hindi music."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_travel",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "travel",
+      "display_label": "Travel",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "RP2:Sikkim_bucket_list_trip"
+        ],
+        "category": "lifestyle",
+        "details": "HIGH. Sikkim was a bucket list destination. Lifelong dream fulfilled."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_mountains_and_nature",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "mountains and nature",
+      "display_label": "Mountains & Nature",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "RP2:snow_capped_mountains_first_snow_pure_bliss"
+        ],
+        "category": "nature",
+        "details": "HIGH. Snow-capped mountains. First snow experience described as 'pure bliss'."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architecture",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "architecture",
+      "display_label": "Architecture",
+      "strength": 1.0,
+      "mention_count": 2,
+      "properties": {
+        "source": "profile",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "PROF:bio_architect",
+          "WEB:co_principal_architect"
+        ],
+        "category": "core_professional",
+        "details": "HIGH. Bio: 'I'm an architect'. Co-principal architect at Vili & V\u00e9."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative_design_and_painting",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "creative design and painting",
+      "display_label": "Creative Design & Painting",
+      "strength": 0.9,
+      "mention_count": 2,
+      "properties": {
+        "source": "profile",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "PROF:bio_creative_designer",
+          "WEB:custom_paintings_Elance_Learning"
+        ],
+        "category": "creative_professional",
+        "details": "HIGH. Bio: 'creative designer'. Custom paintings for Elance Learning featured on ArchDaily."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_music",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "music",
+      "display_label": "Music",
+      "strength": 0.7,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "T11:sings_and_discusses_music",
+          "T12:singing_for_avatar"
+        ],
+        "category": "creative",
+        "details": "MEDIUM. Sings and discusses music. Performed for avatar."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_home_cooked_meals",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "home-cooked meals",
+      "display_label": "Home-Cooked Meals",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T2:chapati_egg_curry_good_food_makes_me_happy"
+        ],
+        "category": "lifestyle",
+        "details": "HIGH. Chapati + egg curry specifically. 'Good food makes me happy all the time.'"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_kerala_culture",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "interest",
+      "label": "kerala culture",
+      "display_label": "Kerala Culture",
+      "strength": 0.9,
+      "mention_count": 7,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 7,
+        "evidence_sources": [
+          "T3:Malayalam_request",
+          "T4:Malayalam_stories",
+          "T5:Malayalam_insistence",
+          "T6:Malayalam_insistence",
+          "T7:Malayalam_insistence",
+          "T13:Malayalam_conversation",
+          "T14:Malayalam_conversation"
+        ],
+        "category": "cultural",
+        "details": "HIGH. Repeatedly asks for Malayalam. Values deep cultural connection."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reserved",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "reserved",
+      "display_label": "Reserved",
+      "strength": 0.8,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.8,
+        "confidence": 0.95,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "CONV:concise_communicator",
+          "CONV:short_responses"
+        ],
+        "details": "Concise communicator. Short responses. Strength=0.8."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_direct",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "direct",
+      "display_label": "Direct",
+      "strength": 0.85,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.85,
+        "confidence": 0.95,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "CONV:straightforward_statements",
+          "CONV:honest_feedback"
+        ],
+        "details": "Straightforward statements, honest feedback. Strength=0.85."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_curious",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "curious",
+      "display_label": "Curious",
+      "strength": 0.75,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.75,
+        "confidence": 0.95,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "CONV:Who_invented_you",
+          "CONV:Why_you_cant_read_a_book"
+        ],
+        "details": "'Who invented you?', 'Why you can't read a book?' Asks probing questions. Strength=0.75."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_assertive",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "assertive",
+      "display_label": "Assertive",
+      "strength": 0.85,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "CONV:corrects_name_multiple_times",
+          "T14:insists_on_Rafsi"
+        ],
+        "details": "Corrects name multiple times. Insists on being called Rafsi. Strength=0.85."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "creative",
+      "display_label": "Creative",
+      "strength": 0.9,
+      "mention_count": 2,
+      "properties": {
+        "source": "profile",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "PROF:architect_and_creative_designer",
+          "WEB:custom_paintings"
+        ],
+        "details": "Architect and creative designer. Custom paintings for projects. Strength=0.9."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_multilingual",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "multilingual",
+      "display_label": "Multilingual",
+      "strength": 0.75,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.75,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "CONV:English_Malayalam_Hindi_naturally"
+        ],
+        "details": "English, Malayalam, Hindi used naturally in conversation. Strength=0.75."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_playful",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "playful",
+      "display_label": "Playful",
+      "strength": 0.7,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.7,
+        "confidence": 0.95,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "T11:sings_for_avatar",
+          "CONV:uses_humor"
+        ],
+        "details": "Sings for avatar, uses humor. Strength=0.7."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_confident",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "confident",
+      "display_label": "Confident",
+      "strength": 0.8,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.8,
+        "confidence": 0.95,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "CONV:challenges_avatar",
+          "CONV:It_is_not_good"
+        ],
+        "details": "Challenges avatar. Says 'It is not good' directly. Strength=0.8."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_appreciative_of_simple_pleasures",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "appreciative of simple pleasures",
+      "display_label": "Appreciative of Simple Pleasures",
+      "strength": 0.75,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.75,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T2:Good_food_makes_me_happy_all_the_time"
+        ],
+        "details": "'Good food makes me happy all the time.' Finds joy in everyday things. Strength=0.75."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_informal",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "trait",
+      "label": "informal",
+      "display_label": "Informal",
+      "strength": 0.7,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.7,
+        "confidence": 0.9,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "CONV:casual_language",
+          "CONV:nickname_preference_Rafsi"
+        ],
+        "details": "Casual language, nickname preference. Strength=0.7."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_live_life_to_the_fullest",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "value",
+      "label": "live life to the fullest",
+      "display_label": "Live Life to the Fullest",
+      "strength": 0.95,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "RP1:LIVE_LIFE_TO_THE_FULLEST"
+        ],
+        "details": "'LIVE LIFE TO THE FULLEST !!' \u2014 posted with ALL CAPS emphasis."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_family",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "value",
+      "label": "family",
+      "display_label": "Family",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "RP2:shared_with_the_people_I_love_most"
+        ],
+        "details": "'Shared with the people I love most.' Sikkim trip was a family experience."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_cultural_connection_and_malayalam_identity",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "value",
+      "label": "cultural connection and malayalam identity",
+      "display_label": "Cultural Connection / Malayalam Identity",
+      "strength": 0.95,
+      "mention_count": 7,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 7,
+        "evidence_sources": [
+          "T3:insists_on_Malayalam",
+          "T4:Malayalam_stories",
+          "T5:Malayalam_insistence",
+          "T6:Malayalam_insistence",
+          "T7:Malayalam_insistence",
+          "T13:Malayalam_conversation",
+          "T14:Malayalam_conversation"
+        ],
+        "details": "Insists on Malayalam across 6+ sessions. Deep cultural identity anchored in language."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_joy_in_simple_pleasures",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "value",
+      "label": "joy in simple pleasures",
+      "display_label": "Joy in Simple Pleasures",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T2:Good_food_makes_me_happy_all_the_time"
+        ],
+        "details": "'Good food makes me happy all the time.' Happiness in everyday experiences."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_experiences_and_adventure",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "value",
+      "label": "experiences and adventure",
+      "display_label": "Experiences & Adventure",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "RP2:Sikkim_bucket_list_lifelong_dream"
+        ],
+        "details": "Sikkim trip was lifelong bucket list dream. Values collecting meaningful experiences."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creativity_and_artistic_expression",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "value",
+      "label": "creativity and artistic expression",
+      "display_label": "Creativity & Artistic Expression",
+      "strength": 0.9,
+      "mention_count": 2,
+      "properties": {
+        "source": "profile",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "PROF:bio_creative_designer",
+          "WEB:custom_paintings_Elance_Learning"
+        ],
+        "details": "Bio declares creative designer. Custom paintings for architectural projects."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_prefers_to_be_called_rafsi",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "preference",
+      "label": "prefers to be called rafsi",
+      "display_label": "Prefers 'Rafsi'",
+      "strength": 0.95,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T14:Now_onwards_you_call_me_Rafsi_only_okay"
+        ],
+        "details": "Insisted: 'Now onwards you call me Rafsi only, okay?'"
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_prefers_malayalam_conversation",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "preference",
+      "label": "prefers malayalam conversation",
+      "display_label": "Prefers Malayalam Conversation",
+      "strength": 0.95,
+      "mention_count": 7,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 7,
+        "evidence_sources": [
+          "T3:Malayalam_request",
+          "T4:Malayalam_stories",
+          "T5:Malayalam_insistence",
+          "T6:Malayalam_insistence",
+          "T7:Malayalam_insistence",
+          "T13:Malayalam_conversation",
+          "T14:Malayalam_conversation"
+        ],
+        "details": "Consistently prefers Malayalam in conversation across 6+ sessions."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_loves_homemade_food",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "preference",
+      "label": "loves homemade food",
+      "display_label": "Loves Homemade Food",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T2:Good_food_makes_me_happy_all_the_time"
+        ],
+        "details": "'Good food makes me happy all the time.' Loves home-cooked meals."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_enjoys_chapati_and_egg_curry",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "preference",
+      "label": "enjoys chapati and egg curry",
+      "display_label": "Chapati & Egg Curry",
+      "strength": 0.8,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T2:chapati_egg_curry"
+        ],
+        "details": "Specifically enjoys chapati and egg curry. Mentioned alongside Chechi's cooking."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_enjoys_stories_in_malayalam",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "preference",
+      "label": "enjoys stories in malayalam",
+      "display_label": "Enjoys Stories in Malayalam",
+      "strength": 0.85,
+      "mention_count": 3,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "T4:story_request_Malayalam",
+          "T5:story_request_Malayalam",
+          "T6:Harry_Potter_story_request"
+        ],
+        "details": "Multiple requests for stories, especially in Malayalam."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_has_household_helper_for_cooking_and_cleaning",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "node_type": "preference",
+      "label": "has household helper for cooking and cleaning",
+      "display_label": "Household Helper (Chechi)",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.7,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T2:Chechi_cooks_and_cleans"
+        ],
+        "details": "Has Chechi as household helper for cooking and cleaning."
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00",
+      "updated_at": "2026-02-24T09:25:11.808578+00:00"
+    }
+  ],
+  "edges": [
+    {
+      "id": "3544b817-c8fc-4825-a7c7-9a65dcbdd130",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_sreejith_sreekantan",
+      "to_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_abdul_jaleel",
+      "relationship_type": "colleague_of",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Both co-principal architects at Vili & V\u00e9",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "ad9ca535-3fbd-4b9b-aa52-a9fee8bc46c2",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_sreejith_sreekantan",
+      "to_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_muhammed_sabique",
+      "relationship_type": "colleague_of",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Both work at Vili & V\u00e9 Architecture Studio",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "62cb9338-c7e1-474d-86d6-52f527745a58",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_abdul_jaleel",
+      "to_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_muhammed_sabique",
+      "relationship_type": "colleague_of",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Both work at Vili & V\u00e9 Architecture Studio",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "20241155-7749-460f-bd7e-ae97e8a3121f",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "to_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_chechi",
+      "relationship_type": "has_household_helper",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Chechi is Rafseena's household helper who cooks and cleans",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "1f570787-3dce-4838-812d-886983bd4296",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "to_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_mom",
+      "relationship_type": "daughter_of",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Rafseena's mother, referenced in T9",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "3107048f-edce-4e9f-9bb6-e63f7e1a4790",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "to_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_sreejith_sreekantan",
+      "relationship_type": "colleague_of",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Rafseena and Sreejith are co-principal architects at Vili & V\u00e9",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "31d0a193-f435-49cd-869f-7d3a2d509012",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "to_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_abdul_jaleel",
+      "relationship_type": "colleague_of",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Rafseena and Abdul Jaleel are co-principal architects at Vili & V\u00e9",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "f7d09d21-86ae-4e1b-9c65-c50d8688b7fb",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "to_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_muhammed_sabique",
+      "relationship_type": "colleague_of",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Rafseena and Muhammed Sabique work together at Vili & V\u00e9",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "f8816135-d21d-4661-91f8-a484d084cba7",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "to_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_avatar_seven",
+      "relationship_type": "represented_by",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Seven is Rafseena's avatar on the platform",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "6269e590-4602-4b41-bd3e-4335e5116904",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "to_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_email_rafseenasedeed7_gmail_com",
+      "relationship_type": "owns",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Email belongs to Rafseena",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "910457c4-25d5-40de-9419-349e51d583fe",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "to_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_job_architect_at_vili_v",
+      "relationship_type": "works_as",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Rafseena works as architect at Vili & V\u00e9",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "1f389d3a-1072-4204-aa0c-8cb14149b2c5",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "to_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_preferred_name_rafsi",
+      "relationship_type": "also_known_as",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Rafseena prefers to be called Rafsi",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "973f23ad-a731-41b2-b856-d7ffe9302292",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_sreejith_sreekantan",
+      "to_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architect_career_at_vili_v",
+      "relationship_type": "colleague_at",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sreejith is co-principal architect at Vili & V\u00e9",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "cd69f82a-aa09-4801-85e0-9b786fb3b493",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_abdul_jaleel",
+      "to_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architect_career_at_vili_v",
+      "relationship_type": "colleague_at",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Abdul Jaleel is co-principal architect at Vili & V\u00e9",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "46841dd6-fb3c-443e-9b9e-66c44a3d02c3",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_muhammed_sabique",
+      "to_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architect_career_at_vili_v",
+      "relationship_type": "works_at",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Muhammed Sabique works at Vili & V\u00e9",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "e72e3ee2-4867-4092-9f83-14226ab5a48f",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_muhammed_sabique",
+      "to_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_custom_paintings_for_elance_learning",
+      "relationship_type": "contributed_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Muhammed Sabique did Custom Wall Art for Elance Learning HQ",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "3186f51b-bead-45c5-a392-6a3d362a66a2",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_veronica_henry",
+      "to_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reading_the_secret_beach",
+      "relationship_type": "authored",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Veronica Henry authored The Secret Beach",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "fbf97549-e828-4eba-937a-edd666a1953f",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_mom",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_family",
+      "relationship_type": "inspires",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Mother relationship inspires family value",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "d326af51-e1a5-4f89-a7ff-414cd9987f27",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_chechi",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_joy_in_simple_pleasures",
+      "relationship_type": "enables",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Chechi's cooking enables joy in simple pleasures \u2014 homemade food",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "53858c65-5be7-422a-873b-ee53c276e43d",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_location_kozhikode_kerala_india",
+      "to_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_language_malayalam",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Kerala location \u2014 Malayalam is the native language",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "12e94cad-7b5e-4a46-aa8a-d78a0d998a15",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_location_kozhikode_kerala_india",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_kerala_culture",
+      "relationship_type": "inspires",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Kozhikode Kerala location inspires deep Kerala cultural connection",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "3499482c-c546-4484-b68b-0ab8028745ca",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_gender_female",
+      "to_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "relationship_type": "attribute_of",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Female gender is an attribute of Rafseena",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "2e515a16-b9c8-4a97-87c5-b078a6e1521c",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_archetype_casual_observer",
+      "to_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reserved",
+      "relationship_type": "manifests_as",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Casual observer archetype manifests as reserved communication",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "a7d62642-64ea-4cd1-9aeb-c9695a4735f4",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_bio_architect_and_creative_designer",
+      "to_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative",
+      "relationship_type": "reveals",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Bio 'architect and creative designer' reveals creative trait",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "97879fa7-dfda-4479-90be-a47d5a31c13e",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_bio_architect_and_creative_designer",
+      "to_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_job_architect_at_vili_v",
+      "relationship_type": "expresses",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Bio directly expresses job as architect",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "7727d414-a18b-408d-8fb2-88d85ba85b1f",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_language_malayalam",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_cultural_connection_and_malayalam_identity",
+      "relationship_type": "expresses",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Malayalam language expresses cultural identity",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "88c5c2df-09ba-45fe-a09c-1e78cfb2fa84",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_language_malayalam",
+      "to_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_multilingual",
+      "relationship_type": "related_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Malayalam is primary language of multilingual speaker",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "212800f2-be8f-4ec0-8f9a-d738a8af7dca",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_job_architect_at_vili_v",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architecture",
+      "relationship_type": "professional_in",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Job is in architecture",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "9f29c77c-0b9c-4661-b747-2b991cff89df",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_job_architect_at_vili_v",
+      "to_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architect_career_at_vili_v",
+      "relationship_type": "realized_through",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Architect job realized through Vili & V\u00e9 career",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "f100bcf5-a5e9-4d1c-a3be-46daed5c8d93",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_location_kozhikode_kerala_india",
+      "to_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architect_career_at_vili_v",
+      "relationship_type": "location_of",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Vili & V\u00e9 is located in Kozhikode",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "528f9b15-f5ac-4815-8819-0ded0b9c58db",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_trip_to_sikkim",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_travel",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sikkim trip is a core travel experience",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "6dca6c5c-86d3-4211-99b0-2c80f8c37632",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_trip_to_sikkim",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_mountains_and_nature",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sikkim: snow-capped mountains, first snow, pure bliss",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "f3d4f222-dec7-483d-b21e-5470a1878745",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architect_career_at_vili_v",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architecture",
+      "relationship_type": "professional_focus",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Architecture studio is core to architecture interest",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "26571649-7d8d-4027-b572-7e7740d78a88",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_custom_paintings_for_elance_learning",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative_design_and_painting",
+      "relationship_type": "expressed_through",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Custom paintings for Elance express creative design interest",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "4f80d430-9508-421e-b4e4-192458532951",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reading_the_secret_beach",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reading",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Reading The Secret Beach is a reading activity",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "13488591-71eb-427b-9021-978bfda38c2c",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_trip_to_sikkim",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_experiences_and_adventure",
+      "relationship_type": "embodies",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sikkim trip was a lifelong bucket list dream fulfilled",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "807a428e-38bd-4ac9-b802-253c9e2c0677",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_trip_to_sikkim",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_family",
+      "relationship_type": "shared_with",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "'Shared with the people I love most' \u2014 family experience",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "82ae1fc2-cf08-487c-9760-e2f97ef8c157",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_custom_paintings_for_elance_learning",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creativity_and_artistic_expression",
+      "relationship_type": "expressed_through",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Custom paintings express artistic creativity value",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "b0ba63e5-c3dd-4c67-ac84-5b8be1819ebb",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architect_career_at_vili_v",
+      "to_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_custom_paintings_for_elance_learning",
+      "relationship_type": "led_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Vili & V\u00e9 career led to Elance Learning project",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "c09f9bd4-949a-48b2-913f-d93ec5180b3e",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_joined_2n1_platform",
+      "to_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_name_rafseena_sedeed",
+      "relationship_type": "action_by",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Rafseena joined the 2n1 platform",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "2bdf5c89-b72f-4a1f-bc41-b8a1c340c161",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_malayalam_language",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_kerala_culture",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Malayalam language is central to Kerala culture",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "566c2813-27d0-4d4a-a7d6-31ec2fd90656",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_storytelling",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reading",
+      "relationship_type": "related_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Storytelling and reading share narrative appreciation",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "6bba00c6-bc42-4dae-a6be-ac793c1a557d",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_harry_potter",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reading",
+      "relationship_type": "related_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Harry Potter is a reading/story interest",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "6b1b1585-5344-4913-8336-1abb09936e75",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_harry_potter",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_storytelling",
+      "relationship_type": "related_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Harry Potter requested as a story to be told",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "6a8943ff-28dc-49c0-8cc4-3e4ceb519646",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_singing",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_music",
+      "relationship_type": "subsumes",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Singing is a form of music",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "0d9101ff-0fa6-4575-a828-5acb8da96328",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_hindi_songs",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_music",
+      "relationship_type": "subsumes",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Hindi songs are a music genre",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "7f63550c-7b69-42e4-82b5-e19c70ea5380",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_hindi_songs",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_singing",
+      "relationship_type": "related_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sang Hindi song Tum Hi Ho",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "8425dacb-d019-49a1-b1c8-a46877174a6d",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_food",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_home_cooked_meals",
+      "relationship_type": "subsumes",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Home-cooked meals are a subset of food interest",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "13fa3aa1-92b8-43f7-9e95-6a16944fb3a2",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_mountains_and_nature",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_travel",
+      "relationship_type": "related_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Mountains and nature experienced through travel",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "fefce63c-d3f7-4849-a9af-ac955942366a",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architecture",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative_design_and_painting",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Architecture and creative design are deeply connected",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "62535ec7-763b-4f86-9b36-da8a5799f14a",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_kerala_culture",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_storytelling",
+      "relationship_type": "cultural_context",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Storytelling in Malayalam is a cultural practice",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "ade28b1f-c19c-439b-b6ea-236289990db5",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_architecture",
+      "relationship_type": "expressed_through",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Creativity expressed through architecture",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "ab752346-388b-41de-ba14-2d96a891265b",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative_design_and_painting",
+      "relationship_type": "expressed_through",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Creativity expressed through design and painting",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "a7d0d672-0f0a-441b-93af-7eb2fca60b00",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_multilingual",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_malayalam_language",
+      "relationship_type": "enables",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Multilingual ability enables Malayalam communication",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "001cb084-e312-4042-98bf-20eceee30db5",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_curious",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reading",
+      "relationship_type": "drives",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Curiosity drives reading interest",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "e772d861-d4cb-468d-bb03-940e73598939",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_playful",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_singing",
+      "relationship_type": "expressed_through",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Playfulness expressed through singing for avatar",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "5ad37089-308a-4cfa-a695-2374060c06eb",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_playful",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_storytelling",
+      "relationship_type": "drawn_to",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Playful nature drawn to storytelling",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "63437a00-9d38-4f2f-890f-3d72fc50d592",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_curious",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_harry_potter",
+      "relationship_type": "drawn_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Curiosity drawn to Harry Potter fantasy world",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "92d21911-e034-4aff-8f35-363c0e1b3513",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reserved",
+      "to_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_direct",
+      "relationship_type": "related_to",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Reserved but direct \u2014 concise and straightforward",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "b7e363ba-19ff-412d-8559-4adaa2551233",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_informal",
+      "to_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_playful",
+      "relationship_type": "reinforces",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Informal style reinforces playful personality",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "91519543-1343-4f58-937a-3f1ea2edb320",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_assertive",
+      "to_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_confident",
+      "relationship_type": "reinforces",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Assertiveness reinforces confident communication",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "77163b58-bf6d-41ee-aaaf-fd7f7864ebbb",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_confident",
+      "to_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_direct",
+      "relationship_type": "related_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Confidence enables direct feedback",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "3fc4fe74-a76f-4119-a7c5-a651ecffdc57",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creativity_and_artistic_expression",
+      "relationship_type": "embodies",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Creative trait embodies creativity and artistic expression value",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "7ec9466d-74db-4059-a1d9-0cbf617a737a",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_assertive",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_cultural_connection_and_malayalam_identity",
+      "relationship_type": "drives",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Assertiveness drives insistence on Malayalam cultural identity",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "5f017444-3dfa-4ae0-a906-837581a0921f",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_appreciative_of_simple_pleasures",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_joy_in_simple_pleasures",
+      "relationship_type": "embodies",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Appreciation of simple pleasures embodies joy in simple things",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "4d2b5b2c-2f69-41c0-a0cc-e2a581cffa81",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_confident",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_live_life_to_the_fullest",
+      "relationship_type": "enables",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Confidence enables living life to the fullest",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "ce7275f0-ece7-4eb6-8e5d-093e07c7a126",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_informal",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_joy_in_simple_pleasures",
+      "relationship_type": "related_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Informal, casual style relates to finding joy in simplicity",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "e595457e-f02f-4cc3-a1b0-19f8b905d773",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_cultural_connection_and_malayalam_identity",
+      "to_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_prefers_malayalam_conversation",
+      "relationship_type": "leads_to",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Malayalam cultural identity leads to Malayalam conversation preference",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "c0750c62-8768-4b30-a0a2-118f393d1a24",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_cultural_connection_and_malayalam_identity",
+      "to_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_prefers_to_be_called_rafsi",
+      "relationship_type": "leads_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Cultural identity and assertiveness leads to nickname preference",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "6503343b-1206-4798-bb73-3b326682285a",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_cultural_connection_and_malayalam_identity",
+      "to_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_enjoys_stories_in_malayalam",
+      "relationship_type": "leads_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Malayalam cultural connection leads to wanting stories in Malayalam",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "b7b6a72b-0904-4d24-8a87-fd01f972422b",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_joy_in_simple_pleasures",
+      "to_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_loves_homemade_food",
+      "relationship_type": "leads_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Joy in simple pleasures leads to love of homemade food",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "b3471fee-ba6b-46c2-8584-e02b6cc08b70",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_joy_in_simple_pleasures",
+      "to_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_enjoys_chapati_and_egg_curry",
+      "relationship_type": "leads_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Simple pleasures lead to specific food preferences",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "790cf5ed-a164-498f-89bf-ec3ce3503a62",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_family",
+      "to_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_has_household_helper_for_cooking_and_cleaning",
+      "relationship_type": "related_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Family/home life context for having household helper",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "c9c9ea02-46a3-4ad2-91c4-86fa37772274",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_live_life_to_the_fullest",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_experiences_and_adventure",
+      "relationship_type": "related_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Living fully drives pursuing experiences and adventure",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "dc496aa4-b217-47a2-84fd-0ada700c39e6",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_experiences_and_adventure",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_travel",
+      "relationship_type": "drives",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Value of experiences drives travel interest",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "99e1eeb4-32f0-441c-878b-a0c9ef264aa4",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creativity_and_artistic_expression",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_creative_design_and_painting",
+      "relationship_type": "expressed_through",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Creativity value expressed through design and painting",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "e5117f5f-eb44-4ef5-8e11-eef353735d7d",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_kerala_culture",
+      "to_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_cultural_connection_and_malayalam_identity",
+      "relationship_type": "expresses",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Kerala culture interest expresses cultural connection value",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "9363184a-785f-4558-b115-5c025ce52227",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_prefers_malayalam_conversation",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_malayalam_language",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Malayalam conversation preference tied to Malayalam interest",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "9dbc3e25-d395-43d2-9cee-f1ba3a8b4e62",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_enjoys_stories_in_malayalam",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_storytelling",
+      "relationship_type": "related_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Story preference tied to storytelling interest",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "788a06dd-1163-435c-b53c-ba254a42e03c",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_enjoys_stories_in_malayalam",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_malayalam_language",
+      "relationship_type": "related_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Malayalam story preference tied to Malayalam interest",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "6d3d2e4d-fd49-4b3f-9e8a-30bbee6200a7",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_loves_homemade_food",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_food",
+      "relationship_type": "related_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Homemade food preference tied to food interest",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "d5eee18f-d4c9-4e8d-9fc8-8f5789968328",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_enjoys_chapati_and_egg_curry",
+      "to_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_home_cooked_meals",
+      "relationship_type": "related_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Chapati & egg curry preference tied to home-cooked meals interest",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "5338cc50-7d08-4fa2-9751-b4e3510b18ab",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_prefers_to_be_called_rafsi",
+      "to_node_id": "demographic_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_preferred_name_rafsi",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Name preference directly tied to preferred name demographic",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "f282e123-d6ac-4687-ae37-fdf5abfc466c",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_music",
+      "to_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_playful",
+      "relationship_type": "related_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Music interest complements playful personality",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "4b835f81-711e-49bb-9125-c5e439bfcd2e",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_live_life_to_the_fullest",
+      "to_node_id": "experience_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_trip_to_sikkim",
+      "relationship_type": "inspired",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "'Live life to the fullest' inspired Sikkim bucket list trip",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    },
+    {
+      "id": "caeedc42-24bf-42c0-b5ee-b706dfc6c0e2",
+      "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+      "from_node_id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_live_life_to_the_fullest",
+      "to_node_id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_confident",
+      "relationship_type": "expressed_through",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "ALL CAPS 'LIVE LIFE TO THE FULLEST !!' \u2014 confident, enthusiastic style",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-24T09:25:11.808578+00:00"
+    }
+  ]
+}

@@ -1,0 +1,1390 @@
+[
+  {
+    "id": "a54a22df-c995-47e8-a563-ea3610d691df",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "experience",
+    "label": "architect",
+    "properties": {
+      "domain": "architecture",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:13.584955+00:00",
+    "updated_at": "2026-01-19T05:15:13.584973+00:00"
+  },
+  {
+    "id": "6828a085-50b6-4c91-a878-a49fda395cba",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "experience",
+    "label": "creative_designer",
+    "properties": {
+      "domain": "design",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:13.584982+00:00",
+    "updated_at": "2026-01-19T05:15:13.584984+00:00"
+  },
+  {
+    "id": "774cde0f-75ee-42e9-8f92-2b54c49eece8",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "architecture",
+    "properties": {
+      "level": "professional",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:13.584995+00:00",
+    "updated_at": "2026-01-19T05:15:13.584996+00:00"
+  },
+  {
+    "id": "78fd9d2f-1ed3-46c5-bed2-650369ac2028",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "creative",
+    "properties": {
+      "confidence": 0.85,
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:13.585002+00:00",
+    "updated_at": "2026-01-19T05:15:13.585004+00:00"
+  },
+  {
+    "id": "1a211ed2-423a-48df-81e2-4619961dc6cc",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "artistic",
+    "properties": {
+      "confidence": 0.85,
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:13.585010+00:00",
+    "updated_at": "2026-01-19T05:15:13.585012+00:00"
+  },
+  {
+    "id": "c64a4691-dbd1-4af6-b3b4-c9216d68830a",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "technical_precision",
+    "properties": {
+      "intensity": "high",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:13.585018+00:00",
+    "updated_at": "2026-01-19T05:15:13.585019+00:00"
+  },
+  {
+    "id": "a5bf58fc-7765-482b-ac2a-a42a7510d155",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "demographic",
+    "label": "location:KOZHIKODE",
+    "properties": {
+      "category": "location",
+      "value": "KOZHIKODE"
+    },
+    "created_at": "2026-01-19T05:15:13.871624+00:00",
+    "updated_at": "2026-01-19T05:15:13.871640+00:00"
+  },
+  {
+    "id": "89b29f47-f5c0-4e05-9828-e4a3b3296196",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "creative design",
+    "properties": {
+      "intensity": "high",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:15.420124+00:00",
+    "updated_at": "2026-01-19T05:15:15.420127+00:00"
+  },
+  {
+    "id": "1507c540-374c-44e9-80fe-6682d5450422",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "experience",
+    "label": "creative designer",
+    "properties": {
+      "industry": "design",
+      "focus": "creative design",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:15.420146+00:00",
+    "updated_at": "2026-01-19T05:15:15.420148+00:00"
+  },
+  {
+    "id": "870cbe00-fd17-49b3-ba58-03d36ca1b8b8",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "precision",
+    "properties": {
+      "confidence": 0.85,
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:15.420156+00:00",
+    "updated_at": "2026-01-19T05:15:15.420158+00:00"
+  },
+  {
+    "id": "f9603614-58e3-4023-a8e8-0bc613f1e101",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "creativity",
+    "properties": {
+      "importance": "high",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T05:15:15.420175+00:00",
+    "updated_at": "2026-01-19T05:15:15.420177+00:00"
+  },
+  {
+    "id": "2465b851-d044-458e-b20b-6968b48c2ebc",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "artistic expression",
+    "properties": {
+      "importance": "high",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T15:55:24.623339+00:00",
+    "updated_at": "2026-01-19T15:55:24.623342+00:00"
+  },
+  {
+    "id": "4455d2db-5ade-4517-95e9-d00e030eb7ba",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "precision",
+    "properties": {
+      "importance": "high",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T15:55:26.986092+00:00",
+    "updated_at": "2026-01-19T15:55:26.986094+00:00"
+  },
+  {
+    "id": "907ec65b-e714-444e-8f44-6d065f8cc4dc",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "artistic_expression",
+    "properties": {
+      "importance": "high",
+      "source": "bio"
+    },
+    "created_at": "2026-01-19T15:55:26.986101+00:00",
+    "updated_at": "2026-01-19T15:55:26.986102+00:00"
+  },
+  {
+    "id": "b367ed45-5ff2-49ec-974c-06650b4c49a0",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "experience",
+    "label": "trip to sikkim",
+    "properties": {
+      "date": "08.11.2025",
+      "location": "Sikkim",
+      "source": "post"
+    },
+    "created_at": "2026-01-19T16:00:42.474142+00:00",
+    "updated_at": "2026-01-19T16:00:42.474158+00:00"
+  },
+  {
+    "id": "708c5eff-70d9-4b5d-9c17-cd7e324becff",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "travel",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-19T16:00:42.474173+00:00",
+    "updated_at": "2026-01-19T16:00:42.474176+00:00"
+  },
+  {
+    "id": "338c35c2-37f7-4111-99ba-60d9ce8eb17e",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "adventurous",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-19T16:00:42.474198+00:00",
+    "updated_at": "2026-01-19T16:00:42.474201+00:00"
+  },
+  {
+    "id": "e21bcdaf-09d0-4abb-bf18-a8b9aa742a2e",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "relationships with loved ones",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-19T16:00:42.474209+00:00",
+    "updated_at": "2026-01-19T16:00:42.474212+00:00"
+  },
+  {
+    "id": "0e368b5c-dbfa-4b39-afe4-cd7dba5c7f89",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "preference",
+    "label": "mountain and nature travel",
+    "properties": {
+      "focus": "outdoors",
+      "source": "post"
+    },
+    "created_at": "2026-01-19T16:00:42.474225+00:00",
+    "updated_at": "2026-01-19T16:00:42.474228+00:00"
+  },
+  {
+    "id": "79d1fd00-ffe2-40f2-a009-a9cfa2ea4fee",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "live_life_to_the_fullest",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T11:34:35.441626+00:00",
+    "updated_at": "2026-01-30T11:34:35.441664+00:00"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_rafseena",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "rafseena",
+    "display_label": "Rafseena",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "User",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 2,
+    "created_at": "2026-02-02 04:13:44.428000",
+    "updated_at": "2026-02-03 08:28:15.646000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_maya",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "maya",
+    "display_label": "Maya",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "Avatar",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:28:15.646000",
+    "updated_at": "2026-02-03 08:28:15.646000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_rafi",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "rafi",
+    "display_label": "Rafi",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "User's preferred name",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:28:15.646000",
+    "updated_at": "2026-02-03 08:28:15.646000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_chechi",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "chechi",
+    "display_label": "Chechi",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "Elder sister in Malayalam",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:28:15.646000",
+    "updated_at": "2026-02-03 08:28:15.646000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_food",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "food",
+    "display_label": "Food",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:28:15.646000",
+    "updated_at": "2026-02-03 08:28:15.646000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_chapati_and_egg_curry",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "chapati and egg curry",
+    "display_label": "Chapati And Egg Curry",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:28:15.646000",
+    "updated_at": "2026-02-03 08:28:15.646000"
+  },
+  {
+    "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_user_is_in_europe.",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "preference",
+    "label": "user is in europe.",
+    "display_label": "User is in Europe.",
+    "full_text": "User is in Europe.",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-03 08:28:15.646000",
+    "updated_at": "2026-02-03 08:28:15.646000"
+  },
+  {
+    "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_chechi_helps_with_cooking",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "preference",
+    "label": "chechi helps with cooking",
+    "display_label": "Chechi helps with cooking and cleaning.",
+    "full_text": "Chechi helps with cooking and cleaning.",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-03 08:28:15.646000",
+    "updated_at": "2026-02-03 08:28:15.646000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_rafsi",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "rafsi",
+    "display_label": "Rafsi",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "user",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 2,
+    "created_at": "2026-02-03 08:33:25.715000",
+    "updated_at": "2026-02-09 03:51:49.045000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_veronica_henry",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "veronica henry",
+    "display_label": "Veronica Henry",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "author",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:33:25.715000",
+    "updated_at": "2026-02-03 08:33:25.715000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reading",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "reading",
+    "display_label": "Reading",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:33:25.715000",
+    "updated_at": "2026-02-03 08:33:25.715000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_the_secret_beach",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "the secret beach",
+    "display_label": "The Secret Beach",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:33:25.715000",
+    "updated_at": "2026-02-03 08:33:25.715000"
+  },
+  {
+    "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_user_knows_malayalam",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "preference",
+    "label": "user knows malayalam",
+    "display_label": "User knows Malayalam",
+    "full_text": "User knows Malayalam",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-03 08:33:25.715000",
+    "updated_at": "2026-02-03 08:33:25.715000"
+  },
+  {
+    "id": "preference_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_user_is_reading_a",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "preference",
+    "label": "user is reading a",
+    "display_label": "User is reading a book",
+    "full_text": "User is reading a book",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-03 08:33:25.715000",
+    "updated_at": "2026-02-03 08:33:25.715000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_meera",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "meera",
+    "display_label": "Meera",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "Character in story",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:35:42.624000",
+    "updated_at": "2026-02-03 08:35:42.624000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_speaking_in_malayalam",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "speaking in malayalam",
+    "display_label": "Speaking In Malayalam",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:35:42.624000",
+    "updated_at": "2026-02-03 08:35:42.624000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_calming_activities",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "calming activities",
+    "display_label": "Calming Activities",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:35:42.624000",
+    "updated_at": "2026-02-03 08:35:42.624000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_storytelling",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "storytelling",
+    "display_label": "Storytelling",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:35:42.624000",
+    "updated_at": "2026-02-03 08:35:42.624000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_malayalam_stories",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "malayalam stories",
+    "display_label": "Malayalam Stories",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:50:54.254000",
+    "updated_at": "2026-02-03 08:50:54.254000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_rafsina",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "rafsina",
+    "display_label": "Rafsina",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "User",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:55:07.533000",
+    "updated_at": "2026-02-03 08:55:07.533000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_harry_potter",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "harry potter",
+    "display_label": "Harry Potter",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:55:07.533000",
+    "updated_at": "2026-02-03 08:55:07.533000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_stories",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "stories",
+    "display_label": "Stories",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:55:07.533000",
+    "updated_at": "2026-02-03 08:55:07.533000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_malayalam",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "malayalam",
+    "display_label": "Malayalam",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:55:07.533000",
+    "updated_at": "2026-02-03 08:55:07.533000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_malayalam_language",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "malayalam language",
+    "display_label": "Malayalam Language",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-03 08:55:53.357000",
+    "updated_at": "2026-02-04 07:11:32.782000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_biryani",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "biryani",
+    "display_label": "Biryani",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:55:53.357000",
+    "updated_at": "2026-02-03 08:55:53.357000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_mommy",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "mommy",
+    "display_label": "Mommy",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "family",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:57:31.545000",
+    "updated_at": "2026-02-03 08:57:31.545000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_harry_potter_series",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "harry potter series",
+    "display_label": "Harry Potter Series",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:57:31.545000",
+    "updated_at": "2026-02-03 08:57:31.545000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_a_night_on_the_orient_express",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "a night on the orient express",
+    "display_label": "A Night On The Orient Express",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 08:57:31.545000",
+    "updated_at": "2026-02-03 08:57:31.545000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_music",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "music",
+    "display_label": "Music",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-03 09:05:04.648000",
+    "updated_at": "2026-02-03 09:33:11.279000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_uplifting_conversations",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "uplifting conversations",
+    "display_label": "Uplifting Conversations",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 09:05:04.648000",
+    "updated_at": "2026-02-03 09:05:04.648000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_light_conversations",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "light conversations",
+    "display_label": "Light Conversations",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 09:05:04.648000",
+    "updated_at": "2026-02-03 09:05:04.648000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_singing",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "singing",
+    "display_label": "Singing",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-03 09:31:25.200000",
+    "updated_at": "2026-02-03 09:33:11.279000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_hindi_songs",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "hindi songs",
+    "display_label": "Hindi Songs",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-03 09:31:25.200000",
+    "updated_at": "2026-02-03 09:31:25.200000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_peacefulness",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "peacefulness",
+    "display_label": "Peacefulness",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-04 07:11:32.782000",
+    "updated_at": "2026-02-04 07:11:32.782000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_reserved",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "reserved",
+    "display_label": "Reserved",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User responds with short, minimal phrases like 'See ya' and 'Bueno.'",
+      "source": "conversation"
+    },
+    "mention_count": 9,
+    "created_at": "2026-02-07 15:23:56.688000",
+    "updated_at": "2026-02-07 15:26:04.868000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_indirect",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "indirect",
+    "display_label": "Indirect",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User does not elaborate on feelings or thoughts when prompted.",
+      "source": "conversation"
+    },
+    "mention_count": 5,
+    "created_at": "2026-02-07 15:23:56.688000",
+    "updated_at": "2026-02-07 15:25:44.479000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_simplicity",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "simplicity",
+    "display_label": "Simplicity",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User's responses are straightforward and lack complexity.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:23:56.688000",
+    "updated_at": "2026-02-07 15:23:56.688000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_warm",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "warm",
+    "display_label": "Warm",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "I am feeling good.",
+      "source": "conversation"
+    },
+    "mention_count": 4,
+    "created_at": "2026-02-07 15:24:06.212000",
+    "updated_at": "2026-02-07 15:25:54.995000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_direct",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "direct",
+    "display_label": "Direct",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "Maybe a guy.",
+      "source": "conversation"
+    },
+    "mention_count": 5,
+    "created_at": "2026-02-07 15:24:06.212000",
+    "updated_at": "2026-02-07 15:25:23.486000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_appreciative",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "appreciative",
+    "display_label": "Appreciative",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "Good food makes me happy all the time.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:06.212000",
+    "updated_at": "2026-02-07 15:24:06.212000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_informal",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "informal",
+    "display_label": "Informal",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "Can you call me Rafi?",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:06.212000",
+    "updated_at": "2026-02-07 15:24:06.212000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_family_and_community",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "family and community",
+    "display_label": "Family And Community",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "We call her Chechi.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:06.212000",
+    "updated_at": "2026-02-07 15:24:06.212000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_homemade_food",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "homemade food",
+    "display_label": "Homemade Food",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "There's nothing quite like a home-cooked meal, especially when it's prepared with love.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:06.212000",
+    "updated_at": "2026-02-07 15:24:06.212000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_joy_in_simple_pleasures",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "joy in simple pleasures",
+    "display_label": "Joy In Simple Pleasures",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "I just had good food.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:06.212000",
+    "updated_at": "2026-02-07 15:24:06.212000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_curious",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "curious",
+    "display_label": "Curious",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User asks about the AI's origin and language capabilities.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:19.313000",
+    "updated_at": "2026-02-07 15:24:19.313000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_engaged",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "engaged",
+    "display_label": "Engaged",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User expresses interest in the book they are reading, saying 'Yeah, it is actually quite interesting.'",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:19.313000",
+    "updated_at": "2026-02-07 15:24:19.313000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_connection",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "connection",
+    "display_label": "Connection",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User corrects the AI on their name, indicating a desire for accurate recognition.",
+      "source": "conversation"
+    },
+    "mention_count": 3,
+    "created_at": "2026-02-07 15:24:19.313000",
+    "updated_at": "2026-02-07 15:25:54.995000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_knowledge",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "knowledge",
+    "display_label": "Knowledge",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User shows interest in discussing books and asks about 'The Secret Beach'.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:19.313000",
+    "updated_at": "2026-02-07 15:24:19.313000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_intuitive",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "intuitive",
+    "display_label": "Intuitive",
+    "strength": 0.6,
+    "properties": {
+      "evidence": "User expresses a desire to communicate in their native language and engages in storytelling.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:30.708000",
+    "updated_at": "2026-02-07 15:24:30.708000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_cultural_connection",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "cultural connection",
+    "display_label": "Cultural Connection",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User prefers to communicate in Malayalam, indicating a value for their native language and culture.",
+      "source": "conversation"
+    },
+    "mention_count": 3,
+    "created_at": "2026-02-07 15:24:30.708000",
+    "updated_at": "2026-02-07 15:26:04.868000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_calmness",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "calmness",
+    "display_label": "Calmness",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User shows interest in discussing soothing topics and reflects a desire for a peaceful interaction.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:30.708000",
+    "updated_at": "2026-02-07 15:24:30.708000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_uncertain",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "uncertain",
+    "display_label": "Uncertain",
+    "strength": 0.6,
+    "properties": {
+      "evidence": "User's responses indicate a lack of confidence in their communication, as seen in 'It is not good.' which lacks elaboration.",
+      "source": "conversation"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-07 15:24:41.854000",
+    "updated_at": "2026-02-07 15:25:34.783000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_curiosity_about_storytelling",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "curiosity about storytelling",
+    "display_label": "Curiosity About Storytelling",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User engages with the storytelling aspect and asks for a Malayalam story.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:41.854000",
+    "updated_at": "2026-02-07 15:24:41.854000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_confident",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "confident",
+    "display_label": "Confident",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User asks, 'Why you can't read a book?' showing assertiveness in seeking clarification",
+      "source": "conversation"
+    },
+    "mention_count": 4,
+    "created_at": "2026-02-07 15:24:53.039000",
+    "updated_at": "2026-02-07 15:25:54.995000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_playful",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "playful",
+    "display_label": "Playful",
+    "strength": 0.6,
+    "properties": {
+      "evidence": "User uses humor with 'et cetera, et cetera, et cetera'",
+      "source": "conversation"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-07 15:24:53.039000",
+    "updated_at": "2026-02-07 15:25:44.479000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_storytelling",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "storytelling",
+    "display_label": "Storytelling",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User expresses a desire to tell stories and engage with narratives",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:53.039000",
+    "updated_at": "2026-02-07 15:24:53.039000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_family_connection",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "family connection",
+    "display_label": "Family Connection",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User mentions their sister and the bond they share",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:53.039000",
+    "updated_at": "2026-02-07 15:24:53.039000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_curiosity",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "curiosity",
+    "display_label": "Curiosity",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User questions the limitations of the AI, showing a desire to understand",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:24:53.039000",
+    "updated_at": "2026-02-07 15:24:53.039000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_family_and_food",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "family and food",
+    "display_label": "Family And Food",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User discusses food and family interactions, indicating a priority on shared meals and connections",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:25:05.972000",
+    "updated_at": "2026-02-07 15:25:05.972000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_appreciation_for_comfort_food",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "appreciation for comfort food",
+    "display_label": "Appreciation For Comfort Food",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User mentions chapati and egg curry, which are comforting meals",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:25:13.870000",
+    "updated_at": "2026-02-07 15:25:13.870000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_appreciation_for_storytelling",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "appreciation for storytelling",
+    "display_label": "Appreciation For Storytelling",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User is seeking a specific book, indicating an interest in narratives.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:25:23.486000",
+    "updated_at": "2026-02-07 15:25:23.486000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_connection_to_family",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "connection to family",
+    "display_label": "Connection To Family",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User mentions 'Mommy,' suggesting a personal or emotional connection.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:25:23.486000",
+    "updated_at": "2026-02-07 15:25:23.486000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_cultural_appreciation",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "cultural appreciation",
+    "display_label": "Cultural Appreciation",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User shows interest in Hindi songs",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:25:44.479000",
+    "updated_at": "2026-02-07 15:25:44.479000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_expressive",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "expressive",
+    "display_label": "Expressive",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User sings a song and shares emotional content",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:25:54.995000",
+    "updated_at": "2026-02-07 15:25:54.995000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_appreciation_for_art",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "appreciation for art",
+    "display_label": "Appreciation For Art",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User shares a song and acknowledges the beauty of voice",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:25:54.995000",
+    "updated_at": "2026-02-07 15:25:54.995000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_indirect_communication",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "indirect communication",
+    "display_label": "Indirect Communication",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User responds in a different language and seems to divert from the initial question.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:04.868000",
+    "updated_at": "2026-02-07 15:26:04.868000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_friends/family",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "(friends/family)",
+    "display_label": "(friends/family)",
+    "strength": 0.8,
+    "properties": {
+      "relationship": "friends/family",
+      "source": "post_analysis",
+      "evidence": "The mention of sharing the experience with people they love most suggests close relationships."
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 16:37:25.471000",
+    "updated_at": "2026-02-07 16:37:25.471000"
+  },
+  {
+    "id": "connection_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_r",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "connection",
+    "label": "r",
+    "display_label": "R",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "user",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-09 03:51:49.045000",
+    "updated_at": "2026-02-09 03:51:49.045000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_work",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "work",
+    "display_label": "Work",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 03:51:49.045000",
+    "updated_at": "2026-02-09 03:51:49.045000"
+  },
+  {
+    "id": "interest_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_taking_moments_for_oneself",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "interest",
+    "label": "taking moments for oneself",
+    "display_label": "Taking Moments For Oneself",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 03:51:49.045000",
+    "updated_at": "2026-02-09 03:51:49.045000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_directness",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "directness",
+    "display_label": "Directness",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "I have work to do.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 03:51:51.959000",
+    "updated_at": "2026-02-09 03:51:51.959000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_warmth",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "warmth",
+    "display_label": "Warmth",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "Yeah, you know it.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 03:51:51.959000",
+    "updated_at": "2026-02-09 03:51:51.959000"
+  },
+  {
+    "id": "trait_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_playfulness",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "trait",
+    "label": "playfulness",
+    "display_label": "Playfulness",
+    "strength": 0.6,
+    "properties": {
+      "evidence": "Wow.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 03:51:51.959000",
+    "updated_at": "2026-02-09 03:51:51.959000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_work_ethic",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "work ethic",
+    "display_label": "Work Ethic",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "I have work to do.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 03:51:51.959000",
+    "updated_at": "2026-02-09 03:51:51.959000"
+  },
+  {
+    "id": "value_5e03b1ac-81c6-48e9-8740-d4d93c1629d3_personal_connection",
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "node_type": "value",
+    "label": "personal connection",
+    "display_label": "Personal Connection",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "Now onwards you call me Rafsi only, okay?",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 03:51:51.959000",
+    "updated_at": "2026-02-09 03:51:51.959000"
+  }
+]

@@ -1,0 +1,3343 @@
+{
+  "nodes": [
+    {
+      "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_rafseena_sedeed",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "connection",
+      "label": "rafseena sedeed",
+      "display_label": "Rafseena Sedeed",
+      "strength": 0.9,
+      "mention_count": 5,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 5,
+        "evidence_sources": [
+          "P6:congrats_@rafseena",
+          "P14:commented_on_post",
+          "T2:present_during_voice_call",
+          "WEB:co_principal_architect_vili_ve",
+          "COMM:Rafseena_Sedeed_commented"
+        ],
+        "relationship": "colleague_and_co_architect",
+        "relationship_type": "colleague_of",
+        "details": "Co-principal architect at Vili & V\u00e9. Tagged in posts. Was present during voice call (system misheard as 'Rabsina'). Did custom paintings for Elance Learning project."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_abdul_jaleel",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "connection",
+      "label": "abdul jaleel",
+      "display_label": "Abdul Jaleel",
+      "strength": 0.85,
+      "mention_count": 3,
+      "properties": {
+        "source": "post",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "P11:Jalee_went_to_meeting",
+          "WEB:co_principal_architect_vili_ve",
+          "WEB:archDaily_lead_architect"
+        ],
+        "relationship": "colleague_and_co_architect",
+        "relationship_type": "colleague_of",
+        "details": "Co-principal architect at Vili & V\u00e9. Goes by 'Jalee'. Went to CakeStudio meeting. Did custom sculpture for Elance Learning project."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_badu",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "connection",
+      "label": "badu",
+      "display_label": "Badu",
+      "strength": 0.65,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.65,
+        "confidence": 0.9,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P11:went_to_meeting_together"
+        ],
+        "relationship": "colleague",
+        "details": "Colleague at Vili & V\u00e9. Went to CakeStudio meeting with Sreejith and Jalee."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_narmada",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "connection",
+      "label": "narmada",
+      "display_label": "Narmada",
+      "strength": 0.8,
+      "mention_count": 2,
+      "properties": {
+        "source": "user_confirmed",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P10:Missing_this_from_mom",
+          "USER_CONFIRMED:name_is_Narmada"
+        ],
+        "relationship": "mother",
+        "relationship_type": "son_of",
+        "details": "Mother. Name is Narmada. Sreejith posted 'Missing this from mom :(' with a photo and emotional attachment."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_taran",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "connection",
+      "label": "taran",
+      "display_label": "Taran",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "user_confirmed",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "USER_CONFIRMED:son_name_is_Taran"
+        ],
+        "relationship": "son",
+        "relationship_type": "father_of",
+        "details": "Son. Name confirmed directly by user."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_noufal",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "connection",
+      "label": "noufal",
+      "display_label": "Mr. Noufal",
+      "strength": 0.6,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.6,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P11:meeting_with_Mr_Noufal_cakestudio"
+        ],
+        "relationship": "client",
+        "details": "Client. Owner of CakeStudio brand. Wants his own cabin in a private space."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_jishnu",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "connection",
+      "label": "jishnu",
+      "display_label": "Jishnu",
+      "strength": 0.7,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P6:Jishnu_CEO_ELANCE_learning",
+          "WEB:Elance_Learning_CEO"
+        ],
+        "relationship": "client",
+        "details": "CEO of Elance Learning. Client of Vili & V\u00e9. Sreejith congratulated Rafseena on his headquarters design."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_p_sulaiman",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "connection",
+      "label": "p. sulaiman",
+      "display_label": "P. Sulaiman",
+      "strength": 0.55,
+      "mention_count": 1,
+      "properties": {
+        "source": "web",
+        "strength": 0.55,
+        "confidence": 0.9,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "WEB:HiLite_Group_Chairman_testimonial"
+        ],
+        "relationship": "client",
+        "details": "Chairman of HiLite Group of Companies. 8-year client association with Vili & V\u00e9. Praised the team as 'young, modern, vibrant and refreshing'."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_jaijith_s",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "connection",
+      "label": "jaijith s",
+      "display_label": "Jaijith S",
+      "strength": 0.5,
+      "mention_count": 3,
+      "properties": {
+        "source": "post",
+        "strength": 0.5,
+        "confidence": 0.9,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "COMM:commented_on_mom_post",
+          "COMM:commented_on_epstein_post",
+          "COMM:liked_multiple_posts"
+        ],
+        "relationship": "friend",
+        "details": "Friend on the platform. Commented on Sreejith's posts and liked them."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "name:sreejith sreekantan",
+      "display_label": "Sreejith Sreekantan",
+      "strength": 1.0,
+      "mention_count": 4,
+      "properties": {
+        "source": "profile",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "PROF:name",
+          "T1:avatar_says_Sreejith",
+          "T2:avatar_says_Sreejith",
+          "WEB:principal_architect_name"
+        ],
+        "category": "name",
+        "value": "Sreejith Sreekantan"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_avatar_blikker",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "avatar:_blikker",
+      "display_label": "_bLikker",
+      "strength": 0.9,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:avatar_name"
+        ],
+        "category": "avatar",
+        "value": "_bLikker"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_email_ar_sreejithsreekantan_gmail_com",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "email:ar.sreejithsreekantan@gmail.com",
+      "display_label": "ar.sreejithsreekantan@gmail.com",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:email"
+        ],
+        "category": "email",
+        "value": "ar.sreejithsreekantan@gmail.com"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_age_39",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "age:39",
+      "display_label": "Age 39",
+      "strength": 0.8,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:age"
+        ],
+        "category": "age",
+        "value": "39"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_gender_male",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "gender:male",
+      "display_label": "Male",
+      "strength": 0.8,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:gender"
+        ],
+        "category": "gender",
+        "value": "Male"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_location_kozhikode_kerala",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "location:kozhikode, kerala",
+      "display_label": "Kozhikode, Kerala",
+      "strength": 1.0,
+      "mention_count": 4,
+      "properties": {
+        "source": "profile",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "PROF:location",
+          "P13:HiLite_Kozhikode",
+          "WEB:studio_in_Kozhikode",
+          "T2:Kozhikode_slang_discussion"
+        ],
+        "category": "location",
+        "value": "Kozhikode, Kerala"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_language_malayalam",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "language:malayalam",
+      "display_label": "Malayalam",
+      "strength": 0.95,
+      "mention_count": 4,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "T1:spoke_Malayalam",
+          "T2:spoke_Malayalam_and_slang",
+          "PROF:implied_Kerala",
+          "P6:heritage_design_context"
+        ],
+        "category": "language",
+        "value": "Malayalam"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_bio_life_is_energy_passing_through_time",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "bio:life_is_energy_passing_through_time",
+      "display_label": "Life is just a passing of energy through time to find meaning of its existence....",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "bio",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:bio"
+        ],
+        "category": "bio",
+        "value": "Life is just a passing of energy through time to find meaning of its existence...."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_job_architect",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "job:architect",
+      "display_label": "Architect",
+      "strength": 1.0,
+      "mention_count": 5,
+      "properties": {
+        "source": "web",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 5,
+        "evidence_sources": [
+          "PROF:email_prefix_ar",
+          "WEB:principal_architect",
+          "P13:rendering_HiLite",
+          "P1:designed_apartment",
+          "P6:heritage_design"
+        ],
+        "category": "job_title",
+        "value": "Architect / Founder, Vili & V\u00e9 Architecture Studio"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_archetype_thoughtful_contributor",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "demographic",
+      "label": "archetype:thoughtful_contributor",
+      "display_label": "Thoughtful Contributor",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 0.7,
+        "confidence": 0.9,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:archetype"
+        ],
+        "category": "archetype",
+        "value": "thoughtful_contributor"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_founded_vili_v_architecture_studio",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "experience",
+      "label": "founded vili & v\u00e9 architecture studio",
+      "display_label": "Founded Vili & V\u00e9 Architecture Studio",
+      "strength": 1.0,
+      "mention_count": 3,
+      "properties": {
+        "source": "web",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "WEB:founded_under_Studio28_rebranded",
+          "P14:Vili_Ve_Architecture_studio",
+          "WEB:viliandve_about_page"
+        ],
+        "details": "Founded architecture studio, originally as Studio28, later rebranded to Vili & V\u00e9 Architecture Studio in Kozhikode."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_hilite_group_office_design",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "experience",
+      "label": "hilite group office design",
+      "display_label": "HiLite Group Office Design",
+      "strength": 0.9,
+      "mention_count": 3,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "P13:RENDERING_HiLite_LearnPark",
+          "P7:Colors_HiLite_image",
+          "WEB:8_year_HiLite_association"
+        ],
+        "details": "Designed new office space for HiLite Group in their LearnPark building, Kozhikode. Tired but happy with results."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_elance_learning_headquarters_design",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "experience",
+      "label": "elance learning headquarters design",
+      "display_label": "Elance Learning Headquarters Design",
+      "strength": 0.95,
+      "mention_count": 4,
+      "properties": {
+        "source": "web",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "P6:Jishnu_CEO_ELANCE_congratulated_Rafseena",
+          "WEB:ArchDaily_published",
+          "WEB:Archello_featured",
+          "WEB:3320sqft_completed_2024"
+        ],
+        "details": "Designed 3320sqft headquarters for Elance Learning in Kozhikode. Featured on ArchDaily, Archello, and The Architects Diary. Completed 2024."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_coimbatore_apartment_design",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "experience",
+      "label": "coimbatore apartment design",
+      "display_label": "Coimbatore Apartment Design",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P1:4_crores_3500sqft_all_balconies"
+        ],
+        "details": "Designed a 3500sqft apartment in Coimbatore worth 4 crores. All-around balconies, direct lift access, single floor. Worked sleepless for a week."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_cakestudio_cabin_project",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "experience",
+      "label": "cakestudio cabin project",
+      "display_label": "CakeStudio Cabin Project",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P11:meeting_Mr_Noufal_cakestudio"
+        ],
+        "details": "Project for Mr Noufal of CakeStudio brand. Private cabin design. Went to meeting with Jalee and Badu."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_tropical_theme_house_design",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "experience",
+      "label": "tropical theme house design",
+      "display_label": "Tropical Theme House (Own Residence)",
+      "strength": 0.85,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "T2:2800sqft_tropical_theme",
+          "T2:person_says_same_house_they_live_in"
+        ],
+        "details": "Designed a 2800sqft tropical theme house. This is his own residence."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_joined_2n1_platform",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "experience",
+      "label": "joined 2n1 platform",
+      "display_label": "Joined 2n1 Platform",
+      "strength": 0.6,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.6,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P15:Joined_Yeay"
+        ],
+        "details": "Joined the 2n1 social platform on Jan 19, 2026."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_featured_on_archdaily",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "experience",
+      "label": "featured on archdaily",
+      "display_label": "Featured on ArchDaily",
+      "strength": 0.8,
+      "mention_count": 1,
+      "properties": {
+        "source": "web",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "WEB:ArchDaily_Elance_Learning_published_May_2024"
+        ],
+        "details": "Elance Learning HQ project published on ArchDaily, May 2024."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_consulting_across_indian_states",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "experience",
+      "label": "consulting across indian states",
+      "display_label": "Consulting Across Indian States",
+      "strength": 0.75,
+      "mention_count": 1,
+      "properties": {
+        "source": "web",
+        "strength": 0.75,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "WEB:Karnataka_Telangana_Chennai_Kerala"
+        ],
+        "details": "Works as consultant for firms and builders across Karnataka, Telangana, Chennai, and Kerala."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "architecture",
+      "display_label": "Architecture",
+      "strength": 1.0,
+      "mention_count": 7,
+      "properties": {
+        "source": "explicit",
+        "strength": 1.0,
+        "confidence": 1.0,
+        "evidence_count": 7,
+        "evidence_sources": [
+          "PROF:explicit_interest",
+          "P13:rendering_HiLite",
+          "P1:apartment_design",
+          "P6:heritage_design",
+          "P14:Vili_Ve_studio",
+          "WEB:principal_architect",
+          "T2:facade_for_house"
+        ],
+        "category": "core_professional"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architectural_rendering",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "architectural rendering",
+      "display_label": "Architectural Rendering",
+      "strength": 0.95,
+      "mention_count": 3,
+      "properties": {
+        "source": "post",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "P13:RENDERING_RENDERING",
+          "P7:Colors_rendering_image",
+          "P1:apartment_rendering"
+        ],
+        "category": "professional_skill",
+        "details": "Key skill. Excited about rendering results - 'RENDERING RENDERING!' Multiple projects shown."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "heritage-inspired design",
+      "display_label": "Heritage-Inspired Design",
+      "strength": 0.9,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P6:rooted_to_heritage_nadumuttams_ventilation_light",
+          "WEB:studio_philosophy_art_soul"
+        ],
+        "category": "professional_philosophy",
+        "details": "Designs rooted in heritage, adapted to modern times. Nadumuttams, flowing gardens, open groves of green."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_interior_design",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "interior design",
+      "display_label": "Interior Design",
+      "strength": 0.85,
+      "mention_count": 3,
+      "properties": {
+        "source": "web",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "WEB:specialization_interior_design",
+          "P13:HiLite_office_interior",
+          "WEB:Elance_office_interior"
+        ],
+        "category": "professional"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_landscape_design",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "landscape design",
+      "display_label": "Landscape Design",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "web",
+        "strength": 0.7,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "WEB:specialization_landscape_design"
+        ],
+        "category": "professional"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_tropical_design_themes",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "tropical design themes",
+      "display_label": "Tropical Design Themes",
+      "strength": 0.8,
+      "mention_count": 2,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "T2:tropical_theme_house",
+          "P6:flowing_gardens"
+        ],
+        "category": "design_style",
+        "details": "Tropical architectural themes with ventilation, light, and flowing gardens."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_nadumuttams",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "nadumuttams",
+      "display_label": "Nadumuttams",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P6:nadumuttams_not_just_centre_anymore"
+        ],
+        "category": "traditional_architecture",
+        "details": "Kerala traditional courtyards. Reimagined: 'not so in the naduv or centre anymore, but varied and spread along interior spaces of value'."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_quantum_physics",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "quantum physics",
+      "display_label": "Quantum Physics",
+      "strength": 0.8,
+      "mention_count": 1,
+      "properties": {
+        "source": "explicit",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:explicit_interest"
+        ],
+        "category": "intellectual"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_spiritual_unknowns",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "spiritual unknowns",
+      "display_label": "Spiritual Unknowns",
+      "strength": 0.75,
+      "mention_count": 1,
+      "properties": {
+        "source": "explicit",
+        "strength": 0.75,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:explicit_interest"
+        ],
+        "category": "philosophical_spiritual"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_fitness",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "fitness",
+      "display_label": "Fitness",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "explicit",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:explicit_interest"
+        ],
+        "category": "lifestyle"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_art",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "art",
+      "display_label": "Art",
+      "strength": 0.85,
+      "mention_count": 3,
+      "properties": {
+        "source": "explicit",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "PROF:explicit_interest",
+          "PROF:avatar_interest",
+          "WEB:architecture_is_an_art"
+        ],
+        "category": "creative"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_food",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "food",
+      "display_label": "Food",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "explicit",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:explicit_interest"
+        ],
+        "category": "lifestyle"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_travel",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "travel",
+      "display_label": "Travel",
+      "strength": 0.75,
+      "mention_count": 2,
+      "properties": {
+        "source": "explicit",
+        "strength": 0.75,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "PROF:explicit_interest",
+          "P11:long_drive_to_Goa"
+        ],
+        "category": "lifestyle"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_photography",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "photography",
+      "display_label": "Photography",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "explicit",
+        "strength": 0.7,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:explicit_interest"
+        ],
+        "category": "creative"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_badminton",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "badminton",
+      "display_label": "Badminton",
+      "strength": 0.65,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.65,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P11:skipped_playing_badminton"
+        ],
+        "category": "sport",
+        "details": "Plays badminton regularly but skipped since turn of year due to work pressure."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_fifa",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "fifa",
+      "display_label": "FIFA (Video Game)",
+      "strength": 0.6,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.6,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P11:play_fifa_for_break"
+        ],
+        "category": "gaming",
+        "details": "Mentioned as a preferred relaxation activity."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_counter_strike",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "counter-strike",
+      "display_label": "Counter-Strike",
+      "strength": 0.6,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.6,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P11:play_counterstrike_for_break"
+        ],
+        "category": "gaming",
+        "details": "Mentioned alongside FIFA as relaxation gaming."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_carroms",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "carroms",
+      "display_label": "Carroms",
+      "strength": 0.55,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.55,
+        "confidence": 0.9,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P9:played_carroms_at_office"
+        ],
+        "category": "indoor_games"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_cards",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "cards",
+      "display_label": "Cards",
+      "strength": 0.5,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.5,
+        "confidence": 0.9,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P9:played_cards_at_office"
+        ],
+        "category": "indoor_games"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_goa_road_trips",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "goa road trips",
+      "display_label": "Goa Road Trips",
+      "strength": 0.7,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.7,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P11:long_drive_down_to_sunsets_of_Goa"
+        ],
+        "category": "travel",
+        "details": "Yearns for road trips to Goa for sunsets, calm and quiet with friends."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_norse_mythology",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "norse mythology",
+      "display_label": "Norse Mythology",
+      "strength": 0.75,
+      "mention_count": 2,
+      "properties": {
+        "source": "web",
+        "strength": 0.75,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P14:Vili_Ve_studio_name",
+          "WEB:Vili_Ve_Norse_brothers_of_Odin"
+        ],
+        "category": "mythology_philosophy",
+        "details": "Studio named after Vili & V\u00e9 from Norse mythology - brothers of Odin who helped create the world. Vili = Will/Spiritual Force, V\u00e9 = Sacred/Holy."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_current_events",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "current events",
+      "display_label": "Current Events",
+      "strength": 0.55,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.55,
+        "confidence": 0.9,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P8:Epstein_files_reaction",
+          "P9:crypto_crash_commentary"
+        ],
+        "category": "awareness",
+        "details": "Follows current events. Reacted strongly to Epstein files. Commented on crypto crash."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_cryptocurrency_markets",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "cryptocurrency markets",
+      "display_label": "Cryptocurrency Markets",
+      "strength": 0.5,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.5,
+        "confidence": 0.9,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P9:crypto_crash_economy_bleeding",
+          "COMM:Sreejith_replied_35_percent_crash_unprecedented"
+        ],
+        "category": "finance",
+        "details": "Follows crypto markets. Commented that 35% crash in a couple of days is unprecedented."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_design",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "design",
+      "display_label": "Design",
+      "strength": 0.9,
+      "mention_count": 4,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "PROF:avatar_interest",
+          "P7:Colors",
+          "P13:rendering",
+          "P1:apartment"
+        ],
+        "category": "core_creative"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_poetry",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "poetry",
+      "display_label": "Poetry",
+      "strength": 0.5,
+      "mention_count": 1,
+      "properties": {
+        "source": "profile",
+        "strength": 0.5,
+        "confidence": 0.8,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "PROF:avatar_interest_poetry"
+        ],
+        "category": "creative"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_kozhikode_malayalam_slang",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "interest",
+      "label": "kozhikode malayalam slang",
+      "display_label": "Kozhikode Malayalam Slang",
+      "strength": 0.55,
+      "mention_count": 1,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.55,
+        "confidence": 0.9,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "T2:asked_avatar_to_speak_Kozhikode_slang"
+        ],
+        "category": "cultural",
+        "details": "Tried to get avatar to speak Kozhikode Malayalam slang. Avatar recognized it as 'Kozhikodan slang'."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_hardworking",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "hardworking",
+      "display_label": "Hardworking",
+      "strength": 0.95,
+      "mention_count": 5,
+      "properties": {
+        "source": "post",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 5,
+        "evidence_sources": [
+          "P1:forgetting_sleep_for_the_last_week",
+          "P5:I_should_work_and_work",
+          "P11:work_has_kept_me_busy",
+          "P13:Tired_but_happy",
+          "STYLE:enthusiastic_75pct"
+        ],
+        "details": "Consistently works very hard. Forgets sleep for project deadlines. Keeps going despite tiredness."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_passionate_about_craft",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "passionate about craft",
+      "display_label": "Passionate About Craft",
+      "strength": 0.9,
+      "mention_count": 4,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "P13:happy_with_results",
+          "P1:so_worth_forgetting_sleep",
+          "P6:nice_to_see_designs_rooted_to_heritage",
+          "WEB:architecture_is_an_art"
+        ],
+        "details": "Deep passion for architecture. 'It was so worth forgetting sleep' for design. Genuinely excited about rendering results."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_warm",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "warm",
+      "display_label": "Warm",
+      "strength": 0.8,
+      "mention_count": 3,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "T2:Thank_you_all_very_dearly",
+          "P10:Missing_this_from_mom",
+          "P5:Missing_this_guy"
+        ],
+        "details": "Expressive warmth. 'Thank you all very dearly.' Posts emotional content about missing loved ones."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_team_oriented",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "team-oriented",
+      "display_label": "Team-Oriented",
+      "strength": 0.85,
+      "mention_count": 4,
+      "properties": {
+        "source": "post",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "P9:Let_them_come_back_refreshed",
+          "P11:Me_Jalee_and_Badu",
+          "P11:Take_the_guys_along",
+          "P9:played_carroms_cards_office_day"
+        ],
+        "details": "Takes care of team. Organized fun office days. Takes team to meetings. Wants to take them on trips."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_creative",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "creative",
+      "display_label": "Creative",
+      "strength": 0.95,
+      "mention_count": 5,
+      "properties": {
+        "source": "post",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 5,
+        "evidence_sources": [
+          "P13:rendering_HiLite",
+          "P1:apartment_design",
+          "P6:heritage_design_nadumuttams",
+          "T2:tropical_theme_house",
+          "WEB:principal_architect"
+        ],
+        "details": "Core personality trait. Expresses creativity through architecture, rendering, design philosophy."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_culturally_rooted",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "culturally rooted",
+      "display_label": "Culturally Rooted",
+      "strength": 0.85,
+      "mention_count": 4,
+      "properties": {
+        "source": "post",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "P6:designs_rooted_to_our_heritage",
+          "T1:spoke_Malayalam",
+          "T2:Kozhikode_slang",
+          "P6:nadumuttams"
+        ],
+        "details": "Deeply connected to Kerala culture. Heritage-inspired designs. Speaks Malayalam. Values nadumuttams."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_reflective",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "reflective",
+      "display_label": "Reflective",
+      "strength": 0.8,
+      "mention_count": 3,
+      "properties": {
+        "source": "bio",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "PROF:bio_passing_of_energy_meaning",
+          "STYLE:contemplative_33pct",
+          "P8:what_is_world_descending_to"
+        ],
+        "details": "Philosophical and reflective nature. Bio about life's meaning. Contemplative communication style."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_expressive",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "expressive",
+      "display_label": "Expressive",
+      "strength": 0.75,
+      "mention_count": 4,
+      "properties": {
+        "source": "post",
+        "strength": 0.75,
+        "confidence": 0.95,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "STYLE:exclamation_rate_75pct",
+          "STYLE:ellipsis_rate_33pct",
+          "P1:exclamation_marks",
+          "P8:Oh_my_dear_word"
+        ],
+        "details": "Expressive writing style. High exclamation rate (75%). Uses ellipsis (33%). Emotionally open in posts."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_resilient",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "resilient",
+      "display_label": "Resilient",
+      "strength": 0.75,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.75,
+        "confidence": 0.95,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P5:I_should_work_and_work_ignore_this_feeling",
+          "P11:yearning_for_break_but_keeps_working"
+        ],
+        "details": "Pushes through difficult feelings. 'I should work and work... ignore this feeling!' Keeps working despite yearning for breaks."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_multilingual",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "multilingual",
+      "display_label": "Multilingual",
+      "strength": 0.7,
+      "mention_count": 4,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.7,
+        "confidence": 0.9,
+        "evidence_count": 4,
+        "evidence_sources": [
+          "T1:Malayalam_speech",
+          "T2:Malayalam_and_Kozhikode_slang",
+          "T2:some_Hindi_Tamil_phrases",
+          "PROF:implied_from_Kerala"
+        ],
+        "details": "Speaks Malayalam natively. Attempted Kozhikode dialect in voice calls. Some multilingual phrases in conversation."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_grounded",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "trait",
+      "label": "grounded",
+      "display_label": "Grounded",
+      "strength": 0.8,
+      "mention_count": 3,
+      "properties": {
+        "source": "post",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "P6:as_grounded_as_he_is_about_Jishnu",
+          "PROF:bio_meaning_of_existence",
+          "P6:designs_rooted_to_heritage"
+        ],
+        "details": "Grounded person. Values heritage and rootedness. Bio reflects deep philosophical grounding."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_and_tradition",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "value",
+      "label": "heritage and tradition",
+      "display_label": "Heritage & Tradition",
+      "strength": 0.95,
+      "mention_count": 3,
+      "properties": {
+        "source": "post",
+        "strength": 0.95,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "P6:rooted_to_our_heritage",
+          "P6:nadumuttams_flowing_gardens",
+          "WEB:studio_philosophy"
+        ],
+        "details": "Core design value. Believes in adapting heritage to modern times while preserving the soul."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_meaning_seeking",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "value",
+      "label": "meaning-seeking",
+      "display_label": "Meaning-Seeking",
+      "strength": 0.85,
+      "mention_count": 2,
+      "properties": {
+        "source": "bio",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "PROF:bio_passing_of_energy_to_find_meaning",
+          "P6:design_as_grounded_expression"
+        ],
+        "details": "Life philosophy. 'Life is just a passing of energy through time to find meaning of its existence.'"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_authenticity",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "value",
+      "label": "authenticity",
+      "display_label": "Authenticity",
+      "strength": 0.85,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P6:designs_rooted_to_heritage",
+          "WEB:architecture_is_art_masterpiece_has_soul"
+        ],
+        "details": "Values authenticity in design and life. 'Every masterpiece should have a soul of its own.'"
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_caring_for_team",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "value",
+      "label": "caring for team",
+      "display_label": "Caring for Team",
+      "strength": 0.8,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P9:Let_them_come_back_refreshed",
+          "P11:Take_the_guys_along"
+        ],
+        "details": "Gives team well-deserved breaks. Wants to enjoy trips with team."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_achievement_through_hard_work",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "value",
+      "label": "achievement through hard work",
+      "display_label": "Achievement Through Hard Work",
+      "strength": 0.9,
+      "mention_count": 3,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "P1:worth_forgetting_sleep",
+          "P5:I_should_work_and_work",
+          "P13:Tired_but_happy_with_results"
+        ],
+        "details": "Believes in working hard to achieve results. Sacrifices sleep for projects."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_cultural_identity",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "value",
+      "label": "cultural identity",
+      "display_label": "Cultural Identity",
+      "strength": 0.8,
+      "mention_count": 3,
+      "properties": {
+        "source": "conversation",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "T2:spoke_Malayalam_slang",
+          "P6:heritage_design",
+          "PROF:location_Kozhikode_Kerala"
+        ],
+        "details": "Strong cultural identity rooted in Kozhikode/Kerala. Expresses through design and language."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_creativity_as_expression",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "value",
+      "label": "creativity as expression",
+      "display_label": "Creativity as Expression",
+      "strength": 0.9,
+      "mention_count": 3,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 3,
+        "evidence_sources": [
+          "WEB:architecture_is_an_art",
+          "P6:heritage_design_expression",
+          "P7:Colors_post"
+        ],
+        "details": "Art and design as primary modes of self-expression. Architecture as art, not just process."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_family_connection",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "value",
+      "label": "family connection",
+      "display_label": "Family Connection",
+      "strength": 0.75,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.75,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P10:Missing_this_from_mom",
+          "P5:Missing_this_guy"
+        ],
+        "details": "Strong emotional bonds with family. Misses mom. Emotional about loved ones."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_natural_ventilation_in_design",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "preference",
+      "label": "natural ventilation in design",
+      "display_label": "Natural Ventilation",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P6:more_ventilation_more_light"
+        ],
+        "details": "Prioritizes natural ventilation in architectural design. More light, more air."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_natural_lighting",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "preference",
+      "label": "natural lighting",
+      "display_label": "Natural Lighting",
+      "strength": 0.85,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.85,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P6:more_light"
+        ],
+        "details": "Emphasizes natural light in designs. Key design principle."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_modern_fusion",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "preference",
+      "label": "heritage-modern fusion",
+      "display_label": "Heritage-Modern Fusion",
+      "strength": 0.9,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.9,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P6:adapt_to_modern_times_heritage",
+          "P6:apertures_open_groves_of_green"
+        ],
+        "details": "Prefers blending heritage with modern elements. Nadumuttams spread along interior spaces, apertures opening to green."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_calm_and_quiet",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "preference",
+      "label": "calm and quiet",
+      "display_label": "Calm and Quiet",
+      "strength": 0.75,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.75,
+        "confidence": 1.0,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P11:enjoy_some_calm_and_quiet"
+        ],
+        "details": "Values calm and quiet environments for relaxation."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_road_trips",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "preference",
+      "label": "road trips",
+      "display_label": "Road Trips",
+      "strength": 0.65,
+      "mention_count": 1,
+      "properties": {
+        "source": "post",
+        "strength": 0.65,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "P11:long_drive_down_to_sunsets_of_Goa"
+        ],
+        "details": "Prefers long road trips, especially to Goa for sunsets."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_open_courtyards_and_gardens",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "preference",
+      "label": "open courtyards and gardens",
+      "display_label": "Open Courtyards & Gardens",
+      "strength": 0.8,
+      "mention_count": 2,
+      "properties": {
+        "source": "post",
+        "strength": 0.8,
+        "confidence": 1.0,
+        "evidence_count": 2,
+        "evidence_sources": [
+          "P6:flowing_gardens_nadumuttams",
+          "P6:apertures_open_groves_of_green"
+        ],
+        "details": "Designs with flowing gardens and open courtyards. Reimagined nadumuttams spread through interior spaces."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_contemporary_urbanism_style",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "node_type": "preference",
+      "label": "contemporary urbanism style",
+      "display_label": "Contemporary Urbanism",
+      "strength": 0.75,
+      "mention_count": 1,
+      "properties": {
+        "source": "web",
+        "strength": 0.75,
+        "confidence": 0.95,
+        "evidence_count": 1,
+        "evidence_sources": [
+          "WEB:categorical_graphical_lines_contemporary_urbanism"
+        ],
+        "details": "Studio's signature style. Categorical graphical lines creating stunning forms of contemporary urbanism."
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00",
+      "updated_at": "2026-02-22T08:53:26.307715+00:00"
+    }
+  ],
+  "edges": [
+    {
+      "id": "0ae2ad81-f224-4f42-b7dd-9a43f8a445af",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_rafseena_sedeed",
+      "to_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_abdul_jaleel",
+      "relationship_type": "colleague_of",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Both co-principal architects at Vili & V\u00e9",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b4eac8e6-6381-41c1-8c7f-53074ebb2e67",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_rafseena_sedeed",
+      "to_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_badu",
+      "relationship_type": "colleague_of",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Both at Vili & V\u00e9, went to same meetings",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "3f0d3bff-af9f-49a8-8105-85bcf60024ef",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "to_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_rafseena_sedeed",
+      "relationship_type": "colleague_of",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sreejith and Rafseena are co-principal architects at Vili & V\u00e9",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "cc604a82-2999-4b5b-80d4-3b1d52d16bdc",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "to_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_narmada",
+      "relationship_type": "son_of",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sreejith's mother is Narmada",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "3ef9e4be-1dd0-4092-b8ad-4a4094e57dde",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "to_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_taran",
+      "relationship_type": "father_of",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sreejith's son is Taran",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "3ec02fc5-8e8a-4b44-84b5-2f1e2871190f",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "to_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_avatar_blikker",
+      "relationship_type": "represented_by",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "_bLikker is Sreejith's avatar",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "631fbb5e-fd83-4260-af3f-7464302c3ef8",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "to_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_email_ar_sreejithsreekantan_gmail_com",
+      "relationship_type": "owns",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Email belongs to Sreejith",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "7bae5d0b-9eb6-424a-a1eb-1db77a2229b4",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "to_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_job_architect",
+      "relationship_type": "works_as",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sreejith works as architect",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "7b0a6974-b258-4c43-8643-a3283d356f57",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_rafseena_sedeed",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_elance_learning_headquarters_design",
+      "relationship_type": "designed",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Rafseena co-designed Elance HQ, did custom paintings",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "9b2a6327-cac6-47cc-a633-c992bd0a8f67",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_rafseena_sedeed",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_tropical_theme_house_design",
+      "relationship_type": "involved_in",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Rafseena was present during conversation about the tropical house design",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "a45cd171-1480-46f6-912a-ba90deb12768",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_abdul_jaleel",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_elance_learning_headquarters_design",
+      "relationship_type": "designed",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Abdul Jaleel co-designed Elance HQ, did custom sculpture",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "7fb69f92-3166-4da9-a6c6-0b4413cdc86e",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_abdul_jaleel",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_cakestudio_cabin_project",
+      "relationship_type": "attended_meeting",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Jalee went to CakeStudio meeting",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "9d6867b0-ab6f-43ae-9d29-e8da482fa0ac",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_badu",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_cakestudio_cabin_project",
+      "relationship_type": "attended_meeting",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Badu went to CakeStudio meeting",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "a03bc87e-1b03-4304-a011-1747568c2076",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_noufal",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_cakestudio_cabin_project",
+      "relationship_type": "client_of",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Mr Noufal is the CakeStudio client",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "a2336279-5b68-4d83-b36a-a2ada8bdc2ad",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_jishnu",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_elance_learning_headquarters_design",
+      "relationship_type": "client_of",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Jishnu is CEO of Elance, client for HQ design",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "500be25c-5468-45f0-96a0-f0149b36acdf",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_p_sulaiman",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_hilite_group_office_design",
+      "relationship_type": "client_of",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "P. Sulaiman chairs HiLite Group",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "3e332f93-19a2-4a83-8169-aed0dbfc1e65",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_founded_vili_v_architecture_studio",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "relationship_type": "professional_focus",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Architecture studio is core to architecture interest",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "550ca817-3ce0-4a90-8d4c-6d87c79491da",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_hilite_group_office_design",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architectural_rendering",
+      "relationship_type": "required_skill",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "HiLite office required rendering",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "ea338c8f-52a3-4bf5-8e38-666269c19cf6",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_elance_learning_headquarters_design",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_interior_design",
+      "relationship_type": "project_type",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Elance HQ was an interior design project",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "3c059e39-923b-4bd7-8b50-79a54f4f37eb",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_coimbatore_apartment_design",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "relationship_type": "project_type",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Coimbatore apartment is architecture project",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "8f721c61-fe74-4958-957a-c2bc299335f4",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_tropical_theme_house_design",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_tropical_design_themes",
+      "relationship_type": "design_style",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Own residence uses tropical design theme",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "853bf161-f5a4-4948-803c-69e0af04c599",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_tropical_theme_house_design",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "relationship_type": "design_style",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Tropical house combines heritage with tropical",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "898ec283-8175-4851-95dc-6e4fce6ae4ff",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_featured_on_archdaily",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "relationship_type": "recognition_for",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "ArchDaily feature for architecture work",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "1d19f66b-bc73-429d-b30b-255ff67ded6f",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architectural_rendering",
+      "relationship_type": "requires",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Architecture requires rendering skills",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "342d32f1-025f-4e4c-b8b6-51ec5b9d69ad",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_interior_design",
+      "relationship_type": "subsumes",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Interior design is a branch of architecture",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "a8264224-16dc-4cd7-9223-6aca8e890943",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_landscape_design",
+      "relationship_type": "subsumes",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Landscape design complements architecture",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "985adf16-7ad9-4608-a657-5b85cb2077c4",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "relationship_type": "expressed_through",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Heritage design is an architectural philosophy",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "4f376221-dc87-45da-934e-2c47ad36957e",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_tropical_design_themes",
+      "relationship_type": "expressed_through",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Tropical design is an architectural style",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "5ef598e9-6543-486a-b6e5-c9af70dda8e3",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_nadumuttams",
+      "relationship_type": "exemplified_by",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Nadumuttams exemplify heritage design",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b1c76c14-19f6-4714-a3be-946e41b3bb04",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_tropical_design_themes",
+      "relationship_type": "related_to",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Heritage and tropical design merge in Kerala context",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "7823735f-f348-4d79-a62c-ac3da93916ec",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_art",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Architecture is an art \u2014 studio philosophy",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "8d46452e-aba1-455c-9abb-e9f4c02b7c16",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_design",
+      "relationship_type": "related_to",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Architecture is design",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "91c9ea33-ddf7-4105-b44d-1308ee981bad",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_art",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_design",
+      "relationship_type": "related_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Art and design deeply connected",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "0f0dacb7-4889-49be-9c5f-4084b0982aeb",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_art",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_photography",
+      "relationship_type": "related_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Photography is an art form",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "8ea7f92c-9246-4eec-b31b-b1db4668f298",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_travel",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_goa_road_trips",
+      "relationship_type": "subsumes",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Goa trips are a travel interest",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "731e2692-47d8-46fd-8cbf-caa214d853d8",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_travel",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_photography",
+      "relationship_type": "related_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Travel photography",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "80886d42-8a55-4f21-92d4-e7a645df156e",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_badminton",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_fitness",
+      "relationship_type": "contributes_to",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Badminton is fitness activity",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "e40851bb-895f-4c74-8fa3-8ffb340596ee",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_fifa",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_counter_strike",
+      "relationship_type": "related_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Both video games for relaxation",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "e8dee5c5-b24d-4c9f-ab45-71714915e464",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_carroms",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_cards",
+      "relationship_type": "related_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Both office indoor games",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b654b9bd-b62c-4da1-9d20-bad777b844b3",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_quantum_physics",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_spiritual_unknowns",
+      "relationship_type": "related_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Physics and spiritual unknowns connect philosophically",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b868aa2b-747f-48b3-a257-b3ce47afea13",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_norse_mythology",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_spiritual_unknowns",
+      "relationship_type": "related_to",
+      "weight": 0.6,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Norse mythology touches spiritual themes",
+        "confidence": 0.6
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "f0e99e35-1bfd-4045-803b-1c5a75b32f6f",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_cryptocurrency_markets",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_current_events",
+      "relationship_type": "related_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Crypto crash is a current event",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b1387de4-6693-4c16-b1d9-8010dd086638",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_creative",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "relationship_type": "expressed_through",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Creativity expressed through architecture",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "1f42bd2d-ac62-4d04-8d86-7423ba1ad446",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_creative",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_art",
+      "relationship_type": "expressed_through",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Creativity through art",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "9cc594dd-babe-4b62-91ad-a902f0055429",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_creative",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_design",
+      "relationship_type": "expressed_through",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Creativity through design",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "07d1afcf-60c4-4fb3-8857-ddfcbd7e721d",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_culturally_rooted",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "relationship_type": "expressed_through",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Cultural roots expressed in heritage design",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "afa8004f-52a8-426f-b4b0-0a148de16f19",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_culturally_rooted",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_nadumuttams",
+      "relationship_type": "expressed_through",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Cultural roots in nadumuttam appreciation",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "898ba6b2-3ad2-465b-9eca-341057f4ad59",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_culturally_rooted",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_kozhikode_malayalam_slang",
+      "relationship_type": "expressed_through",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Cultural identity through local slang",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "0393413d-d483-4ec6-88e1-3a0d5871a829",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_reflective",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_quantum_physics",
+      "relationship_type": "drawn_to",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Reflective nature drawn to quantum physics",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "4fa483bd-da27-42e6-9e3b-2ad59d263211",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_reflective",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_spiritual_unknowns",
+      "relationship_type": "drawn_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Reflective nature explores spiritual unknowns",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "85c41f85-d9ae-416e-8099-20b8e6cbfa1a",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_hardworking",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architectural_rendering",
+      "relationship_type": "applied_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Works hard on renderings",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "e3d50aa2-fc2e-4503-ac81-911da9459367",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_passionate_about_craft",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "relationship_type": "directed_at",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Passion directed at architecture",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "f38f0481-1986-4a29-8580-baf8e0dd777e",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_multilingual",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_kozhikode_malayalam_slang",
+      "relationship_type": "enables",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Multilingual ability enables slang usage",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "83ec7cff-6f5c-4b36-a9ea-4f9faa4e1546",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_hardworking",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_achievement_through_hard_work",
+      "relationship_type": "embodies",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Hardworking trait embodies achievement value",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "1a78b5fa-cd80-4f36-9201-769a6df7d50a",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_culturally_rooted",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_and_tradition",
+      "relationship_type": "drives",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Cultural roots drive heritage value",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "d3a69e06-935a-4a77-a029-d23905e532a4",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_culturally_rooted",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_cultural_identity",
+      "relationship_type": "drives",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Cultural roots drive cultural identity",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b76306b4-c96d-49a0-92f0-465bc608f624",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_creative",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_creativity_as_expression",
+      "relationship_type": "embodies",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Creative trait embodies creativity value",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "8ff96611-917a-46a4-b1b5-7e5cc066b4f7",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_reflective",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_meaning_seeking",
+      "relationship_type": "drives",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Reflection drives meaning-seeking",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "24c95439-91d6-438e-8958-e24162d0b6ea",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_warm",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_family_connection",
+      "relationship_type": "expresses",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Warmth expressed through family connection",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "41be3961-d03a-4db8-9a50-058b64e9a447",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_team_oriented",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_caring_for_team",
+      "relationship_type": "embodies",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Team orientation embodies team care value",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b96ce3bb-91ef-477e-a628-3b9fb6631551",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_grounded",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_authenticity",
+      "relationship_type": "drives",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Being grounded drives authenticity",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "4af81142-bd8e-48a7-891f-61a8b4ecd21d",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_and_tradition",
+      "to_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_modern_fusion",
+      "relationship_type": "leads_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Heritage value leads to heritage-modern fusion preference",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "a8997bed-fe46-4bb4-8312-54d6674368c3",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_and_tradition",
+      "to_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_open_courtyards_and_gardens",
+      "relationship_type": "leads_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Heritage value leads to open courtyard preference",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "024a86f0-8931-4730-8ec7-1e86be950567",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_creativity_as_expression",
+      "to_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_contemporary_urbanism_style",
+      "relationship_type": "expressed_through",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Creativity expressed in contemporary urbanism",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "1fc69532-34de-45d1-b747-98ea50bca577",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_achievement_through_hard_work",
+      "to_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_calm_and_quiet",
+      "relationship_type": "counterbalanced_by",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Hard work creates yearning for calm and quiet",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "aa56f613-7400-4d14-af17-e5246b98a4ef",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_authenticity",
+      "to_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_natural_ventilation_in_design",
+      "relationship_type": "applied_as",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Authentic design uses natural ventilation",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "ec7eb2eb-e5ca-4502-9d6a-d1967720fef8",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_authenticity",
+      "to_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_natural_lighting",
+      "relationship_type": "applied_as",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Authentic design uses natural light",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b5605302-c67b-4db2-b082-d8a1a73bb0ed",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_modern_fusion",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "relationship_type": "applied_in",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Heritage-modern fusion is core design interest",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "2d6f4ef5-a1a6-48e8-a626-0714434195f0",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_modern_fusion",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_nadumuttams",
+      "relationship_type": "includes",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Heritage fusion includes nadumuttams",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b75e6820-bc87-4264-a87d-5f62000172a2",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_open_courtyards_and_gardens",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_nadumuttams",
+      "relationship_type": "realized_as",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Open courtyards realized as nadumuttams",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "9ac7fcf8-8c48-4e94-8d75-74f68279f3b5",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_road_trips",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_goa_road_trips",
+      "relationship_type": "directed_at",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Road trips directed toward Goa",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "826f02de-48be-45dd-8e4a-ec877e4c8716",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_road_trips",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_travel",
+      "relationship_type": "related_to",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Road trips are travel",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "859c7435-47cd-4cc6-9456-af0bd18661da",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_calm_and_quiet",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_goa_road_trips",
+      "relationship_type": "found_in",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Calm and quiet found in Goa sunsets",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "cf3ee355-c307-4b7e-8cf0-c64314d3ed6a",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_natural_ventilation_in_design",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "relationship_type": "applied_in",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Ventilation priority in heritage design",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "ea10b102-4c39-489d-9e4c-6fbe4b3f86c5",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_natural_lighting",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "relationship_type": "applied_in",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Natural light priority in heritage design",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "5449de56-2b01-4683-95ba-f84606b41f52",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_natural_lighting",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architectural_rendering",
+      "relationship_type": "captured_in",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Natural light captured in rendering work",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "6aa5a512-c3c8-4314-830c-885dc59798e5",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_location_kozhikode_kerala",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_heritage_inspired_design",
+      "relationship_type": "inspires",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Kozhikode Kerala location inspires heritage design",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "c77a0563-f249-4e91-b7d8-cce5140dad8e",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_location_kozhikode_kerala",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_nadumuttams",
+      "relationship_type": "cultural_context",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Kerala location provides nadumuttam context",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "31ca4fd3-d7c0-415c-b6c4-834ef7bce074",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_location_kozhikode_kerala",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_kozhikode_malayalam_slang",
+      "relationship_type": "origin_of",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Kozhikode is origin of the slang",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "d57ccb4b-8045-4f3d-a9c5-04e71c2be33b",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_location_kozhikode_kerala",
+      "to_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_language_malayalam",
+      "relationship_type": "related_to",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Kerala location \u2014 Malayalam language",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "7d15a2cf-7a1e-4f97-aa0e-b904a5254a13",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_language_malayalam",
+      "to_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_multilingual",
+      "relationship_type": "related_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Malayalam is primary language",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "8037cd4f-fa47-4758-aeba-a8b72d3f9bff",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_language_malayalam",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_cultural_identity",
+      "relationship_type": "expresses",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Malayalam expresses cultural identity",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "a8ad42f6-fb0c-4d76-8cbf-06a0904d808f",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_bio_life_is_energy_passing_through_time",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_meaning_seeking",
+      "relationship_type": "expresses",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Bio directly expresses meaning-seeking value",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "e76894ee-440c-4989-bbd9-601d2bcc92ab",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_bio_life_is_energy_passing_through_time",
+      "to_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_reflective",
+      "relationship_type": "reveals",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Bio reveals reflective nature",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "50522134-baaf-4156-b2ec-a64d0004f1b1",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_job_architect",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_founded_vili_v_architecture_studio",
+      "relationship_type": "realized_through",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Architect job realized through founding studio",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "f27d6d2a-e99b-4f4a-a7ea-e73c60724a46",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_job_architect",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_architecture",
+      "relationship_type": "professional_in",
+      "weight": 0.95,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Job is in architecture",
+        "confidence": 0.95
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "e8e371cb-7504-4fc5-a8c2-faf2d0ed5a23",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_job_architect",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_consulting_across_indian_states",
+      "relationship_type": "scope_of",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Job scope extends across states",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "01937e80-f286-41c4-a667-8d548fc893d2",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_founded_vili_v_architecture_studio",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_hilite_group_office_design",
+      "relationship_type": "led_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Studio enabled HiLite project",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "0dc45864-be6a-4b7e-9ffc-f7fc896b251f",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_founded_vili_v_architecture_studio",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_elance_learning_headquarters_design",
+      "relationship_type": "led_to",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Studio enabled Elance project",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "bf2cab9e-b434-4ebd-9afe-c7dd2051ac58",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_founded_vili_v_architecture_studio",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_coimbatore_apartment_design",
+      "relationship_type": "led_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Studio enabled Coimbatore project",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "f5ebed92-b3a7-4731-bb5f-080b236c1ae5",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_founded_vili_v_architecture_studio",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_cakestudio_cabin_project",
+      "relationship_type": "led_to",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Studio enabled CakeStudio project",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b5684d59-3ec4-419d-b993-93a888b28ffa",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_founded_vili_v_architecture_studio",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_consulting_across_indian_states",
+      "relationship_type": "expanded_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Studio expanded to multi-state consulting",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "39311711-80ce-482d-9b46-c65ecbfb601b",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_elance_learning_headquarters_design",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_featured_on_archdaily",
+      "relationship_type": "resulted_in",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Elance HQ led to ArchDaily feature",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "523f4700-57bc-47ca-8931-799d6c8fd061",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_jaijith_s",
+      "to_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "relationship_type": "friend_of",
+      "weight": 0.6,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Jaijith is a friend who interacts on the platform",
+        "confidence": 0.6
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "c4e0c554-101b-44a2-b3d5-43b3d210acb3",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_narmada",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_family_connection",
+      "relationship_type": "inspires",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Missing mom inspires family connection value",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "d66a4c8c-8db4-49d6-8ef4-934f9908a4ad",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_taran",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_family_connection",
+      "relationship_type": "inspires",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Son Taran is central to family value",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "48e85495-4b34-4add-b4a7-d1a1c563c84c",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_norse_mythology",
+      "to_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_founded_vili_v_architecture_studio",
+      "relationship_type": "inspired_name",
+      "weight": 0.9,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Norse mythology (Vili & V\u00e9) inspired studio name",
+        "confidence": 0.9
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "81ad14bf-f965-4220-8b62-44befc165dcd",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_age_39",
+      "to_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "relationship_type": "attribute_of",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Age 39 is an attribute of Sreejith",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "03c30b01-b8fe-4913-aaf7-84922a8364e5",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_gender_male",
+      "to_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "relationship_type": "attribute_of",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Male gender is an attribute of Sreejith",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "4511ac65-42e9-4bed-a135-86714a8f3894",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_archetype_thoughtful_contributor",
+      "to_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_reflective",
+      "relationship_type": "manifests_as",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Thoughtful contributor archetype manifests in reflective trait",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b7177feb-8595-4d5b-8764-4b4886daefd9",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "experience_fb1a5d18-5c93-4084-8da1-2227b1bea266_joined_2n1_platform",
+      "to_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_name_sreejith_sreekantan",
+      "relationship_type": "action_by",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Sreejith joined the platform",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "d2d22cba-baad-4964-a4a0-9a94a2ff8834",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_food",
+      "to_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_travel",
+      "relationship_type": "related_to",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Food interest complements travel interest",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "e1b9e8bf-ddef-4906-8e96-7db6ac586383",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_food",
+      "to_node_id": "demographic_fb1a5d18-5c93-4084-8da1-2227b1bea266_location_kozhikode_kerala",
+      "relationship_type": "influenced_by",
+      "weight": 0.7,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Kerala location influences food interests",
+        "confidence": 0.7
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "0c14dda2-1e50-40a5-affc-cc0db298003a",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_poetry",
+      "to_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_creative",
+      "relationship_type": "related_to",
+      "weight": 0.65,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Poetry is a creative pursuit",
+        "confidence": 0.65
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "b2f7bb8a-8c10-44d9-bac8-0b87722c3d6f",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_poetry",
+      "to_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_reflective",
+      "relationship_type": "related_to",
+      "weight": 0.65,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Poetry connects to reflective nature",
+        "confidence": 0.65
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "8566a133-eb61-453d-8001-bafdd654eb6a",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_expressive",
+      "to_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_warm",
+      "relationship_type": "related_to",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Expressive and warm traits reinforce each other",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "ae520ea8-c62c-4235-9040-9a9461071fb1",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_expressive",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_creativity_as_expression",
+      "relationship_type": "enables",
+      "weight": 0.75,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Expressiveness enables creative output",
+        "confidence": 0.75
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "c123c49e-2708-4cdd-934d-964524b656f6",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_resilient",
+      "to_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_hardworking",
+      "relationship_type": "reinforces",
+      "weight": 0.85,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Resilience reinforces hardworking nature",
+        "confidence": 0.85
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    },
+    {
+      "id": "127baf07-513a-4a5e-99cc-325f3af7aab6",
+      "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+      "from_node_id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_resilient",
+      "to_node_id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_achievement_through_hard_work",
+      "relationship_type": "enables",
+      "weight": 0.8,
+      "properties": {
+        "source": "verified_manual_review",
+        "reasoning": "Resilience enables achieving through hard work",
+        "confidence": 0.8
+      },
+      "created_at": "2026-02-22T08:53:26.307715+00:00"
+    }
+  ]
+}

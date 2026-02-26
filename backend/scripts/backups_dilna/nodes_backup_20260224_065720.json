@@ -1,0 +1,456 @@
+[
+  {
+    "id": "02c6fdb3-449a-410e-b9e3-3e6669553169",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "mystery",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491662+00:00",
+    "updated_at": "2026-01-20T17:17:46.491680+00:00"
+  },
+  {
+    "id": "99c8ca28-852e-4151-a137-b6a5fa64c684",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "simplicity",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491693+00:00",
+    "updated_at": "2026-01-20T17:17:46.491695+00:00"
+  },
+  {
+    "id": "21d1d943-69fd-468a-8648-31d8df17caff",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "reflective",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491703+00:00",
+    "updated_at": "2026-01-20T17:17:46.491706+00:00"
+  },
+  {
+    "id": "a6dd9518-0d3a-43e0-bff2-6d77121a4488",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "introspective",
+    "properties": {
+      "confidence": 0.85,
+      "source": "post",
+      "last_mentioned": "2026-01-20T17:29:32.663670+00:00",
+      "strength": 1.5
+    },
+    "created_at": "2026-01-20T17:17:46.491714+00:00",
+    "updated_at": "2026-01-20T17:29:32.663684+00:00"
+  },
+  {
+    "id": "6622e961-a1b0-4acf-865d-ae6f89420d63",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "authenticity",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491724+00:00",
+    "updated_at": "2026-01-20T17:17:46.491726+00:00"
+  },
+  {
+    "id": "f448fb94-d642-4a85-8dff-f9da7a203eb9",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "calmness",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491734+00:00",
+    "updated_at": "2026-01-20T17:17:46.491736+00:00"
+  },
+  {
+    "id": "99d97bc4-47a5-4349-adbd-b0700d1cc3b9",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "innocence",
+    "properties": {
+      "importance": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491744+00:00",
+    "updated_at": "2026-01-20T17:17:46.491746+00:00"
+  },
+  {
+    "id": "24536715-e635-442d-b1c1-9846235c9b54",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "childhood_innocence",
+    "properties": {
+      "stage": "child",
+      "impact": "positive",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491754+00:00",
+    "updated_at": "2026-01-20T17:17:46.491756+00:00"
+  },
+  {
+    "id": "83efc2bb-b6d8-472a-b004-e26cc8fb01e9",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "loss_of_innocence",
+    "properties": {
+      "stage": "transition_to_adulthood",
+      "impact": "growth",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491763+00:00",
+    "updated_at": "2026-01-20T17:17:46.491766+00:00"
+  },
+  {
+    "id": "66374273-debe-4296-967d-6949bf7cf145",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "preference",
+    "label": "embrace_uncertainty",
+    "properties": {
+      "level": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491773+00:00",
+    "updated_at": "2026-01-20T17:17:46.491775+00:00"
+  },
+  {
+    "id": "d9a44140-6c29-4cf6-93ad-d90286ef6874",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "wisdom",
+    "properties": {
+      "importance": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:17:46.491782+00:00",
+    "updated_at": "2026-01-20T17:17:46.491784+00:00"
+  },
+  {
+    "id": "9544acc0-f85b-4fd0-8fe2-4ab0c7a8b14c",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "first glimpse of snow",
+    "properties": {
+      "emotion": "awe",
+      "setting": "snowy landscape",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661126+00:00",
+    "updated_at": "2026-01-20T17:37:33.661170+00:00"
+  },
+  {
+    "id": "e7f364a8-ac40-4547-ad8e-7d2a20262b13",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "snow",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661188+00:00",
+    "updated_at": "2026-01-20T17:37:33.661190+00:00"
+  },
+  {
+    "id": "8b5cfc28-9cac-4a3a-bef5-42a899a49ec8",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "snow-covered mountains",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661200+00:00",
+    "updated_at": "2026-01-20T17:37:33.661203+00:00"
+  },
+  {
+    "id": "57feaadb-7124-427a-b5a3-9e2c74acde58",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "adventurous",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661211+00:00",
+    "updated_at": "2026-01-20T17:37:33.661213+00:00"
+  },
+  {
+    "id": "dbcdcef1-a1a1-44da-94d8-d70709668517",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "wonder",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T17:37:33.661221+00:00",
+    "updated_at": "2026-01-20T17:37:33.661223+00:00"
+  },
+  {
+    "id": "0ac57b20-a06e-4d34-b4ab-e935ab1a364f",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "painting",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338756+00:00",
+    "updated_at": "2026-01-30T14:15:05.338797+00:00"
+  },
+  {
+    "id": "734f04fe-52dc-488c-a53e-f12f0a249385",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "landscape painting",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338813+00:00",
+    "updated_at": "2026-01-30T14:15:05.338816+00:00"
+  },
+  {
+    "id": "8ec1b124-b008-470e-8d09-bd4e13e0ac47",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "creative",
+    "properties": {
+      "confidence": 0.9,
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338825+00:00",
+    "updated_at": "2026-01-30T14:15:05.338827+00:00"
+  },
+  {
+    "id": "07223625-1baf-431f-bcb9-c7d60d36496b",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "calm",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338836+00:00",
+    "updated_at": "2026-01-30T14:15:05.338838+00:00"
+  },
+  {
+    "id": "01676f58-7f9d-484d-a244-24400496b203",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "serenity",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338847+00:00",
+    "updated_at": "2026-01-30T14:15:05.338850+00:00"
+  },
+  {
+    "id": "4bec4a3c-7d38-4fc5-a8bd-3025db417dfb",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "returning to painting",
+    "properties": {
+      "recency": "recent",
+      "frequency": "occasional",
+      "method": "self-guided",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338858+00:00",
+    "updated_at": "2026-01-30T14:15:05.338860+00:00"
+  },
+  {
+    "id": "d34d96f1-c50b-49e8-8e78-92bb894be1a4",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "preference",
+    "label": "landscape painting",
+    "properties": {
+      "priority": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:05.338868+00:00",
+    "updated_at": "2026-01-30T14:15:05.338871+00:00"
+  },
+  {
+    "id": "86ef7c2b-c380-43ce-a277-30fc867845d1",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "sunrise and sunset",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:36.664738+00:00",
+    "updated_at": "2026-01-30T14:15:36.664780+00:00"
+  },
+  {
+    "id": "2dce1694-9742-45e1-b1de-6d5499ac256e",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "observant",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:36.664797+00:00",
+    "updated_at": "2026-01-30T14:15:36.664800+00:00"
+  },
+  {
+    "id": "d949e57f-3ce4-413d-86e9-3d3ac3072a1f",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "mindfulness",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:15:36.664809+00:00",
+    "updated_at": "2026-01-30T14:15:36.664811+00:00"
+  },
+  {
+    "id": "39ea9592-ac44-46b0-990f-3e281c24eae6",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "gifted_watch_to_mom",
+    "properties": {
+      "emotional_significance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:16:54.343483+00:00",
+    "updated_at": "2026-02-02T04:16:54.343525+00:00"
+  },
+  {
+    "id": "51e03bfb-23d4-49a5-8f32-956118f492b2",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "sentimental",
+    "properties": {
+      "confidence": 0.75,
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:16:54.343543+00:00",
+    "updated_at": "2026-02-02T04:16:54.343546+00:00"
+  },
+  {
+    "id": "0401f65b-7f8e-40ff-b0bc-a8ccbc66b8ba",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "proud",
+    "properties": {
+      "intensity": 0.9,
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:16:54.343556+00:00",
+    "updated_at": "2026-02-02T04:16:54.343558+00:00"
+  },
+  {
+    "id": "b71058ff-2b33-4f40-bd82-65527482a0b3",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "family",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:16:54.343566+00:00",
+    "updated_at": "2026-02-02T04:16:54.343569+00:00"
+  },
+  {
+    "id": "68000899-520e-4199-8c64-a37c27994187",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "present-moment-awareness",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:27:33.066973+00:00",
+    "updated_at": "2026-02-02T04:27:33.066989+00:00"
+  },
+  {
+    "id": "f4639028-222e-42e7-9fab-abc6560d2ece",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "eye-contact",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:27:33.067001+00:00",
+    "updated_at": "2026-02-02T04:27:33.067004+00:00"
+  },
+  {
+    "id": "d404bf29-5501-4386-a9a5-6595ce7736f3",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "trait",
+    "label": "resilient",
+    "properties": {
+      "confidence": 0.85,
+      "source": "post"
+    },
+    "created_at": "2026-02-02T05:23:21.518580+00:00",
+    "updated_at": "2026-02-02T05:23:21.518591+00:00"
+  },
+  {
+    "id": "ed750ea6-2605-409a-8f2e-3eecd2c86184",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "value",
+    "label": "perseverance",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T05:23:21.518603+00:00",
+    "updated_at": "2026-02-02T05:23:21.518605+00:00"
+  },
+  {
+    "id": "bf8ba0a2-b44e-483f-9e0a-61a345eefa8e",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "optimism",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-02T05:23:21.518614+00:00",
+    "updated_at": "2026-02-02T05:23:21.518617+00:00"
+  },
+  {
+    "id": "ae1aa8dd-bb25-4c3e-aef3-b973e82dc39d",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "interest",
+    "label": "breakfast",
+    "properties": {
+      "time": "morning",
+      "source": "post"
+    },
+    "created_at": "2026-02-09T03:51:58.668111+00:00",
+    "updated_at": "2026-02-09T03:51:58.668128+00:00"
+  },
+  {
+    "id": "fe7a6731-4e0b-4aa2-aaab-35809fd6d226",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "node_type": "experience",
+    "label": "breakfast with blikker and seven",
+    "properties": {
+      "companions": [
+        "Blikker",
+        "Seven"
+      ],
+      "source": "post"
+    },
+    "created_at": "2026-02-09T03:51:58.668139+00:00",
+    "updated_at": "2026-02-09T03:51:58.668142+00:00"
+  }
+]

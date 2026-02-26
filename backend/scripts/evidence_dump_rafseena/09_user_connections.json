@@ -1,0 +1,99 @@
+[
+  {
+    "name": "Rafseena",
+    "relationship": "User",
+    "details": "",
+    "context": [],
+    "mentioned_count": 2,
+    "last_mentioned": "2026-02-03T08:28:15.646462+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Maya",
+    "relationship": "Avatar",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-03T08:28:15.646462+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Rafi",
+    "relationship": "User's preferred name",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-03T08:28:15.646462+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Chechi",
+    "relationship": "Elder sister in Malayalam",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-03T08:28:15.646462+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Rafsi",
+    "relationship": "user",
+    "details": "",
+    "context": [],
+    "mentioned_count": 2,
+    "last_mentioned": "2026-02-09T03:51:49.045613+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Veronica Henry",
+    "relationship": "author",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-03T08:33:25.715145+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Meera",
+    "relationship": "Character in story",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-03T08:35:42.624997+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Rafsina",
+    "relationship": "User",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-03T08:55:07.533663+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Mommy",
+    "relationship": "family",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-03T08:57:31.545578+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "(friends/family)",
+    "relationship": "friends/family",
+    "details": "Discovered from post: The mention of sharing the experience with people they love most suggests close relationships.",
+    "source": "post_analysis",
+    "discovered_at": "2026-02-07T16:37:25.471202+00:00"
+  },
+  {
+    "name": "R",
+    "relationship": "user",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-09T03:51:49.045613+00:00",
+    "source": "conversation"
+  }
+]

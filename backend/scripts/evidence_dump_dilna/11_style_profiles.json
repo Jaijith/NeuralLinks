@@ -1,0 +1,25 @@
+[
+  {
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "avg_post_length": 32.3,
+    "avg_sentence_length": 7.5,
+    "common_phrases": [],
+    "ellipsis_rate": 0.0,
+    "emoji_frequency": 0.29,
+    "exclamation_rate": 0.14,
+    "generated_at": "2026-02-07T16:53:09.200941+00:00",
+    "lowercase_rate": 0.71,
+    "question_rate": 0.0,
+    "tone_distribution": {
+      "casual": 0.7142857142857143
+    },
+    "total_posts_analyzed": 7,
+    "writing_samples": [
+      "<mind full of unsaid things.",
+      "in the moment, my eyes locked to see her smile. ",
+      "everyday there's sun rise and sunset. but how often do we notice that. the beauty and calmness it holds. ",
+      "The first glimpse of snow, everything went quiet. Something inside me softened. My eyes locked to the snow covered mountains. couldn't stop staring at this wonder.\r\nThis day i knew whole world is waiting for me, to see more of its wonders.",
+      " I want to paint again. It\u2019s been so long since I last touched a canvas, especially to paint a landscape..the kind that lets you breathe a little slower and notice things you usually rush past. Work has kept me busy, filling my days with deadlines and responsibilities, and somewhere along the way my"
+    ]
+  }
+]

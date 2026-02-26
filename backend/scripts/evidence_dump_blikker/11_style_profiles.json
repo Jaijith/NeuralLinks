@@ -1,0 +1,26 @@
+[
+  {
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "avg_post_length": 29.8,
+    "avg_sentence_length": 6.4,
+    "common_phrases": [],
+    "ellipsis_rate": 0.33,
+    "emoji_frequency": 0.0,
+    "exclamation_rate": 0.75,
+    "generated_at": "2026-02-07T16:52:57.726796+00:00",
+    "lowercase_rate": 0.0,
+    "question_rate": 0.0,
+    "tone_distribution": {
+      "enthusiastic": 0.75,
+      "contemplative": 0.3333333333333333
+    },
+    "total_posts_analyzed": 12,
+    "writing_samples": [
+      "Happy !",
+      "This gang and 3 more \u2026.",
+      "Missing this guy .... I should work and work ... ignore this feeling ! ",
+      "Finally , some rest . All of my folks at office has taken their well deserved break and headed home ! Let them come back refreshed . Yesterday was all fun and games . We played carroms , cards and had a nice relaxed office day . Slept early and woke up to the humongous crypto crash , Economy is blee",
+      "Came back from a meeting with Mr Noufal of cakestudio brand . He wants to have his own cabin at a more private space. Me , Jalee and Badu left for the meeting . Pretty tired , now that all deadlines have been tentatively met . Skipped playing badminton , skipped going out with my folks since the tur"
+    ]
+  }
+]

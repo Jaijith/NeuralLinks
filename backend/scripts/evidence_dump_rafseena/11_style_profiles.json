@@ -1,0 +1,22 @@
+[
+  {
+    "user_id": "5e03b1ac-81c6-48e9-8740-d4d93c1629d3",
+    "avg_post_length": 26.5,
+    "avg_sentence_length": 6.9,
+    "common_phrases": [],
+    "ellipsis_rate": 0.0,
+    "emoji_frequency": 0.0,
+    "exclamation_rate": 1.0,
+    "generated_at": "2026-02-07T16:52:49.144422+00:00",
+    "lowercase_rate": 0.0,
+    "question_rate": 0.0,
+    "tone_distribution": {
+      "enthusiastic": 1.0
+    },
+    "total_posts_analyzed": 2,
+    "writing_samples": [
+      "LIVE LIFE TO THE FULLEST !!",
+      "SIKKIM\n \u201cWhen I caught my first glimpse of the snow-capped mountain, I knew I\u2019d finally tick off a lifelong dream from my bucket list: eating the million little suns. And oh, I truly did! That day was pure bliss, shared with the people I love most.\u201d\n08.11.2025"
+    ]
+  }
+]

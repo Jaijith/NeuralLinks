@@ -1,0 +1,108 @@
+[
+  {
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "avatar_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "created_at": "2026-02-01 05:26:34.620000",
+    "facts": [
+      {
+        "fact": "Has a daughter named Vasubhadra",
+        "confidence": 0.95,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:26:34.620817+00:00"
+      },
+      {
+        "fact": "Has a wife named Manju",
+        "confidence": 0.95,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:26:34.620822+00:00"
+      },
+      {
+        "fact": "Has a daughter named Vasubhadra",
+        "confidence": 0.95,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:28:09.707439+00:00"
+      },
+      {
+        "fact": "Has a wife named Manju",
+        "confidence": 0.95,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:28:09.707443+00:00"
+      },
+      {
+        "fact": "Has a daughter named Vasubhadra",
+        "confidence": 0.95,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:29:08.465657+00:00"
+      },
+      {
+        "fact": "Has a wife named Manju",
+        "confidence": 0.95,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:29:08.465662+00:00"
+      },
+      {
+        "fact": "Has a daughter named Vasubhadra",
+        "confidence": 0.95,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:37:22.623801+00:00"
+      },
+      {
+        "fact": "Has a wife named Manju",
+        "confidence": 0.95,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:37:22.623805+00:00"
+      }
+    ],
+    "interests": [
+      {
+        "topic": "fine dining",
+        "strength": 0.8,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:26:34.620782+00:00"
+      },
+      {
+        "topic": "family time",
+        "strength": 0.9,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:26:34.620811+00:00"
+      },
+      {
+        "topic": "fine dining",
+        "strength": 0.8,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:28:09.707407+00:00"
+      },
+      {
+        "topic": "family time",
+        "strength": 0.9,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:28:09.707434+00:00"
+      },
+      {
+        "topic": "fine dining",
+        "strength": 0.8,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:29:08.465613+00:00"
+      },
+      {
+        "topic": "family time",
+        "strength": 0.9,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:29:08.465651+00:00"
+      },
+      {
+        "topic": "fine dining",
+        "strength": 0.8,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:37:22.623779+00:00"
+      },
+      {
+        "topic": "family time",
+        "strength": 0.9,
+        "source": "conversation",
+        "added_at": "2026-02-01T05:37:22.623796+00:00"
+      }
+    ],
+    "updated_at": "2026-02-01 05:37:22.623000"
+  }
+]

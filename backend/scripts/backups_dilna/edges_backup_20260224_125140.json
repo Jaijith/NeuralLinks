@@ -1,0 +1,828 @@
+[
+  {
+    "id": "838a8ddc-9519-4d2c-90dc-4eb8fa922cd3",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_blikker",
+    "to_node_id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_seven",
+    "relationship_type": "friend_of",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Both had breakfast together with Dilna (P1)",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "b8a75ede-c22e-4437-90ce-1096220e7046",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_name_dilna_m_p",
+    "to_node_id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_mom",
+    "relationship_type": "daughter_of",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Dilna's mother - gifted her a watch (P4)",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "010f4098-1959-4a9f-9c85-e8be2b83eb09",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_name_dilna_m_p",
+    "to_node_id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_blikker",
+    "relationship_type": "friend_of",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Dilna and Blikker had breakfast together (P1)",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "7fb144bc-38f7-4b95-acb4-eb726845074b",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_name_dilna_m_p",
+    "to_node_id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_seven",
+    "relationship_type": "friend_of",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Dilna and Seven had breakfast together (P1)",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "a8bff2d3-9f99-4800-8f2a-83fee8f61b67",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_name_dilna_m_p",
+    "to_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_avatar_aera",
+    "relationship_type": "represented_by",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Aera is Dilna's avatar",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "9a4875e7-6bfc-4ce3-a36b-287d155c79ea",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_name_dilna_m_p",
+    "to_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_email_dilnadil67_gmail_com",
+    "relationship_type": "owns",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Email belongs to Dilna",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "248ab499-1254-4a71-a718-c1f8e7770468",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_mom",
+    "to_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_gifted_mom_a_watch",
+    "relationship_type": "recipient_of",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Mom received the watch gift (P4)",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "6d50fad4-6bb6-4235-a0ad-282d9357bc4f",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_blikker",
+    "to_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_morning_breakfast_with_blikker_and_seven",
+    "relationship_type": "participated_in",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Blikker was at breakfast (P1)",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "af086789-6257-4a96-b457-5af476ed8b60",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_seven",
+    "to_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_morning_breakfast_with_blikker_and_seven",
+    "relationship_type": "participated_in",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Seven was at breakfast (P1)",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "62ba33e0-3a98-41ef-9f6c-2584e1302373",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "connection_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_mom",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_family",
+    "relationship_type": "inspires",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Mother relationship drives family value",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "5e30f493-1174-47ac-8fb4-e7f8a3381a1a",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_gender_female",
+    "to_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_name_dilna_m_p",
+    "relationship_type": "attribute_of",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Female gender implied from the little girl in me (P4)",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "be87eae3-8b14-449c-9cd6-230af6d90ac9",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_archetype_casual_observer",
+    "to_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_observant",
+    "relationship_type": "manifests_as",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Casual observer archetype manifests in observant trait",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "b73fcdbc-6652-4006-a86c-7dcb8b6e0c75",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_account_created_2026_01_20",
+    "to_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_name_dilna_m_p",
+    "relationship_type": "action_by",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Dilna created account on 2026-01-20",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "da19127c-4f5d-4891-9019-5f5c5071c68b",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_avatar_bio_existing_between_reality_and_virtual_re",
+    "to_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_introspective",
+    "relationship_type": "reveals",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Existing between reality and virtual realm reveals introspective nature",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "1aeeb2d2-10c1-4838-8322-fea52c1870bf",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_first_glimpse_of_snow",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_snow_covered_mountains",
+    "relationship_type": "sparked_by",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "First snow experience sparked deep connection to snow-covered mountains (P7)",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "d5c943f0-f41b-47ee-9587-9103ee57887b",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_first_glimpse_of_snow",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_nature_and_natural_beauty",
+    "relationship_type": "deepened",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Snow experience deepened connection to nature (P7)",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "551c9e13-013f-43f0-98e3-c004e590a195",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_first_glimpse_of_snow",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_travel_and_exploring",
+    "relationship_type": "motivated_by",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Snow experience motivated desire to explore more (P7)",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "e6dd79c5-9831-4828-a08e-dddb2c653359",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_work_keeping_from_painting",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_painting",
+    "relationship_type": "longing_for",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Work absence from painting shows deep attachment to it (P6)",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "6ac5e7a1-cbcf-41da-bf75-9694d39424be",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_work_keeping_from_painting",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_landscape_painting",
+    "relationship_type": "longing_for",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Specifically misses landscape painting (P6)",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "0806d476-e2e9-42d7-8e7e-6c5d67cd1e8e",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_gifted_mom_a_watch",
+    "to_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_sentimental",
+    "relationship_type": "demonstrates",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Gifting mom shows sentimental nature (P4)",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "098ed41f-3c86-4c03-9aba-d8c9b7f19a98",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_emotional_moment_seeing_her_smile",
+    "to_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_sentimental",
+    "relationship_type": "demonstrates",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Emotional moment seeing her smile shows sentimental depth (P3)",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "685fd2e4-2b90-489d-be31-73fbf91564d9",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_first_glimpse_of_snow",
+    "to_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_introspective",
+    "relationship_type": "triggers",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Something inside me softened - introspective response to snow (P7)",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "5480c5db-44b8-4f7e-9b03-3f4f94d9b4f3",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_gifted_mom_a_watch",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_family",
+    "relationship_type": "demonstrates",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Gifting mom demonstrates family value (P4)",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "708b9a08-dddb-4cbb-99e5-504adef86c26",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_gifted_mom_a_watch",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_small_moments_matter",
+    "relationship_type": "exemplifies",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Small gift holds deep meaning (P4)",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "0d4193e1-fdbb-4018-8408-5344530687a0",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_emotional_moment_seeing_her_smile",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_small_moments_matter",
+    "relationship_type": "exemplifies",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Though its a small moment, but it holds something more (P3)",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "5f059e5a-0497-48fd-a69e-61ba07ae40f2",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_first_glimpse_of_snow",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_wonder_and_awe",
+    "relationship_type": "triggered",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Couldn't stop staring at this wonder (P7)",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "87c86836-7820-4336-8688-724f7ed37927",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_first_glimpse_of_snow",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_calmness_and_inner_peace",
+    "relationship_type": "evoked",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Everything went quiet - snow evoked inner calm (P7)",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "f27f7b1d-ba57-462d-84fd-0a941269b955",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_work_keeping_from_painting",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_perseverance",
+    "relationship_type": "context_for",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Work-painting tension is where perseverance applies (P6)",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "3d08a882-e564-40d0-9e16-dc9533b378b4",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_work_keeping_from_painting",
+    "to_node_id": "experience_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_first_glimpse_of_snow",
+    "relationship_type": "contrasts_with",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Busyness of work contrasts with stillness of snow moment",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "7a73c047-e110-41c6-988e-afb8c8c220a5",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_painting",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_landscape_painting",
+    "relationship_type": "subsumes",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Landscape painting is a specific type of painting",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "e72c1fec-9663-4d16-912e-db1e7985995d",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_nature_and_natural_beauty",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_sunrise_and_sunset",
+    "relationship_type": "includes",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Sunrise and sunset are part of natural beauty",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "5d37d387-2953-4000-bfaf-2c4277447cc4",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_nature_and_natural_beauty",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_snow_covered_mountains",
+    "relationship_type": "includes",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Snow-covered mountains are natural beauty",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "6e295dea-7023-49c1-ae59-2ba5aa58f009",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_travel_and_exploring",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_snow_covered_mountains",
+    "relationship_type": "enables_access_to",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Travel enables seeing snow-covered mountains",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "adc8207d-84e0-4a81-847c-80aa5e57b1c2",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_nature_and_natural_beauty",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_landscape_painting",
+    "relationship_type": "inspires",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Natural beauty inspires landscape painting",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "0be38d43-ba57-4d58-a8f2-fad51d61fff1",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_creative",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_painting",
+    "relationship_type": "expressed_through",
+    "weight": 0.95,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Creativity expressed through painting",
+      "confidence": 0.95
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "adcfb5aa-8818-4dbd-932f-5fac70d4b604",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_observant",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_sunrise_and_sunset",
+    "relationship_type": "drawn_to",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Observant nature notices sunrise and sunset",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "e1f32e77-82a9-49b2-976c-983b94f3d9ba",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_observant",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_nature_and_natural_beauty",
+    "relationship_type": "drawn_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Observant nature drawn to natural beauty",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "2fbb5e69-e86a-42e4-b139-ceb074036ff0",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_adventurous",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_travel_and_exploring",
+    "relationship_type": "drives",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Adventurous spirit drives desire to travel",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "57cf54ca-975c-4012-bf75-754710851b21",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_calm_seeking",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_painting",
+    "relationship_type": "fulfilled_by",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Calm-seeking fulfilled through quiet joy of painting",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "d72952e4-1c33-4198-867a-5b447c0c7bc3",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_introspective",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_nature_and_natural_beauty",
+    "relationship_type": "reflected_in",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Introspective nature finds reflection in nature",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "14986179-a5fa-4a91-9978-1ad12eda6484",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_sentimental",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_family",
+    "relationship_type": "drives",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Sentimental nature drives family value",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "8e2eaedd-04a3-4db3-9c04-5e16c37c4224",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_sentimental",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_small_moments_matter",
+    "relationship_type": "drives",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Sentimental nature values small meaningful moments",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "053d9f6f-9238-43a7-92b0-56e28dc90f13",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_resilient",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_perseverance",
+    "relationship_type": "embodies",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Resilient trait embodies perseverance value",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "40e2c224-97a5-4eca-8a2d-27601574d3a0",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_optimistic",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_perseverance",
+    "relationship_type": "reinforces",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Optimism reinforces perseverance - doors can be reopened",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "44f67762-ec5a-4750-bc48-39c83e7dd7db",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_calm_seeking",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_calmness_and_inner_peace",
+    "relationship_type": "embodies",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Calm-seeking trait embodies calmness value",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "a4464d07-3955-46da-bc5d-a22fa83899f0",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_introspective",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_mindfulness_and_being_present",
+    "relationship_type": "drives",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Introspection drives mindfulness and being present",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "8a1dffbb-5a2e-4b65-9945-e325b75c4082",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_observant",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_mindfulness_and_being_present",
+    "relationship_type": "enables",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Observant nature enables being present",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "7426dfa3-dab6-452b-bc3e-1862297154a5",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_creative",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_calmness_and_inner_peace",
+    "relationship_type": "finds_in",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "The calm, and the quiet joy of painting",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "fedb60e9-0dff-479e-9031-727cbe50edd3",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_introspective",
+    "to_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_observant",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Introspection and observation reinforce each other",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "21c9bfa0-b8dd-4d9d-bbb2-7237e309e30d",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_resilient",
+    "to_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_optimistic",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Resilience and optimism go together - reopen the door",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "de22546f-938f-468f-aa2a-3da9b9b139cb",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_calmness_and_inner_peace",
+    "to_node_id": "preference_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_landscape_painting_style",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Calmness value expressed through preference for landscape painting",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "caf3b3d5-1946-439a-aa03-6c610ac49046",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_wonder_and_awe",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_snow_covered_mountains",
+    "relationship_type": "inspired_by",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Wonder value inspired by snow-covered mountains",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "65560b9d-0c09-4171-86fe-db86b86ea751",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_mindfulness_and_being_present",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_small_moments_matter",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Being present enables noticing small moments",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "07a93a8a-e511-45f1-a571-23938298db69",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_wonder_and_awe",
+    "to_node_id": "value_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_mindfulness_and_being_present",
+    "relationship_type": "related_to",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Wonder requires being present and mindful",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "543941b3-a86d-492c-aae3-25de0be6593e",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "preference_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_landscape_painting_style",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_landscape_painting",
+    "relationship_type": "applied_in",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Landscape painting style preference applied in landscape painting",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "ae66c03a-8277-4ab6-8860-32e9dca51454",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "preference_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_landscape_painting_style",
+    "to_node_id": "interest_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_painting",
+    "relationship_type": "specifies",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Landscape style specifies painting preference",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "90979a7d-8754-41ed-81ad-80c7b14d09bd",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "preference_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_poetic_expression",
+    "to_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_introspective",
+    "relationship_type": "reflects",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Poetic expression reflects introspective nature",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "e47383d4-4fea-4215-86c4-388e65bdb7e0",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "preference_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_poetic_expression",
+    "to_node_id": "trait_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_creative",
+    "relationship_type": "reflects",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Poetic expression is a form of creativity",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  },
+  {
+    "id": "235ac969-0a23-40c8-9d0c-409b1ef86f5b",
+    "user_id": "1033cd6c-03d8-4594-8e35-dfc0a778bbc6",
+    "from_node_id": "preference_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_lowercase_casual_writing",
+    "to_node_id": "demographic_1033cd6c-03d8-4594-8e35-dfc0a778bbc6_archetype_casual_observer",
+    "relationship_type": "consistent_with",
+    "weight": 0.65,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Casual writing style consistent with casual observer archetype",
+      "confidence": 0.65
+    },
+    "created_at": "2026-02-24T05:51:34.180590+00:00"
+  }
+]

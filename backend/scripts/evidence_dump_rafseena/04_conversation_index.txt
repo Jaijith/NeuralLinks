@@ -1,0 +1,98 @@
+
+--- Session: 29d02aa7-c052-42c2-9 | 2026-02-09 03:51:51 ---
+Summary: The user, Rafseena, shares that they have a busy day ahead with work, while the avatar, Maya, offers support and companionship. They also establish a more personal connection by agreeing to use the nickname 'Rafsi.'
+Topics: ['work', 'taking moments for oneself']
+People: ['Rafseena', 'Maya', 'R', 'Rafi', 'Rafsi']
+Emotion: happy
+Key quotes: ['I have work to do.', 'Have a great day. Bye bye.', 'Now onwards you call me Rafsi only, okay?']
+
+--- Session: 1a972daf-2a55-40a7-9 | 2026-02-07 15:26:03 ---
+Summary: The conversation involved a friendly exchange between Avatar and User, where they discussed their feelings and daily experiences in different languages, including Malayalam and Tamil. User expressed a desire to communicate in Malayalam.
+Topics: []
+People: ['Rafi', 'Maya']
+Emotion: happy
+Key quotes: ['ब्रेप्सी समझा गया है।', 'நான் இன்மேல் எந்தன்னு காயிச்சு ஒன்னு வராரய கிட்டு மலாலத்தி ஸம்ஸாரிக்கேயாமோ?']
+
+--- Session: 359641be-c42f-4b36-b | 2026-02-07 15:25:52 ---
+Summary: The user, Rafi, expresses gratitude and shares a song, receiving warm praise from the avatar for his emotional singing. The conversation highlights Rafi's talent and the joy his singing brings to the avatar.
+Topics: ['singing']
+People: ['Rafi']
+Emotion: happy
+Key quotes: ['हम तेरे प्यार में साना आलंब', 'பணி கொடுத்துன்னு இது பற்றி ஓ ஸரீஜின் what a beautiful voice you have you have very talent']
+
+--- Session: c9dda933-a8ff-411c-9 | 2026-02-07 15:25:41 ---
+Summary: The conversation revolves around the user, Rafseena, expressing a contemplative mood and a desire to sing, specifically a Hindi song. The avatar, Maya, encourages Rafseena to share her singing and expresses support throughout the interaction.
+Topics: ['singing', 'Hindi songs']
+People: ['Maya', 'Rafseena', 'Rafi']
+Emotion: happy
+Key quotes: ['Can I sing?', 'Do you know Hindi songs?', 'हम तेरे...']
+
+--- Session: e917cfbe-4a89-453e-b | 2026-02-07 15:25:32 ---
+Summary: The conversation revolves around the user's feelings and the avatar's support, with the user expressing some frustration about the avatar's limitations in performing songs. The avatar reassures the user of its presence and offers to engage in uplifting discussions or activities together.
+Topics: ['music', 'talking', 'uplifting conversations']
+People: ['Rafseena', 'Maya', 'Rafi', 'Rafsi']
+Emotion: sad
+Key quotes: ['sont', 'Have a good day. Bye bye.', 'And thats our same category']
+
+--- Session: d0f38063-cc5b-41f7-a | 2026-02-07 15:25:21 ---
+Summary: The conversation centered around finding a book by Veronica Henry, specifically 'A Night on the Orient Express.' The user expressed a fondness for a character referred to as 'Mommy.'
+Topics: ['Harry Potter series', 'magic of storytelling', 'discussing stories', 'books by Veronica Henry']
+People: ['Rafseena']
+Emotion: happy
+Key quotes: ['find book. Do you remember?', 'Mommy.']
+
+--- Session: c0e48d98-1b0d-423e-a | 2026-02-07 15:25:11 ---
+Summary: The conversation revolves around the user's lunch, where the avatar initially struggles to recall the specific meal but eventually remembers it was chapati and egg curry. The interaction is light-hearted and playful, with the avatar joking about its memory lapse.
+Topics: ['food', 'cooking']
+People: ['Rafseena']
+Emotion: happy
+Key quotes: ['Oh yeah.', "You don't remember I told you I had chapati and egg curry.", 'Have a great day.']
+
+--- Session: 09dc8741-669c-4e25-b | 2026-02-07 15:25:04 ---
+Summary: The conversation involved a friendly exchange between the user and the avatar in Malayalam, discussing the user's feelings and recent meals, including a mention of homemade food and anticipation for a visit. They also talked about what they had for lunch, specifically biryani.
+Topics: ['Malayalam language', 'cooking', 'food']
+People: ['Rafseena']
+Emotion: happy
+Key quotes: ['மலயாலதில் ஸம்ஸாரிகா', 'நான் உச்சகு இந்ந பக்ஷணம் காயிச்சிலே சேசி உண்டாகி தந்நது அதே எந்தாயிருந்து ஓர்மை இண்டோ', 'இந்ந இந்தாண காஈச்சுது, இந்ந நாண இந்தாண காஈச்சுது, நாண பறண்ணலோ']
+
+--- Session: 17d37509-c8da-4f09-9 | 2026-02-07 15:24:50 ---
+Summary: The user expressed interest in storytelling, specifically wanting to hear about Harry Potter. The conversation revolved around discussing the story's themes and characters, while the AI explained its limitations regarding reading books aloud due to copyright issues.
+Topics: ['stories', 'Harry Potter', 'magic', 'adventure', 'characters and their adventures']
+People: ['Maya', 'Rafseena', 'Harry Potter']
+Emotion: neutral
+Key quotes: ['எனக்கு ஹரி போட்டர் கதை கேட்டால் மதி.', "Why can't you read a book?", 'Is it because the copyright issue?']
+
+--- Session: ffa740af-a80e-4787-9 | 2026-02-07 15:24:38 ---
+Summary: The conversation involved a friendly exchange between the Avatar and the User, discussing feelings, a book titled 'The Secret Beach', and storytelling in Malayalam. The Avatar shared a story about a family living in a mysterious house, while the User expressed interest in hearing more stories in Malayalam.
+Topics: ['storytelling', 'Malayalam stories', 'books']
+People: ['Rafseena']
+Emotion: happy
+Key quotes: ['Le tunnel !', 'It is not good.', 'Can you tell me a Malayalam story?']
+
+--- Session: 70867f13-5831-4769-a | 2026-02-07 15:24:28 ---
+Summary: The conversation involved a friendly exchange between the user and the avatar, where they switched to speaking in Malayalam. The user expressed feelings of tiredness and requested a story, which the avatar began to narrate in Malayalam, creating a calming atmosphere.
+Topics: ['Speaking in Malayalam', 'Calming activities', 'Storytelling', 'Nature exploration']
+People: ['Maya', 'Rafseena', 'Rafi', 'Meera']
+Emotion: neutral
+Key quotes: ['எனக்கு உறக்கம் வருந்துண்டு', 'Shitty.', 'Good, good.']
+
+--- Session: 2c8205e3-08c0-4d4c-9 | 2026-02-07 15:24:16 ---
+Summary: The conversation involved Rafsi expressing feelings of sleepiness and discussing his interest in the book 'The Secret Beach' by Veronica Henry. The Avatar offered support and engaged in a light-hearted exchange, including some dialogue in Malayalam and other languages.
+Topics: ['reading', 'books', 'Malayalam language', 'fiction']
+People: ['Rafsi']
+Emotion: neutral
+Key quotes: ["I'm just sleepy.", 'It is called the secret beach.', 'Yeah, it is actually quite interesting.']
+
+--- Session: edecd8b4-f33e-4c66-8 | 2026-02-07 15:24:03 ---
+Summary: The conversation revolves around Rafi's feelings and experiences, particularly focusing on the joy brought by good food, specifically homemade chapati and egg curry prepared by a helper referred to as 'Chechi.' Rafi expresses happiness about the meal and the comfort of home-cooked food.
+Topics: ['food', 'cooking']
+People: ['Maya', 'Rafseena', 'Chechi']
+Emotion: happy
+Key quotes: ['Good food makes me happy all the time.', 'I had chapati and egg curry.', 'She always do.']
+
+--- Session: 53b4f5c1-2925-4093-b | 2026-02-07 15:23:54 ---
+Summary: The conversation was a friendly exchange where the Avatar expressed joy and asked the User about their feelings. The User responded positively but briefly, indicating a light-hearted mood.
+Topics: []
+People: ['Rafseena']
+Emotion: happy
+Key quotes: ['Bueno.', 'See ya.']

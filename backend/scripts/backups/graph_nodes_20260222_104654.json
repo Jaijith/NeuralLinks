@@ -1,0 +1,3810 @@
+[
+  {
+    "id": "d5b15eec-e003-4ad9-8139-4039979e7a3d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "technology",
+    "properties": {
+      "importance": 8.0,
+      "source": "profile",
+      "strength": 7.5
+    },
+    "created_at": "2025-11-04T06:05:38.650233+00:00",
+    "updated_at": "2025-11-04T06:05:38.650238+00:00"
+  },
+  {
+    "id": "d2a7ecf8-9a0e-4251-8d5d-8c34b64c7303",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "social media",
+    "properties": {
+      "importance": 8.0,
+      "source": "profile",
+      "strength": 7.5
+    },
+    "created_at": "2025-11-04T06:05:38.656022+00:00",
+    "updated_at": "2025-11-04T06:05:38.656025+00:00"
+  },
+  {
+    "id": "05fe9460-5537-4ea7-882b-21a515fc0ea4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "innovation",
+    "properties": {
+      "importance": 8.0,
+      "source": "profile",
+      "strength": 7.5
+    },
+    "created_at": "2025-11-04T06:05:38.656465+00:00",
+    "updated_at": "2025-11-04T06:05:38.656468+00:00"
+  },
+  {
+    "id": "612fcc4c-a5bc-42de-80ad-b1594147ee48",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "learning",
+    "properties": {
+      "importance": 8.0,
+      "source": "conversation",
+      "strength": 7.5
+    },
+    "created_at": "2025-11-04T06:05:38.656892+00:00",
+    "updated_at": "2026-02-11 14:29:24.455000",
+    "mention_count": 1
+  },
+  {
+    "id": "21c40c31-b778-4b9a-96fa-aa27dd9bc6f7",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "connecting with others",
+    "properties": {
+      "importance": 8.0,
+      "source": "profile",
+      "strength": 7.5
+    },
+    "created_at": "2025-11-04T06:05:38.657246+00:00",
+    "updated_at": "2025-11-04T06:05:38.657249+00:00"
+  },
+  {
+    "id": "caf7b806-47e3-408c-b731-18506b0694ed",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "friendly",
+    "properties": {
+      "importance": 7.0,
+      "source": "default",
+      "strength": 6.5
+    },
+    "created_at": "2025-11-04T06:05:38.657522+00:00",
+    "updated_at": "2025-11-04T06:05:38.657524+00:00"
+  },
+  {
+    "id": "1392b912-089c-4940-87e1-69590cac894a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "curious",
+    "properties": {
+      "importance": 7.0,
+      "source": "default",
+      "strength": 7.5,
+      "last_mentioned": "2026-02-17T05:20:12.984775+00:00"
+    },
+    "created_at": "2025-11-04T06:05:38.657808+00:00",
+    "updated_at": "2026-02-17T05:20:12.984821+00:00"
+  },
+  {
+    "id": "d1333b6d-47f6-4e41-88ba-0228408a81f2",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "authentic",
+    "properties": {
+      "importance": 7.0,
+      "source": "default",
+      "strength": 6.5
+    },
+    "created_at": "2025-11-04T06:05:38.658142+00:00",
+    "updated_at": "2025-11-04T06:05:38.658144+00:00"
+  },
+  {
+    "id": "ea0ec0b9-6d4b-45a8-9c6b-1a40528b0b73",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "open-minded",
+    "properties": {
+      "importance": 7.0,
+      "source": "default",
+      "strength": 6.5
+    },
+    "created_at": "2025-11-04T06:05:38.658403+00:00",
+    "updated_at": "2025-11-04T06:05:38.658406+00:00"
+  },
+  {
+    "id": "079b0b96-ded4-4faa-89d9-e13c040d521e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "authenticity",
+    "properties": {
+      "importance": 8.0,
+      "source": "default",
+      "strength": 8.0,
+      "last_mentioned": "2026-02-18T04:04:41.668562+00:00"
+    },
+    "created_at": "2025-11-04T06:05:38.658682+00:00",
+    "updated_at": "2026-02-18T04:04:41.668575+00:00"
+  },
+  {
+    "id": "758648a6-9a97-45e6-9539-7e6f3dddcc6c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "growth",
+    "properties": {
+      "importance": 8.0,
+      "source": "default",
+      "strength": 7.0
+    },
+    "created_at": "2025-11-04T06:05:38.658940+00:00",
+    "updated_at": "2025-11-04T06:05:38.658943+00:00"
+  },
+  {
+    "id": "9c9bb207-886a-46e2-8d71-a089fc65bd93",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "connection",
+    "properties": {
+      "importance": 8.0,
+      "source": "default",
+      "strength": 7.0
+    },
+    "created_at": "2025-11-04T06:05:38.659204+00:00",
+    "updated_at": "2026-02-09 07:43:45.255000",
+    "mention_count": 2
+  },
+  {
+    "id": "3968a484-9c1f-4caf-91c6-84d6a6e1c41e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "lucky",
+    "properties": {
+      "confidence": 0.7,
+      "source": "post",
+      "last_mentioned": "2025-11-05T03:30:40.089198+00:00",
+      "strength": 1.5
+    },
+    "created_at": "2025-11-05T03:30:38.893399+00:00",
+    "updated_at": "2025-11-05T03:30:40.089216+00:00"
+  },
+  {
+    "id": "f8ba6c1d-080e-495e-b135-2cc2e6f915f6",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "python",
+    "properties": {
+      "source": "linkedin",
+      "strength": 0.9,
+      "category": "skill"
+    },
+    "created_at": "2025-11-08T15:14:38.194126+00:00",
+    "updated_at": "2025-11-08T15:14:38.194144+00:00"
+  },
+  {
+    "id": "719c1e7a-37c1-4cdf-b52a-591bac1644cc",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "machine learning",
+    "properties": {
+      "source": "linkedin",
+      "strength": 0.9,
+      "category": "skill"
+    },
+    "created_at": "2025-11-08T15:14:38.201924+00:00",
+    "updated_at": "2025-11-08T15:14:38.201993+00:00"
+  },
+  {
+    "id": "5ddb1d03-5421-4f46-aad6-94213623134f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "data science",
+    "properties": {
+      "source": "linkedin",
+      "strength": 0.9,
+      "category": "skill"
+    },
+    "created_at": "2025-11-08T15:14:38.204782+00:00",
+    "updated_at": "2025-11-08T15:14:38.204801+00:00"
+  },
+  {
+    "id": "22ea720d-47db-433d-9d09-739abf7a5025",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "software engineering",
+    "properties": {
+      "source": "linkedin",
+      "strength": 0.9,
+      "category": "skill"
+    },
+    "created_at": "2025-11-08T15:14:38.211654+00:00",
+    "updated_at": "2025-11-08T15:14:38.211854+00:00"
+  },
+  {
+    "id": "8a79c640-fb4f-4e61-ad05-105f7c309cfd",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "software engineering",
+    "properties": {
+      "confidence": 0.9,
+      "source": "linkedin"
+    },
+    "created_at": "2025-11-08T15:14:40.809369+00:00",
+    "updated_at": "2025-11-08T15:14:40.809372+00:00"
+  },
+  {
+    "id": "ab2ca9ab-9beb-4ec4-8601-3cab440e8997",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "technology",
+    "properties": {
+      "source": "linkedin"
+    },
+    "created_at": "2025-11-08T15:16:03.645659+00:00",
+    "updated_at": "2025-11-08T15:16:03.645661+00:00"
+  },
+  {
+    "id": "e270231c-fcd2-49a9-88de-dc16192307e0",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "software engineer",
+    "properties": {
+      "source": "linkedin"
+    },
+    "created_at": "2025-11-08T15:16:03.645668+00:00",
+    "updated_at": "2025-11-08T15:16:03.645671+00:00"
+  },
+  {
+    "id": "f320bd73-1943-4387-8049-2ef847503c58",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_manoramamax",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "manoramaMAX",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.627826+00:00",
+    "updated_at": "2025-11-08T17:35:07.627846+00:00"
+  },
+  {
+    "id": "7f4a1f6d-09d7-480c-9f6b-acb9ab161a68",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_the_graham_norton_show",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "The Graham Norton Show",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.629667+00:00",
+    "updated_at": "2025-11-08T17:35:07.629682+00:00"
+  },
+  {
+    "id": "c00ab73d-5a2c-4b96-9eed-b51923670fcb",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_shadow_music",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "Shadow Music",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.631471+00:00",
+    "updated_at": "2025-11-08T17:35:07.631490+00:00"
+  },
+  {
+    "id": "49abfe4c-64b3-4c19-8fc2-424bb48a921d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_my_garden_life",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "My Garden Life",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.633550+00:00",
+    "updated_at": "2025-11-08T17:35:07.633568+00:00"
+  },
+  {
+    "id": "bdbbb70c-7ef4-4f0f-871c-c399d6b15ea4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_learning_on_graphs_conference",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "Learning on Graphs Conference",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.635665+00:00",
+    "updated_at": "2025-11-08T17:35:07.635682+00:00"
+  },
+  {
+    "id": "28919832-c7b1-4e73-89f0-79e30a9b5ee4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_\u6c38\u9732_\u5143\u7a00_eiro_motoki",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "\u6c38\u9732 \u5143\u7a00 EIRO MOTOKI",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.638204+00:00",
+    "updated_at": "2025-11-08T17:35:07.638229+00:00"
+  },
+  {
+    "id": "d7374f95-1cba-4b7a-b1da-2502a1256615",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_1_universal_consciousness",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "1 universal consciousness",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.642090+00:00",
+    "updated_at": "2025-11-08T17:35:07.642111+00:00"
+  },
+  {
+    "id": "fae439f5-2f02-4c80-a7c0-e799038f13b2",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_redfrost_motivation",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "RedFrost Motivation",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.644747+00:00",
+    "updated_at": "2025-11-08T17:35:07.644767+00:00"
+  },
+  {
+    "id": "64e3076d-24a6-4d12-8f56-755ac93e4951",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_habeeb_rahman",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "HABEEB RAHMAN",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.647519+00:00",
+    "updated_at": "2025-11-08T17:35:07.647537+00:00"
+  },
+  {
+    "id": "8a197e9e-10a1-451e-ab66-7f1904acc1f5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_channel_coldplay",
+    "properties": {
+      "source": "youtube",
+      "category": "subscription",
+      "channel_name": "Coldplay",
+      "strength": 1.0,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.650160+00:00",
+    "updated_at": "2025-11-08T17:35:07.650185+00:00"
+  },
+  {
+    "id": "d9f7f695-fc9d-4c03-8c37-2b67467779b8",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_10",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "10",
+      "strength": 0.4,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.653038+00:00",
+    "updated_at": "2025-11-08T17:35:07.653061+00:00"
+  },
+  {
+    "id": "735c19c4-d487-4285-ae39-b1ee4c7b8c60",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_linkin_park",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "linkin_park",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.656119+00:00",
+    "updated_at": "2025-11-08T17:35:07.656144+00:00"
+  },
+  {
+    "id": "83d53f3c-4fa7-417a-9992-9f08f028d012",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_bleed_it_out",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "bleed_it_out",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.662919+00:00",
+    "updated_at": "2025-11-08T17:35:07.662940+00:00"
+  },
+  {
+    "id": "4c59cb01-cd3d-40d5-a387-c661710bd9b3",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_hans_zimmer",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "hans_zimmer",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.664989+00:00",
+    "updated_at": "2025-11-08T17:35:07.665010+00:00"
+  },
+  {
+    "id": "77d1a2c3-ad2c-4570-83ec-9b8de86392d9",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_dune:_part_two_(original_motion_picture_soundtrack)",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "dune:_part_two_(original_motion_picture_soundtrack)",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.666639+00:00",
+    "updated_at": "2025-11-08T17:35:07.666653+00:00"
+  },
+  {
+    "id": "515162b8-546b-47c5-9261-598df04248f1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_beginnings_are_such_delicate_times",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "beginnings_are_such_delicate_times",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.668645+00:00",
+    "updated_at": "2025-11-08T17:35:07.668666+00:00"
+  },
+  {
+    "id": "cf006734-e74a-4fb8-b74a-65f40e719370",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_silver_testing",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "silver_testing",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.679299+00:00",
+    "updated_at": "2025-11-08T17:35:07.679308+00:00"
+  },
+  {
+    "id": "02bd6300-46a9-49a2-bdcf-202bbc722a57",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_shorts",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "shorts",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.681298+00:00",
+    "updated_at": "2025-11-08T17:35:07.681313+00:00"
+  },
+  {
+    "id": "3ca926a9-735a-443a-906e-faf166b2ac98",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_23",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "23",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.685258+00:00",
+    "updated_at": "2025-11-08T17:35:07.685266+00:00"
+  },
+  {
+    "id": "3b936003-2542-4eb5-9744-1c655a0a095a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_malayalam_unboxing_video_new",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "malayalam_unboxing_video_new",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:35:07.686721+00:00",
+    "updated_at": "2025-11-08T17:35:07.686729+00:00"
+  },
+  {
+    "id": "7fb6b513-68cb-4450-966f-097a7ab3ae04",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_liked_channel_percussive_strings",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_channel",
+      "channel_name": "percussive strings",
+      "like_count": 2,
+      "strength": 0.4,
+      "service": "liked_videos"
+    },
+    "created_at": "2025-11-08T17:43:01.001041+00:00",
+    "updated_at": "2025-11-08T17:43:01.001308+00:00"
+  },
+  {
+    "id": "083a2171-3ed6-4eab-8588-92666fc3489b",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_liked_channel_linkin_park___topic",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_channel",
+      "channel_name": "linkin park - topic",
+      "like_count": 1,
+      "strength": 0.2,
+      "service": "liked_videos"
+    },
+    "created_at": "2025-11-08T17:43:01.106189+00:00",
+    "updated_at": "2025-11-08T17:43:01.106240+00:00"
+  },
+  {
+    "id": "a5618eff-da0a-4ddb-9f33-7d10ef8c0d3e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_liked_channel_hans_zimmer___topic",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_channel",
+      "channel_name": "hans zimmer - topic",
+      "like_count": 1,
+      "strength": 0.2,
+      "service": "liked_videos"
+    },
+    "created_at": "2025-11-08T17:43:01.171885+00:00",
+    "updated_at": "2025-11-08T17:43:01.171902+00:00"
+  },
+  {
+    "id": "42fe6486-0b5f-4309-b06b-17536d267233",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_liked_channel_fide_chess",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_channel",
+      "channel_name": "fide chess",
+      "like_count": 1,
+      "strength": 0.2,
+      "service": "liked_videos"
+    },
+    "created_at": "2025-11-08T17:43:01.233711+00:00",
+    "updated_at": "2025-11-08T17:43:01.233739+00:00"
+  },
+  {
+    "id": "6103dad0-e708-4186-9645-cc1c902f61e2",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_liked_channel_ulka",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_channel",
+      "channel_name": "ulka",
+      "like_count": 1,
+      "strength": 0.2,
+      "service": "liked_videos"
+    },
+    "created_at": "2025-11-08T17:43:01.283238+00:00",
+    "updated_at": "2025-11-08T17:43:01.283273+00:00"
+  },
+  {
+    "id": "e000eba2-a191-477c-a867-78e1ed31c136",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_liked_channel_thejourneyofpurpose_tjop",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_channel",
+      "channel_name": "thejourneyofpurpose tjop",
+      "like_count": 1,
+      "strength": 0.2,
+      "service": "liked_videos"
+    },
+    "created_at": "2025-11-08T17:43:01.600074+00:00",
+    "updated_at": "2025-11-08T17:43:01.600118+00:00"
+  },
+  {
+    "id": "eaaa9139-d857-462b-9394-5309688fa59c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_liked_channel_mathematicalmonk",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_channel",
+      "channel_name": "mathematicalmonk",
+      "like_count": 1,
+      "strength": 0.2,
+      "service": "liked_videos"
+    },
+    "created_at": "2025-11-08T17:43:02.689027+00:00",
+    "updated_at": "2025-11-08T17:43:02.689084+00:00"
+  },
+  {
+    "id": "e759a2a1-e150-4ac7-a44c-46db3491cef2",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_malayalam",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "malayalam",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:02.859503+00:00",
+    "updated_at": "2025-11-08T17:43:02.859516+00:00"
+  },
+  {
+    "id": "608b3a46-bfc5-44ce-9e46-46b5b3f064e8",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_viral",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "viral",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:02.903045+00:00",
+    "updated_at": "2025-11-08T17:43:02.903058+00:00"
+  },
+  {
+    "id": "018c9341-e385-41c4-94d5-8729a12279a1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_unboxing_annan",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "unboxing_annan",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:02.921739+00:00",
+    "updated_at": "2025-11-08T17:43:02.921768+00:00"
+  },
+  {
+    "id": "7aaebc4c-4459-49d6-8afe-18ee466c19fa",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_malayalam_latest_comedy",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "malayalam_latest_comedy",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:02.936506+00:00",
+    "updated_at": "2025-11-08T17:43:02.936535+00:00"
+  },
+  {
+    "id": "82131dcc-7176-44d0-875f-247edccbb75e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_malayalam_shortfilm",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "malayalam_shortfilm",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:02.953765+00:00",
+    "updated_at": "2025-11-08T17:43:02.955386+00:00"
+  },
+  {
+    "id": "60f3b050-83c2-4601-96d2-0adb5179e4d9",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_malayalam_webseries_latest",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "malayalam_webseries_latest",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:02.974817+00:00",
+    "updated_at": "2025-11-08T17:43:02.974840+00:00"
+  },
+  {
+    "id": "41d76d7e-7273-4697-87fd-5e6b072f3c83",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_1",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "1",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:02.992888+00:00",
+    "updated_at": "2025-11-08T17:43:02.992931+00:00"
+  },
+  {
+    "id": "88ebdfc6-ad6b-4023-a2e4-5fc1a0960b35",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_alan_watts",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "alan_watts",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:03.008021+00:00",
+    "updated_at": "2025-11-08T17:43:03.008045+00:00"
+  },
+  {
+    "id": "6efcf429-6ea0-4fcc-998c-278585f8d4f1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_music",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "music",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:03.039107+00:00",
+    "updated_at": "2025-11-08T17:43:03.039121+00:00"
+  },
+  {
+    "id": "b721f46a-197b-435e-912e-fe79e3e0cf4d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_existence",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "existence",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:03.042919+00:00",
+    "updated_at": "2025-11-08T17:43:03.042980+00:00"
+  },
+  {
+    "id": "b8c6a2a9-998f-4987-a5cc-39b4558aea48",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_philosophy",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "philosophy",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:03.063706+00:00",
+    "updated_at": "2025-11-08T17:43:03.063721+00:00"
+  },
+  {
+    "id": "c2640a41-bc71-4ea6-b2ae-46ef22dbf735",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_tjop",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "tjop",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:03.068542+00:00",
+    "updated_at": "2025-11-08T17:43:03.068560+00:00"
+  },
+  {
+    "id": "33908beb-17b8-4b13-83fb-4140c0197899",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_machine_learning",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "machine_learning",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:03.072676+00:00",
+    "updated_at": "2025-11-08T17:43:03.072686+00:00"
+  },
+  {
+    "id": "7a887a82-d458-4be0-8c47-5a94bdc14044",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_statistics",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_topic",
+      "topic": "statistics",
+      "strength": 0.1,
+      "service": "subscriptions"
+    },
+    "created_at": "2025-11-08T17:43:03.074101+00:00",
+    "updated_at": "2025-11-08T17:43:03.074109+00:00"
+  },
+  {
+    "id": "ef51127c-e21f-4768-8467-6364e68e2329",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "trait:spiritual",
+    "properties": {
+      "confidence": 0.9,
+      "evidence": "frequently watches journey of purpose and philosophical content",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.9,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.773878+00:00",
+    "updated_at": "2025-11-16T05:54:10.771355+00:00"
+  },
+  {
+    "id": "6869af83-ed7e-4d6e-9e38-0d527a9d8aac",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "trait:philosophical",
+    "properties": {
+      "confidence": 0.85,
+      "evidence": "engages with deep thinking and purpose-driven content",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.85,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.776627+00:00",
+    "updated_at": "2025-11-16T05:54:10.775745+00:00"
+  },
+  {
+    "id": "97d3a873-4e4b-4d38-a33b-da9f2df4afa4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "trait:curious",
+    "properties": {
+      "confidence": 0.88,
+      "evidence": "watches educational content on graphs and machine learning",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.88,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.778135+00:00",
+    "updated_at": "2025-11-16T05:54:10.778287+00:00"
+  },
+  {
+    "id": "87abb77a-ae2f-4c1f-b04c-c2a9823d7a7b",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "trait:artistic",
+    "properties": {
+      "confidence": 0.87,
+      "evidence": "engages with music and film soundtracks",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.87,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.779643+00:00",
+    "updated_at": "2025-11-16T05:54:10.781605+00:00"
+  },
+  {
+    "id": "147cebbe-2cfe-4a38-ab7c-0789d75a9a18",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "trait:humorous",
+    "properties": {
+      "confidence": 0.8,
+      "evidence": "watches comedy and entertainment content",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.781329+00:00",
+    "updated_at": "2025-11-16T05:54:10.784081+00:00"
+  },
+  {
+    "id": "57d27394-c739-46a1-adc2-7a7d108fa7df",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "value:spirituality",
+    "properties": {
+      "importance": "high",
+      "evidence": "consistent viewing of spiritual and philosophical channels",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.782968+00:00",
+    "updated_at": "2025-11-16T05:54:10.785760+00:00"
+  },
+  {
+    "id": "5e286744-75f2-4d14-8957-620e35e9e3be",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "value:knowledge",
+    "properties": {
+      "importance": "high",
+      "evidence": "engagement with educational and intellectual content",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.784358+00:00",
+    "updated_at": "2025-11-16T05:54:10.791422+00:00"
+  },
+  {
+    "id": "63dc04df-f9b7-4043-8e7d-ea3c053a92ac",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "value:creativity",
+    "properties": {
+      "importance": "medium",
+      "evidence": "appreciation for artistic and musical content",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.785698+00:00",
+    "updated_at": "2025-11-10T02:46:05.785705+00:00"
+  },
+  {
+    "id": "96ff721f-630e-4721-af69-221f6b81307d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:spiritual content",
+    "properties": {
+      "intensity": "high",
+      "evidence": "frequent engagement with spiritual channels",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.787108+00:00",
+    "updated_at": "2025-11-16T05:54:10.794779+00:00"
+  },
+  {
+    "id": "12943844-ce22-4a68-8288-bfbefc11678a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:film soundtracks",
+    "properties": {
+      "intensity": "medium",
+      "evidence": "watches movie soundtracks like Dune and Hans Zimmer",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.788490+00:00",
+    "updated_at": "2025-11-16T05:54:10.798718+00:00"
+  },
+  {
+    "id": "198c02fc-52e6-4d31-afd2-563c21fe31f4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:educational mathematics",
+    "properties": {
+      "intensity": "medium",
+      "evidence": "watches content on machine learning and data models",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.789988+00:00",
+    "updated_at": "2025-11-16T05:54:10.802021+00:00"
+  },
+  {
+    "id": "dc4cd8f4-b22a-4c1d-8cb4-af18152cf1d8",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:comedy and entertainment",
+    "properties": {
+      "intensity": "medium",
+      "evidence": "watches Malayalam comedy and entertainment videos",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:05.791919+00:00",
+    "updated_at": "2025-11-10T02:46:26.694061+00:00"
+  },
+  {
+    "id": "b6890d12-7803-4287-a86a-56318230b9ac",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_category_10",
+    "properties": {
+      "source": "youtube",
+      "category": "watch_history_genre",
+      "genre": "10",
+      "watch_count": 4,
+      "strength": 0.4,
+      "service": "watch_history"
+    },
+    "created_at": "2025-11-10T02:46:05.794094+00:00",
+    "updated_at": "2025-11-10T02:46:05.794102+00:00"
+  },
+  {
+    "id": "f5b8f51d-781b-4690-89e9-f6d89cc43a94",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:youtube_liked_10",
+    "properties": {
+      "source": "youtube",
+      "category": "liked_video_genre",
+      "genre": "10",
+      "like_count": 4,
+      "strength": 0.8,
+      "service": "liked_videos"
+    },
+    "created_at": "2025-11-10T02:46:05.806241+00:00",
+    "updated_at": "2025-11-10T02:46:05.806257+00:00"
+  },
+  {
+    "id": "57fb5360-5fea-4040-a546-283bf7dd1bbe",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "value:self-discovery",
+    "properties": {
+      "importance": "high",
+      "evidence": "watches content about personal growth and purpose",
+      "source": "youtube",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8,
+      "service": "llm_analysis"
+    },
+    "created_at": "2025-11-10T02:46:16.305210+00:00",
+    "updated_at": "2025-11-16T05:54:10.787445+00:00"
+  },
+  {
+    "id": "af33a3ca-5f31-475c-9ff8-5cdaa6bacb61",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "interest:music",
+    "properties": {
+      "intensity": "high",
+      "evidence": "frequent engagement with music channels and playlists",
+      "source": "youtube",
+      "service": "llm_analysis",
+      "derived_from": "watch_history_analysis",
+      "strength": 0.8
+    },
+    "created_at": "2025-11-15T04:07:20.447429+00:00",
+    "updated_at": "2025-11-16T05:54:10.804071+00:00"
+  },
+  {
+    "id": "0470c2ed-4dd3-45b9-891c-6cd5e0076ef9",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "adventurous",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2025-11-15T04:56:31.064339+00:00",
+    "updated_at": "2025-11-15T04:56:31.064344+00:00"
+  },
+  {
+    "id": "b927104f-4dec-4d52-906a-941abf7d08fb",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "cleaning",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2025-11-15T04:56:32.405272+00:00",
+    "updated_at": "2025-11-15T04:56:32.405302+00:00"
+  },
+  {
+    "id": "8ccc432c-7ac3-4d4c-8bfe-908e349eece8",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "kathakali",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2025-11-16T07:52:01.721366+00:00",
+    "updated_at": "2025-11-16T07:52:01.721383+00:00"
+  },
+  {
+    "id": "96ef9617-c902-41aa-9154-c984337b6815",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "shadow_music",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.470744+00:00",
+    "updated_at": "2025-11-17T12:44:37.470766+00:00"
+  },
+  {
+    "id": "38ec7264-24c0-405e-8052-404f58994512",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "1_universal_consciousness",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.478094+00:00",
+    "updated_at": "2025-11-17T12:44:37.478121+00:00"
+  },
+  {
+    "id": "d033c574-f6d3-49e5-a090-03af9324425c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "comedy_and_entertainment",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.481941+00:00",
+    "updated_at": "2025-11-17T12:44:37.481953+00:00"
+  },
+  {
+    "id": "ad528072-7b86-4253-9469-e314b590e09a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "\u6c38\u9732_\u5143\u7a00_eiro_motoki",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.483634+00:00",
+    "updated_at": "2025-11-17T12:44:37.483650+00:00"
+  },
+  {
+    "id": "d00fc781-a9a7-43e9-a3d9-7272e08132b8",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "redfrost_motivation",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.486053+00:00",
+    "updated_at": "2025-11-17T12:44:37.486076+00:00"
+  },
+  {
+    "id": "221a915a-73c0-4e76-b6fa-5e4df469707e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "music",
+    "properties": {
+      "source": "conversation",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.489253+00:00",
+    "updated_at": "2026-02-11 14:29:24.455000",
+    "mention_count": 1
+  },
+  {
+    "id": "62689001-b039-4aa5-9e2e-7f7d0fe8d5f6",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "the_graham_norton_show",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.491921+00:00",
+    "updated_at": "2025-11-17T12:44:37.491940+00:00"
+  },
+  {
+    "id": "b59ab2b4-a02b-488b-8d51-083529625157",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "manoramamax",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.494944+00:00",
+    "updated_at": "2025-11-17T12:44:37.494967+00:00"
+  },
+  {
+    "id": "a718f7d4-90f9-45e1-b97d-81fd52d4a9ec",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "educational_mathematics",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.497395+00:00",
+    "updated_at": "2025-11-17T12:44:37.497414+00:00"
+  },
+  {
+    "id": "562e602b-6cba-45ec-84b2-653c45ca090d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "coldplay",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.499176+00:00",
+    "updated_at": "2025-11-17T12:44:37.499200+00:00"
+  },
+  {
+    "id": "b22bb065-fcb8-4405-a9e5-0171f9dd5b4c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "spiritual_content",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.504846+00:00",
+    "updated_at": "2025-11-17T12:44:37.504867+00:00"
+  },
+  {
+    "id": "8444acc5-00db-409e-8318-9f585e4ac6c3",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "learning_on_graphs_conference",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.508458+00:00",
+    "updated_at": "2025-11-17T12:44:37.508475+00:00"
+  },
+  {
+    "id": "8f940c26-fc2b-432c-8762-d7e28205c9db",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "film_soundtracks",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.510526+00:00",
+    "updated_at": "2025-11-17T12:44:37.510543+00:00"
+  },
+  {
+    "id": "f2357e8c-c011-4e34-9501-4a301ada162e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "my_garden_life",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2025-11-17T12:44:37.512138+00:00",
+    "updated_at": "2025-11-17T12:44:37.512154+00:00"
+  },
+  {
+    "id": "7e42ac5b-c504-4565-8d4c-1488a2616c52",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "happy",
+    "properties": {
+      "confidence": 0.9,
+      "source": "post"
+    },
+    "created_at": "2025-11-17T16:43:22.122775+00:00",
+    "updated_at": "2025-11-17T16:43:22.122791+00:00"
+  },
+  {
+    "id": "84566593-31ac-4453-bd3c-d6969d80120a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "palakkad",
+    "properties": {
+      "context": "location",
+      "source": "post"
+    },
+    "created_at": "2025-12-22T06:05:39.346231+00:00",
+    "updated_at": "2025-12-22T06:05:39.346248+00:00"
+  },
+  {
+    "id": "2e3be804-6f3c-424f-b279-c38a650c226c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "workflow engines",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-11T05:01:19.600501+00:00",
+    "updated_at": "2026-01-11T05:01:19.600519+00:00"
+  },
+  {
+    "id": "b13b62d7-7f8d-467c-8537-51810855f44c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "driven",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-11T05:01:19.600543+00:00",
+    "updated_at": "2026-01-11T05:01:19.600547+00:00"
+  },
+  {
+    "id": "62c16a8c-2042-4571-a97e-e72e39b534dd",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "efficiency",
+    "properties": {
+      "importance": "high",
+      "source": "post",
+      "last_mentioned": "2026-01-20T05:17:23.615826+00:00",
+      "strength": 1.5
+    },
+    "created_at": "2026-01-11T05:01:19.600566+00:00",
+    "updated_at": "2026-02-07 15:19:04.388000",
+    "mention_count": 3
+  },
+  {
+    "id": "407d5149-3ba2-417b-b3c0-9a52b60fc6bf",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "posting",
+    "properties": {
+      "context": "social media",
+      "time_taken": "long",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T05:17:23.507487+00:00",
+    "updated_at": "2026-01-20T05:17:23.507503+00:00"
+  },
+  {
+    "id": "9a4ff39b-29ec-48b6-b444-f938cd00eb28",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "persistent",
+    "properties": {
+      "confidence": 0.65,
+      "source": "post",
+      "last_mentioned": "2026-02-16T05:36:41.187595+00:00",
+      "strength": 2.0
+    },
+    "created_at": "2026-01-20T05:17:23.507517+00:00",
+    "updated_at": "2026-02-16T05:36:41.187610+00:00"
+  },
+  {
+    "id": "69e6c90b-3bfa-4453-b86d-75ee05ff448c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "fast deployment",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T06:14:46.438215+00:00",
+    "updated_at": "2026-01-20T06:14:46.438233+00:00"
+  },
+  {
+    "id": "7b0be7c3-9e44-4b83-977f-37a4ab5f0574",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "solo software development",
+    "properties": {
+      "role": "developer",
+      "scope": "individual contribution",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T06:14:46.438250+00:00",
+    "updated_at": "2026-01-20T06:14:46.438253+00:00"
+  },
+  {
+    "id": "2fcc57e0-64aa-4487-96be-e28c7917ed91",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "self-reliant",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-20T06:14:46.438262+00:00",
+    "updated_at": "2026-01-20T06:14:46.438265+00:00"
+  },
+  {
+    "id": "2f423adb-793e-4316-9f84-3acc2792a253",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "perseverance",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T06:14:46.438283+00:00",
+    "updated_at": "2026-01-20T06:14:46.438285+00:00"
+  },
+  {
+    "id": "ea36ed3d-89ae-4a53-af39-0232748ede6c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "coding",
+    "properties": {
+      "confidence": 0.75,
+      "source": "conversation"
+    },
+    "created_at": "2026-01-20T06:16:02.704737+00:00",
+    "updated_at": "2026-02-01 07:49:28.467000",
+    "mention_count": 1
+  },
+  {
+    "id": "4a21e666-f10e-43f7-a4f6-53c5ecf0adb5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "practical",
+    "properties": {
+      "confidence": 0.85,
+      "source": "post"
+    },
+    "created_at": "2026-01-20T06:16:02.704761+00:00",
+    "updated_at": "2026-01-20T06:16:02.704763+00:00"
+  },
+  {
+    "id": "384d3f2a-3b56-4092-af60-29e8e508cecd",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "digital minimalism",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T06:16:02.704771+00:00",
+    "updated_at": "2026-01-20T06:16:02.704774+00:00"
+  },
+  {
+    "id": "6864fa4b-dcdf-43e3-b9e3-8e3dc411555f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "online presence curation",
+    "properties": {
+      "intent": "maintain clean profile",
+      "source": "post"
+    },
+    "created_at": "2026-01-20T06:16:02.704781+00:00",
+    "updated_at": "2026-01-20T06:16:02.704783+00:00"
+  },
+  {
+    "id": "01a1be53-9a92-4ef3-93af-4b0681f58dd4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "demographic",
+    "label": "location:India",
+    "properties": {
+      "category": "location",
+      "value": "India"
+    },
+    "created_at": "2026-01-20T07:15:53.445788+00:00",
+    "updated_at": "2026-01-20T07:15:53.445804+00:00"
+  },
+  {
+    "id": "b5b5e167-4b83-4f18-b33c-ddf3160c5c19",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "easy going",
+    "properties": {
+      "confidence": 0.8,
+      "source": "bio"
+    },
+    "created_at": "2026-01-20T07:16:27.641388+00:00",
+    "updated_at": "2026-01-20T07:16:27.641404+00:00"
+  },
+  {
+    "id": "3ea3689a-55f0-4e3a-8e38-56293ec5f9ab",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "hacking",
+    "properties": {
+      "intensity": "high",
+      "source": "bio"
+    },
+    "created_at": "2026-01-20T07:16:27.641417+00:00",
+    "updated_at": "2026-01-20T07:16:27.641419+00:00"
+  },
+  {
+    "id": "0bebad69-040f-4724-aa8e-0f9d907a70a8",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "feeling losts",
+    "properties": {
+      "intensity": "low",
+      "source": "post"
+    },
+    "created_at": "2026-01-23T06:46:14.468406+00:00",
+    "updated_at": "2026-01-23T06:46:14.468425+00:00"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_works_at_amazon",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "works at google",
+    "display_label": "Works at Google",
+    "full_text": "Works at Google",
+    "strength": 0.9,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 06:09:00.478000",
+    "updated_at": "2026-02-01 06:09:17.263000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_does_not_have_a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "does not have a",
+    "display_label": "Does not have a son",
+    "full_text": "Does not have a son",
+    "strength": 0.9,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 06:09:11.095000",
+    "updated_at": "2026-02-01 06:09:11.095000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_hiking",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "hiking",
+    "display_label": "Hiking",
+    "strength": 0.8,
+    "mention_count": 1,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 06:09:17.263000",
+    "updated_at": "2026-02-01 06:09:17.263000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_moved_to_seattle",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "moved to seattle",
+    "display_label": "Moved to Seattle",
+    "full_text": "Moved to Seattle",
+    "strength": 0.9,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 06:09:17.263000",
+    "updated_at": "2026-02-01 06:09:17.263000"
+  },
+  {
+    "id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_manju",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "connection",
+    "label": "manju",
+    "display_label": "Manju",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "wife",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 4,
+    "created_at": "2026-02-01 06:38:38.769000",
+    "updated_at": "2026-02-01 11:23:39.901000"
+  },
+  {
+    "id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_srijit",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "connection",
+    "label": "sreejith",
+    "display_label": "Sreejith",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "brother",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-01 06:38:38.769000",
+    "updated_at": "2026-02-01 08:01:01.719000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "fine dining",
+    "display_label": "Fine Dining",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 8,
+    "created_at": "2026-02-01 06:38:38.769000",
+    "updated_at": "2026-02-08 13:00:58.565000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_south_indian_cuisine",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "south indian cuisine",
+    "display_label": "South Indian Cuisine",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-01 06:38:38.769000",
+    "updated_at": "2026-02-01 07:49:28.467000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_gatherings",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "family gatherings",
+    "display_label": "Family Gatherings",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 06:38:38.769000",
+    "updated_at": "2026-02-01 06:38:38.769000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_user_is_from_kerala,",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "user is from kerala,",
+    "display_label": "User is from Kerala, India.",
+    "full_text": "User is from Kerala, India.",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 06:38:38.769000",
+    "updated_at": "2026-02-01 06:38:38.769000"
+  },
+  {
+    "id": "c9bf1d60-bcb9-4978-86fe-1835624c5841",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "drawing",
+    "properties": {
+      "subject": "rain forest",
+      "intensity": "low",
+      "source": "conversation"
+    },
+    "created_at": "2026-02-01T06:51:52.781494+00:00",
+    "updated_at": "2026-02-01 07:49:28.467000",
+    "mention_count": 1
+  },
+  {
+    "id": "3e84499b-7413-4691-9d61-43328498fa59",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "gift of artwork",
+    "properties": {
+      "giver": "Subhadra",
+      "receiver": "Maya",
+      "item": "drawing of a rain forest",
+      "source": "post"
+    },
+    "created_at": "2026-02-01T06:51:52.781526+00:00",
+    "updated_at": "2026-02-01T06:51:52.781529+00:00"
+  },
+  {
+    "id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "connection",
+    "label": "jaijith",
+    "display_label": "Jaijith",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "user",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-01 07:49:28.467000",
+    "updated_at": "2026-02-01 07:49:28.467000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_classical_indian_dance",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "classical indian dance",
+    "display_label": "Classical Indian Dance",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 3,
+    "created_at": "2026-02-01 07:49:28.467000",
+    "updated_at": "2026-02-01 08:31:38.312000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith_is_from_india",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "jaijith is from india",
+    "display_label": "Jaijith is from India",
+    "full_text": "Jaijith is from India",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 07:49:28.467000",
+    "updated_at": "2026-02-01 07:49:28.467000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith_is_from_kerala",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "jaijith is from kerala",
+    "display_label": "Jaijith is from Kerala",
+    "full_text": "Jaijith is from Kerala",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 07:49:28.467000",
+    "updated_at": "2026-02-01 07:49:28.467000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith_is_from_thiruvananthapuram",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "jaijith is from thiruvananthapuram",
+    "display_label": "Jaijith is from Thiruvananthapuram",
+    "full_text": "Jaijith is from Thiruvananthapuram",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 07:49:28.467000",
+    "updated_at": "2026-02-01 07:49:28.467000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_has_a_dance",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "subhadra has a dance",
+    "display_label": "Subhadra has a dance class at 3 PM",
+    "full_text": "Subhadra has a dance class at 3 PM",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 07:49:28.467000",
+    "updated_at": "2026-02-01 07:49:28.467000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_needs_to_return",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "subhadra needs to return",
+    "display_label": "Subhadra needs to return her dance costumes by 6 P",
+    "full_text": "Subhadra needs to return her dance costumes by 6 PM",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 07:49:28.467000",
+    "updated_at": "2026-02-01 07:49:28.467000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_dance",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "dance",
+    "display_label": "Dance",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 5,
+    "created_at": "2026-02-01 07:56:00.851000",
+    "updated_at": "2026-02-08 13:00:58.565000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_events",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "family events",
+    "display_label": "Family Events",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 07:56:00.851000",
+    "updated_at": "2026-02-01 07:56:00.851000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_indian_politics",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "indian politics",
+    "display_label": "Indian Politics",
+    "strength": 0.4,
+    "properties": {
+      "source": "explicit",
+      "service": "manual"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 08:02:35.824000",
+    "updated_at": "2026-02-01 08:02:35.824000"
+  },
+  {
+    "node_type": "connection",
+    "label": "narmada",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "created_at": "2026-02-01 08:05:15.418000",
+    "display_label": "Narmada",
+    "id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_narmada",
+    "mention_count": 1,
+    "properties": {
+      "source": "explicit",
+      "relationship": "mother",
+      "details": ""
+    },
+    "strength": 0.8,
+    "updated_at": "2026-02-01 08:05:15.418000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_world_politics",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "world politics",
+    "display_label": "World Politics",
+    "strength": 0.7,
+    "properties": {
+      "source": "explicit",
+      "service": "manual"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 08:06:40.137000",
+    "updated_at": "2026-02-01 08:06:40.137000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_kerala_origin",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "kerala origin",
+    "display_label": "Kerala Origin",
+    "strength": 0.7,
+    "properties": {
+      "source": "explicit",
+      "service": "manual"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 08:24:17.921000",
+    "updated_at": "2026-02-01 08:24:17.921000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_library_books",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "library books",
+    "display_label": "Library Books",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 08:31:38.312000",
+    "updated_at": "2026-02-01 08:31:38.312000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_ai_education_app",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "ai education app",
+    "display_label": "Ai Education App",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 09:00:20.796000",
+    "updated_at": "2026-02-01 09:00:20.796000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_learning_ai",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "learning ai",
+    "display_label": "Learning Ai",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 09:27:48.461000",
+    "updated_at": "2026-02-01 09:27:48.461000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_user_is_running_a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "user is running a",
+    "display_label": "User is running a marketing campaign for an app",
+    "full_text": "User is running a marketing campaign for an app",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 09:27:48.461000",
+    "updated_at": "2026-02-01 09:27:48.461000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_reading",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "reading",
+    "display_label": "Reading",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 09:38:20.018000",
+    "updated_at": "2026-02-01 09:38:20.018000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_rainbow_magic",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "rainbow magic",
+    "display_label": "Rainbow Magic",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 09:38:20.018000",
+    "updated_at": "2026-02-01 09:38:20.018000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_new_app_for_vegetable",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "new app for vegetable",
+    "display_label": "new app for vegetable vendors",
+    "full_text": "new app for vegetable vendors",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 09:41:18.876000",
+    "updated_at": "2026-02-01 09:41:18.876000"
+  },
+  {
+    "id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_jay",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "connection",
+    "label": "jay",
+    "display_label": "Jay",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "self",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-01 09:57:49.889000",
+    "updated_at": "2026-02-01 09:57:49.889000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_selling_crude_oil",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "selling crude oil",
+    "display_label": "Selling Crude Oil",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-01 10:08:20.806000",
+    "updated_at": "2026-02-02 05:15:38.063000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_marketing_campaign_for_selling",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "marketing campaign for selling",
+    "display_label": "marketing campaign for selling crude oil",
+    "full_text": "marketing campaign for selling crude oil",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 10:08:20.806000",
+    "updated_at": "2026-02-01 10:08:20.806000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_marketing_campaign",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "marketing campaign",
+    "display_label": "Marketing Campaign",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 5,
+    "created_at": "2026-02-01 10:14:51.561000",
+    "updated_at": "2026-02-09 08:52:46.590000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_ai_application",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "ai application",
+    "display_label": "Ai Application",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 11:23:39.901000",
+    "updated_at": "2026-02-01 11:23:39.901000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_boutiques",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "boutiques",
+    "display_label": "Boutiques",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 13:03:24.755000",
+    "updated_at": "2026-02-01 13:03:24.755000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_flowers",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "flowers",
+    "display_label": "Flowers",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 13:03:24.755000",
+    "updated_at": "2026-02-01 13:03:24.755000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_new_app_focused_on",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "new app focused on",
+    "display_label": "new app focused on boutiques",
+    "full_text": "new app focused on boutiques",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 13:03:24.755000",
+    "updated_at": "2026-02-01 13:03:24.755000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_campaign_for_boutique_flower",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "campaign for boutique flower",
+    "display_label": "campaign for boutique flower app has started",
+    "full_text": "campaign for boutique flower app has started",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-01 13:03:24.755000",
+    "updated_at": "2026-02-01 13:03:24.755000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_sportswear",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "sportswear",
+    "display_label": "Sportswear",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-01 13:25:39.046000",
+    "updated_at": "2026-02-01 13:25:39.046000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_time",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "family time",
+    "display_label": "Family Time",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 3,
+    "created_at": "2026-02-02 05:09:40.465000",
+    "updated_at": "2026-02-07 15:58:01.411000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_playing_games",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "playing games",
+    "display_label": "Playing Games",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-02 05:09:40.465000",
+    "updated_at": "2026-02-02 05:09:40.465000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_exploring_new_things",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "exploring new things",
+    "display_label": "Exploring New Things",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-02 05:09:40.465000",
+    "updated_at": "2026-02-02 05:09:40.465000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_curiosity_and_imagination",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "curiosity and imagination",
+    "display_label": "Curiosity And Imagination",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-02 05:09:40.465000",
+    "updated_at": "2026-02-02 05:09:40.465000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_bitcoin",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "bitcoin",
+    "display_label": "Bitcoin",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-02 05:15:38.063000",
+    "updated_at": "2026-02-02 05:15:38.063000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith_is_running_a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "jaijith is running a",
+    "display_label": "Jaijith is running a marketing campaign for AI app",
+    "full_text": "Jaijith is running a marketing campaign for AI application development",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-02 05:15:38.063000",
+    "updated_at": "2026-02-02 13:16:36.778000"
+  },
+  {
+    "id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_vasubhadra",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "connection",
+    "label": "subhadra",
+    "display_label": "Subhadra",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "daughter",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 3,
+    "created_at": "2026-02-02 13:16:36.778000",
+    "updated_at": "2026-02-09 07:48:53.568000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_ai_application_development",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "ai application development",
+    "display_label": "Ai Application Development",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-02 13:16:36.778000",
+    "updated_at": "2026-02-02 13:16:36.778000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith_values_fine_dining",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "jaijith values fine dining",
+    "display_label": "Jaijith values fine dining and cherishing family t",
+    "full_text": "Jaijith values fine dining and cherishing family time",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-02 13:16:36.778000",
+    "updated_at": "2026-02-02 13:16:36.778000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith_has_a_wife",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "jaijith has a wife",
+    "display_label": "Jaijith has a wife named Manju and a daughter name",
+    "full_text": "Jaijith has a wife named Manju and a daughter named Vasubhadra",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-02 13:16:36.778000",
+    "updated_at": "2026-02-02 13:16:36.778000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_warm",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "warm",
+    "display_label": "Warm",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User shares personal experiences about family",
+      "source": "conversation"
+    },
+    "mention_count": 11,
+    "created_at": "2026-02-07 15:15:52.902000",
+    "updated_at": "2026-02-11 14:29:32.164000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_direct",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "direct",
+    "display_label": "Direct",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User clearly states who they were with during the outing",
+      "source": "conversation"
+    },
+    "mention_count": 25,
+    "created_at": "2026-02-07 15:15:52.902000",
+    "updated_at": "2026-02-11 14:29:32.164000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_confident",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "confident",
+    "display_label": "Confident",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User expresses enjoyment of the fine dining experience",
+      "source": "conversation"
+    },
+    "mention_count": 22,
+    "created_at": "2026-02-07 15:15:52.902000",
+    "updated_at": "2026-02-09 08:54:54.699000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family-oriented",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "family-oriented",
+    "display_label": "Family-Oriented",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User mentions spending quality time with wife and daughter",
+      "source": "conversation"
+    },
+    "mention_count": 11,
+    "created_at": "2026-02-07 15:15:52.902000",
+    "updated_at": "2026-02-08 13:01:01.905000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_experiential",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "experiential",
+    "display_label": "Experiential",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User values good experiences, as indicated by their enjoyment of fine dining",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:15:52.902000",
+    "updated_at": "2026-02-07 15:15:52.902000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_uncertain",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "uncertain",
+    "display_label": "Uncertain",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User's question 'can you hear me?' suggests a need for confirmation",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:16:02.488000",
+    "updated_at": "2026-02-07 15:16:02.488000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_communication",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "communication",
+    "display_label": "Communication",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User seeks to establish a connection by checking if they are heard",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:16:02.488000",
+    "updated_at": "2026-02-07 15:16:02.488000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_reserved",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "reserved",
+    "display_label": "Reserved",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User often gives short responses and seems hesitant to elaborate, e.g., 'Eh, nothing much, uh...'",
+      "source": "conversation"
+    },
+    "mention_count": 13,
+    "created_at": "2026-02-07 15:16:12.478000",
+    "updated_at": "2026-02-08 13:01:01.905000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_indirect",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "indirect",
+    "display_label": "Indirect",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User responds to questions without directly answering at times, e.g., 'So.'",
+      "source": "conversation"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-07 15:16:12.478000",
+    "updated_at": "2026-02-08 13:01:01.905000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_cultural_pride",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "cultural pride",
+    "display_label": "Cultural Pride",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User identifies their heritage and expresses appreciation for their cuisine, e.g., 'So we are actually from South India, from Kerala.'",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:16:12.478000",
+    "updated_at": "2026-02-07 15:16:12.478000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_analytical",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "analytical",
+    "display_label": "Analytical",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User is focused on organizing tasks and reminders for their daughter.",
+      "source": "conversation"
+    },
+    "mention_count": 8,
+    "created_at": "2026-02-07 15:16:25.779000",
+    "updated_at": "2026-02-09 08:54:54.699000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_cultural_appreciation",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "cultural appreciation",
+    "display_label": "Cultural Appreciation",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User has a strong connection to South Indian culture and cuisine.",
+      "source": "conversation"
+    },
+    "mention_count": 3,
+    "created_at": "2026-02-07 15:16:25.779000",
+    "updated_at": "2026-02-08 13:01:01.905000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_dedication_to_improvement",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "dedication to improvement",
+    "display_label": "Dedication To Improvement",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User is coding extensively to enhance the AI's memory and understanding.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:16:25.779000",
+    "updated_at": "2026-02-07 15:16:25.779000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_directness",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "directness",
+    "display_label": "Directness",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User directly asks for a reminder about something they forgot.",
+      "source": "conversation"
+    },
+    "mention_count": 3,
+    "created_at": "2026-02-07 15:16:40.368000",
+    "updated_at": "2026-02-09 07:43:45.255000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_uncertainty",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "uncertainty",
+    "display_label": "Uncertainty",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User expresses forgetfulness about the specific reminder.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:16:40.368000",
+    "updated_at": "2026-02-07 15:16:40.368000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_importance_of_family",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "importance of family",
+    "display_label": "Importance Of Family",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User's reminder is related to Subhadra, indicating a connection to family or loved ones.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:16:40.368000",
+    "updated_at": "2026-02-07 15:16:40.368000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_value_of_communication",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "value of communication",
+    "display_label": "Value Of Communication",
+    "strength": 0.6,
+    "properties": {
+      "evidence": "User seeks clarification and assistance in recalling the reminder, showing a desire for effective communication.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:16:40.368000",
+    "updated_at": "2026-02-07 15:16:40.368000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_responsible",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "responsible",
+    "display_label": "Responsible",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "like returning the books or something",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:17:05.901000",
+    "updated_at": "2026-02-07 15:17:05.901000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_education",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "education",
+    "display_label": "Education",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User is focused on developing an 'AI education app.'",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:17:16.056000",
+    "updated_at": "2026-02-07 15:17:16.056000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_collaboration",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "collaboration",
+    "display_label": "Collaboration",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User expresses a desire to work together with the AI, saying, 'I'm here with you, Jaijith, and we'll figure it out together.'",
+      "source": "conversation"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-07 15:17:16.056000",
+    "updated_at": "2026-02-09 08:52:49.881000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_innovation",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "innovation",
+    "display_label": "Innovation",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User is focused on launching a new app for learning AI, indicating a value for technology and education.",
+      "source": "conversation"
+    },
+    "mention_count": 3,
+    "created_at": "2026-02-07 15:17:28.266000",
+    "updated_at": "2026-02-09 08:52:49.881000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_problem-solving",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "problem-solving",
+    "display_label": "Problem-Solving",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User seeks clarification on the hiccup and wants to ensure the campaign runs smoothly.",
+      "source": "conversation"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-07 15:17:28.266000",
+    "updated_at": "2026-02-07 15:18:10.586000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_playful",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "playful",
+    "display_label": "Playful",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User identifies with the fairies, saying, 'I'm the fairies.'",
+      "source": "conversation"
+    },
+    "mention_count": 3,
+    "created_at": "2026-02-07 15:17:39.972000",
+    "updated_at": "2026-02-11 14:29:32.164000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_curiosity",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "curiosity",
+    "display_label": "Curiosity",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User asks questions like 'How old are you?' and 'How much ears are you?'",
+      "source": "conversation"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-07 15:17:39.972000",
+    "updated_at": "2026-02-07 15:19:15.166000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_entrepreneurship",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "entrepreneurship",
+    "display_label": "Entrepreneurship",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User is developing a new app and seeks to market it",
+      "source": "conversation"
+    },
+    "mention_count": 4,
+    "created_at": "2026-02-07 15:17:51.717000",
+    "updated_at": "2026-02-09 08:54:54.699000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_support_for_small_businesses",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "support for small businesses",
+    "display_label": "Support For Small Businesses",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User's app is focused on vegetable vendors",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:17:51.717000",
+    "updated_at": "2026-02-07 15:17:51.717000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_interest_in_projects",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "interest in projects",
+    "display_label": "Interest In Projects",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User was previously energized about a marketing campaign.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:18:00.951000",
+    "updated_at": "2026-02-07 15:18:00.951000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_entrepreneurial_spirit",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "entrepreneurial spirit",
+    "display_label": "Entrepreneurial Spirit",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "I want you to run a marketing campaign for vegetable vendors.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:18:10.586000",
+    "updated_at": "2026-02-07 15:18:10.586000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_business-oriented",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "business-oriented",
+    "display_label": "Business-Oriented",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User is focused on running a marketing campaign for selling crude oil.",
+      "source": "conversation"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-07 15:18:20.541000",
+    "updated_at": "2026-02-07 15:18:30.362000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_professional_growth",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "professional growth",
+    "display_label": "Professional Growth",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User is focused on publicizing a new AI application",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:18:42.216000",
+    "updated_at": "2026-02-07 15:18:42.216000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_aesthetics",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "aesthetics",
+    "display_label": "Aesthetics",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User emphasizes that the campaign should 'look very attractive' and focuses on flowers, showing a value for visual appeal.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:18:54.416000",
+    "updated_at": "2026-02-07 15:18:54.416000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_concise",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "concise",
+    "display_label": "Concise",
+    "strength": 0.85,
+    "properties": {
+      "evidence": "User uses short and straightforward responses",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:19:04.388000",
+    "updated_at": "2026-02-07 15:19:04.388000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_results-oriented",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "results-oriented",
+    "display_label": "Results-Oriented",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User is focused on the outcome of the marketing campaign",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:19:04.388000",
+    "updated_at": "2026-02-07 15:19:04.388000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_interest_in_technology/finance",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "interest in technology/finance",
+    "display_label": "Interest In Technology/Finance",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User: What's Bitcoin price today?",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:19:26.417000",
+    "updated_at": "2026-02-07 15:19:26.417000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_humorous",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "humorous",
+    "display_label": "Humorous",
+    "strength": 0.6,
+    "properties": {
+      "evidence": "User jokes about being called 'love' and mentions potential trouble with his wife: 'Oh my God, that's dangerous.'",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:19:37.415000",
+    "updated_at": "2026-02-07 15:19:37.415000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_professionalism",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "professionalism",
+    "display_label": "Professionalism",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User is focused on running a marketing campaign for his AI applications, indicating a priority on career and business.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:19:37.415000",
+    "updated_at": "2026-02-07 15:19:37.415000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_indirect_communication",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "indirect communication",
+    "display_label": "Indirect Communication",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User often responds with short phrases or questions rather than elaborating",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:19:50.737000",
+    "updated_at": "2026-02-07 15:19:50.737000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_cultural_connection",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "cultural connection",
+    "display_label": "Cultural Connection",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User communicates in multiple languages and engages in culturally relevant topics",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:19:50.737000",
+    "updated_at": "2026-02-07 15:19:50.737000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_tea",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "tea",
+    "display_label": "Tea",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:58:01.411000",
+    "updated_at": "2026-02-07 15:58:01.411000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_ai_space",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "ai space",
+    "display_label": "Ai Space",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:58:01.411000",
+    "updated_at": "2026-02-07 15:58:01.411000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_software_engineer_and_virtual",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "software engineer and virtual",
+    "display_label": "Software Engineer and Virtual Explorer",
+    "full_text": "Software Engineer and Virtual Explorer",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-07 15:58:01.411000",
+    "updated_at": "2026-02-07 15:58:01.411000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_data_scientist",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "data scientist",
+    "display_label": "data scientist",
+    "full_text": "data scientist",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-07 15:58:01.411000",
+    "updated_at": "2026-02-07 15:58:01.411000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_reflective",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "reflective",
+    "display_label": "Reflective",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "have my thoughts flowing in my mind.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:58:04.968000",
+    "updated_at": "2026-02-07 15:58:04.968000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "family",
+    "display_label": "Family",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "You've mentioned before how important family is to you.",
+      "source": "conversation"
+    },
+    "mention_count": 3,
+    "created_at": "2026-02-07 15:58:04.968000",
+    "updated_at": "2026-02-11 14:29:32.164000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_comfort_in_solitude",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "comfort in solitude",
+    "display_label": "Comfort In Solitude",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "I prefer to have a tea because no one's there.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:58:04.968000",
+    "updated_at": "2026-02-07 15:58:04.968000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_personal_growth",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "personal growth",
+    "display_label": "Personal Growth",
+    "strength": 0.6,
+    "properties": {
+      "evidence": "it happened by... you know how things... how life unfolded in front of me",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:58:04.968000",
+    "updated_at": "2026-02-07 15:58:04.968000"
+  },
+  {
+    "id": "e9d2d3e5-9384-49bb-89c5-20f2f02e69b4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "resilient",
+    "properties": {
+      "confidence": 0.85,
+      "source": "post",
+      "last_mentioned": "2026-02-16T05:36:41.100986+00:00",
+      "strength": 1.5
+    },
+    "created_at": "2026-02-07T17:07:35.963662+00:00",
+    "updated_at": "2026-02-16T05:36:41.101000+00:00"
+  },
+  {
+    "id": "eb6a12bb-4985-44c5-8040-602a8a8fdfc1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "determined",
+    "properties": {
+      "confidence": 0.85,
+      "source": "post"
+    },
+    "created_at": "2026-02-07T17:07:35.963691+00:00",
+    "updated_at": "2026-02-07T17:07:35.963694+00:00"
+  },
+  {
+    "id": "620816e9-bb0f-48d7-b9bb-c765e1e40b69",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "hard times",
+    "properties": {
+      "emotional_state": "stressed",
+      "severity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-07T17:07:35.963703+00:00",
+    "updated_at": "2026-02-07T17:07:35.963706+00:00"
+  },
+  {
+    "id": "f56bc07b-870f-4408-9b81-054cb6cbc7cc",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "persistence",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-07T17:07:35.963714+00:00",
+    "updated_at": "2026-02-07T17:07:35.963716+00:00"
+  },
+  {
+    "id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_trimaan",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "connection",
+    "label": "trimaan",
+    "display_label": "Trimaan",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "friend",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-07 17:11:11.542000",
+    "updated_at": "2026-02-07 17:11:11.542000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_had_a_birthday",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "subhadra had a birthday",
+    "display_label": "Subhadra had a birthday party",
+    "full_text": "Subhadra had a birthday party",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-07 17:11:11.542000",
+    "updated_at": "2026-02-07 17:11:11.542000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_celebrated_with_friends",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "subhadra celebrated with friends",
+    "display_label": "Subhadra celebrated with friends",
+    "full_text": "Subhadra celebrated with friends",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-07 17:11:11.542000",
+    "updated_at": "2026-02-07 17:11:11.542000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_importance_of_social_connections",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "importance of social connections",
+    "display_label": "Importance Of Social Connections",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User shows interest in Subhadra's friendships and celebrations.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 17:11:15.729000",
+    "updated_at": "2026-02-07 17:11:15.729000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_well-being_of_daughter",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "well-being of daughter",
+    "display_label": "well-being of daughter",
+    "full_text": "well-being of daughter",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-08 13:00:58.565000",
+    "updated_at": "2026-02-08 13:00:58.565000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_well-being_of_mother",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "well-being of mother",
+    "display_label": "well-being of mother",
+    "full_text": "well-being of mother",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-08 13:00:58.565000",
+    "updated_at": "2026-02-08 13:00:58.565000"
+  },
+  {
+    "id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_child/partner/friend",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "connection",
+    "label": "subhadra",
+    "display_label": "Subhadra",
+    "strength": 0.8,
+    "properties": {
+      "relationship": "child/partner/friend",
+      "source": "post_analysis",
+      "evidence": "The post suggests a playful activity with someone named Subhadra, indicating a close relationship.",
+      "name_hint": "Subhadra"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 06:16:07.080000",
+    "updated_at": "2026-02-09 06:16:07.080000"
+  },
+  {
+    "id": "c34bb64d-b072-4edb-ad4a-dfcabeb185db",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "lego",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-02-09T06:16:20.491823+00:00",
+    "updated_at": "2026-02-09T06:16:20.491845+00:00"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_ai",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "ai",
+    "display_label": "Ai",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:39:25.441000",
+    "updated_at": "2026-02-09 07:39:25.441000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_art",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "art",
+    "display_label": "Art",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:39:25.441000",
+    "updated_at": "2026-02-09 07:39:25.441000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith_is_involved_in",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "jaijith is involved in",
+    "display_label": "Jaijith is involved in the AI space",
+    "full_text": "Jaijith is involved in the AI space",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-09 07:39:25.441000",
+    "updated_at": "2026-02-09 07:39:25.441000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_jaijith_has_a_family",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "jaijith has a family",
+    "display_label": "Jaijith has a family",
+    "full_text": "Jaijith has a family",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-09 07:39:25.441000",
+    "updated_at": "2026-02-09 07:39:25.441000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_warmth",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "warmth",
+    "display_label": "Warmth",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User expresses interest in Subhadra's activities, indicating a caring nature.",
+      "source": "conversation"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-09 07:39:28.930000",
+    "updated_at": "2026-02-09 07:43:45.255000"
+  },
+  {
+    "id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_confidence",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "confidence",
+    "display_label": "Confidence",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User responds affirmatively to the Avatar's recollection of past conversations.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:39:28.930000",
+    "updated_at": "2026-02-09 07:39:28.930000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_importance",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "family importance",
+    "display_label": "Family Importance",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User's family is mentioned as a big part of their life.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:39:28.930000",
+    "updated_at": "2026-02-09 07:39:28.930000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_interest_in_creativity",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "interest in creativity",
+    "display_label": "Interest In Creativity",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User shows interest in Subhadra's drawing, indicating appreciation for artistic expression.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:39:28.930000",
+    "updated_at": "2026-02-09 07:39:28.930000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_professional_engagement",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "professional engagement",
+    "display_label": "Professional Engagement",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User is involved in the AI space, suggesting a value for technology and innovation.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:39:28.930000",
+    "updated_at": "2026-02-09 07:39:28.930000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_creative_drawing",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "creative drawing",
+    "display_label": "Creative Drawing",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:48:53.568000",
+    "updated_at": "2026-02-09 07:48:53.568000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_marketing_campaign_for_an_ai_learning_app",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "marketing campaign for an ai learning app",
+    "display_label": "Marketing Campaign For An Ai Learning App",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:48:53.568000",
+    "updated_at": "2026-02-09 07:48:53.568000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_user's_family_is_doing",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "user's family is doing",
+    "display_label": "User's family is doing well",
+    "full_text": "User's family is doing well",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-09 07:48:53.568000",
+    "updated_at": "2026-02-09 07:48:53.568000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_social_connection",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "social connection",
+    "display_label": "Social Connection",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User engages in discussions about friends and events like Subhadra's birthday party",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:48:56.876000",
+    "updated_at": "2026-02-09 07:48:56.876000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_professional_development",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "professional development",
+    "display_label": "Professional Development",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User discusses a marketing campaign for an AI learning app",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 07:48:56.876000",
+    "updated_at": "2026-02-09 07:48:56.876000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_marketing_campaign_for_ai_avatars",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "marketing campaign for ai avatars",
+    "display_label": "Marketing Campaign For Ai Avatars",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 08:49:24.014000",
+    "updated_at": "2026-02-09 08:49:24.014000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_application_name_is_'win1'",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "application name is 'win1'",
+    "display_label": "application name is 'Win1'",
+    "full_text": "application name is 'Win1'",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-09 08:49:24.014000",
+    "updated_at": "2026-02-09 08:49:24.014000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_achievement",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "achievement",
+    "display_label": "Achievement",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "desire to win for AI Avatars",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 08:49:26.677000",
+    "updated_at": "2026-02-09 08:49:26.677000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_ai_avatar_app",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "ai avatar app",
+    "display_label": "Ai Avatar App",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 08:52:46.590000",
+    "updated_at": "2026-02-09 08:52:46.590000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_ai_avatar_app_called",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "ai avatar app called",
+    "display_label": "AI Avatar app called '2-in-1'",
+    "full_text": "AI Avatar app called '2-in-1'",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-09 08:52:46.590000",
+    "updated_at": "2026-02-09 08:52:46.590000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_advertisement_campaign",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "advertisement campaign",
+    "display_label": "Advertisement Campaign",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 08:54:51.404000",
+    "updated_at": "2026-02-09 08:54:51.404000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_development",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "app development",
+    "display_label": "App Development",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 08:54:51.404000",
+    "updated_at": "2026-02-09 08:54:51.404000"
+  },
+  {
+    "id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_name_is_'2-in-1'",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "app name is '2-in-1'",
+    "display_label": "app name is '2-in-1'",
+    "full_text": "app name is '2-in-1'",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-09 08:54:51.404000",
+    "updated_at": "2026-02-09 08:54:51.404000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_success",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "success",
+    "display_label": "Success",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "Let's make this campaign a success!",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 08:54:54.699000",
+    "updated_at": "2026-02-09 08:54:54.699000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_ai_trading_app",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "ai trading app",
+    "display_label": "Ai Trading App",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-09 08:58:40.592000",
+    "updated_at": "2026-02-09 08:58:40.592000"
+  },
+  {
+    "id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_singing",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "singing",
+    "display_label": "Singing",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-11 14:29:24.455000",
+    "updated_at": "2026-02-11 14:29:24.455000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_music",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "music",
+    "display_label": "Music",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User shows interest in music and encourages their daughter to participate in music classes and singing.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-11 14:29:32.164000",
+    "updated_at": "2026-02-11 14:29:32.164000"
+  },
+  {
+    "id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_learning",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "learning",
+    "display_label": "Learning",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User asks about their daughter's studies, indicating a value placed on education and personal growth.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-11 14:29:32.164000",
+    "updated_at": "2026-02-11 14:29:32.164000"
+  },
+  {
+    "id": "861754d0-33ef-4d7c-8bd1-37f22fb01acf",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "graceful",
+    "properties": {
+      "confidence": 0.85,
+      "source": "post"
+    },
+    "created_at": "2026-02-16T05:36:41.078955+00:00",
+    "updated_at": "2026-02-16T05:36:41.078958+00:00"
+  },
+  {
+    "id": "fbb94aa1-92c5-4e54-aca1-9e6f78af926c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "patience",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-16T05:36:41.078976+00:00",
+    "updated_at": "2026-02-16T05:36:41.078978+00:00"
+  },
+  {
+    "id": "f985cb47-6e58-4695-a66e-8cbdc0e05467",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "optimism",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-16T05:36:41.078986+00:00",
+    "updated_at": "2026-02-16T05:36:41.078988+00:00"
+  },
+  {
+    "id": "77461f1e-09b7-489c-987f-4bcf503d831d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "digital avatars and ai assistants",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-17T05:20:12.911456+00:00",
+    "updated_at": "2026-02-17T05:20:12.919735+00:00"
+  },
+  {
+    "id": "b0a43853-3578-4623-ab57-166d33776375",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "identity_preservation",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-17T05:20:12.919794+00:00",
+    "updated_at": "2026-02-17T05:20:12.919797+00:00"
+  },
+  {
+    "id": "eb7da8aa-2fe7-44c6-b547-afd07ecf097d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "coordination_of_multiple_digital_agents",
+    "properties": {
+      "scope": "tasks",
+      "domain": "virtual personas",
+      "source": "post"
+    },
+    "created_at": "2026-02-17T05:20:12.919805+00:00",
+    "updated_at": "2026-02-17T05:20:12.919807+00:00"
+  },
+  {
+    "id": "c0a125ff-eda7-4deb-bc30-e005fa3173eb",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "preference",
+    "label": "communication_and_coordination",
+    "properties": {
+      "mode": "structured",
+      "channels": [
+        "text",
+        "voice"
+      ],
+      "source": "post"
+    },
+    "created_at": "2026-02-17T05:20:12.919816+00:00",
+    "updated_at": "2026-02-17T05:20:12.919818+00:00"
+  },
+  {
+    "id": "b8ed5fa7-da96-4a35-82d0-871f27cacd42",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "role-playing with avatars",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-17T05:24:00.229945+00:00",
+    "updated_at": "2026-02-17T05:24:00.229963+00:00"
+  },
+  {
+    "id": "01118e40-79b0-4913-a4fe-adef368ee0f4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "imaginative",
+    "properties": {
+      "creativity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-17T05:24:00.229975+00:00",
+    "updated_at": "2026-02-17T05:24:00.229978+00:00"
+  },
+  {
+    "id": "a7380991-836b-4909-afe2-84d0844a41df",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "value",
+    "label": "identity preservation",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-17T05:24:00.229987+00:00",
+    "updated_at": "2026-02-17T05:24:00.229989+00:00"
+  },
+  {
+    "id": "4a787c5b-6e32-4313-8614-1a5009d98b8f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "experience",
+    "label": "avatar-assisted task coordination",
+    "properties": {
+      "complexity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-02-17T05:24:00.229998+00:00",
+    "updated_at": "2026-02-17T05:24:00.230001+00:00"
+  },
+  {
+    "id": "f3778a50-32a7-476d-a632-b2e1642a1002",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "personalization",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-18T04:03:13.714706+00:00",
+    "updated_at": "2026-02-18T04:03:13.714725+00:00"
+  },
+  {
+    "id": "e278b50e-a404-434e-9eac-4a173c9da268",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "interest",
+    "label": "sensory experiences",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-18T04:03:13.714755+00:00",
+    "updated_at": "2026-02-18T04:03:13.714758+00:00"
+  },
+  {
+    "id": "25ab6484-469f-4034-a96f-bf7feadc2b5d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "node_type": "trait",
+    "label": "grounded",
+    "properties": {
+      "confidence": 0.85,
+      "source": "post"
+    },
+    "created_at": "2026-02-18T04:03:13.714767+00:00",
+    "updated_at": "2026-02-18T04:03:13.714770+00:00"
+  }
+]

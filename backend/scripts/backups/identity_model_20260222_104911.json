@@ -1,0 +1,3776 @@
+{
+  "interests": {
+    "fine dining": {
+      "label": "fine dining",
+      "display_label": "fine dining",
+      "evidence_sources": [
+        "transcript:34a8e751-b943-4f96-bfdd-ebade76a90f9",
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "transcript:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "conversation_index:34a8e751-b943-4f96-bfdd-ebade76a90f9",
+        "conversation_index:04318a77-3f66-4978-9baf-96460ea5953e",
+        "conversation_index:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "conversation_index:2fbf77b2-4d27-4e16-be53-a39df9a6973d",
+        "conversation_index:83e6dcd4-611a-43de-a99e-e1e93300faed",
+        "conversation_index:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "conversation_index:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "conversation_index:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "conversation_index:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "identity_memory:identity_memory"
+      ],
+      "evidence_quotes": [
+        "Yesterday, I went out with my daughter Vasubhadra and my wife Manju for a fine dining.",
+        "we went for a fine dining with my wife",
+        "You have a keen interest in fine dining",
+        "You're a lover of fine dining",
+        "You're someone who values fine dining",
+        "mentioned a lovely fine dining experience with Manju",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 19,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-08",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 1.0
+    },
+    "south indian cuisine": {
+      "label": "south indian cuisine",
+      "display_label": "South Indian cuisine",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "transcript:83e6dcd4-611a-43de-a99e-e1e93300faed",
+        "conversation_index:04318a77-3f66-4978-9baf-96460ea5953e",
+        "conversation_index:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "conversation_index:83e6dcd4-611a-43de-a99e-e1e93300faed"
+      ],
+      "evidence_quotes": [
+        "We tried some South Indian dish.",
+        "You know what kind of food I like the most? ... I know how much you love fine dining, especially if it involves South Indian cuisine.",
+        "enjoying some lovely South Indian cuisine",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 6,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 1.0
+    },
+    "family time": {
+      "label": "family time",
+      "display_label": "Family time",
+      "evidence_sources": [
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "conversation_index:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "conversation_index:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "conversation_index:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "identity_memory:identity_memory"
+      ],
+      "evidence_quotes": [
+        "You've mentioned how much you enjoy spending time with them, especially when it comes to fine dining and exploring new culinary experiences together.",
+        "cherishing family time, especially with your wife Manju and daughter Vasubhadra",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "identity memory",
+        "identity memory",
+        "identity memory",
+        "identity memory"
+      ],
+      "mention_count": 9,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 1.0
+    },
+    "coding": {
+      "label": "coding",
+      "display_label": "Coding",
+      "evidence_sources": [
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "conversation_index:6ea76939-b73f-41ce-83ea-5cbede106a94"
+      ],
+      "evidence_quotes": [
+        "I've been coding extensively for this.",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "dance": {
+      "label": "dance",
+      "display_label": "dance",
+      "evidence_sources": [
+        "transcript:2fbf77b2-4d27-4e16-be53-a39df9a6973d",
+        "conversation_index:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "conversation_index:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "conversation_index:9534a52c-ac78-48b8-a13d-a2df498e2048",
+        "conversation_index:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f"
+      ],
+      "evidence_quotes": [
+        "It's something very special, and I know how much you enjoy watching her dance.",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-08)"
+      ],
+      "mention_count": 5,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-08",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 1.0
+    },
+    "daughter's drawing": {
+      "label": "daughter's drawing",
+      "display_label": "daughter's drawing",
+      "evidence_sources": [
+        "transcript:83e6dcd4-611a-43de-a99e-e1e93300faed"
+      ],
+      "evidence_quotes": [
+        "Did you see my daughter's drawing?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "daughter's activities": {
+      "label": "daughter's activities",
+      "display_label": "daughter's activities",
+      "evidence_sources": [
+        "transcript:1216c247-9389-4955-9859-9fde4b592916"
+      ],
+      "evidence_quotes": [
+        "your daughter Subhadra's drawing and her classical Indian dance performance"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai education": {
+      "label": "ai education",
+      "display_label": "AI education",
+      "evidence_sources": [
+        "transcript:2dbc8c8b-7d4e-4245-b185-85588ebc1d2d",
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "I want to check if you could help me run a workflow for... Ronnie starting my AI education app.",
+        "[2026-01-11] \ud83d\ude80 Dive into the future of learning!"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "ai learning": {
+      "label": "ai learning",
+      "display_label": "AI learning",
+      "evidence_sources": [
+        "transcript:c42e8bb1-c76c-4913-97fd-e88368a7085b",
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "transcript:817a8459-d225-407e-87b9-a7e23c404c90"
+      ],
+      "evidence_quotes": [
+        "I wanted your help to run a marketing campaign for my new app for learning AI.",
+        "needing help with a marketing campaign for your new AI learning app",
+        "we discussed a marketing campaign for an AI learning app"
+      ],
+      "mention_count": 3,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.69
+    },
+    "reading": {
+      "label": "reading",
+      "display_label": "reading",
+      "evidence_sources": [
+        "transcript:b37c2b41-2ee2-4cb8-a772-68afcda95367",
+        "conversation_index:b37c2b41-2ee2-4cb8-a772-68afcda95367"
+      ],
+      "evidence_quotes": [
+        "User: I just read the book.",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "rainbow magic series": {
+      "label": "rainbow magic series",
+      "display_label": "Rainbow Magic series",
+      "evidence_sources": [
+        "transcript:b37c2b41-2ee2-4cb8-a772-68afcda95367"
+      ],
+      "evidence_quotes": [
+        "Avatar: Oh, 'Rainbow Magic'! Those are such delightful stories."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "marketing": {
+      "label": "marketing",
+      "display_label": "Marketing",
+      "evidence_sources": [
+        "transcript:157da2bb-a4ec-48bb-bc88-f395f5340b1d",
+        "transcript:9c3ff7c3-a029-417e-b8e1-471b386bc280",
+        "transcript:04974090-4edc-4739-b83c-40c0c1d6ee73",
+        "transcript:563e438a-68b3-4420-a1ab-74d1aa379575",
+        "transcript:c4def8bb-ecab-4efb-b576-b4b986f193b9",
+        "transcript:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "transcript:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5",
+        "transcript:e7a9c416-9754-4f4f-b356-d4d6dea91a51",
+        "transcript:c7dfa6ff-018a-43bf-bf35-142a679b0b52"
+      ],
+      "evidence_quotes": [
+        "Can you run a marketing campaign for my new app which is for vegetable vendors?",
+        "Our last conversation was about running a marketing campaign for a new app focused on vegetable vendors.",
+        "I want you to run a marketing campaign for vegetable vendors.",
+        "Can you run a marketing campaign for me",
+        "can you run a marketing campaign for me to sell vegetable oil?",
+        "you've been working on marketing campaigns",
+        "I want your help in running a marketing campaign for my new app.",
+        "I want to run a marketing campaign for my application",
+        "I want your help in running a marketing campaign for my AI Avatar app 2 in 1."
+      ],
+      "mention_count": 9,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 1.0
+    },
+    "technology": {
+      "label": "technology",
+      "display_label": "Technology",
+      "evidence_sources": [
+        "transcript:157da2bb-a4ec-48bb-bc88-f395f5340b1d",
+        "transcript:04974090-4edc-4739-b83c-40c0c1d6ee73"
+      ],
+      "evidence_quotes": [
+        "Can you run a marketing campaign for my new app which is for vegetable vendors?",
+        "What is the technical issue in detail that you can explain to me talk to me technically what issue you face"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "crude oil": {
+      "label": "crude oil",
+      "display_label": "crude oil",
+      "evidence_sources": [
+        "transcript:563e438a-68b3-4420-a1ab-74d1aa379575"
+      ],
+      "evidence_quotes": [
+        "selling crude oil"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai applications": {
+      "label": "ai applications",
+      "display_label": "AI applications",
+      "evidence_sources": [
+        "transcript:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "conversation_index:a54bb303-88c1-4ef2-9beb-234f509f5861"
+      ],
+      "evidence_quotes": [
+        "my new application on AI",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "boutiques": {
+      "label": "boutiques",
+      "display_label": "boutiques",
+      "evidence_sources": [
+        "transcript:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5",
+        "conversation_index:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5"
+      ],
+      "evidence_quotes": [
+        "my new app application which is for boutique",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "flowers": {
+      "label": "flowers",
+      "display_label": "flowers",
+      "evidence_sources": [
+        "transcript:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5",
+        "conversation_index:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5"
+      ],
+      "evidence_quotes": [
+        "This is for mostly flowers.",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "sportswear": {
+      "label": "sportswear",
+      "display_label": "sportswear",
+      "evidence_sources": [
+        "transcript:a409748a-cd64-4f41-b641-1b6f90b6f8ac",
+        "conversation_index:a409748a-cd64-4f41-b641-1b6f90b6f8ac"
+      ],
+      "evidence_quotes": [
+        "Okay, so can you start a marketing campaign for sportswear for me?",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "cryptocurrency": {
+      "label": "cryptocurrency",
+      "display_label": "cryptocurrency",
+      "evidence_sources": [
+        "transcript:8d376aaa-f4bb-4f80-802c-d8fa96b8e6f9"
+      ],
+      "evidence_quotes": [
+        "What's Bitcoin price today?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-02",
+      "last_mentioned": "2026-02-02",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "business": {
+      "label": "business",
+      "display_label": "business",
+      "evidence_sources": [
+        "transcript:8d376aaa-f4bb-4f80-802c-d8fa96b8e6f9"
+      ],
+      "evidence_quotes": [
+        "can you run a marketing campaign for me for my new applications which is to sell crude oil."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-02",
+      "last_mentioned": "2026-02-02",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "marketing campaigns": {
+      "label": "marketing campaigns",
+      "display_label": "marketing campaigns",
+      "evidence_sources": [
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "conversation_index:157da2bb-a4ec-48bb-bc88-f395f5340b1d",
+        "conversation_index:a54bb303-88c1-4ef2-9beb-234f509f5861"
+      ],
+      "evidence_quotes": [
+        "interested in running a marketing campaign for selling crude oil",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 3,
+      "first_mentioned": "2026-02-02",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.69
+    },
+    "ai application development": {
+      "label": "ai application development",
+      "display_label": "AI application development",
+      "evidence_sources": [
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "conversation_index:dbaf1a35-0374-4ab7-91ab-9a096a973944"
+      ],
+      "evidence_quotes": [
+        "run a campaign for me for my application developer, for applications on AI",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-02",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "ai and data science": {
+      "label": "ai and data science",
+      "display_label": "AI and Data Science",
+      "evidence_sources": [
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2"
+      ],
+      "evidence_quotes": [
+        "AI space as a data scientist and all it happened by"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "family activities": {
+      "label": "family activities",
+      "display_label": "family activities",
+      "evidence_sources": [
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f"
+      ],
+      "evidence_quotes": [
+        "enjoyed discussing your daughter's drawing and her recent classical Indian dance performance"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-08",
+      "last_mentioned": "2026-02-08",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai space": {
+      "label": "ai space",
+      "display_label": "AI space",
+      "evidence_sources": [
+        "transcript:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c",
+        "conversation_index:96e729b0-16fa-4b22-be9c-e0421cd5e8f2"
+      ],
+      "evidence_quotes": [
+        "You also mentioned your work path in the AI space.",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "ai avatars": {
+      "label": "ai avatars",
+      "display_label": "AI avatars",
+      "evidence_sources": [
+        "transcript:e7a9c416-9754-4f4f-b356-d4d6dea91a51"
+      ],
+      "evidence_quotes": [
+        "I want to run a marketing campaign for my application to win one for AI Avatars."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai technology": {
+      "label": "ai technology",
+      "display_label": "AI technology",
+      "evidence_sources": [
+        "transcript:c7dfa6ff-018a-43bf-bf35-142a679b0b52"
+      ],
+      "evidence_quotes": [
+        "I want your help in running a marketing campaign for my AI Avatar app 2 in 1."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "advertisement campaigns": {
+      "label": "advertisement campaigns",
+      "display_label": "advertisement campaigns",
+      "evidence_sources": [
+        "transcript:d9bde9f8-f683-43e6-a6e8-d4c23b06348a"
+      ],
+      "evidence_quotes": [
+        "I want your help in running an advertisement campaign for my app 2in1 with all the targeted audience."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai trading": {
+      "label": "ai trading",
+      "display_label": "AI trading",
+      "evidence_sources": [
+        "transcript:831c990c-5a35-4a21-a10c-2c5775d821a2"
+      ],
+      "evidence_quotes": [
+        "I want to run a targeted campaign for my potential AI trading app."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "music": {
+      "label": "music",
+      "display_label": "Music",
+      "evidence_sources": [
+        "transcript:7d5cdb39-b864-46c4-8e7e-474105141725",
+        "profile:user_profile",
+        "conversation_index:7d5cdb39-b864-46c4-8e7e-474105141725"
+      ],
+      "evidence_quotes": [
+        "Niyam Music class kayaniyathe illo.",
+        "profile: explicit interests",
+        "conversation topic (2026-02-11)"
+      ],
+      "mention_count": 3,
+      "first_mentioned": "2026-02-11",
+      "last_mentioned": "2026-02-11",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.84
+    },
+    "avatars and personalization": {
+      "label": "avatars and personalization",
+      "display_label": "avatars and personalization",
+      "evidence_sources": [
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "[2026-02-18], [2026-02-17]"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai and technology": {
+      "label": "ai and technology",
+      "display_label": "AI and technology",
+      "evidence_sources": [
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "[2026-01-30]"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "floral business": {
+      "label": "floral business",
+      "display_label": "floral business",
+      "evidence_sources": [
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "[2026-02-01]"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "home services": {
+      "label": "home services",
+      "display_label": "home services",
+      "evidence_sources": [
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "[2026-01-11] \ud83c\udfe1\u2728 Excited to dive into the world of home services!"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "food delivery marketing": {
+      "label": "food delivery marketing",
+      "display_label": "food delivery marketing",
+      "evidence_sources": [
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "[2026-01-11] \ud83c\udf55\ud83d\ude80 Ready to spice up your food delivery app marketing?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "productivity apps": {
+      "label": "productivity apps",
+      "display_label": "productivity apps",
+      "evidence_sources": [
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "[2026-01-11] \ud83d\ude80 Exciting news, professionals! Our new app leverages cutting-edge technology"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "urban lifestyle": {
+      "label": "urban lifestyle",
+      "display_label": "urban lifestyle",
+      "evidence_sources": [
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "[2026-01-11] Hey urban warriors! \ud83d\ude80\u2728 Elevate your hustle with seamless convenience"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "workflow engines": {
+      "label": "workflow engines",
+      "display_label": "workflow engines",
+      "evidence_sources": [
+        "post:posts_batch_20"
+      ],
+      "evidence_quotes": [
+        "[2026-01-11] its a busy day..on to workflow engines today"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "digital art": {
+      "label": "digital art",
+      "display_label": "digital art",
+      "evidence_sources": [
+        "post:posts_batch_20"
+      ],
+      "evidence_quotes": [
+        "[2026-01-04] \ud83c\udf1f Unleash your creativity with ArtMind AI! \ud83c\udfa8 Whether you're a total newbie or a seasoned pro, you can create stunning digital art in just seconds. Dive in and give it a try for FREE! \u2728 Le"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "robotics": {
+      "label": "robotics",
+      "display_label": "robotics",
+      "evidence_sources": [
+        "post:posts_batch_20"
+      ],
+      "evidence_quotes": [
+        "[2025-12-08] Robot dog"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "nature": {
+      "label": "nature",
+      "display_label": "nature",
+      "evidence_sources": [
+        "post:posts_batch_30"
+      ],
+      "evidence_quotes": [
+        "[2025-11-16] the morniing sun",
+        "[2025-11-16] how beautful the sunset looks"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.51
+    },
+    "kathakali": {
+      "label": "kathakali",
+      "display_label": "Kathakali",
+      "evidence_sources": [
+        "post:posts_batch_30"
+      ],
+      "evidence_quotes": [
+        "[2025-11-16] Kathakali, our traditional dance form"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "strong",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "data science": {
+      "label": "data science",
+      "display_label": "data science",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "shadow music": {
+      "label": "shadow music",
+      "display_label": "shadow_music",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "1 universal consciousness": {
+      "label": "1 universal consciousness",
+      "display_label": "1_universal_consciousness",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "python": {
+      "label": "python",
+      "display_label": "python",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "comedy and entertainment": {
+      "label": "comedy and entertainment",
+      "display_label": "comedy_and_entertainment",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "\u6c38\u9732 \u5143\u7a00 eiro motoki": {
+      "label": "\u6c38\u9732 \u5143\u7a00 eiro motoki",
+      "display_label": "\u6c38\u9732_\u5143\u7a00_eiro_motoki",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "redfrost motivation": {
+      "label": "redfrost motivation",
+      "display_label": "redfrost_motivation",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "the graham norton show": {
+      "label": "the graham norton show",
+      "display_label": "the_graham_norton_show",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "manoramamax": {
+      "label": "manoramamax",
+      "display_label": "manoramamax",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "educational mathematics": {
+      "label": "educational mathematics",
+      "display_label": "educational_mathematics",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "coldplay": {
+      "label": "coldplay",
+      "display_label": "coldplay",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "habeeb rahman": {
+      "label": "habeeb rahman",
+      "display_label": "habeeb_rahman",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "spiritual content": {
+      "label": "spiritual content",
+      "display_label": "spiritual_content",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "machine learning": {
+      "label": "machine learning",
+      "display_label": "machine learning",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "learning on graphs conference": {
+      "label": "learning on graphs conference",
+      "display_label": "learning_on_graphs_conference",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "film soundtracks": {
+      "label": "film soundtracks",
+      "display_label": "film_soundtracks",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "my garden life": {
+      "label": "my garden life",
+      "display_label": "my_garden_life",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile: explicit interests"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "core",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "family gatherings": {
+      "label": "family gatherings",
+      "display_label": "family gatherings",
+      "evidence_sources": [
+        "conversation_index:04318a77-3f66-4978-9baf-96460ea5953e"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "classical indian dance": {
+      "label": "classical indian dance",
+      "display_label": "classical Indian dance",
+      "evidence_sources": [
+        "conversation_index:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "conversation_index:83e6dcd4-611a-43de-a99e-e1e93300faed",
+        "conversation_index:1216c247-9389-4955-9859-9fde4b592916"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 3,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.69
+    },
+    "drawing": {
+      "label": "drawing",
+      "display_label": "drawing",
+      "evidence_sources": [
+        "conversation_index:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "conversation_index:83e6dcd4-611a-43de-a99e-e1e93300faed",
+        "conversation_index:1216c247-9389-4955-9859-9fde4b592916"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 3,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.69
+    },
+    "watching dance performances": {
+      "label": "watching dance performances",
+      "display_label": "watching dance performances",
+      "evidence_sources": [
+        "conversation_index:2fbf77b2-4d27-4e16-be53-a39df9a6973d"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "family events": {
+      "label": "family events",
+      "display_label": "family events",
+      "evidence_sources": [
+        "conversation_index:2fbf77b2-4d27-4e16-be53-a39df9a6973d"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "library books": {
+      "label": "library books",
+      "display_label": "library books",
+      "evidence_sources": [
+        "conversation_index:1216c247-9389-4955-9859-9fde4b592916"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai education app": {
+      "label": "ai education app",
+      "display_label": "AI education app",
+      "evidence_sources": [
+        "conversation_index:2dbc8c8b-7d4e-4245-b185-85588ebc1d2d"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "marketing campaign": {
+      "label": "marketing campaign",
+      "display_label": "marketing campaign",
+      "evidence_sources": [
+        "conversation_index:2dbc8c8b-7d4e-4245-b185-85588ebc1d2d",
+        "conversation_index:563e438a-68b3-4420-a1ab-74d1aa379575",
+        "conversation_index:c4def8bb-ecab-4efb-b576-b4b986f193b9",
+        "conversation_index:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5",
+        "conversation_index:8d376aaa-f4bb-4f80-802c-d8fa96b8e6f9",
+        "conversation_index:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "conversation_index:c7dfa6ff-018a-43bf-bf35-142a679b0b52"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-08)",
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 7,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 1.0
+    },
+    "learning ai": {
+      "label": "learning ai",
+      "display_label": "learning AI",
+      "evidence_sources": [
+        "conversation_index:c42e8bb1-c76c-4913-97fd-e88368a7085b"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "fairies": {
+      "label": "fairies",
+      "display_label": "fairies",
+      "evidence_sources": [
+        "conversation_index:b37c2b41-2ee2-4cb8-a772-68afcda95367"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "books": {
+      "label": "books",
+      "display_label": "books",
+      "evidence_sources": [
+        "conversation_index:b37c2b41-2ee2-4cb8-a772-68afcda95367"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "stories": {
+      "label": "stories",
+      "display_label": "stories",
+      "evidence_sources": [
+        "conversation_index:b37c2b41-2ee2-4cb8-a772-68afcda95367"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "app development": {
+      "label": "app development",
+      "display_label": "app development",
+      "evidence_sources": [
+        "conversation_index:157da2bb-a4ec-48bb-bc88-f395f5340b1d",
+        "conversation_index:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5",
+        "conversation_index:d9bde9f8-f683-43e6-a6e8-d4c23b06348a"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 3,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.69
+    },
+    "vegetable vendors": {
+      "label": "vegetable vendors",
+      "display_label": "vegetable vendors",
+      "evidence_sources": [
+        "conversation_index:157da2bb-a4ec-48bb-bc88-f395f5340b1d",
+        "conversation_index:9c3ff7c3-a029-417e-b8e1-471b386bc280"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "running a marketing campaign": {
+      "label": "running a marketing campaign",
+      "display_label": "running a marketing campaign",
+      "evidence_sources": [
+        "conversation_index:9c3ff7c3-a029-417e-b8e1-471b386bc280"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "marketing campaign for vegetable vendors": {
+      "label": "marketing campaign for vegetable vendors",
+      "display_label": "marketing campaign for vegetable vendors",
+      "evidence_sources": [
+        "conversation_index:04974090-4edc-4739-b83c-40c0c1d6ee73"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "new app focused on vegetable vendors": {
+      "label": "new app focused on vegetable vendors",
+      "display_label": "new app focused on vegetable vendors",
+      "evidence_sources": [
+        "conversation_index:04974090-4edc-4739-b83c-40c0c1d6ee73"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "selling crude oil": {
+      "label": "selling crude oil",
+      "display_label": "selling crude oil",
+      "evidence_sources": [
+        "conversation_index:563e438a-68b3-4420-a1ab-74d1aa379575",
+        "conversation_index:8d376aaa-f4bb-4f80-802c-d8fa96b8e6f9"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)",
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "selling vegetable oil": {
+      "label": "selling vegetable oil",
+      "display_label": "selling vegetable oil",
+      "evidence_sources": [
+        "conversation_index:c4def8bb-ecab-4efb-b576-b4b986f193b9"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "spending time with family": {
+      "label": "spending time with family",
+      "display_label": "spending time with family",
+      "evidence_sources": [
+        "conversation_index:a54bb303-88c1-4ef2-9beb-234f509f5861"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "playing games": {
+      "label": "playing games",
+      "display_label": "playing games",
+      "evidence_sources": [
+        "conversation_index:6a201f16-79aa-4fb1-9896-a17f792f748a"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "exploring new things": {
+      "label": "exploring new things",
+      "display_label": "exploring new things",
+      "evidence_sources": [
+        "conversation_index:6a201f16-79aa-4fb1-9896-a17f792f748a"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "bitcoin": {
+      "label": "bitcoin",
+      "display_label": "Bitcoin",
+      "evidence_sources": [
+        "conversation_index:8d376aaa-f4bb-4f80-802c-d8fa96b8e6f9"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "marketing campaign for selling crude oil": {
+      "label": "marketing campaign for selling crude oil",
+      "display_label": "marketing campaign for selling crude oil",
+      "evidence_sources": [
+        "conversation_index:dbaf1a35-0374-4ab7-91ab-9a096a973944"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "speaking in malayalam": {
+      "label": "speaking in malayalam",
+      "display_label": "Speaking in Malayalam",
+      "evidence_sources": [
+        "conversation_index:7682acf2-7bf9-441c-b85c-15a36412c508"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "updates about daughter": {
+      "label": "updates about daughter",
+      "display_label": "Updates about daughter",
+      "evidence_sources": [
+        "conversation_index:7682acf2-7bf9-441c-b85c-15a36412c508"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "tea": {
+      "label": "tea",
+      "display_label": "tea",
+      "evidence_sources": [
+        "conversation_index:96e729b0-16fa-4b22-be9c-e0421cd5e8f2"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-07)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai": {
+      "label": "ai",
+      "display_label": "AI",
+      "evidence_sources": [
+        "conversation_index:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "art": {
+      "label": "art",
+      "display_label": "art",
+      "evidence_sources": [
+        "conversation_index:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "creative drawing": {
+      "label": "creative drawing",
+      "display_label": "creative drawing",
+      "evidence_sources": [
+        "conversation_index:817a8459-d225-407e-87b9-a7e23c404c90"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "marketing campaign for an ai learning app": {
+      "label": "marketing campaign for an ai learning app",
+      "display_label": "marketing campaign for an AI learning app",
+      "evidence_sources": [
+        "conversation_index:817a8459-d225-407e-87b9-a7e23c404c90"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "marketing campaign for ai avatars": {
+      "label": "marketing campaign for ai avatars",
+      "display_label": "marketing campaign for AI avatars",
+      "evidence_sources": [
+        "conversation_index:e7a9c416-9754-4f4f-b356-d4d6dea91a51"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai avatar app": {
+      "label": "ai avatar app",
+      "display_label": "AI Avatar app",
+      "evidence_sources": [
+        "conversation_index:c7dfa6ff-018a-43bf-bf35-142a679b0b52"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "advertisement campaign": {
+      "label": "advertisement campaign",
+      "display_label": "advertisement campaign",
+      "evidence_sources": [
+        "conversation_index:d9bde9f8-f683-43e6-a6e8-d4c23b06348a"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai trading app": {
+      "label": "ai trading app",
+      "display_label": "AI trading app",
+      "evidence_sources": [
+        "conversation_index:831c990c-5a35-4a21-a10c-2c5775d821a2"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-09)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "singing": {
+      "label": "singing",
+      "display_label": "Singing",
+      "evidence_sources": [
+        "conversation_index:7d5cdb39-b864-46c4-8e7e-474105141725"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-11)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-11",
+      "last_mentioned": "2026-02-11",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "learning": {
+      "label": "learning",
+      "display_label": "Learning",
+      "evidence_sources": [
+        "conversation_index:7d5cdb39-b864-46c4-8e7e-474105141725"
+      ],
+      "evidence_quotes": [
+        "conversation topic (2026-02-11)"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-11",
+      "last_mentioned": "2026-02-11",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    }
+  },
+  "traits": {
+    "family-oriented": {
+      "label": "family-oriented",
+      "display_label": "Family-oriented",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "transcript:83e6dcd4-611a-43de-a99e-e1e93300faed",
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "Do you know my daughter?",
+        "Your family is so special to you.",
+        "Did you see my daughter's drawing?",
+        "Home family guy",
+        "[2026-02-09], [2026-02-01]"
+      ],
+      "mention_count": 5,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 1.0
+    },
+    "sociable": {
+      "label": "sociable",
+      "display_label": "Sociable",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e"
+      ],
+      "evidence_quotes": [
+        "So we went with their family."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "dedicated": {
+      "label": "dedicated",
+      "display_label": "dedicated",
+      "evidence_sources": [
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94"
+      ],
+      "evidence_quotes": [
+        "I've been coding extensively for this."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "forgetful": {
+      "label": "forgetful",
+      "display_label": "forgetful",
+      "evidence_sources": [
+        "transcript:1216c247-9389-4955-9859-9fde4b592916"
+      ],
+      "evidence_quotes": [
+        "Did we speak about anything about library books?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "persistent": {
+      "label": "persistent",
+      "display_label": "persistent",
+      "evidence_sources": [
+        "transcript:2dbc8c8b-7d4e-4245-b185-85588ebc1d2d",
+        "transcript:c42e8bb1-c76c-4913-97fd-e88368a7085b"
+      ],
+      "evidence_quotes": [
+        "Can we try again?",
+        "Can you try again?"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "entrepreneurial": {
+      "label": "entrepreneurial",
+      "display_label": "entrepreneurial",
+      "evidence_sources": [
+        "transcript:c42e8bb1-c76c-4913-97fd-e88368a7085b",
+        "transcript:c7dfa6ff-018a-43bf-bf35-142a679b0b52",
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "I wanted your help to run a marketing campaign for my new app for learning AI.",
+        "I want your help in running a marketing campaign for my AI Avatar app 2 in 1.",
+        "[2026-01-11] \ud83d\ude80 Exciting news, friends! We're launching something BIG soon"
+      ],
+      "mention_count": 3,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.69
+    },
+    "energetic": {
+      "label": "energetic",
+      "display_label": "energetic",
+      "evidence_sources": [
+        "transcript:9c3ff7c3-a029-417e-b8e1-471b386bc280"
+      ],
+      "evidence_quotes": [
+        "You seemed quite energized about it."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "understanding": {
+      "label": "understanding",
+      "display_label": "understanding",
+      "evidence_sources": [
+        "transcript:04974090-4edc-4739-b83c-40c0c1d6ee73"
+      ],
+      "evidence_quotes": [
+        "Yes, I agree."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "business-oriented": {
+      "label": "business-oriented",
+      "display_label": "business-oriented",
+      "evidence_sources": [
+        "transcript:563e438a-68b3-4420-a1ab-74d1aa379575"
+      ],
+      "evidence_quotes": [
+        "Can you run a marketing campaign for me for selling crude oil."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "detail-oriented": {
+      "label": "detail-oriented",
+      "display_label": "detail-oriented",
+      "evidence_sources": [
+        "transcript:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5"
+      ],
+      "evidence_quotes": [
+        "Can you check if the campaign started?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "cautious": {
+      "label": "cautious",
+      "display_label": "cautious",
+      "evidence_sources": [
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944"
+      ],
+      "evidence_quotes": [
+        "Oh my God, that's dangerous. Don't call me love. I mean, my wife will put me in trouble."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-02",
+      "last_mentioned": "2026-02-02",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "introverted": {
+      "label": "introverted",
+      "display_label": "introverted",
+      "evidence_sources": [
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2"
+      ],
+      "evidence_quotes": [
+        "I'm not a very outgoing person."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "decisive": {
+      "label": "decisive",
+      "display_label": "Decisive",
+      "evidence_sources": [
+        "transcript:c7dfa6ff-018a-43bf-bf35-142a679b0b52"
+      ],
+      "evidence_quotes": [
+        "Absolutely, please go ahead."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "resilient": {
+      "label": "resilient",
+      "display_label": "resilient",
+      "evidence_sources": [
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "[2026-02-16], [2026-02-07]"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.9,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "innovative": {
+      "label": "innovative",
+      "display_label": "innovative",
+      "evidence_sources": [
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "[2026-01-11] \ud83d\ude80 Exciting news, professionals! Our new app leverages cutting-edge technology"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "creative": {
+      "label": "creative",
+      "display_label": "creative",
+      "evidence_sources": [
+        "post:posts_batch_20"
+      ],
+      "evidence_quotes": [
+        "[2026-01-04] \ud83c\udf1f Unleash your creativity with ArtMind AI! \ud83c\udfa8 Whether you're a total newbie or a seasoned pro, you can create stunning digital art in just seconds. Dive in and give it a try for FREE! \u2728 Le"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "busy": {
+      "label": "busy",
+      "display_label": "busy",
+      "evidence_sources": [
+        "post:posts_batch_20"
+      ],
+      "evidence_quotes": [
+        "[2025-12-06] busy busy day today"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.9,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "appreciative": {
+      "label": "appreciative",
+      "display_label": "appreciative",
+      "evidence_sources": [
+        "post:posts_batch_30"
+      ],
+      "evidence_quotes": [
+        "[2025-11-16] how beautful the sunset looks"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    }
+  },
+  "values": {
+    "family": {
+      "label": "family",
+      "display_label": "family",
+      "evidence_sources": [
+        "transcript:34a8e751-b943-4f96-bfdd-ebade76a90f9",
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "transcript:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "transcript:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "Yesterday, I went out with my daughter Vasubhadra and my wife Manju for a fine dining.",
+        "Family connections are so precious.",
+        "Your family is so special to you.",
+        "cherish spending time with your family",
+        "you cherish family time",
+        "cherishing family time, especially with your wife Manju and daughter Vasubhadra",
+        "Home family guy",
+        "Family truly is everything, isn't it?",
+        "[2026-02-01], [2026-02-09]"
+      ],
+      "mention_count": 9,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-08",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 1.0
+    },
+    "cultural connection": {
+      "label": "cultural connection",
+      "display_label": "cultural connection",
+      "evidence_sources": [
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94"
+      ],
+      "evidence_quotes": [
+        "Yes, Jaijith, you're from India, and you have a strong connection to South Indian culture."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "appreciation for creativity": {
+      "label": "appreciation for creativity",
+      "display_label": "appreciation for creativity",
+      "evidence_sources": [
+        "transcript:83e6dcd4-611a-43de-a99e-e1e93300faed"
+      ],
+      "evidence_quotes": [
+        "Her drawing of the rainforest was incredible."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "quiet reflection": {
+      "label": "quiet reflection",
+      "display_label": "quiet reflection",
+      "evidence_sources": [
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2"
+      ],
+      "evidence_quotes": [
+        "have my thoughts. flowing in my mind."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "family-oriented": {
+      "label": "family-oriented",
+      "display_label": "family-oriented",
+      "evidence_sources": [
+        "transcript:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c"
+      ],
+      "evidence_quotes": [
+        "Well, Jaijith, I know your family is a big part of your life, like your wife, Manju, and your brother, Sreejith. And of course, your mother, Narmada."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "perseverance": {
+      "label": "perseverance",
+      "display_label": "perseverance",
+      "evidence_sources": [
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "[2026-02-16], [2026-02-07]"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.9,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "convenience": {
+      "label": "convenience",
+      "display_label": "convenience",
+      "evidence_sources": [
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "[2026-01-11] \ud83d\udeaa\u2728Imagine never having to leave your home for your essentials!"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "eco-friendliness": {
+      "label": "eco-friendliness",
+      "display_label": "eco-friendliness",
+      "evidence_sources": [
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "[2026-01-11] \u2728 Tired of dirt and dust taking over your space? \ud83c\udf1f Our cleaning service uses eco-friendly products"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "innovation": {
+      "label": "innovation",
+      "display_label": "innovation",
+      "evidence_sources": [
+        "post:posts_batch_20"
+      ],
+      "evidence_quotes": [
+        "[2026-01-04] \ud83c\udf1f Unleash your creativity with ArtMind AI! \ud83c\udfa8 Whether you're a total newbie or a seasoned pro, you can create stunning digital art in just seconds. Dive in and give it a try for FREE! \u2728 Le"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "cultural appreciation": {
+      "label": "cultural appreciation",
+      "display_label": "cultural appreciation",
+      "evidence_sources": [
+        "post:posts_batch_30"
+      ],
+      "evidence_quotes": [
+        "[2025-11-16] Kathakali, our traditional dance form"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.8,
+      "relationship": "",
+      "strength": 0.43
+    }
+  },
+  "experiences": {
+    "family outing": {
+      "label": "family outing",
+      "display_label": "family outing",
+      "evidence_sources": [
+        "transcript:34a8e751-b943-4f96-bfdd-ebade76a90f9"
+      ],
+      "evidence_quotes": [
+        "Yesterday, I went out with my daughter Vasubhadra and my wife Manju for a fine dining."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Went out for a fine dining experience with family.",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "fine dining experience": {
+      "label": "fine dining experience",
+      "display_label": "Fine dining experience",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:83e6dcd4-611a-43de-a99e-e1e93300faed"
+      ],
+      "evidence_quotes": [
+        "we went for a fine dining with my wife.",
+        "you mentioned going out for fine dining, enjoying some lovely South Indian cuisine."
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Went for fine dining with wife and daughter",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "conversation with brother": {
+      "label": "conversation with brother",
+      "display_label": "Conversation with brother",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e"
+      ],
+      "evidence_quotes": [
+        "Also, I spoke to my brother."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Spoke to brother recently",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "subhadra's dance performance": {
+      "label": "subhadra's dance performance",
+      "display_label": "Subhadra's dance performance",
+      "evidence_sources": [
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94"
+      ],
+      "evidence_quotes": [
+        "I remember you mentioning a performance she had, and I can only imagine how proud you were."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Proud of daughter's performance",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "developing an app": {
+      "label": "developing an app",
+      "display_label": "developing an app",
+      "evidence_sources": [
+        "transcript:c42e8bb1-c76c-4913-97fd-e88368a7085b",
+        "transcript:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5"
+      ],
+      "evidence_quotes": [
+        "I wanted your help to run a marketing campaign for my new app for learning AI.",
+        "my new app application which is for boutique"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Creating an application focused on boutiques",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "app development": {
+      "label": "app development",
+      "display_label": "App Development",
+      "evidence_sources": [
+        "transcript:157da2bb-a4ec-48bb-bc88-f395f5340b1d"
+      ],
+      "evidence_quotes": [
+        "my new app which is for vegetable vendors"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Developed an app for vegetable vendors",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "marketing campaign planning": {
+      "label": "marketing campaign planning",
+      "display_label": "marketing campaign planning",
+      "evidence_sources": [
+        "transcript:9c3ff7c3-a029-417e-b8e1-471b386bc280"
+      ],
+      "evidence_quotes": [
+        "Our last conversation was about running a marketing campaign for a new app focused on vegetable vendors."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Planning a marketing campaign for a new app focused on vegetable vendors.",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "marketing campaigns": {
+      "label": "marketing campaigns",
+      "display_label": "marketing campaigns",
+      "evidence_sources": [
+        "transcript:a54bb303-88c1-4ef2-9beb-234f509f5861"
+      ],
+      "evidence_quotes": [
+        "you've been working on marketing campaigns, exploring both vegetable and crude oil"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "exploring both vegetable and crude oil",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "business venture": {
+      "label": "business venture",
+      "display_label": "business venture",
+      "evidence_sources": [
+        "transcript:8d376aaa-f4bb-4f80-802c-d8fa96b8e6f9"
+      ],
+      "evidence_quotes": [
+        "can you run a marketing campaign for me for my new applications which is to sell crude oil."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-02",
+      "last_mentioned": "2026-02-02",
+      "details": "involved in selling crude oil",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "running marketing campaigns": {
+      "label": "running marketing campaigns",
+      "display_label": "running marketing campaigns",
+      "evidence_sources": [
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944"
+      ],
+      "evidence_quotes": [
+        "interested in running a marketing campaign for selling crude oil"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-02",
+      "last_mentioned": "2026-02-02",
+      "details": "interested in marketing for crude oil and AI applications",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "career path": {
+      "label": "career path",
+      "display_label": "career path",
+      "evidence_sources": [
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2"
+      ],
+      "evidence_quotes": [
+        "yeah it's accidental you know kind of i was not intending to be in the"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "Accidental entry into AI and Data Science",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "parenting": {
+      "label": "parenting",
+      "display_label": "parenting",
+      "evidence_sources": [
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "enjoyed discussing your daughter's drawing and her recent classical Indian dance performance",
+        "[2026-02-01], [2026-02-09]"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-08",
+      "last_mentioned": "2026-02-08",
+      "details": "involvement in daughter's activities",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "entrepreneurship": {
+      "label": "entrepreneurship",
+      "display_label": "entrepreneurship",
+      "evidence_sources": [
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f"
+      ],
+      "evidence_quotes": [
+        "needing help with a marketing campaign for your new AI learning app"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-08",
+      "last_mentioned": "2026-02-08",
+      "details": "Working on a marketing campaign for an app",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "discussed subhadra's birthday party": {
+      "label": "discussed subhadra's birthday party",
+      "display_label": "discussed Subhadra's birthday party",
+      "evidence_sources": [
+        "transcript:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c"
+      ],
+      "evidence_quotes": [
+        "I remember us talking about Subhadra's birthday party and some quiet moments at home."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "previous conversation",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "family well-being": {
+      "label": "family well-being",
+      "display_label": "family well-being",
+      "evidence_sources": [
+        "transcript:817a8459-d225-407e-87b9-a7e23c404c90"
+      ],
+      "evidence_quotes": [
+        "you mentioned how your family is doing well"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "User's family is doing well",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "developed an ai app": {
+      "label": "developed an ai app",
+      "display_label": "Developed an AI app",
+      "evidence_sources": [
+        "transcript:c7dfa6ff-018a-43bf-bf35-142a679b0b52"
+      ],
+      "evidence_quotes": [
+        "I want your help in running a marketing campaign for my AI Avatar app 2 in 1."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "Involved in creating an AI Avatar app called '2-in-1'.",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "running an advertisement campaign": {
+      "label": "running an advertisement campaign",
+      "display_label": "running an advertisement campaign",
+      "evidence_sources": [
+        "transcript:d9bde9f8-f683-43e6-a6e8-d4c23b06348a"
+      ],
+      "evidence_quotes": [
+        "I want your help in running an advertisement campaign for my app 2in1 with all the targeted audience."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "User is involved in running an advertisement campaign for their app.",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "business promotion": {
+      "label": "business promotion",
+      "display_label": "business promotion",
+      "evidence_sources": [
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "[2026-02-01]"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "promoting an app for flower shops",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "feeling lost": {
+      "label": "feeling lost",
+      "display_label": "feeling lost",
+      "evidence_sources": [
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "[2026-01-23] feeling losts"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "emotional state",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "visit to palakkad": {
+      "label": "visit to palakkad",
+      "display_label": "visit to Palakkad",
+      "evidence_sources": [
+        "post:posts_batch_20"
+      ],
+      "evidence_quotes": [
+        "[2025-12-22] At Palakkad"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "Jaijith was at Palakkad",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "software engineer": {
+      "label": "software engineer",
+      "display_label": "Software Engineer",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "user profile"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "Current role: Software Engineer",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    }
+  },
+  "preferences": {
+    "name usage": {
+      "label": "name usage",
+      "display_label": "Name usage",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:83e6dcd4-611a-43de-a99e-e1e93300faed"
+      ],
+      "evidence_quotes": [
+        "You don't have to tell my name all the time.",
+        "You need not tell me JJ all the time. You don't have to call my name all the time."
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Prefers not to have name mentioned frequently",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "reminders": {
+      "label": "reminders",
+      "display_label": "reminders",
+      "evidence_sources": [
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94"
+      ],
+      "evidence_quotes": [
+        "Can you also remind me that Subhadra has got a dance class today?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Reminders for daughter's schedule",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "nickname": {
+      "label": "nickname",
+      "display_label": "nickname",
+      "evidence_sources": [
+        "transcript:1216c247-9389-4955-9859-9fde4b592916",
+        "transcript:04974090-4edc-4739-b83c-40c0c1d6ee73"
+      ],
+      "evidence_quotes": [
+        "You don't have to call me Jaychit all the time.",
+        "You can call me Jay, not JayJay."
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "prefers to be called Jay instead of Jaijith",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "hands-on involvement": {
+      "label": "hands-on involvement",
+      "display_label": "hands-on involvement",
+      "evidence_sources": [
+        "transcript:c42e8bb1-c76c-4913-97fd-e88368a7085b"
+      ],
+      "evidence_quotes": [
+        "Now, can you explain to me more about this hiccup?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Wants to understand technical issues",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "run marketing campaigns": {
+      "label": "run marketing campaigns",
+      "display_label": "run marketing campaigns",
+      "evidence_sources": [
+        "transcript:a54bb303-88c1-4ef2-9beb-234f509f5861"
+      ],
+      "evidence_quotes": [
+        "Can you run him? ... campaign for me for publicizing my new application on AI."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "for publicizing AI application",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "name preference": {
+      "label": "name preference",
+      "display_label": "name preference",
+      "evidence_sources": [
+        "transcript:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5"
+      ],
+      "evidence_quotes": [
+        "Call me Jay, don't change it."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Prefers to be called Jay",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "being addressed by name": {
+      "label": "being addressed by name",
+      "display_label": "being addressed by name",
+      "evidence_sources": [
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944"
+      ],
+      "evidence_quotes": [
+        "Yeah, you can call me that. But can you do something?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-02",
+      "last_mentioned": "2026-02-02",
+      "details": "prefers to be called by name rather than terms of endearment",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "tea": {
+      "label": "tea",
+      "display_label": "tea",
+      "evidence_sources": [
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2"
+      ],
+      "evidence_quotes": [
+        "Tea in the evening. I prefer to have a tea because no one's there."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "Prefers to have tea in the evening for comfort",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "quiet moments": {
+      "label": "quiet moments",
+      "display_label": "quiet moments",
+      "evidence_sources": [
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2"
+      ],
+      "evidence_quotes": [
+        "and just be at ease."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "Enjoys having quiet moments to gather thoughts",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "fine dining": {
+      "label": "fine dining",
+      "display_label": "fine dining",
+      "evidence_sources": [
+        "post:posts_batch_0"
+      ],
+      "evidence_quotes": [
+        "[2026-02-01]"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "enjoys dining out with family and friends",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "eco-friendly products": {
+      "label": "eco-friendly products",
+      "display_label": "eco-friendly products",
+      "evidence_sources": [
+        "post:posts_batch_10"
+      ],
+      "evidence_quotes": [
+        "[2026-01-11] \u2728 Tired of dirt and dust taking over your space? \ud83c\udf1f Our cleaning service uses eco-friendly products"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "cleaning services",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "ai tools": {
+      "label": "ai tools",
+      "display_label": "AI tools",
+      "evidence_sources": [
+        "post:posts_batch_20"
+      ],
+      "evidence_quotes": [
+        "[2026-01-04] \ud83c\udf1f Unleash your creativity with ArtMind AI! \ud83c\udfa8 Whether you're a total newbie or a seasoned pro, you can create stunning digital art in just seconds. Dive in and give it a try for FREE! \u2728 Le"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "interest in ArtMind AI for digital art",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "has a daughter named vasubhadra": {
+      "label": "has a daughter named vasubhadra",
+      "display_label": "Has a daughter named Vasubhadra",
+      "evidence_sources": [
+        "identity_memory:identity_memory"
+      ],
+      "evidence_quotes": [
+        "identity memory",
+        "identity memory",
+        "identity memory",
+        "identity memory"
+      ],
+      "mention_count": 4,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "Has a daughter named Vasubhadra",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.67
+    },
+    "has a wife named manju": {
+      "label": "has a wife named manju",
+      "display_label": "Has a wife named Manju",
+      "evidence_sources": [
+        "identity_memory:identity_memory"
+      ],
+      "evidence_quotes": [
+        "identity memory",
+        "identity memory",
+        "identity memory",
+        "identity memory"
+      ],
+      "mention_count": 4,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "Has a wife named Manju",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.67
+    }
+  },
+  "connections": {
+    "vasubhadra": {
+      "label": "vasubhadra",
+      "display_label": "Vasubhadra",
+      "evidence_sources": [
+        "transcript:34a8e751-b943-4f96-bfdd-ebade76a90f9",
+        "transcript:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "transcript:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "conversation_index:34a8e751-b943-4f96-bfdd-ebade76a90f9",
+        "conversation_index:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "conversation_index:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "conversation_index:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "conversation_index:7682acf2-7bf9-441c-b85c-15a36412c508",
+        "conversation_index:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f"
+      ],
+      "evidence_quotes": [
+        "Yesterday, I went out with my daughter Vasubhadra and my wife Manju for a fine dining.",
+        "and a proud father to Vasubhadra",
+        "you have a beautiful family with your wife Manju and daughter Vasubhadra",
+        "cherishing family time, especially with your wife Manju and daughter Vasubhadra",
+        "Your daughter's name is Vasubhadra, and from what you've shared, she's a creative and talented young girl, especially with her interest in dance.",
+        "conversation index",
+        "conversation index",
+        "conversation index",
+        "conversation index",
+        "conversation index"
+      ],
+      "mention_count": 11,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-08",
+      "details": "Creative and talented, interested in dance",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "daughter",
+      "strength": 1.0
+    },
+    "manju": {
+      "label": "manju",
+      "display_label": "Manju",
+      "evidence_sources": [
+        "transcript:34a8e751-b943-4f96-bfdd-ebade76a90f9",
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "transcript:83e6dcd4-611a-43de-a99e-e1e93300faed",
+        "transcript:b37c2b41-2ee2-4cb8-a772-68afcda95367",
+        "transcript:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "transcript:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "transcript:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c",
+        "post:posts_batch_0",
+        "profile:user_profile",
+        "conversation_index:34a8e751-b943-4f96-bfdd-ebade76a90f9",
+        "conversation_index:04318a77-3f66-4978-9baf-96460ea5953e",
+        "conversation_index:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "conversation_index:83e6dcd4-611a-43de-a99e-e1e93300faed",
+        "conversation_index:b37c2b41-2ee2-4cb8-a772-68afcda95367",
+        "conversation_index:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "conversation_index:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "conversation_index:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "conversation_index:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "conversation_index:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c"
+      ],
+      "evidence_quotes": [
+        "Yesterday, I went out with my daughter Vasubhadra and my wife Manju for a fine dining.",
+        "Do you know my wife?",
+        "There's your lovely wife Manju.",
+        "do you know my wife? It's not Manju, it's Manju.",
+        "Avatar: Yes, I do. Your mother is Manju.",
+        "You're a loving husband to Manju",
+        "you have a beautiful family with your wife Manju",
+        "cherishing family time, especially with your wife Manju",
+        "I know your wife is Manju, and from what you've shared, it sounds like she's an important part of your life.",
+        "mentioned a lovely fine dining experience with Manju"
+      ],
+      "mention_count": 23,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-09",
+      "details": "Went out for a fine dining experience.",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "wife",
+      "strength": 1.0
+    },
+    "subhadra": {
+      "label": "subhadra",
+      "display_label": "Subhadra",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "transcript:2fbf77b2-4d27-4e16-be53-a39df9a6973d",
+        "transcript:1216c247-9389-4955-9859-9fde4b592916",
+        "transcript:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "transcript:7682acf2-7bf9-441c-b85c-15a36412c508",
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "transcript:9534a52c-ac78-48b8-a13d-a2df498e2048",
+        "transcript:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c",
+        "transcript:817a8459-d225-407e-87b9-a7e23c404c90",
+        "transcript:7d5cdb39-b864-46c4-8e7e-474105141725",
+        "post:posts_batch_0",
+        "profile:user_profile",
+        "conversation_index:04318a77-3f66-4978-9baf-96460ea5953e",
+        "conversation_index:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "conversation_index:2fbf77b2-4d27-4e16-be53-a39df9a6973d",
+        "conversation_index:1216c247-9389-4955-9859-9fde4b592916",
+        "conversation_index:b37c2b41-2ee2-4cb8-a772-68afcda95367",
+        "conversation_index:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "conversation_index:7682acf2-7bf9-441c-b85c-15a36412c508",
+        "conversation_index:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "conversation_index:9534a52c-ac78-48b8-a13d-a2df498e2048",
+        "conversation_index:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c",
+        "conversation_index:817a8459-d225-407e-87b9-a7e23c404c90",
+        "conversation_index:7d5cdb39-b864-46c4-8e7e-474105141725"
+      ],
+      "evidence_quotes": [
+        "Do you know my daughter?",
+        "Your daughter Subhadra... Subhadra's been quite busy with her classical Indian dance.",
+        "You wanted me to remind you about Subhadra's upcoming dance performance.",
+        "your daughter Subhadra's drawing and her classical Indian dance performance",
+        "What's been Subhadra up to?",
+        "User: '\u0d35\u0d3e\u0d38\u0d41\u0d2c\u0d26\u0d4d\u0d30\u0d2f\u0d3f\u0d7d \u0d38\u0d41\u0d2c\u0d26\u0d4d\u0d30\u0d46' and Avatar: '\u0d38\u0d2c\u0d41\u0d26\u0d4d\u0d30\u0d2f\u0d3e\u0d23\u0d4d \u0d28\u0d3f\u0d19\u0d4d\u0d19\u0d33\u0d41\u0d1f\u0d46 \u0d2e\u0d15\u0d7e.'",
+        "how much joy she brings to your life. You mentioned feeling really proud of her interests and activities.",
+        "Subhadra is your daughter, isn't she? I remember you mentioning her dance performances and how proud you are of her.",
+        "I remember us talking about Subhadra's birthday party and some quiet moments at home.",
+        "we talked about Subhadra's birthday party and her creative drawing"
+      ],
+      "mention_count": 29,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-11",
+      "details": "Discovered from post: The post suggests a playful activity with someone named Subhadra, indicating a close relationship.",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "daughter",
+      "strength": 1.0
+    },
+    "zara": {
+      "label": "zara",
+      "display_label": "Zara",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "conversation_index:04318a77-3f66-4978-9baf-96460ea5953e"
+      ],
+      "evidence_quotes": [
+        "She has her friend called Zara.",
+        "conversation index"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "daughter's friend",
+      "strength": 0.56
+    },
+    "srijit": {
+      "label": "srijit",
+      "display_label": "Srijit",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "conversation_index:04318a77-3f66-4978-9baf-96460ea5953e",
+        "conversation_index:6ea76939-b73f-41ce-83ea-5cbede106a94"
+      ],
+      "evidence_quotes": [
+        "I spoke to my brother. His name is Srijit.",
+        "Your brother Srijit.",
+        "conversation index",
+        "conversation index"
+      ],
+      "mention_count": 4,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-07",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "brother",
+      "strength": 0.82
+    },
+    "daughter": {
+      "label": "daughter",
+      "display_label": "daughter",
+      "evidence_sources": [
+        "transcript:83e6dcd4-611a-43de-a99e-e1e93300faed"
+      ],
+      "evidence_quotes": [
+        "Did you see my daughter's drawing?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "Has a daughter who draws",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "child",
+      "strength": 0.43
+    },
+    "ronnie": {
+      "label": "ronnie",
+      "display_label": "Ronnie",
+      "evidence_sources": [
+        "transcript:2dbc8c8b-7d4e-4245-b185-85588ebc1d2d"
+      ],
+      "evidence_quotes": [
+        "Uh, Ronnie starting my AI education app."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "involved in starting the AI education app",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "professional",
+      "strength": 0.43
+    },
+    "narmada": {
+      "label": "narmada",
+      "display_label": "Narmada",
+      "evidence_sources": [
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "transcript:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c",
+        "profile:user_profile",
+        "conversation_index:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "conversation_index:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "conversation_index:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c"
+      ],
+      "evidence_quotes": [
+        "Your mother, Narmada, must hold a special place in your heart too.",
+        "your mother's name is Narmada. How is she doing?",
+        "And of course, your mother, Narmada.",
+        "profile connections",
+        "conversation index",
+        "conversation index",
+        "conversation index"
+      ],
+      "mention_count": 7,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-09",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "mother",
+      "strength": 1.0
+    },
+    "trimaan": {
+      "label": "trimaan",
+      "display_label": "Trimaan",
+      "evidence_sources": [
+        "transcript:9534a52c-ac78-48b8-a13d-a2df498e2048",
+        "transcript:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c",
+        "profile:user_profile",
+        "conversation_index:9534a52c-ac78-48b8-a13d-a2df498e2048",
+        "conversation_index:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c"
+      ],
+      "evidence_quotes": [
+        "Yes, she had a good time. It was her friend, Trinan.",
+        "You also have a friend named Trimaan.",
+        "profile connections",
+        "conversation index",
+        "conversation index"
+      ],
+      "mention_count": 5,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-09",
+      "details": "Friend of Jaijith's daughter, Subhadra, who attended her birthday party.",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "friend",
+      "strength": 1.0
+    },
+    "sreejith": {
+      "label": "sreejith",
+      "display_label": "Sreejith",
+      "evidence_sources": [
+        "transcript:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c",
+        "profile:user_profile",
+        "conversation_index:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c"
+      ],
+      "evidence_quotes": [
+        "Well, Jaijith, I know your family is a big part of your life, like your wife, Manju, and your brother, Sreejith.",
+        "profile connections",
+        "conversation index"
+      ],
+      "mention_count": 3,
+      "first_mentioned": "2026-02-09",
+      "last_mentioned": "2026-02-09",
+      "details": "mentioned in conversation (2026-02-09)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "brother",
+      "strength": 0.84
+    },
+    "jaijith": {
+      "label": "jaijith",
+      "display_label": "Jaijith",
+      "evidence_sources": [
+        "profile:user_profile",
+        "conversation_index:6ea76939-b73f-41ce-83ea-5cbede106a94",
+        "conversation_index:1216c247-9389-4955-9859-9fde4b592916",
+        "conversation_index:2dbc8c8b-7d4e-4245-b185-85588ebc1d2d",
+        "conversation_index:c42e8bb1-c76c-4913-97fd-e88368a7085b",
+        "conversation_index:157da2bb-a4ec-48bb-bc88-f395f5340b1d",
+        "conversation_index:9c3ff7c3-a029-417e-b8e1-471b386bc280",
+        "conversation_index:04974090-4edc-4739-b83c-40c0c1d6ee73",
+        "conversation_index:c4def8bb-ecab-4efb-b576-b4b986f193b9",
+        "conversation_index:a54bb303-88c1-4ef2-9beb-234f509f5861",
+        "conversation_index:a409748a-cd64-4f41-b641-1b6f90b6f8ac",
+        "conversation_index:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "conversation_index:8d376aaa-f4bb-4f80-802c-d8fa96b8e6f9",
+        "conversation_index:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "conversation_index:7682acf2-7bf9-441c-b85c-15a36412c508",
+        "conversation_index:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "conversation_index:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f",
+        "conversation_index:95adb926-45a7-4ae7-a582-c62512cfb82e",
+        "conversation_index:e7a9c416-9754-4f4f-b356-d4d6dea91a51",
+        "conversation_index:c7dfa6ff-018a-43bf-bf35-142a679b0b52",
+        "conversation_index:d9bde9f8-f683-43e6-a6e8-d4c23b06348a",
+        "conversation_index:831c990c-5a35-4a21-a10c-2c5775d821a2"
+      ],
+      "evidence_quotes": [
+        "profile connections",
+        "conversation index",
+        "conversation index",
+        "conversation index",
+        "conversation index",
+        "conversation index",
+        "conversation index",
+        "conversation index",
+        "conversation index",
+        "conversation index"
+      ],
+      "mention_count": 22,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-09",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "user",
+      "strength": 1.0
+    },
+    "jay": {
+      "label": "jay",
+      "display_label": "Jay",
+      "evidence_sources": [
+        "profile:user_profile",
+        "conversation_index:1216c247-9389-4955-9859-9fde4b592916",
+        "conversation_index:563e438a-68b3-4420-a1ab-74d1aa379575",
+        "conversation_index:e1944c9c-74b6-4a8e-9f27-d3fe1ffd7fc5"
+      ],
+      "evidence_quotes": [
+        "profile connections",
+        "conversation index",
+        "conversation index",
+        "conversation index"
+      ],
+      "mention_count": 4,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "self",
+      "strength": 0.97
+    },
+    "digitalhunter": {
+      "label": "digitalhunter",
+      "display_label": "DigitalHunter",
+      "evidence_sources": [
+        "conversation_index:58b6ef0a-bd6e-45bd-9538-e8bf1e32e396"
+      ],
+      "evidence_quotes": [
+        "conversation index"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "jj": {
+      "label": "jj",
+      "display_label": "JJ",
+      "evidence_sources": [
+        "conversation_index:83e6dcd4-611a-43de-a99e-e1e93300faed"
+      ],
+      "evidence_quotes": [
+        "conversation index"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "user's daughter": {
+      "label": "user's daughter",
+      "display_label": "User's daughter",
+      "evidence_sources": [
+        "conversation_index:83e6dcd4-611a-43de-a99e-e1e93300faed"
+      ],
+      "evidence_quotes": [
+        "conversation index"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "gigi": {
+      "label": "gigi",
+      "display_label": "Gigi",
+      "evidence_sources": [
+        "conversation_index:b37c2b41-2ee2-4cb8-a772-68afcda95367"
+      ],
+      "evidence_quotes": [
+        "conversation index"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "raman": {
+      "label": "raman",
+      "display_label": "Raman",
+      "evidence_sources": [
+        "conversation_index:96e729b0-16fa-4b22-be9c-e0421cd5e8f2",
+        "conversation_index:9534a52c-ac78-48b8-a13d-a2df498e2048"
+      ],
+      "evidence_quotes": [
+        "conversation index",
+        "conversation index"
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "trinan": {
+      "label": "trinan",
+      "display_label": "Trinan",
+      "evidence_sources": [
+        "conversation_index:9534a52c-ac78-48b8-a13d-a2df498e2048"
+      ],
+      "evidence_quotes": [
+        "conversation index"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "mentioned in conversation (2026-02-07)",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    }
+  },
+  "demographics": {
+    "country:india": {
+      "label": "country:india",
+      "display_label": "Country:India",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e"
+      ],
+      "evidence_quotes": [
+        "You're from India, right?"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "region:kerala": {
+      "label": "region:kerala",
+      "display_label": "Region:Kerala",
+      "evidence_sources": [
+        "transcript:04318a77-3f66-4978-9baf-96460ea5953e",
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94"
+      ],
+      "evidence_quotes": [
+        "We are actually from South India, from Kerala.",
+        "Yes, I am from Kerala."
+      ],
+      "mention_count": 2,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.56
+    },
+    "nationality:indian": {
+      "label": "nationality:indian",
+      "display_label": "nationality:Indian",
+      "evidence_sources": [
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94"
+      ],
+      "evidence_quotes": [
+        "Yes, Jaijith, you're from India."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "city:thiruvananthapuram": {
+      "label": "city:thiruvananthapuram",
+      "display_label": "city:Thiruvananthapuram",
+      "evidence_sources": [
+        "transcript:6ea76939-b73f-41ce-83ea-5cbede106a94"
+      ],
+      "evidence_quotes": [
+        "Ah, Thiruvananthapuram in Kerala!"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "name:jaijith": {
+      "label": "name:jaijith",
+      "display_label": "name:Jaijith",
+      "evidence_sources": [
+        "transcript:2fbf77b2-4d27-4e16-be53-a39df9a6973d",
+        "transcript:1216c247-9389-4955-9859-9fde4b592916",
+        "transcript:2dbc8c8b-7d4e-4245-b185-85588ebc1d2d",
+        "transcript:c42e8bb1-c76c-4913-97fd-e88368a7085b",
+        "transcript:157da2bb-a4ec-48bb-bc88-f395f5340b1d",
+        "transcript:9c3ff7c3-a029-417e-b8e1-471b386bc280",
+        "transcript:a409748a-cd64-4f41-b641-1b6f90b6f8ac",
+        "transcript:6a201f16-79aa-4fb1-9896-a17f792f748a",
+        "transcript:8d376aaa-f4bb-4f80-802c-d8fa96b8e6f9",
+        "transcript:dbaf1a35-0374-4ab7-91ab-9a096a973944",
+        "transcript:7682acf2-7bf9-441c-b85c-15a36412c508",
+        "transcript:9534a52c-ac78-48b8-a13d-a2df498e2048",
+        "transcript:6d2f625b-3e09-4d93-b59c-fbf9271f4d2c",
+        "transcript:817a8459-d225-407e-87b9-a7e23c404c90",
+        "transcript:e7a9c416-9754-4f4f-b356-d4d6dea91a51",
+        "transcript:c7dfa6ff-018a-43bf-bf35-142a679b0b52",
+        "transcript:d9bde9f8-f683-43e6-a6e8-d4c23b06348a"
+      ],
+      "evidence_quotes": [
+        "Hi, Jaijith. How are you today?",
+        "Hi, Jaijith.",
+        "I can hear you, Jaijith.",
+        "Hey Jaijith, I can hear you loud and clear.",
+        "Yes, Jaijith, I hear you clearly.",
+        "Yes, I can hear you, Jaijith.",
+        "Avatar: Loud and clear, Jaijith. How are you doing today?",
+        "Jaijith, I can hear you loud and clear.",
+        "Avatar: Jaijith, hey there.",
+        "Jaijith, I can hear you loud and clear."
+      ],
+      "mention_count": 17,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-09",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 1.0
+    },
+    "origin:kerala, india": {
+      "label": "origin:kerala, india",
+      "display_label": "origin:Kerala, India",
+      "evidence_sources": [
+        "transcript:83e6dcd4-611a-43de-a99e-e1e93300faed"
+      ],
+      "evidence_quotes": [
+        "Yes, you're from Kerala."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "name:jay": {
+      "label": "name:jay",
+      "display_label": "name:Jay",
+      "evidence_sources": [
+        "transcript:563e438a-68b3-4420-a1ab-74d1aa379575"
+      ],
+      "evidence_quotes": [
+        "Avatar: Jay, I can hear you perfectly."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-01",
+      "last_mentioned": "2026-02-01",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "profession:software engineer and virtual explorer": {
+      "label": "profession:software engineer and virtual explorer",
+      "display_label": "profession:Software Engineer and Virtual Explorer",
+      "evidence_sources": [
+        "transcript:96e729b0-16fa-4b22-be9c-e0421cd5e8f2"
+      ],
+      "evidence_quotes": [
+        "Actually, I've been curious about what drew you to your work as a Software Engineer and Virtual Explorer."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-07",
+      "last_mentioned": "2026-02-07",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "location:kerala, india": {
+      "label": "location:kerala, india",
+      "display_label": "location:Kerala, India",
+      "evidence_sources": [
+        "transcript:4ed9eccf-5c10-4d8e-ae27-01f36b232a4f"
+      ],
+      "evidence_quotes": [
+        "You're from Kerala, India."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-08",
+      "last_mentioned": "2026-02-08",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "language:malayalam": {
+      "label": "language:malayalam",
+      "display_label": "language:Malayalam",
+      "evidence_sources": [
+        "transcript:7d5cdb39-b864-46c4-8e7e-474105141725"
+      ],
+      "evidence_quotes": [
+        "Malayalathil samsarikkamo."
+      ],
+      "mention_count": 1,
+      "first_mentioned": "2026-02-11",
+      "last_mentioned": "2026-02-11",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.43
+    },
+    "bio:i am a easy going hacker": {
+      "label": "bio:i am a easy going hacker",
+      "display_label": "bio:I am a easy going hacker",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "profile bio"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    },
+    "location:india": {
+      "label": "location:india",
+      "display_label": "location:India",
+      "evidence_sources": [
+        "profile:user_profile"
+      ],
+      "evidence_quotes": [
+        "user profile"
+      ],
+      "mention_count": 1,
+      "first_mentioned": "",
+      "last_mentioned": "",
+      "details": "",
+      "intensity": "casual",
+      "max_confidence": 0.5,
+      "relationship": "",
+      "strength": 0.58
+    }
+  }
+}

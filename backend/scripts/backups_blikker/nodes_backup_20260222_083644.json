@@ -1,0 +1,891 @@
+[
+  {
+    "id": "3b57a67f-d96b-4a29-8b08-fb2be3b35552",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "experience",
+    "label": "joined",
+    "properties": {
+      "emotion": "excited",
+      "source": "post"
+    },
+    "created_at": "2026-01-19T15:55:33.494687+00:00",
+    "updated_at": "2026-01-19T15:55:33.494704+00:00"
+  },
+  {
+    "id": "423700b1-0b5d-41d9-98d7-b7df2889b072",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "demographic",
+    "label": "location:Kozhikode , Kerala",
+    "properties": {
+      "category": "location",
+      "value": "Kozhikode , Kerala"
+    },
+    "created_at": "2026-01-19T16:13:08.492121+00:00",
+    "updated_at": "2026-01-19T16:13:08.492138+00:00"
+  },
+  {
+    "id": "1fcb0d39-da3e-4489-92fa-606f18082c16",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "architecture",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.5,
+      "last_mentioned": "2026-01-19T16:21:03.140540+00:00"
+    },
+    "created_at": "2026-01-19T16:18:27.999126+00:00",
+    "updated_at": "2026-01-19T16:21:03.140555+00:00"
+  },
+  {
+    "id": "42102f8f-eb79-481d-b3a3-4bac48423807",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "quantum physics",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2026-01-19T16:18:28.041049+00:00",
+    "updated_at": "2026-01-19T16:18:28.041065+00:00"
+  },
+  {
+    "id": "9e18d267-6d20-4c5f-b2ca-09ff70edcd4e",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "spiritual unknowns",
+    "properties": {
+      "source": "explicit",
+      "strength": 1.0
+    },
+    "created_at": "2026-01-19T16:18:28.083091+00:00",
+    "updated_at": "2026-01-19T16:18:28.083107+00:00"
+  },
+  {
+    "id": "94a26786-f8c3-4110-8137-45ef4c66638e",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "demographic",
+    "label": "age_group:35-44",
+    "properties": {
+      "category": "age_group",
+      "value": "35-44"
+    },
+    "created_at": "2026-01-19T16:18:28.125257+00:00",
+    "updated_at": "2026-01-19T16:18:28.125274+00:00"
+  },
+  {
+    "id": "9f3daf89-6b90-4fcc-95a0-c321a027e41b",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "demographic",
+    "label": "gender:Male",
+    "properties": {
+      "category": "gender",
+      "value": "Male"
+    },
+    "created_at": "2026-01-19T16:18:28.167002+00:00",
+    "updated_at": "2026-01-19T16:18:28.167017+00:00"
+  },
+  {
+    "id": "1fb05403-0cad-4ef9-a1da-1b817aadf087",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "experience",
+    "label": "architecture studio",
+    "properties": {
+      "organization": "Vili & V\u00e9",
+      "source": "post"
+    },
+    "created_at": "2026-01-19T16:21:03.119637+00:00",
+    "updated_at": "2026-01-19T16:21:03.119639+00:00"
+  },
+  {
+    "id": "e30ae93e-68de-46fe-a6e9-1e8a3e9f4001",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "architectural rendering",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T10:47:22.953795+00:00",
+    "updated_at": "2026-01-30T10:47:22.953812+00:00"
+  },
+  {
+    "id": "195197d6-3119-4e42-962b-14450924f3a1",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "experience",
+    "label": "office space design for hilite group in kozhikode (learnpark building)",
+    "properties": {
+      "location": "Kozhikode",
+      "project": "HiLite Group Office",
+      "status": "completed",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T10:47:22.953824+00:00",
+    "updated_at": "2026-01-30T10:47:22.953826+00:00"
+  },
+  {
+    "id": "3ed4080e-136c-479c-b065-aed780bb48fe",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "hardworking",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post",
+      "last_mentioned": "2026-02-05T08:48:30.662017+00:00",
+      "strength": 1.5
+    },
+    "created_at": "2026-01-30T10:47:22.953835+00:00",
+    "updated_at": "2026-02-05T08:48:30.662032+00:00"
+  },
+  {
+    "id": "b4cf5048-fc49-47b7-b484-023cfc4d9b6f",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "optimistic",
+    "properties": {
+      "confidence": 0.6,
+      "source": "post"
+    },
+    "created_at": "2026-01-30T10:47:22.953861+00:00",
+    "updated_at": "2026-01-30T10:47:22.953864+00:00"
+  },
+  {
+    "id": "03c99006-7fca-46ff-948b-8926971a71dd",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "value",
+    "label": "achievement-oriented",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T10:47:22.953873+00:00",
+    "updated_at": "2026-01-30T10:47:22.953875+00:00"
+  },
+  {
+    "id": "ca5d1964-456b-4197-a0a6-647ac874e911",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "happy",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-01-30T10:54:38.065561+00:00",
+    "updated_at": "2026-01-30T10:54:38.065578+00:00"
+  },
+  {
+    "id": "fd15087e-239b-4935-9e73-08d7ff74f76b",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "experience",
+    "label": "meeting_with_cakestudio_representative",
+    "properties": {
+      "person": "Mr Noufal",
+      "organization": "cakestudio",
+      "outcome": "tentatively_met_deadlines",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:40:27.977044+00:00",
+    "updated_at": "2026-01-30T14:40:27.977061+00:00"
+  },
+  {
+    "id": "ecc42dfd-5e1c-498f-b293-e1ea1786c8c9",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "badminton",
+    "properties": {
+      "status": "skipped",
+      "reason": "work_busy",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:40:27.977075+00:00",
+    "updated_at": "2026-01-30T14:40:27.977077+00:00"
+  },
+  {
+    "id": "cfd8cbda-ef0c-43f9-a9e8-9e05c310abd4",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "fifa",
+    "properties": {
+      "category": "video_games",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:40:27.977086+00:00",
+    "updated_at": "2026-01-30T14:40:27.977088+00:00"
+  },
+  {
+    "id": "73304320-cf7f-4f6b-82fd-da33062d2bd1",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "counterstrike",
+    "properties": {
+      "category": "video_games",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:40:27.977096+00:00",
+    "updated_at": "2026-01-30T14:40:27.977098+00:00"
+  },
+  {
+    "id": "b011e0e7-06d7-4c80-be3a-84d3b9935fa7",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "road_trip_goa",
+    "properties": {
+      "destination": "Goa",
+      "theme": "sunsets",
+      "mode": "drive",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:40:27.977105+00:00",
+    "updated_at": "2026-01-30T14:40:27.977107+00:00"
+  },
+  {
+    "id": "8c897a7c-48ad-4f2d-b64c-0e9553d51993",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "preference",
+    "label": "calm_and_quiet",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:40:27.977115+00:00",
+    "updated_at": "2026-01-30T14:40:27.977117+00:00"
+  },
+  {
+    "id": "8c46c216-018c-41b5-8076-76cbe1b0f2fc",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "tired",
+    "properties": {
+      "state": "current",
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:40:27.977123+00:00",
+    "updated_at": "2026-01-30T14:40:27.977125+00:00"
+  },
+  {
+    "id": "8994b89b-c534-4b82-a891-df47f6e53c6e",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "busy",
+    "properties": {
+      "state": "ongoing",
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-01-30T14:40:27.977132+00:00",
+    "updated_at": "2026-01-30T14:40:27.977135+00:00"
+  },
+  {
+    "id": "bf40ad9e-c908-4bf8-9ab2-54c4b2c344e4",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "photography",
+    "properties": {
+      "source": "instagram",
+      "strength": 0.7
+    },
+    "created_at": "2026-01-30T14:43:11.838405+00:00",
+    "updated_at": "2026-01-30T14:43:11.838421+00:00"
+  },
+  {
+    "id": "b30f53c6-6dc7-476c-9e8e-5ff3a0ed2b9c",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "travel",
+    "properties": {
+      "source": "instagram",
+      "strength": 0.7
+    },
+    "created_at": "2026-01-30T14:43:11.881812+00:00",
+    "updated_at": "2026-01-30T14:43:11.881828+00:00"
+  },
+  {
+    "id": "cf14b49b-5199-4599-8247-af53aa7dbb15",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "food",
+    "properties": {
+      "source": "instagram",
+      "strength": 0.7
+    },
+    "created_at": "2026-01-30T14:43:11.924194+00:00",
+    "updated_at": "2026-01-30T14:43:11.924210+00:00"
+  },
+  {
+    "id": "206764ef-853c-49ca-a651-764cc7eb9647",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "fitness",
+    "properties": {
+      "source": "instagram",
+      "strength": 0.7
+    },
+    "created_at": "2026-01-30T14:43:11.966424+00:00",
+    "updated_at": "2026-01-30T14:43:11.966441+00:00"
+  },
+  {
+    "id": "b727298c-ea77-4ad5-b8c7-cf58bc5d9bdf",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "art",
+    "properties": {
+      "source": "instagram",
+      "strength": 0.7
+    },
+    "created_at": "2026-01-30T14:43:12.009370+00:00",
+    "updated_at": "2026-01-30T14:43:12.009386+00:00"
+  },
+  {
+    "id": "982ff541-d0f9-479d-b7ab-543e53803857",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "fashion",
+    "properties": {
+      "source": "instagram",
+      "strength": 0.7
+    },
+    "created_at": "2026-01-30T14:43:12.052159+00:00",
+    "updated_at": "2026-01-30T14:43:12.052176+00:00"
+  },
+  {
+    "id": "e71b8d4b-ba60-43a8-8901-94db83484f09",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "photographer",
+    "properties": {
+      "source": "instagram",
+      "confidence": 0.9
+    },
+    "created_at": "2026-01-30T14:43:32.882780+00:00",
+    "updated_at": "2026-01-30T14:43:32.882782+00:00"
+  },
+  {
+    "id": "962ecd98-b163-43ee-b1f7-dad737c529be",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "traveler",
+    "properties": {
+      "source": "instagram",
+      "confidence": 0.9
+    },
+    "created_at": "2026-01-30T14:43:32.882790+00:00",
+    "updated_at": "2026-01-30T14:43:32.882792+00:00"
+  },
+  {
+    "id": "06a1d54e-9f4f-4c74-a1fa-9e7f673a98f3",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "foodie",
+    "properties": {
+      "source": "instagram",
+      "confidence": 0.9
+    },
+    "created_at": "2026-01-30T14:43:32.882801+00:00",
+    "updated_at": "2026-01-30T14:43:32.882803+00:00"
+  },
+  {
+    "id": "9d2dfd14-c230-416b-88ab-fb96b7a63ddc",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "value",
+    "label": "meaning",
+    "properties": {
+      "importance": "high",
+      "source": "bio"
+    },
+    "created_at": "2026-01-30T14:44:45.546301+00:00",
+    "updated_at": "2026-01-30T14:44:45.546314+00:00"
+  },
+  {
+    "id": "35caaebf-073a-451c-b3f7-244ef5911c08",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "reflective",
+    "properties": {
+      "confidence": 0.8,
+      "source": "bio"
+    },
+    "created_at": "2026-01-30T14:44:45.546326+00:00",
+    "updated_at": "2026-01-30T14:44:45.546328+00:00"
+  },
+  {
+    "id": "1d4832f2-a6a7-4f49-9685-c4c568771ef2",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "carroms",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-02-01T05:02:36.538999+00:00",
+    "updated_at": "2026-02-01T05:02:36.539015+00:00"
+  },
+  {
+    "id": "7e2e6eef-22b9-4874-b49f-8d9a1333bc31",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "cards",
+    "properties": {
+      "intensity": "medium",
+      "source": "post"
+    },
+    "created_at": "2026-02-01T05:02:36.539034+00:00",
+    "updated_at": "2026-02-01T05:02:36.539037+00:00"
+  },
+  {
+    "id": "232f5655-f3ca-4a8d-b820-1f6bc6bf2c96",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "experience",
+    "label": "office_day_relaxed",
+    "properties": {
+      "mood": "relaxed",
+      "description": "fun and games office day",
+      "source": "post"
+    },
+    "created_at": "2026-02-01T05:02:36.539050+00:00",
+    "updated_at": "2026-02-01T05:02:36.539052+00:00"
+  },
+  {
+    "id": "47f2fc1c-097e-4bde-b15d-b68d40346e50",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "relaxed",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-02-01T05:02:36.539064+00:00",
+    "updated_at": "2026-02-01T05:02:36.539066+00:00"
+  },
+  {
+    "id": "3ea64af3-b406-4924-85e6-b92209bca8dc",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "experience",
+    "label": "slept_early",
+    "properties": {
+      "habit": "sleep_early",
+      "outcome": "rested",
+      "source": "post"
+    },
+    "created_at": "2026-02-01T05:02:36.539077+00:00",
+    "updated_at": "2026-02-01T05:02:36.539079+00:00"
+  },
+  {
+    "id": "0ad3d5c5-a629-4383-9fb8-abe6d46004d5",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "experience",
+    "label": "crypto_crash",
+    "properties": {
+      "description": "humongous crypto crash",
+      "economic_context": "economy bleeding",
+      "source": "post"
+    },
+    "created_at": "2026-02-01T05:02:36.539091+00:00",
+    "updated_at": "2026-02-01T05:02:36.539093+00:00"
+  },
+  {
+    "id": "21004183-8ebe-49b5-8339-16974db83bf0",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "audacious",
+    "properties": {
+      "intensity": 0.9,
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:41:20.819981+00:00",
+    "updated_at": "2026-02-02T04:41:20.819998+00:00"
+  },
+  {
+    "id": "45dd52b0-0846-48bb-b788-cab0a0dad3e7",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "judgmental",
+    "properties": {
+      "intensity": 0.6,
+      "source": "post"
+    },
+    "created_at": "2026-02-02T04:41:20.820013+00:00",
+    "updated_at": "2026-02-02T04:41:20.820016+00:00"
+  },
+  {
+    "id": "67329262-48fc-411e-9e36-d4f9a2bdba48",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "colors",
+    "properties": {
+      "source": "post"
+    },
+    "created_at": "2026-02-02T12:19:56.768305+00:00",
+    "updated_at": "2026-02-02T12:19:56.768323+00:00"
+  },
+  {
+    "id": "358a0789-9c3c-4fb8-97d1-2067516a5c9a",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "heritage-inspired design",
+    "properties": {
+      "note": "rooted to heritage",
+      "source": "post"
+    },
+    "created_at": "2026-02-05T08:39:54.150062+00:00",
+    "updated_at": "2026-02-05T08:39:54.150080+00:00"
+  },
+  {
+    "id": "964df43f-8ea3-40fd-bcdb-6715afc02cfc",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "value",
+    "label": "heritage",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-05T08:39:54.150094+00:00",
+    "updated_at": "2026-02-05T08:39:54.150096+00:00"
+  },
+  {
+    "id": "3eea8e7b-1777-4937-a05d-5ab91ff934e0",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "preference",
+    "label": "ventilation",
+    "properties": {
+      "level": "more",
+      "source": "post"
+    },
+    "created_at": "2026-02-05T08:39:54.150105+00:00",
+    "updated_at": "2026-02-05T08:39:54.150107+00:00"
+  },
+  {
+    "id": "42e702ab-6f34-4d8c-a1a7-6133e493c9de",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "preference",
+    "label": "lighting",
+    "properties": {
+      "level": "more",
+      "source": "post"
+    },
+    "created_at": "2026-02-05T08:39:54.150115+00:00",
+    "updated_at": "2026-02-05T08:39:54.150117+00:00"
+  },
+  {
+    "id": "10d31e1f-b032-4c87-8ce8-7fe648f2e893",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "experience",
+    "label": "ceo at elance learning",
+    "properties": {
+      "organization": "ELANCE learning",
+      "role": "CEO",
+      "source": "post"
+    },
+    "created_at": "2026-02-05T08:39:54.150125+00:00",
+    "updated_at": "2026-02-05T08:39:54.150127+00:00"
+  },
+  {
+    "id": "42593039-14b0-4b0d-93a1-70bc9eec4317",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "grounded",
+    "properties": {
+      "confidence": 0.8,
+      "source": "post"
+    },
+    "created_at": "2026-02-05T08:39:54.150135+00:00",
+    "updated_at": "2026-02-05T08:39:54.150137+00:00"
+  },
+  {
+    "id": "63d92bab-e93b-4f7b-b1c4-552afd5d8bcc",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "nadumuttams",
+    "properties": {
+      "culture": "Kerala",
+      "note": "traditional architectural feature",
+      "source": "post"
+    },
+    "created_at": "2026-02-05T08:39:54.150145+00:00",
+    "updated_at": "2026-02-05T08:39:54.150147+00:00"
+  },
+  {
+    "id": "067e6e7c-9742-45bc-9a37-c667d810daa5",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "value",
+    "label": "authenticity",
+    "properties": {
+      "importance": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-05T08:48:30.641079+00:00",
+    "updated_at": "2026-02-05T08:48:30.641082+00:00"
+  },
+  {
+    "id": "8b5f6454-fbe5-4b84-9d9e-ff9e2f78432d",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "romance",
+    "properties": {
+      "intensity": "high",
+      "source": "post"
+    },
+    "created_at": "2026-02-05T08:48:30.641092+00:00",
+    "updated_at": "2026-02-05T08:48:30.641095+00:00"
+  },
+  {
+    "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_sreejith",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "connection",
+    "label": "sreejith",
+    "display_label": "Sreejith",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "user",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-06 13:36:04.602000",
+    "updated_at": "2026-02-06 13:36:04.602000"
+  },
+  {
+    "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_maya",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "connection",
+    "label": "maya",
+    "display_label": "Maya",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "avatar",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-07 03:47:46.658000",
+    "updated_at": "2026-02-07 03:47:46.658000"
+  },
+  {
+    "id": "connection_fb1a5d18-5c93-4084-8da1-2227b1bea266_rabsina",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "connection",
+    "label": "rabsina",
+    "display_label": "Rabsina",
+    "properties": {
+      "source": "conversation",
+      "service": "voice",
+      "relationship": "friend",
+      "details": ""
+    },
+    "strength": 0.8,
+    "mention_count": 1,
+    "created_at": "2026-02-07 03:47:46.658000",
+    "updated_at": "2026-02-07 03:47:46.658000"
+  },
+  {
+    "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_designing_a_house",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "designing a house",
+    "display_label": "Designing A House",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 03:47:46.658000",
+    "updated_at": "2026-02-07 03:47:46.658000"
+  },
+  {
+    "id": "interest_fb1a5d18-5c93-4084-8da1-2227b1bea266_tropical_theme",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "interest",
+    "label": "tropical theme",
+    "display_label": "Tropical Theme",
+    "strength": 0.7,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 03:47:46.658000",
+    "updated_at": "2026-02-07 03:47:46.658000"
+  },
+  {
+    "id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_2800_square_feet_area",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "preference",
+    "label": "2800 square feet area",
+    "display_label": "2800 square feet area",
+    "full_text": "2800 square feet area",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-07 03:47:46.658000",
+    "updated_at": "2026-02-07 03:47:46.658000"
+  },
+  {
+    "id": "preference_fb1a5d18-5c93-4084-8da1-2227b1bea266_the_house_is_the",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "preference",
+    "label": "the house is the",
+    "display_label": "the house is the same as I'm in",
+    "full_text": "the house is the same as I'm in",
+    "strength": 0.8,
+    "properties": {
+      "source": "conversation",
+      "service": "voice"
+    },
+    "created_at": "2026-02-07 03:47:46.658000",
+    "updated_at": "2026-02-07 03:47:46.658000"
+  },
+  {
+    "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_reserved",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "reserved",
+    "display_label": "Reserved",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User's responses are brief and somewhat non-committal, e.g., 'Yeah.'",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:16.113000",
+    "updated_at": "2026-02-07 15:26:16.113000"
+  },
+  {
+    "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_indirect",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "indirect",
+    "display_label": "Indirect",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User uses phrases like 'Malalapit sa sarili siya' and '\u0b92\u0bb0\u0bc1\u0bb5\u0bb0\u0bc8\u0b95\u0bcd \u0b95\u0b9f\u0bcd\u0b9f\u0bbf\u0b95\u0bcd\u0b95\u0b9f\u0bcd\u0b9f\u0bbf\u0baf\u0bbe' which suggest a more roundabout way of communicating thoughts.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:16.113000",
+    "updated_at": "2026-02-07 15:26:16.113000"
+  },
+  {
+    "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_connection",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "value",
+    "label": "connection",
+    "display_label": "Connection",
+    "strength": 0.6,
+    "properties": {
+      "evidence": "User engages in conversation and responds positively to the Avatar's attempts to connect, e.g., 'Thanks.'",
+      "source": "conversation"
+    },
+    "mention_count": 2,
+    "created_at": "2026-02-07 15:26:16.113000",
+    "updated_at": "2026-02-07 15:26:27.309000"
+  },
+  {
+    "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_cultural_identity",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "value",
+    "label": "cultural identity",
+    "display_label": "Cultural Identity",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User uses multiple languages (Malayalam, Hindi, Tamil), indicating a value placed on cultural expression.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:16.113000",
+    "updated_at": "2026-02-07 15:26:16.113000"
+  },
+  {
+    "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_warm",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "warm",
+    "display_label": "Warm",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User expresses affection and gratitude with phrases like 'Thank you all very dearly.'",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:27.309000",
+    "updated_at": "2026-02-07 15:26:27.309000"
+  },
+  {
+    "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_creative",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "creative",
+    "display_label": "Creative",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User is involved in designing a tropical-themed house and expresses enthusiasm about it.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:27.309000",
+    "updated_at": "2026-02-07 15:26:27.309000"
+  },
+  {
+    "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_playful",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "playful",
+    "display_label": "Playful",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User engages in light-hearted banter and uses slang in multiple languages.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:27.309000",
+    "updated_at": "2026-02-07 15:26:27.309000"
+  },
+  {
+    "id": "trait_fb1a5d18-5c93-4084-8da1-2227b1bea266_direct",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "trait",
+    "label": "direct",
+    "display_label": "Direct",
+    "strength": 0.8,
+    "properties": {
+      "evidence": "User asks straightforward questions like 'Is it for a house?'",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:27.309000",
+    "updated_at": "2026-02-07 15:26:27.309000"
+  },
+  {
+    "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_creativity",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "value",
+    "label": "creativity",
+    "display_label": "Creativity",
+    "strength": 0.9,
+    "properties": {
+      "evidence": "User is focused on designing a house and enjoys discussing their creative vision.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:27.309000",
+    "updated_at": "2026-02-07 15:26:27.309000"
+  },
+  {
+    "id": "value_fb1a5d18-5c93-4084-8da1-2227b1bea266_cultural_appreciation",
+    "user_id": "fb1a5d18-5c93-4084-8da1-2227b1bea266",
+    "node_type": "value",
+    "label": "cultural appreciation",
+    "display_label": "Cultural Appreciation",
+    "strength": 0.7,
+    "properties": {
+      "evidence": "User uses multiple languages and slang, indicating a value for cultural expression.",
+      "source": "conversation"
+    },
+    "mention_count": 1,
+    "created_at": "2026-02-07 15:26:27.309000",
+    "updated_at": "2026-02-07 15:26:27.309000"
+  }
+]

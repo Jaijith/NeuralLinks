@@ -1,0 +1,64 @@
+[
+  {
+    "name": "Manju",
+    "relationship": "wife",
+    "details": "",
+    "context": [],
+    "mentioned_count": 4,
+    "last_mentioned": "2026-02-01T11:23:39.901668+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Sreejith",
+    "relationship": "brother",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-01T08:01:01.719562+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Jaijith",
+    "relationship": "user",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-01T07:49:28.467930+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Narmada",
+    "relationship": "mother",
+    "details": "",
+    "source": "explicit",
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-01T08:05:15.418099+00:00"
+  },
+  {
+    "name": "Jay",
+    "relationship": "self",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-01T09:57:49.889552+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Trimaan",
+    "relationship": "friend",
+    "details": "",
+    "context": [],
+    "mentioned_count": 1,
+    "last_mentioned": "2026-02-07T17:11:11.542244+00:00",
+    "source": "conversation"
+  },
+  {
+    "name": "Subhadra",
+    "relationship": "daughter",
+    "details": "Discovered from post: The post suggests a playful activity with someone named Subhadra, indicating a close relationship.",
+    "source": "post_analysis",
+    "discovered_at": "2026-02-09T06:16:07.080560+00:00",
+    "last_mentioned": "2026-02-09T07:48:53.568797+00:00",
+    "mentioned_count": 1
+  }
+]

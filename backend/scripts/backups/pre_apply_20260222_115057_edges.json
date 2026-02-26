@@ -1,0 +1,1458 @@
+[
+  {
+    "id": "27d8ae63-33b4-4dc1-880c-cd40501f9ae8",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.95,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Daughter is central to family life",
+      "confidence": 0.95
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "04b7b051-4fa2-4f18-be24-28c51efc9f86",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_classical_indian_dance",
+    "relationship_type": "inspires",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Subhadra does classical Indian dance; Jaijith watches and supports",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "3d5d0146-9a97-4b7c-86e0-d15d3dcd0224",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_lego",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Built Lego Princess castle together (P9)",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "e5548479-1580-44b7-872f-91a4e5f643d6",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_time",
+    "relationship_type": "inspires",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Much of family time revolves around Subhadra's activities",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "c7394987-e6a3-4b3b-ad0e-c619711e9b00",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "to_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_proud_father",
+    "relationship_type": "inspires",
+    "weight": 0.95,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Dance performances, drawings \u2014 'what a relief as a parent'",
+      "confidence": 0.95
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "c5498f91-4411-4874-b18d-8088f70cf3bf",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_manju",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Wife is core family",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "0cfefcf7-225f-4c8b-8eca-5703db51d218",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_manju",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining",
+    "relationship_type": "inspires",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Fine dining outings are with Manju (T1,T3,P18)",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "546343e7-17df-402e-827b-9aad55d2efb1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_manju",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_time",
+    "relationship_type": "inspires",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Family time with wife",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "f37ef35f-d7c3-4504-abbd-db6d45e7399c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_srijit",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Brother \u2014 'also enjoys talking to you'",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "dee10889-e543-460a-8204-c3c1bb59a117",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_narmada",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "inspires",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Mother \u2014 'special place in your heart'",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "d3f19635-9f35-4a01-9621-889e737c49ad",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_trimaan",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Trimaan is Subhadra's friend; birthday party (T24)",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "06dc950c-9e66-4598-9a88-60171c873fe5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_zara",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Zara is Subhadra's friend; families dine together (T3)",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "7f6954ac-b895-469e-a8c0-563f89c36279",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_maya",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "relationship_type": "related_to",
+    "weight": 0.5,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Subhadra drew rainforest picture for Maya (P16)",
+      "confidence": 0.5
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "a0bc1ea6-6aa6-4581-8305-79b9b50dabd1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_oriented",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "relationship_type": "reflects",
+    "weight": 0.95,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Being family-oriented directly reflects the value of family",
+      "confidence": 0.95
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "9513a4f2-0d14-4576-b25c-8a04a7a79908",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_persistent",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_perseverance",
+    "relationship_type": "reflects",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Persistence reflects perseverance",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "2825f441-499d-4ea2-af03-d3542eeaf7df",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_reflective",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_quiet_reflection",
+    "relationship_type": "reflects",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Reflective nature reflects valuing quiet reflection",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "f209fd7c-97ed-4746-aada-94b5050541c3",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_culturally_rooted",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_cultural_heritage",
+    "relationship_type": "reflects",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Cultural rootedness reflects heritage value",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "f85ab494-5fe9-47f7-96ef-d7f6d5589f31",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_easy_going",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_authenticity",
+    "relationship_type": "complements",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Easy-going nature complements authenticity",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "d11dbf52-e42e-49ca-a192-05d2f91ab95c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_introverted",
+    "to_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_reflective",
+    "relationship_type": "complements",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Introversion and reflection go hand in hand",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "6e367de6-35a7-40b3-86af-12d36d03d859",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_persistent",
+    "to_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_hardworking",
+    "relationship_type": "complements",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Persistence and hard work reinforce each other",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "a513bb77-05e1-4082-a5f7-584f0835bcf1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_oriented",
+    "to_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_proud_father",
+    "relationship_type": "complements",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Family orientation expressed through proud fatherhood",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "30518163-22ea-4db9-96d7-e12f00d1a252",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_tech_savvy",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_coding",
+    "relationship_type": "expressed_through",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Tech skills expressed through coding",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "081a9b5e-f1de-4a14-b976-9e02219f46ab",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_tech_savvy",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_artificial_intelligence",
+    "relationship_type": "expressed_through",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Tech-savvy expressed through AI work",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "9e050a49-8912-43a2-bc71-9df074222c15",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_tech_savvy",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_development",
+    "relationship_type": "expressed_through",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Tech skills expressed through app development",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "77673a35-2568-4256-8532-51224715d4e1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_reflective",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_tea",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Reflection expressed through evening tea ritual (T23)",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "f5af6cae-fc62-48ed-a08f-54a21fc6b79a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_culturally_rooted",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_kathakali",
+    "relationship_type": "expressed_through",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Cultural roots expressed through Kathakali appreciation",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "f742f71b-199c-497e-893e-7435fcdd1a75",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_culturally_rooted",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_south_indian_cuisine",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Kerala roots expressed through South Indian food",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "47b3e6a9-d165-4ff0-b4fa-acb915b1a838",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_proud_father",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_classical_indian_dance",
+    "relationship_type": "expressed_through",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Pride in daughter expressed through supporting her dance",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "b768aba8-512d-4737-8ef0-a33811eca332",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_introverted",
+    "to_node_id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_prefers_home_over_going_out",
+    "relationship_type": "expressed_through",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Introversion expressed as preference for home",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "95073aa0-e6e1-43da-b2b3-55239fc86433",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_introverted",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_time",
+    "relationship_type": "expressed_through",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Introvert who prioritizes family time over going out",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "247c6395-81dd-4aab-a94c-d6e18443c3e6",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_time",
+    "relationship_type": "motivates",
+    "weight": 0.95,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Family value drives family time",
+      "confidence": 0.95
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "d4f4a065-d9cb-42c5-8dfd-d2038588fcfb",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_family",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining",
+    "relationship_type": "motivates",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Family dinners as family bonding",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "df1b943b-4c1e-4375-8d47-a5df2da5219b",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_cultural_heritage",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_kathakali",
+    "relationship_type": "motivates",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Heritage value motivates appreciation of Kathakali",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "a2aef23a-a443-446d-9093-a0be7e031701",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_cultural_heritage",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_south_indian_cuisine",
+    "relationship_type": "motivates",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Heritage motivates South Indian food interest",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "7ba876bd-2f4e-43d1-9d50-d100770335cd",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_quiet_reflection",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_tea",
+    "relationship_type": "motivates",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Reflection value motivates tea ritual",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "4c784e25-1d9d-4a55-90de-c9862ef6789a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_perseverance",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_development",
+    "relationship_type": "motivates",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Perseverance drives app building through difficulties",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "fd6966de-b6b4-4a51-8a6e-5ead196226d4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_persistent",
+    "to_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_going_through_hard_times",
+    "relationship_type": "shaped_by",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Persistence shaped by going through hard times (P4,P10)",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "25636d8e-3816-4980-8697-c72bf4316453",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_tech_savvy",
+    "to_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_software_engineer_in_ai_space",
+    "relationship_type": "shaped_by",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Tech skills shaped by career as software engineer",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "8338c7ee-91db-4565-af0f-dc3c20dcdae7",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_proud_father",
+    "to_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_s_dance_at_global_village_dubai",
+    "relationship_type": "shaped_by",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Parental pride reinforced by daughter's dance performance",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "e027f057-7fe8-411f-93aa-4443f415d48c",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_hardworking",
+    "to_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_building_2_in_1_ai_avatar_app",
+    "relationship_type": "shaped_by",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Hardworking trait reinforced by building the 2-in-1 app",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "261e6e77-b261-4c41-81b9-136e004e6176",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining_with_family_and_friends",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Fine dining event is instance of fine dining interest",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "fa27a64d-1a9f-4d4a-ab03-8fa1960c7ac1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining_with_family_and_friends",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_south_indian_cuisine",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Tried South Indian dish at the dinner",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "413235b7-433c-45a2-b7b1-ff811fbf9e30",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining_with_family_and_friends",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "relationship_type": "involves",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Subhadra was at the dinner",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "dca39c43-0ae5-4825-98f9-626a6dd4b841",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining_with_family_and_friends",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_manju",
+    "relationship_type": "involves",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Manju was at the dinner",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "cb028a14-57b4-4849-baee-36505287dc93",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining_with_family_and_friends",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_zara",
+    "relationship_type": "involves",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Went with Zara's family",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "2e1903c2-6e27-4fce-b594-0866ac6ffb86",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_s_dance_at_global_village_dubai",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "relationship_type": "involves",
+    "weight": 0.95,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Subhadra's dance performance",
+      "confidence": 0.95
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "061f2ac2-68a5-4e9d-b5f4-cf560e26ecf2",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_s_dance_at_global_village_dubai",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_classical_indian_dance",
+    "relationship_type": "related_to",
+    "weight": 0.95,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Dance performance at Global Village",
+      "confidence": 0.95
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "b665e37c-e6ec-433e-8015-7f08d7454a63",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_building_lego_with_subhadra",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "relationship_type": "involves",
+    "weight": 0.95,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Built Lego with Subhadra",
+      "confidence": 0.95
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "3e4e575e-8360-4bd1-a11b-565335dbdd2b",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_building_lego_with_subhadra",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_lego",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Lego building activity",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "7a16b001-d0e6-4539-b9f7-ffff88f1f39e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_s_rainforest_drawing",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "relationship_type": "involves",
+    "weight": 0.95,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Subhadra drew the picture",
+      "confidence": 0.95
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "4b656b94-7146-4aae-84b0-256dd65ced0b",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra_s_rainforest_drawing",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_maya",
+    "relationship_type": "involves",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Drawing was for Maya",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "75c81bf7-edd7-46ef-874b-cc5536bea1b8",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_visited_palakkad",
+    "to_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_origin_kerala_india",
+    "relationship_type": "related_to",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Palakkad is in Kerala",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "66b78efb-7d5b-41f4-b942-d092cd375c0a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_software_engineer_in_ai_space",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_artificial_intelligence",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Works in AI space",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "6c7f1e0a-f305-4760-bdb0-64924dd9cb69",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_software_engineer_in_ai_space",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_data_science",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Data scientist role",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "540b9429-9662-4858-9a06-bc715a984329",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_building_2_in_1_ai_avatar_app",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_development",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "2-in-1 is an app",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "1460f5b1-e3b0-45fb-8d86-81e60390998f",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_building_2_in_1_ai_avatar_app",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_artificial_intelligence",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "2-in-1 is an AI avatar app",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "3e13a7c1-6d80-49c6-b1d8-bf0e4872ccf0",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_building_2_in_1_ai_avatar_app",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_avatar_personalization",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Building avatar personalization",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "078a77b8-52b6-4c65-bac0-172dffada680",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_building_ai_education_app",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_development",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "AI education is an app",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "a42376ef-513e-4f35-85fd-c0a5e31bc714",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_building_ai_education_app",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_artificial_intelligence",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "AI education app",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "0fbfb02e-50a8-4dcb-b252-1be275a3b9d1",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_going_through_hard_times",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_perseverance",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Hard times reinforce perseverance",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "6c0aed3d-5e39-4ca9-9a4d-b2bdb1d80ed6",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_artificial_intelligence",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_machine_learning",
+    "relationship_type": "subsumes",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "ML is a subset of AI",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "32528e35-0c32-47ea-862a-77749c5a0334",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_artificial_intelligence",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_data_science",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Data science closely related to AI",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "6c38026f-2501-49f0-8815-d12c0c36bbb5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_data_science",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_python",
+    "relationship_type": "related_to",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Python is a data science tool",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "b71a2092-a6db-4cb1-90a3-c6d910f9db56",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_coding",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_python",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Python is a programming language",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "11713614-a5c9-4ddf-a083-2c6ce56e6075",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_coding",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_development",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Coding is how apps are built",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "949532b7-5525-4951-ab21-cb81e0f71909",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_technology",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_artificial_intelligence",
+    "relationship_type": "subsumes",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "AI is a technology domain",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "fc1369ac-6f01-4aa5-8799-0ad02a77ef83",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_technology",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_coding",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Coding is a tech activity",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "b13f1db6-ca6a-4f16-a107-ecf87eef25f4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_app_development",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_avatar_personalization",
+    "relationship_type": "subsumes",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Avatar work is a specific app",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "d2b022d9-5445-472c-9c45-11f51443459d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_south_indian_cuisine",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "South Indian cuisine is a fine dining preference",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "da98223c-a545-48ea-bffe-f7d50cdeeacf",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_classical_indian_dance",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_kathakali",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Kathakali is a classical dance form",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "225e545b-89d9-4dbb-aae2-0ea56d4ab834",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_music",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_coldplay",
+    "relationship_type": "subsumes",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Coldplay is a music artist",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "c574b973-3337-48ea-8e47-d21f74632ee9",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_music",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_shadow_music",
+    "relationship_type": "subsumes",
+    "weight": 0.65,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Shadow Music is a music channel",
+      "confidence": 0.65
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "e8c80019-2868-4b4e-8f94-2321c13b8aa6",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_music",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_film_soundtracks",
+    "relationship_type": "subsumes",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Film soundtracks are music",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "692bc902-e521-4d6e-a3fc-eb489a206ff0",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_music",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_eiro_motoki",
+    "relationship_type": "subsumes",
+    "weight": 0.65,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Eiro Motoki is a musician",
+      "confidence": 0.65
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "d209b467-a903-40a8-a7ec-f367f4f7defa",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_comedy_and_entertainment",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_the_graham_norton_show",
+    "relationship_type": "subsumes",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Graham Norton is comedy/entertainment",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "f90de8d2-15e7-4d03-b1a0-f216a982dbbd",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_comedy_and_entertainment",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_manoramamax",
+    "relationship_type": "related_to",
+    "weight": 0.65,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "ManoramamaX has entertainment content",
+      "confidence": 0.65
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "60413cf5-ac30-48bb-a3a4-c3f6550ea455",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_spiritual_content",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_1_universal_consciousness",
+    "relationship_type": "subsumes",
+    "weight": 0.65,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "1 Universal Consciousness is spiritual content",
+      "confidence": 0.65
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "aa8d8034-67b9-47c6-96bf-ca9911696b2a",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_artificial_intelligence",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_learning_on_graphs_conference",
+    "relationship_type": "related_to",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Learning on Graphs is an AI/ML conference",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "f70c7d98-ff78-4c08-839f-c6c09172e5ab",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_time",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_fine_dining",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Fine dining is family activity for Jaijith",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "3f5c2cf5-e699-4ea7-9274-74097029ddcb",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_time",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_tea",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Tea time is a solo reflection moment within home life",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "33571aea-4656-412e-adc9-ec16e9afb5b4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_origin_kerala_india",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_south_indian_cuisine",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Kerala origin connects to South Indian food",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "e544e0c4-6577-429f-96c3-2c86c14d1586",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_origin_kerala_india",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_kathakali",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Kathakali is from Kerala",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "d7fbb9ff-a818-4edf-96bc-83e49610c03d",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_origin_kerala_india",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_cultural_heritage",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Kerala origin is cultural heritage",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "4659bd44-bdf8-448e-ab20-8792ac8a92f7",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_origin_kerala_india",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_manoramamax",
+    "relationship_type": "related_to",
+    "weight": 0.65,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "ManoramamaX is Malayalam entertainment",
+      "confidence": 0.65
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "a3628b37-1f61-42a5-8b0b-1ee9d8205e89",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_origin_kerala_india",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_habeeb_rahman",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Habeeb Rahman is Malayalam content",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "e8658317-7c28-40ed-893f-8e573db0dc8e",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_bio_easy_going_hacker",
+    "to_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_easy_going",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Bio says 'easy going hacker'",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "5d517896-8dbe-413c-bf52-4df46213eacf",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_bio_easy_going_hacker",
+    "to_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_tech_savvy",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Bio says 'hacker'",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "12a3999e-765f-4299-82ba-1141b903d9a5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_preferred_name_jay",
+    "to_node_id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_prefers_to_be_called_jay",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Preferred name Jay connects to preference",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "faec6517-fd9d-49df-895f-18875377f185",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_evening_tea_for_reflection",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_tea",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Tea preference drives tea interest",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "35dd667f-4355-4124-bc85-d8f45eac4cbc",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_evening_tea_for_reflection",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_quiet_reflection",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Tea is for reflection",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "081565e8-9000-4dd7-bf67-e772f23df7ba",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_prefers_home_over_going_out",
+    "to_node_id": "trait_dedc30ef-dca9-467d-84b1-5e643941e6fd_introverted",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Homebody preference from introversion",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "99dd0fdc-398a-4189-a64d-da8d2cbcc0b4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_prefers_home_over_going_out",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_family_time",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Staying home means family time",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "8809e1bf-b4cb-4ece-a157-bd8c9a5554a7",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_no_romantic_pet_names",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_manju",
+    "relationship_type": "related_to",
+    "weight": 0.75,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Pet name concern is about wife's reaction (T21)",
+      "confidence": 0.75
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "9b437292-d4ff-4383-9f11-6f5b94337146",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "preference_dedc30ef-dca9-467d-84b1-5e643941e6fd_don_t_overuse_name",
+    "to_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_preferred_name_jay",
+    "relationship_type": "related_to",
+    "weight": 0.8,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Name overuse links to name preference",
+      "confidence": 0.8
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "57386330-c785-4331-95b4-91ae1de8e4ac",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_avatar_digitalhunter",
+    "to_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_name_jaijith_s",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "DigitalHunter is Jaijith's avatar",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "cf490d67-f2e1-46f8-9fb4-9d1bfc0e1558",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_avatar_digitalhunter",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_avatar_personalization",
+    "relationship_type": "related_to",
+    "weight": 0.85,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Avatar connects to personalization work",
+      "confidence": 0.85
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "e8811064-a40c-44e0-86ee-de9c1a6690d7",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_name_jaijith_s",
+    "to_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_preferred_name_jay",
+    "relationship_type": "related_to",
+    "weight": 0.9,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Full name vs preferred name Jay",
+      "confidence": 0.9
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "99dab762-2c3f-462b-86b9-e654765689eb",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_nature",
+    "to_node_id": "experience_dedc30ef-dca9-467d-84b1-5e643941e6fd_visited_palakkad",
+    "relationship_type": "related_to",
+    "weight": 0.7,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Palakkad post is about being in nature/village",
+      "confidence": 0.7
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "338de224-3e06-49a1-b77d-7d102d6819ee",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_nature",
+    "to_node_id": "demographic_dedc30ef-dca9-467d-84b1-5e643941e6fd_origin_kerala_india",
+    "relationship_type": "related_to",
+    "weight": 0.65,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Kerala nature / village connection",
+      "confidence": 0.65
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "c2a08103-60b6-4a5f-87df-06000c66803b",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_nature",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_quiet_reflection",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Nature appreciation ties to reflective side",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "9f169bd3-4ef1-4651-b4b4-4eeaed9f0e62",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_educational_mathematics",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_data_science",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Math underpins data science",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "d3666516-ba50-40dd-bd73-bcefd98f06d4",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_my_garden_life",
+    "to_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_nature",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Gardening is a nature interest",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "b72225d5-2b91-4169-82bd-e9a2a35bf9a5",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_reading",
+    "to_node_id": "connection_dedc30ef-dca9-467d-84b1-5e643941e6fd_subhadra",
+    "relationship_type": "related_to",
+    "weight": 0.55,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Subhadra reads Rainbow Magic; indirect family reading",
+      "confidence": 0.55
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  },
+  {
+    "id": "fbf2b046-de42-43cb-924b-6a91032c2733",
+    "user_id": "dedc30ef-dca9-467d-84b1-5e643941e6fd",
+    "from_node_id": "interest_dedc30ef-dca9-467d-84b1-5e643941e6fd_redfrost_motivation",
+    "to_node_id": "value_dedc30ef-dca9-467d-84b1-5e643941e6fd_perseverance",
+    "relationship_type": "related_to",
+    "weight": 0.6,
+    "properties": {
+      "source": "verified_manual_review",
+      "reasoning": "Redfrost Motivation channel aligns with perseverance value",
+      "confidence": 0.6
+    },
+    "created_at": "2026-02-22T07:34:42.875924+00:00"
+  }
+]
