@@ -42,32 +42,35 @@ class ActionEligibility:
         # Note: Action names should match what comes from the decision engine
         # UPDATED: Added create_post to ACTIVE state - avatars can post without 
         # needing to be in CREATIVE state. Also added message_friend to more states.
+        # like_post and comment_on_post are allowed in ALL states — engagement
+        # should never be blocked by the state machine.
+        _engagement = ["like_post", "comment_on_post"]
         self.state_action_map = {
             TopLevelState.ACTIVE: [
-                "like_post", "comment_on_post", "react_to_post",
+                *_engagement, "react_to_post",
                 "message_friend", "read_messages", "discover_profiles",
                 "create_post", "browse_and_share_news",
             ],
             TopLevelState.SOCIAL: [
                 "message_friend", "read_messages", "respond_to_messages",
                 "send_friend_request", "review_friend_requests", "accept_friend_request",
-                "create_post", "like_post", "comment_on_post",
+                "create_post", *_engagement,
                 "browse_and_share_news",
             ],
             TopLevelState.CREATIVE: [
                 "create_post", "message_friend",
-                "browse_and_share_news",
+                "browse_and_share_news", *_engagement,
             ],
             TopLevelState.EXPLORING: [
                 "discover_profiles", "discover_content", "browse_feed",
-                "create_post", "browse_and_share_news",
+                "create_post", "browse_and_share_news", *_engagement,
             ],
             TopLevelState.PASSIVE: [
                 "read_messages", "browse_feed", "message_friend",
-                "browse_and_share_news",
+                "browse_and_share_news", *_engagement,
             ],
             TopLevelState.RESTING: [
-                "browse_and_share_news",
+                "browse_and_share_news", *_engagement,
             ]
         }
         

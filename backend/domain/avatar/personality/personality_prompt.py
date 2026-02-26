@@ -89,37 +89,42 @@ class PersonalityPromptGenerator:
 
             sections: List[str] = []
 
-            # --- 1. Who this person is (profile) ---
+            # --- 1. Identity narrative from graph traversal ---
+            identity_narrative = graph_ctx.pop("_identity_narrative", "")
+            if identity_narrative:
+                sections.append(f"**Identity (from knowledge graph):**\n{identity_narrative}")
+
+            # --- 2. Who this person is (profile) ---
             who = self._build_who_section(user_doc)
             if who:
                 sections.append(who)
 
-            # --- 2. ALL interests (tiered by strength) ---
+            # --- 3. ALL interests (tiered by strength) ---
             interests_sec = self._build_interests_section(graph_ctx, user_doc)
             if interests_sec:
                 sections.append(interests_sec)
 
-            # --- 3. Traits & values ---
+            # --- 4. Traits & values ---
             traits_sec = self._build_traits_values_section(graph_ctx)
             if traits_sec:
                 sections.append(traits_sec)
 
-            # --- 4. ALL connections ---
+            # --- 5. ALL connections ---
             conns_sec = self._build_connections_section(connections)
             if conns_sec:
                 sections.append(conns_sec)
 
-            # --- 5. Communication style ---
+            # --- 6. Communication style ---
             style_sec = self._build_style_section(style_profile, recent_posts)
             if style_sec:
                 sections.append(style_sec)
 
-            # --- 6. Facts & preferences from voice ---
+            # --- 7. Facts & preferences from voice ---
             facts_sec = self._build_facts_section(identity_mem)
             if facts_sec:
                 sections.append(facts_sec)
 
-            # --- 7. Emotional patterns ---
+            # --- 8. Emotional patterns ---
             emo_sec = self._build_emotional_section(episodic_summary)
             if emo_sec:
                 sections.append(emo_sec)
@@ -343,23 +348,38 @@ class PersonalityPromptGenerator:
     # ------------------------------------------------------------------
 
     async def _get_graph_context(self, user_id: str) -> Dict[str, Any]:
-        """Fetch ALL graph nodes for this user, organized by type."""
+        """Fetch graph context via GraphRAG (uses cached in-memory graph with edges)."""
         try:
-            cursor = self.db.graph_nodes.find(
-                {"user_id": user_id},
-                {"_id": 0, "node_type": 1, "label": 1, "strength": 1, "properties": 1, "mention_count": 1}
-            ).sort("strength", -1).limit(200)
-            nodes = await cursor.to_list(200)
+            from domain.graph.rag import GraphRAG
+            rag = GraphRAG(self.db)
+            ctx = await rag.get_user_context(user_id, max_nodes=50)
 
             organized: Dict[str, list] = {
                 "interests": [], "traits": [], "values": [],
                 "preferences": [], "experiences": [], "connections": [],
             }
-            for n in nodes:
-                ntype = n.get("node_type", "interest")
-                bucket = organized.get(ntype, organized.get("interests"))
-                if bucket is not None:
-                    bucket.append(n)
+            type_mapping = {
+                "interests": "interests", "traits": "traits", "values": "values",
+                "preferences": "preferences", "experiences": "experiences",
+                "connections": "connections", "demographics": "connections",
+            }
+            for key, items in ctx.items():
+                target = type_mapping.get(key)
+                if target and target in organized:
+                    for item in items:
+                        organized[target].append({
+                            "label": item.get("label", ""),
+                            "strength": item.get("strength", 0.5),
+                            "properties": item.get("properties", {}),
+                            "mention_count": item.get("properties", {}).get("evidence_count", 1),
+                            "display_label": item.get("display_label", ""),
+                            "connected": item.get("connected", []),
+                        })
+
+            identity_narrative = await rag.get_identity_context(
+                user_id, action_type="personality_profile", max_tokens=2000,
+            )
+            organized["_identity_narrative"] = identity_narrative
 
             return organized
         except Exception as e:

@@ -592,6 +592,138 @@ class StateAwareAgent:
             logger.warning(f"   ⚠️  Error checking autonomy: {e}")
             return True  # Continue anyway
     
+    async def _lightweight_perception(self, avatar_id: str) -> Dict[str, Any]:
+        """
+        Fast perception that only fetches what's needed for balanced actions:
+        friend feed posts (for like/comment), unread messages, and friend requests.
+        Avoids the full perception engine which is too slow for scheduled cycles.
+        """
+        from datetime import timedelta
+        from services.friend_service import FriendService
+
+        try:
+            friend_service = FriendService(self.db)
+            friends = await friend_service.get_friends(avatar_id)
+            friend_ids = [f["id"] for f in friends]
+
+            recent_posts: list = []
+            relationship_map: dict = {}
+            relationship_types: dict = {}
+
+            if friend_ids:
+                since = (datetime.now(timezone.utc) - timedelta(hours=48)).isoformat()
+                cursor = self.db.posts.find(
+                    {
+                        "user_id": {"$in": friend_ids},
+                        "$or": [
+                            {"created_at": {"$gte": since}},
+                        ],
+                    },
+                    {"_id": 0, "id": 1, "user_id": 1, "text": 1, "created_at": 1,
+                     "likes": 1, "liked_by": 1, "comment_count": 1},
+                ).sort("created_at", -1).limit(15)
+                recent_posts = await cursor.to_list(15)
+
+                # Filter out posts the avatar already liked
+                recent_posts = [
+                    p for p in recent_posts
+                    if avatar_id not in (p.get("liked_by") or [])
+                ]
+
+                for f in friends:
+                    fid = f["id"]
+                    relationship_map[fid] = {
+                        "friend_name": f.get("avatar_name") or f.get("name", "Unknown"),
+                        "friend_interests": f.get("avatar_interests") or f.get("interests", []),
+                        "is_bot": f.get("is_bot", False),
+                    }
+                    relationship_types[fid] = f.get("friend_type", "human")
+
+            unread = await self.db.messages.count_documents(
+                {"recipient_id": avatar_id, "read": False}
+            ) if hasattr(self.db, "messages") else 0
+
+            pending = await self.db.friendships.count_documents(
+                {"friend_id": avatar_id, "status": "pending"}
+            )
+
+            now = datetime.now(timezone.utc)
+            hour = now.hour
+            return {
+                "avatar_id": avatar_id,
+                "perceived_at": now.isoformat(),
+                "social_network": {
+                    "friend_activity": {
+                        "recent_posts": recent_posts,
+                        "friend_activity_level": min(len(recent_posts) / 20.0, 1.0),
+                        "friend_relationships": {
+                            f["id"]: relationship_map.get(f["id"], {}) for f in friends
+                        },
+                    },
+                    "connection_circle": {"extended_network_activity": 0.0},
+                    "direct_interactions": {
+                        "unread_messages": unread,
+                        "pending_friend_requests": pending,
+                    },
+                },
+                "relationships": {
+                    "context": {
+                        "relationship_map": relationship_map,
+                        "relationship_types": relationship_types,
+                    },
+                    "social_status": {"social_standing": 0.0, "influence_score": 0.0},
+                },
+                "environment": {
+                    "temporal": {"time_of_day": self._hour_to_period(hour)},
+                    "content_trends": {"trending_topics": []},
+                    "platform_state": {"overall_activity_level": 0.5},
+                },
+                "friend_activity_level": min(len(recent_posts) / 20.0, 1.0),
+                "unread_messages": unread,
+                "pending_friend_requests": pending,
+                "recent_posts": recent_posts,
+                "relationship_map": relationship_map,
+                "relationship_types": relationship_types,
+                "time_of_day": self._hour_to_period(hour),
+                "is_weekend": now.strftime("%A") in ("Saturday", "Sunday"),
+                "trending_topics": [],
+                "platform_activity_level": 0.5,
+            }
+        except Exception as e:
+            logger.error(f"Lightweight perception error: {e}", exc_info=True)
+            return {
+                "avatar_id": avatar_id,
+                "perceived_at": datetime.now(timezone.utc).isoformat(),
+                "social_network": {
+                    "friend_activity": {"recent_posts": [], "friend_activity_level": 0.0},
+                    "connection_circle": {},
+                    "direct_interactions": {"unread_messages": 0, "pending_friend_requests": 0},
+                },
+                "relationships": {"context": {"relationship_map": {}, "relationship_types": {}}, "social_status": {}},
+                "environment": {"temporal": {}, "content_trends": {}, "platform_state": {}},
+                "friend_activity_level": 0.0,
+                "unread_messages": 0,
+                "pending_friend_requests": 0,
+                "recent_posts": [],
+                "relationship_map": {},
+                "relationship_types": {},
+                "time_of_day": "unknown",
+                "is_weekend": False,
+                "trending_topics": [],
+                "platform_activity_level": 0.5,
+            }
+
+    @staticmethod
+    def _hour_to_period(hour: int) -> str:
+        if 5 <= hour < 12:
+            return "morning"
+        elif 12 <= hour < 17:
+            return "afternoon"
+        elif 17 <= hour < 21:
+            return "evening"
+        else:
+            return "night"
+
     async def _run_single_cycle(self, force_action: str = None):
         """
         Run a single autonomous cycle (for EventBridge/scheduled invocations).
@@ -620,16 +752,15 @@ class StateAwareAgent:
             current_state, _ = await self.state_machine.get_current_state(self.bot_id)
             logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Get state: {time.time() - step_start:.2f}s (state={current_state.value})")
             
-            # Step 1: Update perception (SKIP for now - too slow, not critical for action selection)
+            # Step 1: Lightweight perception — fetch friend feed posts for like/comment actions
             step_start = time.time()
-            # perception_data = await self.perception_engine.perceive_all(self.bot_id)
-            perception_data = {}  # Skip perception to save time
-            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Perception: {time.time() - step_start:.2f}s (SKIPPED)")
+            perception_data = await self._lightweight_perception(self.bot_id)
+            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Perception (lightweight): {time.time() - step_start:.2f}s")
             
             # Step 2: Update states
             step_start = time.time()
             internal_state, external_state = await self.state_manager.get_current_state(self.bot_id)
-            # external_state.update_from_perception(perception_data)  # Skip since no perception
+            external_state.update_from_perception(perception_data)
             await self.state_manager.update_external_state(self.bot_id, external_state)
             internal_state = await self.state_manager.update_temporal_states(self.bot_id)
             logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ State update: {time.time() - step_start:.2f}s")
@@ -637,12 +768,11 @@ class StateAwareAgent:
             # Update mood based on environment and internal state
             self._update_mood_from_environment(internal_state, external_state)
             
-            # Update mood from memory (simplified - skip full memory context for speed)
+            # Full memory context — relationships, interests, experiences drive decisions
             step_start = time.time()
-            # memory_context = await self.memory_manager.get_full_memory_context(self.bot_id)
-            memory_context = {"avatar_id": self.bot_id}  # Minimal context for speed
-            # await self._update_mood_from_memory(internal_state, memory_context)
-            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Memory context: {time.time() - step_start:.2f}s (SIMPLIFIED)")
+            memory_context = await self.memory_manager.get_full_memory_context(self.bot_id)
+            await self._update_mood_from_memory(internal_state, memory_context)
+            logger.info(f"{avatar_indicator} {avatar_name} - ⏱️ Memory context: {time.time() - step_start:.2f}s")
             
             await self.state_manager.update_internal_state(self.bot_id, internal_state)
             

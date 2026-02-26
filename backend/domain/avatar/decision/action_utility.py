@@ -105,21 +105,20 @@ class ActionUtility:
             if action.get("interest_aligned"):
                 utility *= 1.15  # 15% boost for interest-aligned actions
             
-            # Boost for posts to encourage content creation
-            if action_type == "create_post":
-                utility *= 1.35  # 35% boost for posting (higher than messaging)
+            # Balanced boosts for regular avatars; AI agents keep browse_and_share_news dominant
+            if action_type == "browse_and_share_news":
+                # AI agent primary action carries a "focus" field — boost it strongly
+                # so it stays dominant over casual like/comment
+                utility *= 1.50 if action.get("focus") else 1.10
+            elif action_type == "create_post":
+                utility *= 1.10
+            elif action_type in ["like_post", "comment_on_post"]:
+                utility *= 1.40
+            elif action_type == "message_friend":
+                utility *= 1.15
             
-            # Smaller boost for messaging
-            if action_type == "message_friend":
-                utility *= 1.15  # 15% boost for messages (reduced from 25%)
-            
-            # Moderate boost for response messages (someone is waiting for our reply)
             if action.get("is_response") or action.get("priority") == "high":
-                utility *= 1.2  # 20% extra boost for responses (reduced from 40%)
-            
-            # NEW: Boost like/comment actions to encourage engagement
-            if action_type in ["like_post", "comment_on_post"]:
-                utility *= 1.25  # 25% boost for engagement actions
+                utility *= 1.2
             
             # Store in history
             if action_type not in self.action_history:

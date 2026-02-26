@@ -60,7 +60,11 @@ class MemoryManager:
             
             # 1. Knowledge Graph (semantic memory - who am I, what do I like)
             if include_graph:
-                graph_context = await self.graph_rag.get_user_context(avatar_id, max_nodes=30)
+                import asyncio as _aio
+                graph_context, identity_narrative = await _aio.gather(
+                    self.graph_rag.get_user_context(avatar_id, max_nodes=30),
+                    self.graph_rag.get_identity_context(avatar_id, action_type="general", max_tokens=800),
+                )
                 context["semantic_memory"] = {
                     "interests": [i["label"] for i in graph_context.get("interests", [])[:10]],
                     "traits": [t["label"] for t in graph_context.get("traits", [])[:5]],
@@ -69,7 +73,8 @@ class MemoryManager:
                     "interest_strengths": {
                         i["label"]: i.get("strength", 1.0) 
                         for i in graph_context.get("interests", [])[:10]
-                    }
+                    },
+                    "identity_narrative": identity_narrative,
                 }
             
             # 2. Action Memory (procedural memory - what works)

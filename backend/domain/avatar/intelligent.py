@@ -596,29 +596,35 @@ Return ONLY the response text, no labels or quotes."""
     
     async def generate_avatar_profile_bio(self, user_id: str) -> Dict[str, Any]:
         """
-        Generate avatar bio based on graph data
+        Generate avatar bio based on graph data — uses full identity narrative
         """
         if not self.llm_client:
             return {"error": "LLM not configured"}
         
-        # Get graph context
-        context = await self.graph_rag.get_user_context(user_id, max_nodes=15)
-        
-        interests = [item["label"] for item in context.get("interests", [])[:8]]
-        traits = [item["label"] for item in context.get("traits", [])[:4]]
-        values = [item["label"] for item in context.get("values", [])[:3]]
-        
-        prompt = f"""Generate an avatar bio (80-120 words) for a dating profile based on these characteristics:
+        identity_narrative = await self.graph_rag.get_identity_context(
+            user_id, action_type="personality_profile", max_tokens=1200,
+        )
 
-Interests: {', '.join(interests) if interests else 'exploring new things'}
-Personality: {', '.join(traits) if traits else 'friendly, open-minded'}
-Values: {', '.join(values) if values else 'authenticity, connection'}
+        if not identity_narrative:
+            context = await self.graph_rag.get_user_context(user_id, max_nodes=15)
+            interests = [item["label"] for item in context.get("interests", [])[:8]]
+            traits = [item["label"] for item in context.get("traits", [])[:4]]
+            values = [item["label"] for item in context.get("values", [])[:3]]
+            identity_narrative = (
+                f"Interests: {', '.join(interests) if interests else 'exploring new things'}\n"
+                f"Personality: {', '.join(traits) if traits else 'friendly, open-minded'}\n"
+                f"Values: {', '.join(values) if values else 'authenticity, connection'}"
+            )
+
+        prompt = f"""Generate an avatar bio (80-120 words) based on this person's identity:
+
+{identity_narrative}
 
 The bio should be:
 - Written in first person
-- Engaging and authentic
+- Engaging and authentic — grounded in who this person ACTUALLY is
+- Reference specific interests, experiences, or relationships from the identity above
 - Show personality and uniqueness
-- Mention key interests naturally
 - End with a conversation starter
 
 Return ONLY the bio text, no quotes."""

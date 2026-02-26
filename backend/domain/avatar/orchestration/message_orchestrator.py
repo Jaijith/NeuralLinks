@@ -30,6 +30,14 @@ class MessageOrchestrator:
     def __init__(self, db: AsyncIOMotorDatabase, openai_client: Any):
         self.db = db
         self.openai = openai_client
+        self._graph_rag = None
+
+    @property
+    def graph_rag(self):
+        if self._graph_rag is None:
+            from domain.graph.rag import GraphRAG
+            self._graph_rag = GraphRAG(self.db)
+        return self._graph_rag
 
     async def generate_message(
         self,
@@ -119,6 +127,7 @@ class MessageOrchestrator:
             self._get_personality_prompt(user_id),
             self._get_recipient_info(recipient_id),
             self._get_relationship_history(user_id, recipient_id),
+            self._get_identity_narrative(user_id),
             return_exceptions=True,
         )
         return {
@@ -126,7 +135,17 @@ class MessageOrchestrator:
             "personality_prompt": results[1] if not isinstance(results[1], Exception) else "",
             "recipient": results[2] if not isinstance(results[2], Exception) else {},
             "history": results[3] if not isinstance(results[3], Exception) else [],
+            "identity_narrative": results[4] if not isinstance(results[4], Exception) else "",
         }
+
+    async def _get_identity_narrative(self, user_id: str) -> str:
+        try:
+            return await self.graph_rag.get_identity_context(
+                user_id, action_type="chat_response", max_tokens=1200,
+            )
+        except Exception as e:
+            logger.warning(f"Could not fetch identity narrative: {e}")
+            return ""
 
     async def _get_style_profile(self, user_id: str) -> Dict[str, Any]:
         doc = await self.db.avatar_style_profiles.find_one({"user_id": user_id}, {"_id": 0})
@@ -222,6 +241,7 @@ Return JSON:
         mood: str, energy: float, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Determine what to say and how to say it."""
+        identity_narrative = context.get("identity_narrative", "")
         prompt = f"""You are the THINKING agent. Decide what message to send and why.
 
 Relationship context: {json.dumps(relationship_ctx)}
@@ -229,8 +249,8 @@ Trigger: {trigger or "wanting to reach out"}
 Current mood: {mood}
 Energy: {energy:.1f}
 
-Personality context:
-{context.get('personality_prompt', '')[:500]}
+=== WHO THIS PERSON IS (identity graph) ===
+{identity_narrative if identity_narrative else context.get('personality_prompt', '')[:500]}
 
 Decide:
 1. Message purpose: check-in, share something, react to their post, ask something, etc.
@@ -264,6 +284,7 @@ Return JSON:
         self, thinking: Dict[str, Any], context: Dict[str, Any], mood: str
     ) -> str:
         style = context.get("style_profile", {})
+        identity_narrative = context.get("identity_narrative", "")
         personality = context.get("personality_prompt", "")
 
         prompt = f"""Write a message based on this plan:
@@ -274,8 +295,8 @@ Tone: {thinking.get('emotional_tone', '')}
 Length: {thinking.get('length', 'short')}
 Mood: {mood}
 
-Personality:
-{personality[:300]}
+=== WHO THIS PERSON IS ===
+{identity_narrative if identity_narrative else personality[:500]}
 
 Style notes:
 {json.dumps({k: v for k, v in style.items() if k in ['avg_post_length', 'emoji_frequency', 'common_phrases', 'lowercase_rate']}, indent=2)[:300]}

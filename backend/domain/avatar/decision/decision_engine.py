@@ -375,11 +375,29 @@ class DecisionEngine:
         """
         actions = []
         
-        # Base actions available to all states
+        # Base actions available in ALL states (including passive/resting)
         base_actions = [
             {"type": "read_messages", "description": "Read messages"}
         ]
-        
+
+        # Like/comment should be available in every state — engagement is always appropriate
+        recent_feed_posts = external_state.get_recent_posts(limit=8)
+        for post in recent_feed_posts:
+            post_id = post.get("id")
+            if post_id:
+                base_actions.append({
+                    "type": "like_post",
+                    "description": f"Like post by {post.get('user_id', 'friend')}",
+                    "post_id": post_id,
+                    "target_friend_id": post.get("user_id"),
+                })
+                base_actions.append({
+                    "type": "comment_on_post",
+                    "description": f"Comment on post by {post.get('user_id', 'friend')}",
+                    "post_id": post_id,
+                    "target_friend_id": post.get("user_id"),
+                })
+
         # AI Agent mode: restricted to content curation only
         # AI agents browse the web for news/facts/events and share them as two-liners.
         # They do NOT create personal posts or talk about themselves.
@@ -846,11 +864,11 @@ class DecisionEngine:
         ]
         
         # PRIMARY ACTION: Browse and share news/facts/events with two-liner
-        # This is the core purpose of AI agents
         actions.append({
             "type": "browse_and_share_news",
             "description": f"Curate and share {self.agent_domain_label or 'interesting'} content from the web",
-            "focus": self.agent_domain_label or "",
+            "focus": self.agent_domain_label or self.agent_domain or "general",
+            "is_primary": True,
         })
         
         # SOCIAL: Like and comment on friends' posts (keeps the agent alive in the feed)

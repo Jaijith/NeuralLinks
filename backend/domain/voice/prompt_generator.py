@@ -132,6 +132,9 @@ class VoicePromptGenerator:
                 insight_analyzer = PostInsightAnalyzer(self.db)
                 
                 # Fetch ALL context in parallel with timeout
+                from domain.graph.rag import GraphRAG
+                graph_rag = GraphRAG(self.db)
+
                 results = await asyncio.wait_for(
                     asyncio.gather(
                         social_service.get_tier1_context(avatar_id, user_id),
@@ -139,6 +142,7 @@ class VoicePromptGenerator:
                         personality_gen.get_cached_personality_prompt(user_id),
                         gap_tracker.get_next_question(user_id),
                         insight_analyzer.get_conversation_threads(user_id, limit=2),
+                        graph_rag.get_identity_context(user_id, action_type="voice_conversation", max_tokens=1200),
                         return_exceptions=True
                     ),
                     timeout=5.0
@@ -160,6 +164,10 @@ class VoicePromptGenerator:
                 
                 if not isinstance(results[4], Exception):
                     post_insight_threads = results[4] or []
+
+                identity_narrative = ""
+                if not isinstance(results[5], Exception):
+                    identity_narrative = results[5] or ""
                     
             except asyncio.TimeoutError:
                 logger.warning("Context fetch timed out (>5s), starting without full context")
@@ -290,6 +298,8 @@ You laugh easily. You tease playfully. You get excited about small things. You n
 - FEEL your current mood deeply. If you're {safe_mood_value(internal_state.mood)}, let that color every word.
 
 {f"**Who {user_name} Really Is:**" + chr(10) + personality_text if personality_text else ""}
+
+{f"**{user_name}'s Identity (from knowledge graph):**" + chr(10) + identity_narrative if identity_narrative and "Identity (from knowledge graph)" not in personality_text else ""}
 
 {user_memory_text}
 

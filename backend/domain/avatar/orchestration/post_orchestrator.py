@@ -29,6 +29,14 @@ class PostOrchestrator:
     def __init__(self, db: AsyncIOMotorDatabase, openai_client: Any):
         self.db = db
         self.openai = openai_client
+        self._graph_rag = None
+
+    @property
+    def graph_rag(self):
+        if self._graph_rag is None:
+            from domain.graph.rag import GraphRAG
+            self._graph_rag = GraphRAG(self.db)
+        return self._graph_rag
 
     async def generate_post(
         self,
@@ -120,9 +128,12 @@ class PostOrchestrator:
                     styled, verification.get("issues", []), context
                 )
 
+            # --- Agent 6.5: FRIEND TAGGING (occasional) ---
+            final_text = await self._maybe_tag_friend(
+                final_text, intent, context
+            )
+
             # --- Agent 7: IMAGE FINDER ---
-            # Every post should have an image.  Extract the topic from the
-            # ideation step and search for a relevant photo.
             image_url = await self._find_image_for_post(
                 final_text, intent, idea, context
             )
@@ -180,6 +191,7 @@ class PostOrchestrator:
         interests = context.get("interests", [])
         traits = context.get("traits", [])
         values = context.get("values", [])
+        identity_narrative = context.get("identity_narrative", "")
         personality_prompt = context.get("personality_prompt", "")
         samples = context.get("writing_samples", [])[:6]
         samples_text = "\n---\n".join(f'"{s[:250]}"' for s in samples if s)
@@ -187,18 +199,9 @@ class PostOrchestrator:
         user_profile = context.get("user_profile", {})
         recent_avatar_posts = context.get("recent_avatar_posts", [])
 
-        # Build a VOICE IDENTITY from all available data
-        voice_parts = []
+        # Build a VOICE IDENTITY — prefer graph narrative, fallback to flat labels
         name = user_profile.get("name", "")
         avatar_name = user_profile.get("avatar_name", "")
-        if name:
-            voice_parts.append(f"Name: {name}")
-        if avatar_name and avatar_name != name:
-            voice_parts.append(f"Known as: {avatar_name}")
-
-        cp = user_profile.get("avatar_character_profile", {})
-        if cp.get("archetype"):
-            voice_parts.append(f"Archetype: {cp['archetype']}")
 
         # Build style fingerprint from quantified data
         style_notes = []
@@ -225,8 +228,6 @@ class PostOrchestrator:
             style_notes.append(f"Signature phrases: {', '.join(style['common_phrases'][:5])}")
         style_fingerprint = "\n".join(style_notes) if style_notes else ""
 
-        voice_identity = "\n".join(voice_parts)
-
         # Pick a reaction STRUCTURE randomly to force different post shapes
         structures = [
             ("opinion_first", "Start with your strong opinion. Then explain what happened. Link at end."),
@@ -251,13 +252,8 @@ class PostOrchestrator:
 
         prompt = f"""You are {name or avatar_name or 'a real person'} posting on social media about news you saw.
 
-=== YOUR IDENTITY ===
-{voice_identity}
-{personality_prompt}
-
-Personality: {', '.join(traits[:6]) if traits else 'unique individual'}
-What matters to you: {', '.join(values[:5]) if values else 'being real'}
-Your world: {', '.join(interests[:10]) if interests else 'life'}
+=== WHO YOU ARE (identity graph — shows how your interests, experiences, and relationships connect) ===
+{identity_narrative if identity_narrative else f"Personality: {', '.join(traits[:6]) if traits else 'unique individual'}" + chr(10) + f"What matters to you: {', '.join(values[:5]) if values else 'being real'}" + chr(10) + f"Your world: {', '.join(interests[:10]) if interests else 'life'}"}
 {style_fingerprint}
 
 === HOW YOU WRITE (match this voice EXACTLY) ===
@@ -317,14 +313,14 @@ ONLY the post text. Nothing else."""
                 messages=[
                     {"role": "system", "content": (
                         f"You are writing as {name or avatar_name or 'a specific person'}. "
-                        f"They are {', '.join(traits[:3]) if traits else 'a real individual'} "
-                        f"whose life revolves around {', '.join(interests[:3]) if interests else 'specific passions'}. "
+                        f"Their personality: {', '.join(traits[:3]) if traits else 'a real individual'}. "
+                        f"Their world: {', '.join(interests[:5]) if interests else 'specific passions'}. "
                         "Write like THEY would actually type — match their energy, vocabulary, and style. "
                         "If they're analytical, write analytically. If casual, be casual. If poetic, be poetic. "
                         "CRITICAL: Do NOT default to generic excited social media voice. "
                         "Do NOT use phrases like 'how is nobody talking about this', 'just read this', "
                         "'hey everyone', 'I'm shook', or 'lowkey obsessed' — those are cliche. "
-                        "Instead, have a GENUINE personal reaction based on this person's worldview. "
+                        "Instead, have a GENUINE personal reaction based on this person's identity and worldview. "
                         "The post must include the news source URL at the end."
                     )},
                     {"role": "user", "content": prompt}
@@ -338,8 +334,14 @@ ONLY the post text. Nothing else."""
                 draft = draft.rstrip() + f"\n\n{news_url}"
 
             # SKIP style transfer for news reactions — it genericizes the voice.
-            # The prompt already has all the voice cues baked in.
             styled = draft
+
+            # Occasionally tag a friend
+            styled = await self._maybe_tag_friend(
+                styled,
+                {"interests_involved": interests[:3]},
+                context,
+            )
 
             # Find an image for this news post
             image_url = await self._find_image_for_news(news_title, news_source)
@@ -651,6 +653,63 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
 
         return None
 
+    async def _maybe_tag_friend(
+        self,
+        post_text: str,
+        intent: Dict[str, Any],
+        context: Dict[str, Any],
+    ) -> str:
+        """
+        ~25% of posts: append a natural friend tag like "your thoughts @FriendName?"
+        Only tag human friends whose interests overlap with the post topic.
+        """
+        import random
+
+        if random.random() > 0.25:
+            return post_text
+
+        friends = context.get("friends", [])
+        human_friends = [f for f in friends if not f.get("is_ai_agent") and f.get("name")]
+        if not human_friends:
+            return post_text
+
+        interests_involved = intent.get("interests_involved", [])
+        post_lower = post_text.lower()
+
+        # Score friends by interest overlap with the post
+        scored = []
+        for f in human_friends:
+            friend_interests = f.get("interests", [])
+            if isinstance(friend_interests, str):
+                friend_interests = [x.strip() for x in friend_interests.split(",")]
+            overlap = sum(
+                1 for fi in friend_interests
+                if fi.lower() in post_lower or fi.lower() in " ".join(interests_involved).lower()
+            )
+            if overlap > 0:
+                scored.append((f, overlap))
+
+        # If no interest overlap, pick a random friend sometimes
+        if not scored:
+            if random.random() < 0.3:
+                chosen = random.choice(human_friends)
+            else:
+                return post_text
+        else:
+            scored.sort(key=lambda x: x[1], reverse=True)
+            chosen = scored[0][0]
+
+        name = chosen["name"]
+        tag_styles = [
+            f"\n\n@{name} thoughts?",
+            f"\n\n@{name} you'd love this",
+            f"\n\ncc @{name}",
+            f"\n\n@{name} this reminded me of you",
+            f"\n\nwhat do you think @{name}?",
+            f"\n\n@{name} 👀",
+        ]
+        return post_text + random.choice(tag_styles)
+
     async def _find_image_for_post(
         self,
         post_text: str,
@@ -735,7 +794,7 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
         """Load everything the agents need to write like this person."""
         import asyncio
 
-        # Parallel fetch
+        # Parallel fetch — includes friends/connections for relationship accuracy
         results = await asyncio.gather(
             self._get_style_profile(user_id),
             self._get_recent_posts(user_id, limit=15),
@@ -743,6 +802,8 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
             self._get_full_personality(user_id),
             self._get_recent_avatar_posts(user_id),
             self._get_user_profile(user_id),
+            self._get_friends_with_interests(user_id),
+            self._get_connections(user_id),
             return_exceptions=True,
         )
 
@@ -752,6 +813,8 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
         persona = results[3] if not isinstance(results[3], Exception) else {}
         recent_avatar = results[4] if not isinstance(results[4], Exception) else []
         user_profile = results[5] if not isinstance(results[5], Exception) else {}
+        friends = results[6] if not isinstance(results[6], Exception) else []
+        connections = results[7] if not isinstance(results[7], Exception) else []
 
         # Build writing samples: prefer real posts, fallback to filtered avatar posts
         real_samples = [p.get("text", "") for p in posts[:8] if p.get("text")]
@@ -853,11 +916,13 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
             "writing_samples": real_samples,
             "recent_avatar_posts": recent_avatar,
             "user_profile": user_profile,
-            # Temporal context for life-moment realism
             "time_vibe": time_vibe,
             "day_name": day_name,
             "is_weekend": is_weekend,
             "hour": hour,
+            "friends": friends,
+            "connections": connections,
+            "identity_narrative": persona.get("identity_narrative", ""),
         }
 
     async def _get_style_profile(self, user_id: str) -> Dict[str, Any]:
@@ -865,6 +930,72 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
             {"user_id": user_id}, {"_id": 0}
         )
         return doc or {}
+
+    @staticmethod
+    def _build_strict_style_rules(style: Dict[str, Any], samples: List[str]) -> str:
+        """
+        Build hard style constraints from quantified data.
+        These are NON-NEGOTIABLE rules the LLM must follow.
+        """
+        rules = []
+        avg_len = style.get("avg_post_length")
+        if avg_len:
+            avg = int(avg_len)
+            lo = max(8, int(avg * 0.5))
+            hi = int(avg * 2.0)
+            rules.append(f"WORD COUNT: {lo}–{hi} words (average is {avg}). Posts longer than {hi} words will be REJECTED.")
+        else:
+            rules.append("WORD COUNT: 30–100 words.")
+
+        ef = style.get("emoji_frequency", 0)
+        if ef > 1.0:
+            rules.append("EMOJIS: Use emojis freely (multiple per post). This person loves emojis.")
+        elif ef > 0.3:
+            rules.append("EMOJIS: Use 1–2 emojis if they fit naturally.")
+        elif ef > 0:
+            rules.append("EMOJIS: Rarely use emojis — only if absolutely natural.")
+        else:
+            rules.append("EMOJIS: NEVER use emojis. This person does not use them.")
+
+        lr = style.get("lowercase_rate", 0)
+        if lr > 0.6:
+            rules.append("CAPITALIZATION: Write in all lowercase — no capital letters.")
+        elif lr > 0.3:
+            rules.append("CAPITALIZATION: Mix of lowercase and normal. Don't over-capitalize.")
+
+        er = style.get("exclamation_rate", 0)
+        if er > 0.5:
+            rules.append("EXCLAMATIONS: Use !! freely — this person is expressive.")
+        elif er < 0.1:
+            rules.append("EXCLAMATIONS: Almost never use ! — this person is understated.")
+
+        elr = style.get("ellipsis_rate", 0)
+        if elr > 0.3:
+            rules.append("ELLIPSIS: Use ... frequently — it's a signature pattern.")
+
+        qr = style.get("question_rate", 0)
+        if qr > 0.3:
+            rules.append("QUESTIONS: Often asks questions in posts.")
+        elif qr < 0.1:
+            rules.append("QUESTIONS: Rarely asks questions — makes statements instead.")
+
+        cp = style.get("common_phrases", [])
+        if cp:
+            rules.append(f"SIGNATURE PHRASES: Try to use: {', '.join(cp[:5])}")
+
+        avg_sent = style.get("avg_sentence_length")
+        if avg_sent and avg_sent < 10:
+            rules.append(f"SENTENCES: Keep sentences SHORT (~{int(avg_sent)} words). Punchy fragments are fine.")
+        elif avg_sent and avg_sent > 20:
+            rules.append(f"SENTENCES: Longer, flowing sentences (~{int(avg_sent)} words).")
+
+        if samples:
+            sample_lens = [len(s.split()) for s in samples if s]
+            if sample_lens:
+                actual_avg = sum(sample_lens) / len(sample_lens)
+                rules.append(f"REFERENCE: Their actual posts average {int(actual_avg)} words.")
+
+        return "\n".join(f"• {r}" for r in rules)
 
     async def _get_recent_posts(self, user_id: str, limit: int = 15) -> List[Dict[str, Any]]:
         cursor = self.db.posts.find(
@@ -879,33 +1010,34 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
         )
         return doc.get("personality_prompt", "") if doc else ""
 
-    async def _get_full_personality(self, user_id: str) -> Dict[str, List[str]]:
+    async def _get_full_personality(self, user_id: str) -> Dict[str, Any]:
         """
-        Get the FULL personality — interests, traits, values, experiences.
-        Shuffled so the LLM doesn't fixate on the first item.
+        Get the FULL personality from the identity graph.
+
+        Uses GraphRAG for graph-traversal-based retrieval instead of
+        flat DB queries. Returns both label lists (for programmatic use)
+        and the identity narrative (for LLM prompts).
         """
         import random
 
-        async def _fetch_nodes(node_type: str, limit: int = 20) -> List[str]:
-            cursor = self.db.graph_nodes.find(
-                {"user_id": user_id, "node_type": node_type},
-                {"_id": 0, "label": 1, "properties.strength": 1}
-            ).sort("properties.strength", -1).limit(limit)
-            nodes = await cursor.to_list(limit)
-            labels = [n.get("label", "") for n in nodes if n.get("label")]
-            random.shuffle(labels)  # Break ordering bias
+        ctx = await self.graph_rag.get_user_context(user_id, max_nodes=30)
+
+        def _extract_shuffled(key: str, limit: int) -> List[str]:
+            labels = [i.get("label", "") for i in ctx.get(key, [])[:limit] if i.get("label")]
+            random.shuffle(labels)
             return labels
 
-        interests = await _fetch_nodes("interest", 30)
-        traits = await _fetch_nodes("trait", 10)
-        values = await _fetch_nodes("value", 10)
-        experiences = await _fetch_nodes("experience", 10)
+        identity_narrative = await self.graph_rag.get_identity_context(
+            user_id, action_type="post_generation", max_tokens=1500,
+        )
 
         return {
-            "interests": interests,
-            "traits": traits,
-            "values": values,
-            "experiences": experiences,
+            "interests": _extract_shuffled("interests", 30),
+            "traits": _extract_shuffled("traits", 10),
+            "values": _extract_shuffled("values", 10),
+            "experiences": _extract_shuffled("experiences", 10),
+            "connections": _extract_shuffled("connections", 10),
+            "identity_narrative": identity_narrative,
         }
 
     async def _get_recent_avatar_posts(self, user_id: str) -> List[str]:
@@ -938,6 +1070,36 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
             logger.warning(f"Could not get user profile: {e}")
             return {}
 
+    async def _get_friends_with_interests(self, user_id: str) -> List[Dict[str, Any]]:
+        """Get the user's accepted friends with their names and interests."""
+        try:
+            from services.friend_service import FriendService
+            fs = FriendService(self.db)
+            friends = await fs.get_friends(user_id)
+            return [
+                {
+                    "id": f.get("id"),
+                    "name": f.get("avatar_name") or f.get("name", ""),
+                    "interests": f.get("avatar_interests") or f.get("interests", []),
+                    "is_bot": f.get("is_bot", False),
+                    "is_ai_agent": f.get("is_ai_agent", False),
+                    "bio": f.get("avatar_bio") or f.get("bio", ""),
+                }
+                for f in friends
+            ]
+        except Exception as e:
+            logger.warning(f"Could not get friends: {e}")
+            return []
+
+    async def _get_connections(self, user_id: str) -> List[Dict[str, Any]]:
+        """Get personal connections (family, colleagues, etc.) from user document."""
+        try:
+            user = await self.db.users.find_one({"id": user_id}, {"connections": 1})
+            return user.get("connections", []) if user else []
+        except Exception as e:
+            logger.warning(f"Could not get connections: {e}")
+            return []
+
     # ------------------------------------------------------------------
     # AGENT 1: LIFE MOMENT (replaces the old "intent" agent)
     # ------------------------------------------------------------------
@@ -947,17 +1109,9 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
         context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """
-        Simulate a LIFE MOMENT that makes a real person reach for their phone
-        and share something.
-
-        Real humans don't post about "interests." They post because:
-        - They just experienced something (morning run in fog, burnt their toast)
-        - They had a sudden thought (shower thought, commute realization)
-        - They reacted to something (article, conversation, weather)
-        - They felt an emotion (nostalgia from a song, excitement about a plan)
-        - They want connection (asking a question, sharing a find)
-
-        This agent figures out WHAT JUST HAPPENED to make this person post.
+        Simulate a LIFE MOMENT grounded in the person's REAL relationships,
+        connections, and memory.  Never fabricate people or facts that don't
+        exist in the data.
         """
         import random
 
@@ -967,20 +1121,56 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
         time_vibe = context.get("time_vibe", "")
         day_name = context.get("day_name", "")
         is_weekend = context.get("is_weekend", False)
+        friends = context.get("friends", [])
+        connections = context.get("connections", [])
+        identity_narrative = context.get("identity_narrative", "")
 
-        # Pick 2-3 interests to potentially weave in (not all of them)
         featured_interests = random.sample(interests, min(3, len(interests))) if interests else ["life"]
+
+        # Build the REAL relationships section from connections
+        real_people_lines = []
+        family = [c for c in connections if c.get("relationship", "").lower() in (
+            "spouse", "wife", "husband", "partner", "son", "daughter", "child",
+            "mother", "father", "parent", "brother", "sister", "sibling",
+        )]
+        if family:
+            real_people_lines.append("Family: " + ", ".join(
+                f"{c.get('name', 'someone')} ({c.get('relationship', '')})" for c in family
+            ))
+
+        human_friends = [f for f in friends if not f.get("is_ai_agent")]
+        if human_friends:
+            sample_friends = random.sample(human_friends, min(5, len(human_friends)))
+            real_people_lines.append("Friends on the platform: " + ", ".join(
+                f.get("name", "") for f in sample_friends if f.get("name")
+            ))
+
+        colleagues = [c for c in connections if c.get("relationship", "").lower() in (
+            "colleague", "coworker", "boss", "manager", "mentor", "mentee",
+        )]
+        if colleagues:
+            real_people_lines.append("Work: " + ", ".join(
+                f"{c.get('name', '')} ({c.get('relationship', '')})" for c in colleagues
+            ))
+
+        relationships_text = "\n".join(real_people_lines) if real_people_lines else "No family or personal connections on record — do NOT invent any."
+        has_children = any(c.get("relationship", "").lower() in ("son", "daughter", "child") for c in connections)
+        has_partner = any(c.get("relationship", "").lower() in ("spouse", "wife", "husband", "partner") for c in connections)
 
         prompt = f"""You are the LIFE MOMENT agent. Your job is to imagine a specific, realistic
 moment in this person's day that would make them pick up their phone and share something.
 
-=== WHO THIS PERSON IS ===
-Interests: {', '.join(interests[:12])}
-Personality: {', '.join(traits) if traits else 'authentic, real'}
-Values: {', '.join(values) if values else 'genuine connections'}
+=== WHO THIS PERSON IS (identity graph — shows how their interests, experiences, traits, and relationships connect) ===
+{identity_narrative if identity_narrative else f"Interests: {', '.join(interests[:12])}" + chr(10) + f"Personality: {', '.join(traits) if traits else 'authentic, real'}" + chr(10) + f"Values: {', '.join(values) if values else 'genuine connections'}"}
+
 Current mood: {mood} | Energy: {energy:.1f}/1.0
 External trigger: {trigger or 'spontaneous — just felt like sharing'}
 Topic direction: {topic_hint or 'open — whatever feels natural'}
+
+=== REAL RELATIONSHIPS (use ONLY these — DO NOT invent people) ===
+{relationships_text}
+{"Has children: YES — you may reference child-related moments using the names above." if has_children else "Has children: NO — NEVER mention sons, daughters, or children."}
+{"Has a partner: YES — you may reference partner moments." if has_partner else "Has a partner: NOT ON RECORD — do not reference a spouse/partner."}
 
 === WHEN THIS IS HAPPENING ===
 It's {day_name}, {time_vibe}
@@ -990,35 +1180,41 @@ It's {day_name}, {time_vibe}
 - "just_experienced": Something just happened (finished a run, saw something, ate something, built something)
 - "sudden_thought": A random realization, shower thought, or connection between two ideas
 - "reaction": Responding to something seen/read/heard (news, article, friend's story, weather)
-- "nostalgia": A memory triggered by a song, smell, place, or photo — FEEL the weight of it
-- "small_win": A personal achievement, no matter how minor (cooked a good meal, fixed a bug, PR at gym)
+- "nostalgia": A memory triggered by a song, smell, place, or photo
+- "small_win": A personal achievement, no matter how minor
 - "observation": Noticed something interesting about people, the world, daily life
 - "question": Genuinely curious about something, asking the void
 - "sharing_a_find": Discovered a cool thing (book, place, tool, song, recipe, fact)
 - "mood_capture": Just wants to express how they feel right now
-- "cross_connection": Realized two different interests/areas of life connect in a surprising way
+- "cross_connection": Realized two different interests connect in a surprising way
 - "mundane_relatable": An everyday thing everyone experiences but rarely talks about
 - "continuation": Following up on something from their life naturally
-- "family_moment": A small, specific moment with family/children/parents/partner that caught your heart off guard — the kind of thing you didn't expect to feel so much about
-- "gratitude_wave": Something hit you with unexpected gratitude — not generic "thankful" but a specific person/moment/thing that suddenly overwhelmed you
-- "growing_up": Watching someone (child, sibling, friend) grow, change, become something — or realizing YOU have changed
-- "vulnerability": Being honest about something hard — doubt, fear, struggle, missing someone, feeling lost — in a way that's raw but not performative
-- "bittersweet": Something beautiful and sad at the same time — a last day, a first day, a goodbye, a change you didn't ask for
+- "family_moment": ONLY if the person actually has family listed above
+- "gratitude_wave": Unexpected gratitude for a specific person or moment
+- "vulnerability": Being honest about something hard — in a raw but non-performative way
+- "bittersweet": Something beautiful and sad at the same time
+- "friend_shoutout": Tagging or referencing a real friend from the list above
 
-=== INTERESTS TO POTENTIALLY WEAVE IN (not mandatory — only if it fits) ===
+=== INTERESTS TO POTENTIALLY WEAVE IN (not mandatory) ===
 {', '.join(featured_interests)}
 
-Create a SPECIFIC life moment. Not "thinking about hiking" but "got to the trailhead at 6am and the
-parking lot was completely empty — just me and the fog." Not "interested in coding" but "spent 3 hours
-debugging a function only to realize I had a typo in line 2."
+=== HARD RULES ===
+1. ONLY reference people who appear in the REAL RELATIONSHIPS section above.
+2. If there are no children listed, NEVER mention sons/daughters/kids.
+3. If there is no partner listed, NEVER mention a spouse/wife/husband/partner.
+4. When in doubt, stick to personal experiences, observations, or interests.
+5. Be SPECIFIC — not "thinking about hiking" but "got to the trailhead at 6am, parking lot empty, just me and the fog."
+6. Keep the life moment SIMPLE and BRIEF. This person's posts average ~{int(context.get('style_profile', {}).get('avg_post_length', 40))} words — so the moment should be a small, punchy observation, not an elaborate story.
 
 Return JSON:
 {{
   "moment_type": "which type from the list above",
-  "life_moment": "2-3 sentence description of what just happened / what triggered this post",
+  "life_moment": "1-2 sentence description of what just happened / what triggered this post — keep it SMALL and specific",
   "emotional_state": "what they're feeling right now",
   "interests_involved": ["which interests naturally connect to this moment"],
-  "post_format": "story|observation|question|reaction|thought|rant|gratitude|humor"
+  "post_format": "story|observation|question|reaction|thought|rant|gratitude|humor",
+  "people_referenced": ["names of real people mentioned, if any"],
+  "target_word_count": {int(context.get('style_profile', {}).get('avg_post_length', 40))}
 }}"""
 
         try:
@@ -1028,13 +1224,12 @@ Return JSON:
                     {"role": "system", "content": (
                         "You simulate realistic life moments for a social media avatar. "
                         "Think like a real person living their actual life — specific, "
-                        "messy, human. Not polished, not generic. The kind of moment that "
-                        "makes someone think 'I need to post this.' "
-                        "IMPORTANT: Some of the best posts come from emotional moments — "
-                        "a child saying something that stops you in your tracks, missing "
-                        "someone, feeling grateful for a tiny thing, watching someone you "
-                        "love grow. Don't shy away from genuine emotion. The posts that "
-                        "get the most engagement are the ones where people FEEL something."
+                        "messy, human. Not polished, not generic. "
+                        "CRITICAL: You must ONLY reference real people listed in the "
+                        "REAL RELATIONSHIPS section. Never invent family members, children, "
+                        "or partners that don't exist. If no family is listed, the person "
+                        "is single/has no kids — focus on friends, personal experiences, "
+                        "and interests instead."
                     )},
                     {"role": "user", "content": prompt}
                 ],
@@ -1067,8 +1262,10 @@ Return JSON:
         recent_avatar_posts = context.get("recent_avatar_posts", [])
         recent_texts = [p[:100] for p in recent_avatar_posts[:5]]
 
-        prompt = f"""You are the IDEATION agent. A life moment just happened. Your job is to shape
-it into a compelling post idea with a NARRATIVE ARC — not just a topic statement.
+        avg_len = int(context.get("style_profile", {}).get("avg_post_length", 40))
+        length_guide = "short (1-2 sentences)" if avg_len < 25 else ("medium (2-4 sentences)" if avg_len < 60 else "long (4+ sentences)")
+
+        prompt = f"""You are the IDEATION agent. A life moment just happened. Shape it into a post idea.
 
 === THE LIFE MOMENT ===
 {json.dumps(intent, indent=2)}
@@ -1076,38 +1273,34 @@ it into a compelling post idea with a NARRATIVE ARC — not just a topic stateme
 === RECENT POSTS (DO NOT repeat similar content/topics) ===
 {json.dumps(recent_texts) if recent_texts else 'No recent posts — fresh start.'}
 
-=== NARRATIVE STRUCTURES (pick one that fits) ===
-1. "Setup → Moment → Reflection": Start with context, describe what happened, end with a thought
-   Example: "Was about to skip my run because of the rain → went anyway → best decision, the empty trail in fog felt like another planet"
-2. "Observation → Insight": Notice something → connect it to a bigger idea
-   Example: "The barista remembered my order → sometimes it's the tiny things that make you feel like you belong somewhere"
-3. "Question hook": Start with a relatable question → share your take
-   Example: "Does anyone else get more creative at 2am? → just had a breakthrough on this project I've been stuck on for weeks"
-4. "Contrast/Surprise": Set up an expectation → subvert it
-   Example: "Thought I'd hate the early morning class → now it's the best part of my week"
-5. "Stream of consciousness": Raw, unfiltered thought as it comes
-   Example: "3 cups of coffee deep, playlist on shuffle, and somehow this code is writing itself today"
-6. "Micro-story": A tiny complete story with a beginning, middle, and end
-   Example: "Found an old journal from 2019. Read the goals I'd written. Realized I'd done most of them without noticing."
-7. "The small detail that gets you": One hyper-specific detail that carries all the emotion
-   Example: "My daughter held my hand crossing the street today. She hasn't done that in months. I didn't say anything. Just held on."
-8. "Bittersweet snapshot": Something beautiful and painful in the same breath
-   Example: "Cleaned out the garage. Found my dad's old toolbox. Every tool still exactly where he kept them. I closed it and put it back."
-9. "Overheard/Witnessed": Something someone else did or said that hit different
-   Example: "Overheard my kid telling her stuffed animals 'it's okay to be scared, I'll be right here.' Didn't know she was listening when I said that to her."
-10. "Gratitude ambush": You weren't expecting to feel this grateful, but here we are
-    Example: "My friend texted 'thinking of you' for no reason. That's it. That was the whole text. Why did that almost make me cry."
+=== THIS PERSON'S POST LENGTH: ~{avg_len} words → target: {length_guide} ===
 
-Shape the life moment into a post idea:
+=== NARRATIVE STRUCTURES (pick one that fits the target length) ===
+1. "Stream of consciousness": Raw, unfiltered thought. Best for short posts.
+   Example: "3 cups of coffee deep and somehow this code is writing itself today"
+2. "Contrast/Surprise": Set up an expectation → subvert it
+   Example: "Thought I'd hate the early morning class → now it's the best part of my week"
+3. "The small detail": One hyper-specific detail that carries everything
+   Example: "She held my hand crossing the street. Hasn't done that in months. Just held on."
+4. "Observation → Insight": Notice something → connect it
+   Example: "barista remembered my order.. tiny things that make you feel like you belong"
+5. "Micro-story": Tiny complete story with beginning, middle, end
+   Example: "Found an old journal from 2019. Read the goals. Done most of them without noticing."
+6. "Question hook": Relatable question → your take
+   Example: "anyone else get more creative at 2am?"
+7. "Mood capture": Just express the vibe. No story needed.
+   Example: "tired...."
+
+Shape the life moment into a post idea that fits in ~{avg_len} words:
 
 Return JSON:
 {{
   "narrative_structure": "which structure from above",
-  "setup": "the opening — hook the reader in 1 sentence",
-  "moment": "the core of the post — what happened/what you're sharing",
-  "landing": "the punchline, reflection, question, or emotional beat at the end",
+  "setup": "the opening — 1 sentence max",
+  "moment": "the core — what happened (keep it brief)",
+  "landing": "the ending beat — or empty string if the moment speaks for itself",
   "tone": "funny|warm|thoughtful|excited|vulnerable|sarcastic|chill|energetic",
-  "suggested_length": "short|medium|long"
+  "suggested_length": "{length_guide}"
 }}"""
 
         try:
@@ -1164,6 +1357,8 @@ Return JSON:
         samples_text = "\n---\n".join(f'"{s[:250]}"' for s in samples if s)
         time_vibe = context.get("time_vibe", "")
         day_name = context.get("day_name", "")
+        style = context.get("style_profile", {})
+        strict_style = self._build_strict_style_rules(style, samples)
 
         prompt = f"""You are a DRAFTING agent. Write a social media post that reads like a real person
 sharing a moment from their life.
@@ -1174,37 +1369,24 @@ Setup: {idea.get('setup', '')}
 Core moment: {idea.get('moment', '')}
 Landing: {idea.get('landing', '')}
 Tone: {idea.get('tone', 'authentic')}
-Length: {idea.get('suggested_length', 'medium')}
 
 Current vibe: {mood}, Energy: {energy:.1f} | {day_name}, {time_vibe}
+
+=== NON-NEGOTIABLE STYLE RULES (violating these = post rejected) ===
+{strict_style}
 
 === WRITING SAMPLES from this person (match their voice EXACTLY) ===
 {samples_text or "No samples — write casually and naturally."}
 
 === RULES FOR AUTHENTIC POSTS ===
 - Write in FIRST PERSON as if you ARE this person
-- Include SENSORY DETAILS (what you saw, heard, felt, smelled)
-- Use INNER VOICE — the way people actually think ("honestly", "ngl", "not gonna lie", "okay but")
-- Be SPECIFIC — names, numbers, small details make it real
-  ("3 cups of coffee" not "lots of coffee", "the barista with the blue hair" not "the barista")
+- Match the LENGTH and ENERGY of their samples — if they write 15-word posts, you write 15-word posts.
 - IMPERFECT is human — run-on sentences, sentence fragments, tangents are okay
 - NO hashtags, NO motivational poster language, NO "As someone who..."
 - NO listicles, NO "Here's why...", NO "In today's world..."
-- If the samples show emoji use, mirror it. If not, skip emojis.
-- Match the ENERGY of their samples — if they write short and punchy, do that.
-  If they write longer reflections, do that.
+- NO lesson at the end. NO "and that's what life is about." Just the moment and stop.
 - The post should feel like it was typed on a phone, not composed in a word processor
-
-=== THE EMOTIONAL WRITING RULES (this is what separates a good post from a GREAT post) ===
-- SHOW, don't tell. Never write "I love my family." Instead, show the moment:
-  "She put her shoes on the wrong feet and was so proud she did it herself. I didn't correct her."
-- The SMALLEST detail carries the BIGGEST emotion:
-  Not "I miss my dad" → "Found his reading glasses in the junk drawer. They still have his fingerprints on them."
-  Not "I'm grateful for my friend" → "She drove 45 minutes in the rain just to bring me soup. Didn't even come inside. Just left it at the door and texted 'eat.'"
-- Let the reader FEEL what you felt. Don't explain the emotion — describe the moment and the emotion will come through.
-- Vulnerability is strength. The posts that make people cry, laugh, or screenshot to send to someone — those are the ones where the writer was HONEST about what they felt.
-- Sometimes the most powerful ending is silence — just describe the moment and stop. Don't wrap it up with a lesson. Let it breathe.
-- If the moment is about someone you love, put THEM at the center, not you.
+- CRITICAL: Only reference people/family mentioned in the story above. Do NOT add new people.
 
 Return ONLY the post text. Nothing else."""
 
@@ -1217,12 +1399,10 @@ Return ONLY the post text. Nothing else."""
                         "human posts. You write the way people actually talk — messy, specific, "
                         "full of personality. You NEVER sound like AI. You sound like someone "
                         "typing on their phone while living their life. "
-                        "When the moment is emotional, you make the reader FEEL it. Not by "
-                        "saying 'this was so emotional' but by describing the tiny, specific "
-                        "detail that carries all the weight. The way a child reaches for your "
-                        "hand. The sound of a parent's laugh. The text that just said 'thinking "
-                        "of you.' You are a writer who understands that the smallest moments "
-                        "contain the deepest feelings."
+                        "CRITICAL: Match the WORD COUNT and STYLE RULES exactly. If the rules "
+                        "say 15-40 words, your post MUST be 15-40 words. If they say no emojis, "
+                        "use zero emojis. Length and style violations are automatic failures. "
+                        "Never wrap up with a lesson or moral. Just the moment. Stop."
                     )},
                     {"role": "user", "content": prompt}
                 ],
@@ -1238,49 +1418,37 @@ Return ONLY the post text. Nothing else."""
     # ------------------------------------------------------------------
 
     async def _style_transfer_agent(self, draft: str, context: Dict[str, Any]) -> str:
-        """Rewrite the draft in the user's EXACT writing style."""
+        """Rewrite the draft in the user's EXACT writing style — ruthlessly enforced."""
         style = context.get("style_profile", {})
         samples = context.get("writing_samples", [])[:5]
-
-        style_desc_parts = []
-        if style.get("avg_post_length"):
-            style_desc_parts.append(f"Average post length: ~{int(style['avg_post_length'])} words")
-        if style.get("emoji_frequency"):
-            ef = style["emoji_frequency"]
-            if ef > 0.5:
-                style_desc_parts.append("Uses emojis frequently")
-            elif ef < 0.1:
-                style_desc_parts.append("Rarely uses emojis")
-        if style.get("lowercase_rate", 0) > 0.5:
-            style_desc_parts.append("Often writes in all lowercase")
-        if style.get("exclamation_rate", 0) > 0.3:
-            style_desc_parts.append("Uses exclamation marks often")
-        if style.get("common_phrases"):
-            style_desc_parts.append(f"Common phrases: {', '.join(style['common_phrases'][:5])}")
-
-        style_description = "\n".join(style_desc_parts) if style_desc_parts else "No detailed style data — keep it natural and conversational."
+        strict_style = self._build_strict_style_rules(style, samples)
 
         samples_text = "\n---\n".join(f'"{s[:200]}"' for s in samples if s)
 
-        prompt = f"""You are a STYLE TRANSFER agent. Your job is to rewrite this draft to EXACTLY match this person's writing style.
+        avg_len = int(style.get("avg_post_length", 40))
+        word_limit = int(avg_len * 2.0)
+        draft_words = len(draft.split())
 
-DRAFT:
+        prompt = f"""You are a STYLE TRANSFER agent. Your ONLY job: rewrite this draft to EXACTLY
+match this person's writing style. Same meaning, completely different voice.
+
+DRAFT ({draft_words} words):
 "{draft}"
 
-STYLE PROFILE:
-{style_description}
+=== NON-NEGOTIABLE STYLE RULES ===
+{strict_style}
 
-THEIR ACTUAL POSTS (match this voice EXACTLY):
-{samples_text or "No samples — keep it natural."}
+=== THEIR ACTUAL POSTS (your output must look like these) ===
+{samples_text or "No samples available."}
 
-RULES:
-- Match their sentence structure, punctuation, capitalization, emoji usage
-- If they write in short punchy sentences, do that
-- If they use "..." or "—" or "!!", mirror that
-- If they start posts with lowercase, do the same
-- Don't add formality they don't use
-- Don't remove personality they do have
-- Keep the meaning of the draft, change the voice
+=== WHAT YOU MUST DO ===
+1. CUT the post to fit the word count above. If the draft is {draft_words} words but their average is {avg_len}, you MUST cut it down. Remove filler, merge sentences, drop unnecessary detail.
+2. Match their punctuation EXACTLY — if they use ".." or "....", you use ".." or "....". If they use !!, you use !!
+3. Match their capitalization — if they write lowercase, you write lowercase
+4. Match their emoji usage — if emoji_frequency is 0, REMOVE ALL EMOJIS
+5. Match their sentence length — short fragments if they write short, flowing if they write long
+6. NO lessons, NO wrapping up with a moral, NO "and that's what it's all about"
+7. The output must read like THEIR ACTUAL POSTS above, not like a polished essay
 
 Return ONLY the rewritten post. Nothing else."""
 
@@ -1303,35 +1471,44 @@ Return ONLY the rewritten post. Nothing else."""
     # ------------------------------------------------------------------
 
     async def _human_touch_verifier(self, post: str, context: Dict[str, Any]) -> Dict[str, Any]:
-        """Score the post for authenticity. Flag robotic patterns."""
+        """Score the post for authenticity — calibrated against real style data."""
         samples = context.get("writing_samples", [])[:5]
         samples_text = "\n---\n".join(f'"{s[:200]}"' for s in samples if s)
+        style = context.get("style_profile", {})
+        strict_style = self._build_strict_style_rules(style, samples)
+        post_word_count = len(post.split())
 
-        prompt = f"""You are a HUMAN TOUCH VERIFIER. Score this post for authenticity.
+        prompt = f"""You are a HUMAN TOUCH VERIFIER. Score this post for authenticity against REAL data.
 
-POST TO VERIFY:
+POST TO VERIFY ({post_word_count} words):
 "{post}"
 
 REAL POSTS BY THIS PERSON:
 {samples_text or "No reference samples."}
 
+THEIR MEASURED STYLE:
+{strict_style}
+
 Score on these dimensions (0.0 to 1.0):
-1. voice_match: Does it sound like the same person?
+1. voice_match: Does it sound like the SAME PERSON who wrote the samples above? Match vocabulary, sentence length, punctuation, capitalization.
 2. naturalness: Does it sound like a real person, not AI?
 3. specificity: Is it specific or generic?
-4. emotional_authenticity: Does the emotion feel real?
-5. overall: Overall human-touch score
+4. emotional_authenticity: Does the emotion feel real, not performed?
+5. length_match: Is the word count close to their average? (post={post_word_count}w, avg={int(style.get('avg_post_length', 40))}w)
+6. overall: Overall human-touch score
 
 Flag any issues:
 - "too_formal": Sounds too corporate/polished
 - "generic": Could be written by anyone
-- "ai_patterns": Has common AI writing patterns (e.g., "In today's world...", "As someone who...")
+- "ai_patterns": Has common AI writing patterns
 - "wrong_tone": Tone doesn't match their usual voice
-- "too_long": Significantly longer than their usual posts
+- "too_long": Post is {post_word_count} words, average is {int(style.get('avg_post_length', 40))} — WAY too long
 - "too_short": Significantly shorter than their usual posts
+- "wrong_emoji": Uses emojis when they don't, or vice versa
+- "lesson_ending": Post ends with a moral/lesson — real people don't do this
 
 Return JSON:
-{{"score": 0.0-1.0, "dimensions": {{"voice_match": 0.0, "naturalness": 0.0, "specificity": 0.0, "emotional_authenticity": 0.0}}, "issues": ["..."], "feedback": "specific improvement suggestion"}}"""
+{{"score": 0.0-1.0, "dimensions": {{"voice_match": 0.0, "naturalness": 0.0, "specificity": 0.0, "emotional_authenticity": 0.0, "length_match": 0.0}}, "issues": ["..."], "feedback": "specific improvement suggestion"}}"""
 
         try:
             response = await self.openai.chat.completions.create(
@@ -1355,22 +1532,35 @@ Return JSON:
     async def _revision_agent(
         self, post: str, issues: List[str], context: Dict[str, Any]
     ) -> str:
-        """Fix specific issues flagged by the verifier."""
-        samples = context.get("writing_samples", [])[:3]
+        """Fix specific issues flagged by the verifier — with strict style enforcement."""
+        samples = context.get("writing_samples", [])[:5]
         samples_text = "\n---\n".join(f'"{s[:200]}"' for s in samples if s)
+        style = context.get("style_profile", {})
+        strict_style = self._build_strict_style_rules(style, samples)
 
-        prompt = f"""You are a REVISION agent. Fix these specific issues with a social media post.
+        prompt = f"""You are a REVISION agent. The post below failed voice-matching checks.
+Your job: REWRITE it to sound like this specific person wrote it.
 
 CURRENT POST:
 "{post}"
 
-ISSUES TO FIX:
+ISSUES FLAGGED:
 {json.dumps(issues)}
 
-REFERENCE POSTS (target voice):
+=== NON-NEGOTIABLE STYLE RULES ===
+{strict_style}
+
+=== THIS PERSON'S ACTUAL POSTS (your output MUST sound like these) ===
 {samples_text or "No references."}
 
-Fix the issues while keeping the core message. Make it sound more human.
+=== WHAT TO DO ===
+- Keep the core MOMENT or IDEA from the post
+- Completely rewrite the VOICE to match the samples above
+- If the post is too long, CUT IT DOWN to fit their word count
+- If it has emojis and they don't use them, REMOVE THEM
+- If it sounds like an essay, make it sound like a text message
+- NO lessons, NO "and that's what matters", NO inspirational endings
+
 Return ONLY the revised post text. Nothing else."""
 
         try:
