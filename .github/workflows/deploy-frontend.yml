@@ -9,13 +9,13 @@ on:
       - '.github/workflows/deploy-frontend.yml'
 
 env:
-  AWS_REGION: us-west-2
+  AWS_REGION: us-west-1
   NODE_VERSION: '18'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,64 +32,60 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Get API URL from CloudFormation
-        id: get-api-url
-        run: |
-          API_URL=$(aws cloudformation describe-stacks \
-            --stack-name BackendStack \
-            --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" \
-            --output text)
-          echo "api_url=$API_URL" >> $GITHUB_OUTPUT
-          echo "API URL: $API_URL"
-
-      - name: Get S3 bucket name
-        id: get-bucket
+      - name: Get deployment config from CloudFormation
+        id: config
         run: |
           BUCKET_NAME=$(aws cloudformation describe-stacks \
             --stack-name FrontendStack \
             --query "Stacks[0].Outputs[?OutputKey=='FrontendBucketName'].OutputValue" \
             --output text)
-          echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
-
-      - name: Get CloudFront distribution ID
-        id: get-distribution
-        run: |
           DIST_ID=$(aws cloudformation describe-stacks \
             --stack-name FrontendStack \
             --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" \
             --output text)
+          echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
           echo "distribution_id=$DIST_ID" >> $GITHUB_OUTPUT
+          echo "S3 Bucket: $BUCKET_NAME"
+          echo "CloudFront: $DIST_ID"
 
       - name: Install dependencies
         run: |
           cd frontend
-          npm ci
+          npm ci --legacy-peer-deps
 
       - name: Build React app
         run: |
           cd frontend
-          REACT_APP_API_URL=${{ steps.get-api-url.outputs.api_url }} npm run build
+          CI=true npm run build
 
-      - name: Upload to S3
+      - name: Upload static assets to S3 (immutable cache)
         run: |
-          aws s3 sync frontend/build/ s3://${{ steps.get-bucket.outputs.bucket_name }}/ \
+          aws s3 sync frontend/build/ s3://${{ steps.config.outputs.bucket_name }}/ \
             --delete \
             --cache-control "public, max-age=31536000, immutable" \
             --exclude "index.html" \
-            --exclude "*.json"
-          
-          # Upload index.html with no cache
-          aws s3 cp frontend/build/index.html s3://${{ steps.get-bucket.outputs.bucket_name }}/index.html \
-            --cache-control "public, max-age=0, must-revalidate"
+            --exclude "*.json" \
+            --exclude "sw.js" \
+            --exclude "offline.html" \
+            --exclude "manifest.webmanifest"
+
+      - name: Upload dynamic files (no cache)
+        run: |
+          for file in index.html sw.js manifest.webmanifest offline.html; do
+            if [ -f "frontend/build/$file" ]; then
+              aws s3 cp "frontend/build/$file" \
+                "s3://${{ steps.config.outputs.bucket_name }}/$file" \
+                --cache-control "public, max-age=0, must-revalidate"
+            fi
+          done
 
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ steps.get-distribution.outputs.distribution_id }} \
+            --distribution-id ${{ steps.config.outputs.distribution_id }} \
             --paths "/*"
 
       - name: Output deployment info
         run: |
           echo "Frontend deployed successfully!"
           echo "URL: https://2ness.com"
-

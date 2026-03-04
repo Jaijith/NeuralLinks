@@ -107,6 +107,7 @@ class VoicePromptGenerator:
         social_context = ""
         user_memory_text = ""
         personality_text = ""
+        identity_narrative = ""
         knowledge_gap_question = None
         post_insight_threads = []
         user_name = "friend"  # Default if not found
@@ -122,55 +123,49 @@ class VoicePromptGenerator:
                 social_service = SocialContextService(self.db)
                 memory_service = VoiceMemoryService(self.db)
                 
-                # Import personality services
                 from domain.avatar.personality.personality_prompt import PersonalityPromptGenerator
                 from domain.avatar.personality.knowledge_gaps import KnowledgeGapTracker
                 from domain.avatar.personality.post_insights import PostInsightAnalyzer
+                from domain.graph.rag import GraphRAG
                 
                 personality_gen = PersonalityPromptGenerator(self.db)
                 gap_tracker = KnowledgeGapTracker(self.db)
                 insight_analyzer = PostInsightAnalyzer(self.db)
-                
-                # Fetch ALL context in parallel with timeout
-                from domain.graph.rag import GraphRAG
                 graph_rag = GraphRAG(self.db)
 
-                results = await asyncio.wait_for(
-                    asyncio.gather(
-                        social_service.get_tier1_context(avatar_id, user_id),
-                        memory_service.get_user_memory(user_id, avatar_id),
-                        personality_gen.get_cached_personality_prompt(user_id),
-                        gap_tracker.get_next_question(user_id),
-                        insight_analyzer.get_conversation_threads(user_id, limit=2),
-                        graph_rag.get_identity_context(user_id, action_type="voice_conversation", max_tokens=1200),
-                        return_exceptions=True
-                    ),
-                    timeout=5.0
+                async def _safe(coro, label, timeout=4.5):
+                    """Run a coroutine with its own timeout so one slow fetch can't kill the rest."""
+                    try:
+                        return await asyncio.wait_for(coro, timeout=timeout)
+                    except asyncio.TimeoutError:
+                        logger.warning(f"Voice context '{label}' timed out (>{timeout}s)")
+                        return None
+                    except Exception as e:
+                        logger.warning(f"Voice context '{label}' failed: {e}")
+                        return None
+
+                results = await asyncio.gather(
+                    _safe(social_service.get_tier1_context(avatar_id, user_id), "social"),
+                    _safe(memory_service.get_user_memory(user_id, avatar_id), "memory"),
+                    _safe(personality_gen.get_cached_personality_prompt(user_id), "personality"),
+                    _safe(gap_tracker.get_next_question(user_id), "knowledge_gap"),
+                    _safe(insight_analyzer.get_conversation_threads(user_id, limit=2), "post_insights"),
+                    _safe(graph_rag.get_identity_context(user_id, action_type="voice_conversation", max_tokens=1200), "graph_identity"),
                 )
                 
-                # Process results
-                if not isinstance(results[0], Exception):
+                if results[0]:
                     social_context = results[0].get("formatted_context", "")
                 
-                if not isinstance(results[1], Exception):
-                    user_memory = results[1]
-                    user_memory_text = memory_service.format_memory_for_prompt(user_memory, user_name)
+                if results[1]:
+                    user_memory_text = memory_service.format_memory_for_prompt(results[1], user_name)
                 
-                if not isinstance(results[2], Exception):
-                    personality_text = results[2] or ""
+                if results[2]:
+                    personality_text = results[2]
                 
-                if not isinstance(results[3], Exception):
-                    knowledge_gap_question = results[3]
-                
-                if not isinstance(results[4], Exception):
-                    post_insight_threads = results[4] or []
-
-                identity_narrative = ""
-                if not isinstance(results[5], Exception):
-                    identity_narrative = results[5] or ""
+                knowledge_gap_question = results[3]
+                post_insight_threads = results[4] or []
+                identity_narrative = results[5] or ""
                     
-            except asyncio.TimeoutError:
-                logger.warning("Context fetch timed out (>5s), starting without full context")
             except Exception as e:
                 logger.warning(f"Could not fetch context: {e}")
         

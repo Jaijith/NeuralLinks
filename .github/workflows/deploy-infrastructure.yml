@@ -1,7 +1,7 @@
 name: Deploy Infrastructure
 
 on:
-  workflow_dispatch: # Manual trigger
+  workflow_dispatch: # Manual trigger only
   push:
     branches:
       - main
@@ -10,13 +10,13 @@ on:
       - '.github/workflows/deploy-infrastructure.yml'
 
 env:
-  AWS_REGION: us-west-2
+  AWS_REGION: us-west-1
   NODE_VERSION: '18'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,17 +33,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Install CDK
+        run: npm install -g aws-cdk
+
       - name: Install dependencies
         run: |
           cd infrastructure
-          npm install
+          npm ci
 
       - name: Build CDK
         run: |
           cd infrastructure
           npm run build
 
-      - name: Deploy CDK stacks
+      - name: Deploy all CDK stacks
         run: |
           cd infrastructure
           cdk deploy --all --require-approval never
@@ -51,4 +54,3 @@ jobs:
       - name: Output deployment info
         run: |
           echo "Infrastructure deployed successfully!"
-
