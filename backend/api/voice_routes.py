@@ -723,10 +723,9 @@ async def trigger_workflow_from_voice(
         
         # Get required services
         from app.globals import intelligent_avatar
-        from openai import AsyncOpenAI
+        from core.config import get_openai_client
         
-        openai_key = get_openai_api_key()
-        openai_client = AsyncOpenAI(api_key=openai_key) if openai_key else None
+        openai_client = get_openai_client()
         
         # Create mission service
         mission_service = MissionService(

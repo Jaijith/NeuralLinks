@@ -2,6 +2,7 @@
 Message Routes - Direct messaging, chat, and conversations
 """
 
+import asyncio
 from fastapi import APIRouter, Request, HTTPException
 from typing import Dict, Any
 from datetime import datetime, timezone
@@ -14,6 +15,24 @@ from api.models import AgentConversation, HumanConversation
 db = get_database()
 router = APIRouter(prefix="/api", tags=["messages"])
 logger = logging.getLogger(__name__)
+
+
+async def _chat_stm_ingest(user_id: str, content: str, source: str = "chat"):
+    """Background STM ingestion for chat messages."""
+    try:
+        from core.config import get_openai_client
+        from domain.memory.ingestion import classify_and_ingest
+
+        openai_client = get_openai_client()
+        if not openai_client or not content or not content.strip():
+            return
+        await classify_and_ingest(
+            openai_client=openai_client, db=db,
+            user_id=user_id, avatar_id=user_id,
+            content=content, source=source,
+        )
+    except Exception as e:
+        logger.warning(f"Chat STM ingest error for {user_id[:8]}...: {e}")
 
 
 def get_openai_client():
@@ -153,6 +172,10 @@ async def send_direct_message(data: Dict[str, Any], request: Request):
                 "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}
             }
         )
+
+        # DMA: Ingest user's chat message into STM (reveals personality signals)
+        if message_text:
+            asyncio.create_task(_chat_stm_ingest(user.id, message_text, "chat"))
         
         # Generate AI response if recipient is an avatar/bot
         recipient_user = await db.users.find_one({"id": recipient_id})

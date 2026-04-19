@@ -25,6 +25,66 @@ router = APIRouter(prefix="/api", tags=["integrations"])
 logger = logging.getLogger(__name__)
 
 
+# ---------------------------------------------------------------------------
+# STM write helper for platform integration data
+# ---------------------------------------------------------------------------
+
+async def _write_platform_observation_to_stm(
+    user_id: str,
+    node_data: Dict[str, Any],
+    platform: str,
+) -> bool:
+    """
+    Write a structured platform node as an STM observation.
+
+    Instead of inserting directly into graph_nodes, integration data now flows
+    through STM → Consolidation → LTM (Dual-Memory Architecture).
+    """
+    try:
+        from domain.memory.models import STMObservation
+        from datetime import timedelta
+
+        node_type = node_data.get("node_type", "interest")
+        label = (node_data.get("label") or "").lower().strip()
+        if not label:
+            return False
+
+        # Map node_type to entity_type and subtype
+        subtype_map = {
+            "interest": "interest_implicit",
+            "preference": "preference_stated",
+            "experience": "experience_significant",
+            "trait": "trait_behavioral",
+            "fact": "fact_declarative",
+            "value": "value_implicit",
+            "demographic": "fact_biographical",
+        }
+
+        obs = STMObservation(
+            user_id=user_id,
+            avatar_id=user_id,
+            entity_label=label,
+            entity_type=node_type if node_type not in ("preference",) else "interest",
+            display_label=node_data.get("display_label", label.title()),
+            observation_subtype=subtype_map.get(node_type, "interest_implicit"),
+            observation_type="new",
+            source=f"platform_{platform}",
+            session_id="",
+            raw_evidence=node_data.get("properties", {}).get("evidence", ""),
+            details=json.dumps(node_data.get("properties", {})),
+            confidence=0.8,
+            evidence_weight=0.7,
+            sentiment=0.0,
+            reasoning=f"Imported from {platform} platform data",
+        )
+
+        await db.stm_observations.insert_one(obs.to_mongo())
+        return True
+    except Exception as e:
+        logger.warning(f"Failed to write platform observation to STM: {e}")
+        return False
+
+
 def get_openai_client():
     """Get OpenAI client"""
     from app.globals import openai_client
@@ -995,7 +1055,7 @@ async def sync_linkedin_data(user_id: str, profile_data: Dict[str, Any], skills_
                 "label": profession_node["label"]
             })
             if not existing:
-                await db.graph_nodes.insert_one(profession_node)
+                await _write_platform_observation_to_stm(user_id, profession_node, "linkedin")
                 result["nodes_created"] += 1
         
         # Create experience nodes
@@ -1025,7 +1085,7 @@ async def sync_linkedin_data(user_id: str, profile_data: Dict[str, Any], skills_
                         "created_at": datetime.now(timezone.utc).isoformat(),
                         "updated_at": datetime.now(timezone.utc).isoformat()
                     }
-                    await db.graph_nodes.insert_one(exp_node)
+                    await _write_platform_observation_to_stm(user_id, exp_node, "linkedin")
                     result["nodes_created"] += 1
                     logger.info(f"Created experience node: {exp['title']} at {exp.get('company', 'Unknown')}")
         
@@ -1056,7 +1116,7 @@ async def sync_linkedin_data(user_id: str, profile_data: Dict[str, Any], skills_
                         "created_at": datetime.now(timezone.utc).isoformat(),
                         "updated_at": datetime.now(timezone.utc).isoformat()
                     }
-                    await db.graph_nodes.insert_one(edu_node)
+                    await _write_platform_observation_to_stm(user_id, edu_node, "linkedin")
                     result["nodes_created"] += 1
                     logger.info(f"Created education node: {edu['school']} - {edu.get('degree', '')}")
         
@@ -1076,7 +1136,7 @@ async def sync_linkedin_data(user_id: str, profile_data: Dict[str, Any], skills_
                         "label": node["label"]
                     })
                     if not existing:
-                        await db.graph_nodes.insert_one(node)
+                        await _write_platform_observation_to_stm(user_id, node, "linkedin")
                         result["nodes_created"] += 1
             except Exception as e:
                 logger.error(f"Error extracting entities from LinkedIn profile: {str(e)}")
@@ -1385,7 +1445,7 @@ Return ONLY the JSON array, no explanation."""
                             "created_at": datetime.now(timezone.utc).isoformat(),
                             "updated_at": datetime.now(timezone.utc).isoformat()
                         }
-                        await db.graph_nodes.insert_one(node)
+                        await _write_platform_observation_to_stm(user_id, node, "youtube")
                         result["nodes_created"] += 1
                     else:
                         # Update existing node with new evidence
@@ -1460,7 +1520,7 @@ Return ONLY the JSON array, no explanation."""
                     "created_at": datetime.now(timezone.utc).isoformat(),
                     "updated_at": datetime.now(timezone.utc).isoformat()
                 }
-                await db.graph_nodes.insert_one(category_node)
+                await _write_platform_observation_to_stm(user_id, category_node, "youtube")
                 result["nodes_created"] += 1
                 aggregated_interests_created += 1
         
@@ -1505,7 +1565,7 @@ Return ONLY the JSON array, no explanation."""
                     "created_at": datetime.now(timezone.utc).isoformat(),
                     "updated_at": datetime.now(timezone.utc).isoformat()
                 }
-                await db.graph_nodes.insert_one(sub_node)
+                await _write_platform_observation_to_stm(user_id, sub_node, "youtube")
                 result["nodes_created"] += 1
         
         # Create preference nodes for playlists - create nodes for ALL playlists
@@ -1532,7 +1592,7 @@ Return ONLY the JSON array, no explanation."""
                     "created_at": datetime.now(timezone.utc).isoformat(),
                     "updated_at": datetime.now(timezone.utc).isoformat()
                 }
-                await db.graph_nodes.insert_one(playlist_node)
+                await _write_platform_observation_to_stm(user_id, playlist_node, "youtube")
                 result["nodes_created"] += 1
         
         # Aggregate liked video topics by frequency - only create nodes for frequent patterns
@@ -1581,7 +1641,7 @@ Return ONLY the JSON array, no explanation."""
                     "created_at": datetime.now(timezone.utc).isoformat(),
                     "updated_at": datetime.now(timezone.utc).isoformat()
                 }
-                await db.graph_nodes.insert_one(category_node)
+                await _write_platform_observation_to_stm(user_id, category_node, "youtube")
                 result["nodes_created"] += 1
         
         # ========== STEP 4: Update user profile based on LLM analysis ==========
@@ -1797,7 +1857,7 @@ async def process_youtube_watch_history(user_id: str, watch_history_data: List[D
                     "created_at": datetime.now(timezone.utc).isoformat(),
                     "updated_at": datetime.now(timezone.utc).isoformat()
                 }
-                await db.graph_nodes.insert_one(channel_node)
+                await _write_platform_observation_to_stm(user_id, channel_node, "youtube_watch")
                 nodes_created += 1
         
         # Create interest nodes for video categories
@@ -1836,7 +1896,7 @@ async def process_youtube_watch_history(user_id: str, watch_history_data: List[D
                     "created_at": datetime.now(timezone.utc).isoformat(),
                     "updated_at": datetime.now(timezone.utc).isoformat()
                 }
-                await db.graph_nodes.insert_one(category_node)
+                await _write_platform_observation_to_stm(user_id, category_node, "youtube_watch")
                 nodes_created += 1
         
         # Create interest nodes for top tags
@@ -1865,7 +1925,7 @@ async def process_youtube_watch_history(user_id: str, watch_history_data: List[D
                     "created_at": datetime.now(timezone.utc).isoformat(),
                     "updated_at": datetime.now(timezone.utc).isoformat()
                 }
-                await db.graph_nodes.insert_one(tag_node)
+                await _write_platform_observation_to_stm(user_id, tag_node, "youtube_watch")
                 nodes_created += 1
         
         # Update user interests in profile
@@ -2663,7 +2723,7 @@ async def sync_platform_data(request: Request, data: Dict[str, Any]):
                         "label": node["label"]
                     })
                     if not existing:
-                        await db.graph_nodes.insert_one(node)
+                        await _write_platform_observation_to_stm(user.id, node, platform_name)
                         result["nodes_created"] += 1
                         logger.info(f"Added LLM-extracted node: {node['node_type']}:{node['label']} from {platform_name}")
             except Exception as e:

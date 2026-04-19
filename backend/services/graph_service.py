@@ -232,6 +232,110 @@ class GraphService:
         
         return connections
     
+    async def get_memory_overview(self, user_id: str) -> Dict[str, Any]:
+        """
+        Return a dual-memory overview for visualization: STM observations
+        timeline, LTM node status breakdown, and recent consolidation info.
+        """
+        from datetime import datetime, timezone, timedelta
+
+        now = datetime.now(timezone.utc)
+
+        # STM stats
+        stm_total = await self.db.stm_observations.count_documents(
+            {"user_id": user_id}
+        )
+        stm_unconsolidated = await self.db.stm_observations.count_documents(
+            {"user_id": user_id, "consolidated": False}
+        )
+
+        # Recent STM observations (last 7 days)
+        cutoff = now - timedelta(days=7)
+        recent_stm = await self.db.stm_observations.find(
+            {"user_id": user_id, "observed_at": {"$gte": cutoff}},
+            {
+                "_id": 0,
+                "entity_label": 1,
+                "entity_type": 1,
+                "observation_subtype": 1,
+                "confidence": 1,
+                "source": 1,
+                "observed_at": 1,
+                "consolidated": 1,
+                "details": 1,
+            },
+        ).sort("observed_at", -1).to_list(50)
+
+        # STM by-day histogram (last 14 days)
+        histogram_cutoff = now - timedelta(days=14)
+        hist_pipeline = [
+            {"$match": {
+                "user_id": user_id,
+                "observed_at": {"$gte": histogram_cutoff},
+            }},
+            {"$group": {
+                "_id": {
+                    "$dateToString": {"format": "%Y-%m-%d", "date": "$observed_at"}
+                },
+                "count": {"$sum": 1},
+            }},
+            {"$sort": {"_id": 1}},
+        ]
+        daily_counts = {}
+        async for doc in self.db.stm_observations.aggregate(hist_pipeline):
+            daily_counts[doc["_id"]] = doc["count"]
+
+        # LTM status breakdown
+        status_pipeline = [
+            {"$match": {"user_id": user_id}},
+            {"$group": {"_id": "$status", "count": {"$sum": 1}}},
+        ]
+        ltm_by_status = {}
+        async for doc in self.db.graph_nodes.aggregate(status_pipeline):
+            ltm_by_status[doc["_id"] or "legacy"] = doc["count"]
+
+        # Top salient nodes
+        top_salient = await self.db.graph_nodes.find(
+            {"user_id": user_id, "salience": {"$exists": True}},
+            {
+                "_id": 0,
+                "label": 1,
+                "display_label": 1,
+                "node_type": 1,
+                "salience": 1,
+                "belief_strength": 1,
+                "status": 1,
+                "narrative_descriptor": 1,
+                "evidence_count": 1,
+                "last_evidence_at": 1,
+            },
+        ).sort("salience", -1).limit(20).to_list(20)
+
+        # Last consolidation run
+        last_run = await self.db.consolidation_runs.find_one(
+            {},
+            sort=[("completed_at", -1)],
+        )
+
+        return {
+            "stm": {
+                "total": stm_total,
+                "unconsolidated": stm_unconsolidated,
+                "recent_observations": recent_stm,
+                "daily_histogram": daily_counts,
+            },
+            "ltm": {
+                "by_status": ltm_by_status,
+                "total": sum(ltm_by_status.values()),
+                "top_salient": top_salient,
+            },
+            "last_consolidation": {
+                "completed_at": str(last_run["completed_at"]) if last_run else None,
+                "trigger": last_run.get("trigger") if last_run else None,
+                "users_processed": last_run.get("users_processed") if last_run else None,
+            },
+        }
+
     async def build_graph_from_profile(self, user_doc: Dict[str, Any]) -> Dict[str, Any]:
         """Build graph from user profile"""
         if not self.graph_builder:

@@ -12,6 +12,7 @@ import logging
 from core.database import get_database
 from core.auth import require_auth, get_current_user
 from app.globals import get_graph_service
+from domain.memory.bayesian import add_bayesian_defaults
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/graph", tags=["graph"])
@@ -130,7 +131,7 @@ async def create_interest(req: InterestCreate, request: Request):
         
         node_id = f"interest_{user.id}_{req.label.lower().replace(' ', '_')}"
         
-        await db.graph_nodes.insert_one({
+        node = {
             "id": node_id,
             "user_id": user.id,
             "node_type": "interest",
@@ -140,8 +141,10 @@ async def create_interest(req: InterestCreate, request: Request):
             "properties": {"source": "explicit", "service": "manual"},
             "mention_count": 1,
             "created_at": now,
-            "updated_at": now
-        })
+            "updated_at": now,
+        }
+        add_bayesian_defaults(node, prior="verified", source="manual")
+        await db.graph_nodes.insert_one(node)
         
         return {"success": True, "id": node_id, "message": "Interest created"}
         
@@ -334,8 +337,30 @@ async def create_connection(req: ConnectionCreate, request: Request):
             upsert=True
         )
         
-        # Also add to graph_nodes for display
         node_id = f"connection_{user.id}_{req.name.lower().replace(' ', '_')}"
+        bayesian_insert = {
+            "belief_alpha": 3.0,
+            "belief_beta": 1.0,
+            "belief_strength": 0.75,
+            "belief_variance": 0.0375,
+            "belief_confidence": 0.85,
+            "salience": 0.8,
+            "salience_stability": 60.0,
+            "salience_last_computed": now,
+            "status": "active",
+            "evidence_count": 1,
+            "evidence_log": [{
+                "at": now.isoformat() if isinstance(now, datetime) else now,
+                "source": "manual", "weight": 0.8,
+                "subtype": "connection_definitive", "session_id": "",
+            }],
+            "evidence_sources": ["manual"],
+            "first_evidence_at": now,
+            "evidence_pattern": "single_mention",
+            "narrative_descriptor": "",
+            "mention_frequency": 0.0,
+            "evidence_span_days": 0,
+        }
         await db.graph_nodes.update_one(
             {"user_id": user.id, "node_type": "connection", "label": req.name.lower()},
             {
@@ -351,9 +376,13 @@ async def create_connection(req: ConnectionCreate, request: Request):
                         "details": req.details or ""
                     },
                     "strength": 0.8,
-                    "updated_at": now
+                    "updated_at": now,
+                    "last_evidence_at": now,
                 },
-                "$setOnInsert": {"created_at": now, "mention_count": 1}
+                "$setOnInsert": {
+                    "created_at": now, "mention_count": 1,
+                    **bayesian_insert,
+                }
             },
             upsert=True
         )
@@ -522,7 +551,7 @@ async def create_trait(req: TraitCreate, request: Request):
         
         node_id = f"trait_{user.id}_{req.label.lower().replace(' ', '_')}"
         
-        await db.graph_nodes.insert_one({
+        node = {
             "id": node_id,
             "user_id": user.id,
             "node_type": "trait",
@@ -531,8 +560,10 @@ async def create_trait(req: TraitCreate, request: Request):
             "strength": req.strength,
             "properties": {"source": "explicit", "service": "manual"},
             "created_at": now,
-            "updated_at": now
-        })
+            "updated_at": now,
+        }
+        add_bayesian_defaults(node, prior="verified", source="manual")
+        await db.graph_nodes.insert_one(node)
         
         return {"success": True, "id": node_id, "message": "Trait created"}
         

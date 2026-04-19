@@ -53,10 +53,24 @@ class InMemoryGraph:
         return self.outgoing.get(node_id, []) + self.incoming.get(node_id, [])
 
     def node_strength(self, node_id: str) -> float:
-        """Extract strength from a node, handling different storage locations."""
+        """
+        Retrieve retrieval-priority strength for a node.
+
+        Fallback chain (Dual-Memory Architecture):
+          1. salience   — temporal relevance (decays, best for "what's active now")
+          2. belief_strength — Bayesian conviction (permanent, best for "what do we know")
+          3. strength   — legacy top-level field
+          4. properties.strength — legacy nested field (default 0.5)
+        """
         node = self.nodes.get(node_id)
         if not node:
             return 0.0
+        sal = node.get("salience")
+        if sal is not None:
+            return min(float(sal), 1.0)
+        bs = node.get("belief_strength")
+        if bs is not None:
+            return min(float(bs), 1.0)
         s = node.get("strength")
         if s is not None:
             return min(float(s), 1.0)
@@ -91,12 +105,16 @@ class GraphRAG:
         now = time.time()
         cached = self._graph_cache.get(user_id)
         if cached and (now - cached[0]) < self.CACHE_TTL:
-            return cached[1]
+            # Check for cache-bust signal from consolidation pipeline
+            bust = await self._check_cache_bust(user_id, cached[0])
+            if not bust:
+                return cached[1]
 
         g = InMemoryGraph(user_id=user_id)
 
         raw_nodes = await self.db.graph_nodes.find(
-            {"user_id": user_id}, {"_id": 0}
+            {"user_id": user_id, "status": {"$nin": ["archived", "rejected"]}},
+            {"_id": 0},
         ).to_list(10000)
 
         for n in raw_nodes:
@@ -142,9 +160,69 @@ class GraphRAG:
     def invalidate_cache(self, user_id: str) -> None:
         self._graph_cache.pop(user_id, None)
 
+    async def _check_cache_bust(self, user_id: str, cached_at: float) -> bool:
+        """Check if consolidation has signaled a cache bust since we cached."""
+        try:
+            bust_doc = await self.db.graph_cache_bust.find_one(
+                {"user_id": user_id}, {"busted_at": 1}
+            )
+            if not bust_doc or not bust_doc.get("busted_at"):
+                return False
+            busted_at = bust_doc["busted_at"]
+            if isinstance(busted_at, (int, float)):
+                return busted_at > cached_at
+            # datetime comparison
+            import datetime as dt
+            busted_ts = busted_at.timestamp() if hasattr(busted_at, "timestamp") else 0
+            return busted_ts > cached_at
+        except Exception:
+            return False
+
+    async def _load_recent_stm(self, user_id: str, days: int = 3) -> Dict[str, float]:
+        """
+        Load recent STM observations for recency-boosting.
+
+        Returns a dict of entity_label → recency_boost (0.0-0.3).
+        This gives recently-mentioned entities a temporary salience boost
+        in retrieval, even before consolidation runs.
+        """
+        try:
+            from datetime import datetime as dt, timezone as tz, timedelta
+            cutoff = dt.now(tz.utc) - timedelta(days=days)
+
+            cursor = self.db.stm_observations.find(
+                {"user_id": user_id, "observed_at": {"$gte": cutoff}},
+                {"entity_label": 1, "evidence_weight": 1, "observed_at": 1}
+            )
+
+            label_boosts: Dict[str, float] = {}
+            async for obs in cursor:
+                label = (obs.get("entity_label") or "").lower().strip()
+                if not label:
+                    continue
+                weight = obs.get("evidence_weight", 0.5)
+                current = label_boosts.get(label, 0)
+                label_boosts[label] = min(0.3, current + weight * 0.1)
+
+            return label_boosts
+        except Exception as e:
+            logger.debug(f"STM recency load error (non-critical): {e}")
+            return {}
+
     # ------------------------------------------------------------------
     # Core algorithms
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _edge_weight(edge: dict) -> float:
+        """
+        Bayesian-aware edge weight: prefer edge_strength (Bayesian), then
+        legacy weight. Clamped to [0, 1].
+        """
+        es = edge.get("edge_strength")
+        if es is not None:
+            return min(max(float(es), 0.0), 1.0)
+        return min(max(float(edge.get("weight", 0.5)), 0.0), 1.0)
 
     @staticmethod
     def _spreading_activation(
@@ -161,6 +239,8 @@ class GraphRAG:
         activation spreads to its neighbors attenuated by edge weight × decay.
         Lateral inhibition is implicit: only the *max* incoming activation
         is kept (prevents runaway accumulation).
+
+        Uses Bayesian edge_strength when available, falls back to legacy weight.
         """
         activations = dict(seed_activations)
 
@@ -169,7 +249,7 @@ class GraphRAG:
             for nid, act in activations.items():
                 for adj in graph.neighbors(nid):
                     neighbor = adj["neighbor_id"]
-                    w = min(float(adj["edge"].get("weight", 0.5)), 1.0)
+                    w = GraphRAG._edge_weight(adj["edge"])
                     spread = act * w * decay
                     if spread > threshold:
                         current = max(
@@ -198,6 +278,8 @@ class GraphRAG:
         """
         Controlled BFS from seed nodes (StepChain pattern).
         Returns (node_id → hop_distance, collected_edges).
+
+        Uses Bayesian edge_strength when available, falls back to legacy weight.
         """
         distances: Dict[str, int] = {
             nid: 0 for nid in seed_ids if nid in graph.nodes
@@ -210,7 +292,7 @@ class GraphRAG:
             for nid in frontier:
                 for adj in graph.neighbors(nid):
                     neighbor = adj["neighbor_id"]
-                    w = float(adj["edge"].get("weight", 0.5))
+                    w = GraphRAG._edge_weight(adj["edge"])
                     if w < min_weight:
                         continue
                     if neighbor not in distances:
@@ -377,6 +459,9 @@ class GraphRAG:
             return True
 
         def _display(node: dict) -> str:
+            nd = node.get("narrative_descriptor", "")
+            if nd:
+                return nd
             return node.get("display_label") or node.get("label", "?")
 
         def _details(node: dict) -> str:
@@ -582,6 +667,17 @@ class GraphRAG:
         for nid, dist in distances.items():
             if nid not in activations:
                 activations[nid] = max(0.1, 0.5 ** dist)
+
+        # STM recency boost: recently-mentioned entities get a temporary
+        # activation boost even before consolidation
+        try:
+            stm_boosts = await self._load_recent_stm(user_id, days=3)
+            for label, boost in stm_boosts.items():
+                nid = graph.by_label.get(label)
+                if nid and nid in activations:
+                    activations[nid] = min(1.0, activations[nid] + boost)
+        except Exception:
+            pass
 
         max_chars = max_tokens * 4
         return self._compile_narrative(graph, activations, action_type, max_chars)

@@ -19,6 +19,8 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 import boto3
 from botocore.exceptions import ClientError
 
+from core.config import OPENAI_MODEL
+
 logger = logging.getLogger(__name__)
 
 # S3 Configuration
@@ -197,13 +199,26 @@ class VoiceMemoryService:
             return {}
     
     async def _get_all_interests_from_graph(self, user_id: str) -> List[Dict[str, Any]]:
-        """Get ALL interests from graph_nodes (profile + posts + voice + platform)."""
+        """Get ALL interests from graph_nodes, sorted by Bayesian salience/strength."""
         try:
             cursor = self.db.graph_nodes.find(
-                {"user_id": user_id, "node_type": "interest"},
-                {"_id": 0, "label": 1, "strength": 1, "properties": 1, "mention_count": 1}
-            ).sort("strength", -1).limit(50)
-            return await cursor.to_list(50)
+                {
+                    "user_id": user_id,
+                    "node_type": "interest",
+                    "status": {"$nin": ["archived", "rejected"]},
+                },
+                {
+                    "_id": 0, "label": 1, "strength": 1, "belief_strength": 1,
+                    "salience": 1, "properties": 1, "mention_count": 1,
+                    "narrative_descriptor": 1, "status": 1,
+                },
+            ).sort("salience", -1).limit(50)
+            results = await cursor.to_list(50)
+            results.sort(
+                key=lambda n: n.get("salience") or n.get("belief_strength") or n.get("strength") or 0,
+                reverse=True,
+            )
+            return results
         except Exception as e:
             logger.error(f"Error fetching graph interests: {e}")
             return []
@@ -519,19 +534,49 @@ class VoiceMemoryService:
             return {"success": False, "error": str(e)}
     
     async def _legacy_store(self, user_id: str, avatar_id: str, extracted: Dict[str, Any]):
-        """Legacy storage method - fallback if orchestrator fails"""
-        # Add topics as interests
-        topics = extracted.get("topics", [])
-        interests = extracted.get("interests", [])
-        existing_topics = {i.get("topic", "").lower() for i in interests}
-        for topic in topics:
-            if topic.lower() not in existing_topics:
-                interests.append({"topic": topic, "strength": 0.7})
-        extracted["interests"] = interests
-        
-        # Store using legacy methods
+        """Legacy storage method - fallback if orchestrator fails.
+
+        Converts legacy extracted format into a text summary and runs it
+        through the Classification Agent → STM pipeline. Also stores
+        connections in users.connections for backwards compatibility.
+        """
         await self._store_connections(user_id, extracted.get("connections", []))
-        await self._store_identity_memory(user_id, avatar_id, extracted)
+
+        # Build a text summary from legacy format for classification
+        parts = []
+        for interest in extracted.get("interests", []):
+            topic = interest.get("topic", "")
+            if topic:
+                parts.append(f"User is interested in {topic}.")
+        for fact in extracted.get("key_facts", []):
+            text = fact.get("fact", "")
+            if text:
+                parts.append(f"Fact: {text}")
+        for topic in extracted.get("topics", []):
+            if topic:
+                parts.append(f"Discussion topic: {topic}")
+        for conn in extracted.get("connections", []):
+            name = conn.get("name", "")
+            rel = conn.get("relationship", "")
+            if name:
+                parts.append(f"Mentioned {name} ({rel})." if rel else f"Mentioned {name}.")
+
+        if parts:
+            from domain.memory.ingestion import classify_and_ingest
+            summary = "\n".join(parts)
+            await classify_and_ingest(
+                openai_client=self._get_openai_client(),
+                db=self.db,
+                user_id=user_id,
+                avatar_id=avatar_id,
+                content=summary,
+                source="voice_legacy_fallback",
+            )
+
+    def _get_openai_client(self):
+        """Get OpenAI client from globals."""
+        from app.globals import openai_client
+        return openai_client
     
     def _format_messages_for_extraction(self, messages: List[Dict[str, Any]]) -> str:
         """Format messages as conversation text for LLM"""
@@ -584,7 +629,7 @@ Return JSON: {{connections, interests, key_facts, summary, topics, emotional_ton
         
         try:
             response = await openai_client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "You extract structured information from conversations. Return only valid JSON."},
                     {"role": "user", "content": extraction_prompt.format(conversation=conversation_text)}
@@ -814,8 +859,9 @@ Return JSON: {{connections, interests, key_facts, summary, topics, emotional_ton
                 
                 logger.info(f"Stored {len(new_interests)} new interests, {len(new_facts)} new facts")
             
-            # Store in graph_nodes for frontend display (uses upsert, handles duplicates)
-            await self._store_to_graph_nodes(user_id, interests, facts)
+            # NOTE: Direct graph_nodes writes removed (Dual-Memory Architecture).
+            # Data now flows through Classification Agent → STM → Consolidation → LTM.
+            # identity_memory writes above are preserved for backwards compatibility.
             
         except Exception as e:
             logger.error(f"Error storing identity memory: {e}")

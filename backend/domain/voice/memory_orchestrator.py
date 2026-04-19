@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 from dataclasses import dataclass, field, asdict
 from enum import Enum
 from motor.motor_asyncio import AsyncIOMotorDatabase
+from core.config import OPENAI_MODEL  # noqa: used by legacy agents
 
 logger = logging.getLogger(__name__)
 
@@ -92,79 +93,51 @@ class MemoryOrchestrator:
     ) -> OrchestrationResult:
         """
         Main entry point - processes conversation through the full pipeline.
-        
-        Enhanced pipeline:
-        1. Extract → 2. Reason → 3. Validate → 4. Execute
-        5. Personality Extraction (parallel)
-        6. Conversation Indexing (parallel)
-        7. Knowledge Gap Update (parallel)
-        
-        Args:
-            user_id: User's ID
-            avatar_id: Avatar's ID
-            conversation: The conversation text to process
-            session_id: Voice session ID (for conversation index)
-            s3_key: S3 key for the full transcript
-            duration_seconds: Duration of the conversation
-            
-        Returns:
-            OrchestrationResult with all planned and executed actions
+
+        Dual-Memory Architecture pipeline:
+        1. Classification Agent → STM (replaces extraction + reasoning + validation + execution)
+        2. Personality extraction → STM (traits/values via Classification Agent)
+        3. Conversation Indexing (UNCHANGED — writes to conversation_index)
+        4. Knowledge Gap Update (UNCHANGED — writes to avatar_knowledge_gaps)
+        5. Post Insight Thread Update (UNCHANGED — writes to avatar_post_insights)
+
+        Steps 3-5 are preserved exactly as before. Steps 1-2 now write to
+        stm_observations instead of directly to graph_nodes.
         """
         result = OrchestrationResult(success=False)
-        
+
         try:
-            # Step 1: EXTRACTION
-            logger.info("🔍 Step 1: Extraction Agent running...")
-            extraction = await self._extraction_agent(conversation)
-            result.extraction_raw = extraction
-            
-            if not extraction:
-                result.errors.append("Extraction returned empty")
-                return result
-            
-            # Step 2: REASONING
-            logger.info("🧠 Step 2: Reasoning Agent running...")
-            actions, reasoning = await self._reasoning_agent(conversation, extraction, user_id)
-            result.actions_planned = actions
-            result.reasoning_output = reasoning
-            
-            if not actions:
-                logger.info("No actions identified")
-                result.success = True
-                # Even with no CRUD actions, still run personality extraction + indexing
-                await self._run_post_pipeline(
-                    user_id, avatar_id, conversation,
-                    session_id, s3_key, duration_seconds, extraction
-                )
-                return result
-            
-            # Step 3: VALIDATION
-            logger.info("✅ Step 3: Validation Agent running...")
-            validated_actions, rejected, validation_output = await self._validation_agent(
-                actions, user_id
+            from domain.memory.ingestion import classify_and_ingest
+
+            # Step 1: Classification Agent → STM
+            logger.info("Step 1: Classification Agent → STM...")
+            obs_count = await classify_and_ingest(
+                openai_client=self.openai,
+                db=self.db,
+                user_id=user_id,
+                avatar_id=avatar_id,
+                content=conversation,
+                source="voice",
+                session_id=session_id,
             )
-            result.validation_output = validation_output
-            result.actions_rejected = rejected
-            
-            # Step 4: EXECUTION
-            logger.info("⚡ Step 4: Executor running...")
-            executed = await self._execute_actions(validated_actions, user_id, avatar_id)
-            result.actions_executed = executed
-            
-            # Step 5-7: POST-PIPELINE (personality extraction + indexing + knowledge gaps)
-            logger.info("🧬 Step 5-7: Post-pipeline (personality + index + gaps)...")
+
+            result.extraction_raw = {"stm_observations_written": obs_count}
+            result.success = True
+            logger.info(f"Classification complete: {obs_count} observations → STM")
+
+            # Steps 3-5: Post-pipeline (conversation indexing, knowledge gaps, post insights)
+            # These are UNCHANGED — they write to their own collections, not graph_nodes.
+            logger.info("Steps 3-5: Post-pipeline (index + gaps + insights)...")
             await self._run_post_pipeline(
                 user_id, avatar_id, conversation,
-                session_id, s3_key, duration_seconds, extraction
+                session_id, s3_key, duration_seconds,
+                extraction=result.extraction_raw,
             )
-            
-            result.success = True
-            logger.info(f"✅ Orchestration complete: {len(executed)} actions executed")
-            
+
         except Exception as e:
             logger.error(f"Orchestration error: {e}")
             result.errors.append(str(e))
-        
+
         return result
     
     async def _run_post_pipeline(
@@ -178,30 +151,31 @@ class MemoryOrchestrator:
         extraction: Dict[str, Any],
     ):
         """
-        Post-pipeline: personality extraction, conversation indexing, knowledge gap update,
+        Post-pipeline: conversation indexing, knowledge gap update,
         and post insight thread status update.
-        Runs in parallel for speed. Failures here don't block the main pipeline.
+
+        Personality extraction is now handled by the Classification Agent
+        (traits and values are extracted as observations and written to STM).
+
+        These steps write to their own collections — NOT to graph_nodes.
         """
         import asyncio
         tasks = []
-        
-        # 5. Personality Extraction Agent
-        tasks.append(self._personality_extraction_agent(user_id, conversation, extraction))
-        
-        # 6. Conversation Indexing
+
+        # Conversation Indexing → conversation_index
         if session_id:
             tasks.append(self._index_conversation(
                 user_id, avatar_id, session_id, s3_key,
                 conversation, extraction, duration_seconds
             ))
-        
-        # 7. Knowledge Gap Update
+
+        # Knowledge Gap Update → avatar_knowledge_gaps
         tasks.append(self._update_knowledge_gaps(user_id, conversation))
-        
-        # 8. Post Insight Thread Status Update
+
+        # Post Insight Thread Status Update → avatar_post_insights
         if session_id:
             tasks.append(self._update_post_insight_threads(user_id, session_id, conversation))
-        
+
         results = await asyncio.gather(*tasks, return_exceptions=True)
         for i, r in enumerate(results):
             if isinstance(r, Exception):
@@ -261,20 +235,18 @@ Return JSON:
   }}
 }}"""
             
-            response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "Extract personality signals precisely."},
-                    {"role": "user", "content": prompt.format(
-                        conversation=conversation,
-                        extraction=json.dumps(extraction, indent=2)[:2000]
-                    )}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.2
+            from core.config import call_openai_json
+            raw_text = await call_openai_json(
+                system_prompt="Extract personality signals precisely.",
+                user_message=prompt.format(
+                    conversation=conversation,
+                    extraction=json.dumps(extraction, indent=2)[:2000]
+                ),
+                client=self.openai,
+                temperature=0.2,
             )
             
-            result = json.loads(response.choices[0].message.content)
+            result = json.loads(raw_text)
             now = datetime.now(timezone.utc)
             
             # Store traits in graph_nodes
@@ -358,17 +330,23 @@ Return JSON:
     ):
         """Index this conversation for future recall searches."""
         try:
-            # Build summary from extraction data
+            # Derive topics/people from recent STM observations (DMA-compatible)
             topics = []
             people = []
-            for interest in extraction.get("interests", []):
-                t = interest.get("topic", "")
-                if t:
-                    topics.append(t)
-            for person in extraction.get("people", []):
-                n = person.get("name", "")
-                if n:
-                    people.append(n)
+            try:
+                recent_obs = await self.db.stm_observations.find(
+                    {"user_id": user_id, "source": "voice"},
+                    {"entity_label": 1, "entity_type": 1},
+                ).sort("observed_at", -1).limit(20).to_list(20)
+                for obs in recent_obs:
+                    label = obs.get("entity_label", "")
+                    etype = obs.get("entity_type", "")
+                    if etype == "connection" and label:
+                        people.append(label)
+                    elif label:
+                        topics.append(label)
+            except Exception:
+                pass
             
             # Generate a concise summary
             summary_prompt = f"""Summarize this conversation in 1-2 sentences (what was discussed, key points):
@@ -381,16 +359,14 @@ Also extract 2-3 notable quotes from the USER (not the AI).
 Return JSON:
 {{"summary": "...", "key_quotes": ["...", "..."], "emotional_tone": "happy|sad|neutral|excited|contemplative|anxious"}}"""
             
-            response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "Summarize conversations concisely."},
-                    {"role": "user", "content": summary_prompt}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.1
+            from core.config import call_openai_json
+            raw_text = await call_openai_json(
+                system_prompt="Summarize conversations concisely.",
+                user_message=summary_prompt,
+                client=self.openai,
+                temperature=0.1,
             )
-            summary_data = json.loads(response.choices[0].message.content)
+            summary_data = json.loads(raw_text)
             
             from domain.voice.conversation_recall import ConversationRecallService
             recall_service = ConversationRecallService(self.db)
@@ -518,17 +494,15 @@ Return JSON:
 }}"""
 
         try:
-            response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "You are an extraction agent. Extract entities precisely."},
-                    {"role": "user", "content": prompt.format(conversation=conversation)}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.1  # Low temperature for precise extraction
+            from core.config import call_openai_json
+            raw_text = await call_openai_json(
+                system_prompt="You are an extraction agent. Extract entities precisely.",
+                user_message=prompt.format(conversation=conversation),
+                client=self.openai,
+                temperature=0.1,
             )
             
-            return json.loads(response.choices[0].message.content)
+            return json.loads(raw_text)
             
         except Exception as e:
             logger.error(f"Extraction agent error: {e}")
@@ -603,21 +577,19 @@ Return JSON:
 }}"""
 
         try:
-            response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "You are a reasoning agent. Analyze carefully and be conservative with changes."},
-                    {"role": "user", "content": prompt.format(
-                        existing_data=json.dumps(existing_data, indent=2),
-                        extraction=json.dumps(extraction, indent=2),
-                        conversation=conversation
-                    )}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.2
+            from core.config import call_openai_json
+            raw_text = await call_openai_json(
+                system_prompt="You are a reasoning agent. Analyze carefully and be conservative with changes.",
+                user_message=prompt.format(
+                    existing_data=json.dumps(existing_data, indent=2),
+                    extraction=json.dumps(extraction, indent=2),
+                    conversation=conversation
+                ),
+                client=self.openai,
+                temperature=0.2,
             )
             
-            result = json.loads(response.choices[0].message.content)
+            result = json.loads(raw_text)
             
             # Convert to MemoryAction objects
             actions = []

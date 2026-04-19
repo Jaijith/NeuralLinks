@@ -133,6 +133,8 @@ Return ONLY the JSON array, no explanation."""
             })
             
             if not existing:
+                from domain.memory.bayesian import add_bayesian_defaults as _abd
+                _abd(node, prior="verified", source="profile")
                 await self.db.graph_nodes.insert_one(node)
                 interest_node_ids.append(node["id"])
                 nodes_created += 1
@@ -154,6 +156,8 @@ Return ONLY the JSON array, no explanation."""
                 })
                 
                 if not existing:
+                    from domain.memory.bayesian import add_bayesian_defaults as _abd
+                    _abd(node, prior="verified", source="bio")
                     await self.db.graph_nodes.insert_one(node)
                     nodes_created += 1
         
@@ -183,6 +187,8 @@ Return ONLY the JSON array, no explanation."""
                 })
                 
                 if not existing:
+                    from domain.memory.bayesian import add_bayesian_defaults as _abd
+                    _abd(node, prior="verified", source="profile")
                     await self.db.graph_nodes.insert_one(node)
                     nodes_created += 1
         
@@ -213,312 +219,164 @@ Return ONLY the JSON array, no explanation."""
     
     async def enrich_graph_from_post(self, post_content: str, user_id: str) -> Dict[str, int]:
         """
-        Enrich knowledge graph from user post content
+        Enrich knowledge graph from user post content.
+
+        Dual-Memory Architecture: Routes through Classification Agent → STM
+        instead of writing directly to graph_nodes.
         """
-        nodes_created = 0
-        edges_created = 0
-        
-        # Extract entities from post
-        post_nodes = await self.extract_entities_from_text(post_content, user_id)
-        
-        for node in post_nodes:
-            node["properties"]["source"] = "post"
-            
-            # Check if node exists, if yes, strengthen it
-            existing = await self.db.graph_nodes.find_one({
-                "user_id": user_id,
-                "node_type": node["node_type"],
-                "label": node["label"]
-            })
-            
-            if existing:
-                # Update strength/frequency
-                strength = existing.get("properties", {}).get("strength", 1.0)
-                await self.db.graph_nodes.update_one(
-                    {"id": existing["id"]},
-                    {
-                        "$set": {
-                            "properties.strength": strength + 0.5,
-                            "properties.last_mentioned": datetime.now(timezone.utc).isoformat(),
-                            "updated_at": datetime.now(timezone.utc).isoformat()
-                        }
-                    }
-                )
-            else:
-                # Create new node
-                await self.db.graph_nodes.insert_one(node)
-                nodes_created += 1
-        
-        return {"nodes_created": nodes_created, "edges_created": edges_created}
+        from domain.memory.ingestion import classify_and_ingest
+
+        # Derive avatar_id from user_id (avatars collection)
+        avatar_id = await self._get_avatar_id(user_id)
+
+        obs_count = await classify_and_ingest(
+            openai_client=self.llm_client,
+            db=self.db,
+            user_id=user_id,
+            avatar_id=avatar_id,
+            content=post_content,
+            source="post",
+        )
+
+        return {"stm_observations_written": obs_count, "nodes_created": 0, "edges_created": 0}
     
     async def enrich_graph_from_interaction(self, user_id: str, target_user_id: str, 
                                            interaction_type: str) -> Dict[str, int]:
         """
-        Enrich graph from user interactions (likes, matches, messages)
+        Enrich graph from user interactions (likes, matches, messages).
+
+        This is a direct LTM reinforcement — shared interests with matched
+        users are confirmed by behavioral evidence (interaction = implicit
+        interest signal), so we update belief directly.
         """
-        edges_created = 0
-        
-        # Get target user's interests
+        from domain.memory.bayesian import compute_belief_strength
+
         target_user = await self.db.users.find_one({"id": target_user_id})
         if not target_user:
             return {"nodes_created": 0, "edges_created": 0}
-        
-        # Get target user's top graph nodes
+
         target_nodes = await self.db.graph_nodes.find(
             {"user_id": target_user_id, "node_type": "interest"},
             {"_id": 0}
         ).limit(5).to_list(5)
-        
-        # Get current user's matching nodes
+
+        now = datetime.now(timezone.utc)
+        nodes_updated = 0
+
         for target_node in target_nodes:
             user_node = await self.db.graph_nodes.find_one({
                 "user_id": user_id,
                 "label": target_node["label"]
             })
-            
-            if user_node:
-                # Strengthen existing node based on interaction
-                strength = user_node.get("properties", {}).get("strength", 1.0)
-                weight_increase = 0.3 if interaction_type == "match" else 0.1
-                
-                await self.db.graph_nodes.update_one(
-                    {"id": user_node["id"]},
-                    {
-                        "$set": {
-                            "properties.strength": strength + weight_increase,
-                            "updated_at": datetime.now(timezone.utc).isoformat()
-                        }
-                    }
-                )
-        
-        return {"nodes_created": 0, "edges_created": edges_created}
+            if not user_node:
+                continue
+
+            # Evidence weight: match is stronger confirmation than a like
+            delta_alpha = 0.5 if interaction_type == "match" else 0.2
+
+            update = {
+                "$inc": {"belief_alpha": delta_alpha, "evidence_count": 1},
+                "$push": {"evidence_log": {
+                    "at": now,
+                    "source": f"interaction_{interaction_type}",
+                    "weight": delta_alpha,
+                    "subtype": "interest_implicit",
+                    "session_id": "",
+                }},
+                "$set": {
+                    "last_evidence_at": now,
+                    "updated_at": now,
+                },
+            }
+
+            # Recompute derived fields
+            alpha = user_node.get("belief_alpha", 2.0) + delta_alpha
+            beta = user_node.get("belief_beta", 1.0)
+            bs = compute_belief_strength(alpha, beta)
+            update["$set"]["belief_strength"] = bs
+            update["$set"]["strength"] = bs
+            update["$set"]["salience"] = max(user_node.get("salience", 0.5), bs)
+
+            await self.db.graph_nodes.update_one(
+                {"_id": user_node["_id"]},
+                update,
+            )
+            nodes_updated += 1
+
+        return {"nodes_created": 0, "nodes_updated": nodes_updated, "edges_created": 0}
     
     async def add_external_platform_data(self, user_id: str, platform: str, 
                                         data: Dict[str, Any]) -> Dict[str, int]:
         """
-        Add data from external platforms to knowledge graph
-        This is a placeholder that will be enriched when actual integrations are connected
+        Add data from external platforms to knowledge graph via STM pipeline.
+
+        Converts platform-specific structured data into a text summary,
+        then routes through Classification Agent → STM.
         """
-        nodes_created = 0
-        
-        # Platform-specific extraction
+        parts = []
+
         if platform == "spotify":
-            # Extract music preferences and genres as interests
             for artist in data.get("top_artists", [])[:5]:
-                existing = await self.db.graph_nodes.find_one({
-                    "user_id": user_id,
-                    "node_type": "preference",
-                    "label": f"music:{artist.lower()}"
-                })
-                if not existing:
-                    node = {
-                        "id": str(uuid.uuid4()),
-                        "user_id": user_id,
-                        "node_type": "preference",
-                        "label": f"music:{artist.lower()}",
-                        "properties": {"source": platform, "category": "music", "strength": 1.0},
-                        "created_at": datetime.now(timezone.utc).isoformat(),
-                        "updated_at": datetime.now(timezone.utc).isoformat()
-                    }
-                    await self.db.graph_nodes.insert_one(node)
-                    nodes_created += 1
-            
-            # Genres as interests
+                parts.append(f"User listens to {artist} on Spotify (top artist).")
             for genre in data.get("top_genres", [])[:5]:
-                existing = await self.db.graph_nodes.find_one({
-                    "user_id": user_id,
-                    "node_type": "interest",
-                    "label": genre.lower()
-                })
-                if not existing:
-                    node = {
-                        "id": str(uuid.uuid4()),
-                        "user_id": user_id,
-                        "node_type": "interest",
-                        "label": genre.lower(),
-                        "properties": {"source": platform, "strength": 0.8},
-                        "created_at": datetime.now(timezone.utc).isoformat(),
-                        "updated_at": datetime.now(timezone.utc).isoformat()
-                    }
-                    await self.db.graph_nodes.insert_one(node)
-                    nodes_created += 1
-                
+                parts.append(f"User likes {genre} music (Spotify genre).")
+
         elif platform == "youtube":
-            # Extract video interests
             for topic in data.get("favorite_topics", [])[:5]:
-                existing = await self.db.graph_nodes.find_one({
-                    "user_id": user_id,
-                    "node_type": "interest",
-                    "label": topic.lower()
-                })
-                if not existing:
-                    node = {
-                        "id": str(uuid.uuid4()),
-                        "user_id": user_id,
-                        "node_type": "interest",
-                        "label": topic.lower(),
-                        "properties": {"source": platform, "strength": 0.8},
-                        "created_at": datetime.now(timezone.utc).isoformat(),
-                        "updated_at": datetime.now(timezone.utc).isoformat()
-                    }
-                    await self.db.graph_nodes.insert_one(node)
-                    nodes_created += 1
-                
-        elif platform in ["facebook", "instagram"]:
-            # Extract social interests
+                parts.append(f"User watches {topic} content on YouTube (favorite topic).")
+
+        elif platform in ("facebook", "instagram"):
             for interest in data.get("interests", [])[:10]:
-                existing = await self.db.graph_nodes.find_one({
-                    "user_id": user_id,
-                    "node_type": "interest",
-                    "label": interest.lower()
-                })
-                if not existing:
-                    node = {
-                        "id": str(uuid.uuid4()),
-                        "user_id": user_id,
-                        "node_type": "interest",
-                        "label": interest.lower(),
-                        "properties": {"source": platform, "strength": 0.7},
-                        "created_at": datetime.now(timezone.utc).isoformat(),
-                        "updated_at": datetime.now(timezone.utc).isoformat()
-                    }
-                    await self.db.graph_nodes.insert_one(node)
-                    nodes_created += 1
-                    
+                parts.append(f"User is interested in {interest} ({platform}).")
+
         elif platform == "twitter":
-            # Extract topics as interests
             for topic in data.get("topics_followed", [])[:5]:
-                existing = await self.db.graph_nodes.find_one({
-                    "user_id": user_id,
-                    "node_type": "interest",
-                    "label": topic.lower()
-                })
-                if not existing:
-                    node = {
-                        "id": str(uuid.uuid4()),
-                        "user_id": user_id,
-                        "node_type": "interest",
-                        "label": topic.lower(),
-                        "properties": {"source": platform, "strength": 0.75},
-                        "created_at": datetime.now(timezone.utc).isoformat(),
-                        "updated_at": datetime.now(timezone.utc).isoformat()
-                    }
-                    await self.db.graph_nodes.insert_one(node)
-                    nodes_created += 1
-                    
+                parts.append(f"User follows {topic} on Twitter.")
+
         elif platform == "linkedin":
-            # Extract skills as interests
             for skill in data.get("skills", [])[:5]:
-                existing = await self.db.graph_nodes.find_one({
-                    "user_id": user_id,
-                    "node_type": "interest",
-                    "label": skill.lower()
-                })
-                if not existing:
-                    node = {
-                        "id": str(uuid.uuid4()),
-                        "user_id": user_id,
-                        "node_type": "interest",
-                        "label": skill.lower(),
-                        "properties": {"source": platform, "strength": 0.9, "category": "skill"},
-                        "created_at": datetime.now(timezone.utc).isoformat(),
-                        "updated_at": datetime.now(timezone.utc).isoformat()
-                    }
-                    await self.db.graph_nodes.insert_one(node)
-                    nodes_created += 1
-                    
-        elif platform in ["tiktok", "snapchat", "pinterest", "reddit", "discord", "twitch", 
-                          "whatsapp", "telegram", "apple_music", "soundcloud", "hulu", 
-                          "disney_plus", "prime_video", "hbo_max", "ebay", "etsy", "shopify", 
-                          "walmart", "fitbit", "myfitnesspal", "nike_run_club", "garmin",
-                          "medium", "kindle", "audible", "coursera", "udemy"]:
-            # Extract interests from these platforms
+                parts.append(f"User has {skill} as a professional skill (LinkedIn).")
+
+        else:
             for interest in data.get("interests", [])[:10]:
-                existing = await self.db.graph_nodes.find_one({
-                    "user_id": user_id,
-                    "node_type": "interest",
-                    "label": interest.lower()
-                })
-                if not existing:
-                    node = {
-                        "id": str(uuid.uuid4()),
-                        "user_id": user_id,
-                        "node_type": "interest",
-                        "label": interest.lower(),
-                        "properties": {"source": platform, "strength": 0.7},
-                        "created_at": datetime.now(timezone.utc).isoformat(),
-                        "updated_at": datetime.now(timezone.utc).isoformat()
-                    }
-                    await self.db.graph_nodes.insert_one(node)
-                    nodes_created += 1
-            
-            # For Reddit, also extract subreddits
-            if platform == "reddit":
-                for subreddit in data.get("subreddits", [])[:5]:
-                    # Extract topic from subreddit name (e.g., "r/programming" -> "programming")
-                    topic = subreddit.replace("r/", "").lower()
-                    existing = await self.db.graph_nodes.find_one({
-                        "user_id": user_id,
-                        "node_type": "interest",
-                        "label": topic
-                    })
-                    if not existing:
-                        node = {
-                            "id": str(uuid.uuid4()),
-                            "user_id": user_id,
-                            "node_type": "interest",
-                            "label": topic,
-                            "properties": {"source": platform, "strength": 0.8, "category": "subreddit"},
-                            "created_at": datetime.now(timezone.utc).isoformat(),
-                            "updated_at": datetime.now(timezone.utc).isoformat()
-                        }
-                        await self.db.graph_nodes.insert_one(node)
-                        nodes_created += 1
-            
-            # For music platforms, extract genres
-            if platform in ["apple_music", "soundcloud"]:
-                for genre in data.get("top_genres", data.get("genres", []))[:5]:
-                    existing = await self.db.graph_nodes.find_one({
-                        "user_id": user_id,
-                        "node_type": "interest",
-                        "label": genre.lower()
-                    })
-                    if not existing:
-                        node = {
-                            "id": str(uuid.uuid4()),
-                            "user_id": user_id,
-                            "node_type": "interest",
-                            "label": genre.lower(),
-                            "properties": {"source": platform, "strength": 0.8, "category": "music"},
-                            "created_at": datetime.now(timezone.utc).isoformat(),
-                            "updated_at": datetime.now(timezone.utc).isoformat()
-                        }
-                        await self.db.graph_nodes.insert_one(node)
-                        nodes_created += 1
-            
-            # For learning platforms, extract course topics
-            if platform in ["coursera", "udemy"]:
-                for topic in data.get("courses_taken", data.get("topics", []))[:5]:
-                    existing = await self.db.graph_nodes.find_one({
-                        "user_id": user_id,
-                        "node_type": "interest",
-                        "label": topic.lower()
-                    })
-                    if not existing:
-                        node = {
-                            "id": str(uuid.uuid4()),
-                            "user_id": user_id,
-                            "node_type": "interest",
-                            "label": topic.lower(),
-                            "properties": {"source": platform, "strength": 0.9, "category": "learning"},
-                            "created_at": datetime.now(timezone.utc).isoformat(),
-                            "updated_at": datetime.now(timezone.utc).isoformat()
-                        }
-                        await self.db.graph_nodes.insert_one(node)
-                        nodes_created += 1
-        
-        return {"nodes_created": nodes_created, "edges_created": 0}
+                parts.append(f"User has interest: {interest} ({platform}).")
+            for sub in data.get("subreddits", [])[:5]:
+                topic = sub.replace("r/", "")
+                parts.append(f"User follows r/{topic} on Reddit.")
+            for genre in data.get("top_genres", data.get("genres", []))[:5]:
+                parts.append(f"User listens to {genre} genre ({platform}).")
+            for topic in data.get("courses_taken", data.get("topics", []))[:5]:
+                parts.append(f"User is studying {topic} ({platform}).")
+
+        if not parts:
+            return {"stm_observations_written": 0, "nodes_created": 0, "edges_created": 0}
+
+        from domain.memory.ingestion import classify_and_ingest
+
+        avatar_id = await self._get_avatar_id(user_id)
+        summary = "\n".join(parts)
+
+        obs_count = await classify_and_ingest(
+            openai_client=self.llm_client,
+            db=self.db,
+            user_id=user_id,
+            avatar_id=avatar_id,
+            content=summary,
+            source=f"platform_{platform}",
+        )
+
+        return {"stm_observations_written": obs_count, "nodes_created": 0, "edges_created": 0}
     
+    async def _get_avatar_id(self, user_id: str) -> str:
+        """Resolve avatar_id from user_id."""
+        try:
+            avatar = await self.db.avatars.find_one(
+                {"user_id": user_id}, {"_id": 0, "id": 1}
+            )
+            return avatar.get("id", user_id) if avatar else user_id
+        except Exception:
+            return user_id
+
     def _get_age_group(self, age: int) -> str:
         """Categorize age into groups"""
         if not age:

@@ -108,6 +108,7 @@ from api.agent_routes import router as agent_router
 from api.voice_routes import router as voice_router
 from app.routers.debug import router as debug_router
 from api.marketplace_routes import router as marketplace_router
+from api.memory_routes import router as memory_router
 
 # NOTE: Workflow router is now in a SEPARATE Lambda function
 # Requests to /api/workflow/* are routed to WorkflowFunction by API Gateway
@@ -155,6 +156,7 @@ app.include_router(agent_router)
 app.include_router(voice_router)
 app.include_router(debug_router)
 app.include_router(marketplace_router)
+app.include_router(memory_router)
 # NOTE: Workflow routes are handled by separate WorkflowFunction Lambda
 
 # Serve static files (uploads)

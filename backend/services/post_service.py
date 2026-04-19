@@ -64,8 +64,11 @@ class PostService:
                 {"$push": {"posts": post_for_user}}
             )
         
-        # Enrich knowledge graph from post content (for real posts only)
-        # Run in background to avoid blocking the response
+        # DMA: Classify post content into STM observations (primary write path)
+        if post_type == 'real' and post_text:
+            asyncio.create_task(self._classify_post_to_stm(user_id, post_text))
+
+        # Legacy: enrich knowledge graph from post content
         if post_type == 'real' and post_text and self.graph_builder:
             asyncio.create_task(self._enrich_graph_background(post_text, user_id))
             logger.info(f"Started background graph enrichment for post {post_id}")
@@ -85,6 +88,25 @@ class PostService:
         new_post.pop('_id', None)
         return new_post
     
+    async def _classify_post_to_stm(self, user_id: str, post_text: str):
+        """Background task to classify a user post into STM observations via DMA."""
+        try:
+            from core.config import get_openai_client
+            from domain.memory.ingestion import classify_and_ingest
+            client = get_openai_client()
+            if not client:
+                return
+            await classify_and_ingest(
+                openai_client=client,
+                db=self.db,
+                user_id=user_id,
+                avatar_id=user_id,
+                content=post_text,
+                source="post",
+            )
+        except Exception as e:
+            logger.warning(f"Post STM classification failed for {user_id[:8]}...: {e}")
+
     async def _enrich_graph_background(self, post_text: str, user_id: str):
         """
         Background task to enrich knowledge graph from post content.
@@ -119,15 +141,13 @@ class PostService:
             from domain.avatar.personality.post_insights import PostInsightAnalyzer
             analyzer = PostInsightAnalyzer(self.db)
             
-            # Initialize OpenAI client for LLM analysis
             try:
-                from openai import AsyncOpenAI
-                import os
-                api_key = os.environ.get("OPENAI_API_KEY", "")
-                if api_key:
-                    analyzer.openai = AsyncOpenAI(api_key=api_key)
+                from core.config import get_openai_client
+                client = get_openai_client()
+                if client:
+                    analyzer.openai = client
                 else:
-                    logger.warning("No OpenAI API key found, skipping post insight analysis")
+                    logger.warning("No OpenAI client configured, skipping post insight analysis")
                     return
             except Exception:
                 logger.warning("Could not initialize OpenAI client for post insights")

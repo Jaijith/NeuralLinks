@@ -10,6 +10,7 @@ import uuid
 from typing import Dict, List, Any
 from datetime import datetime, timezone
 
+from core.config import OPENAI_MODEL
 from .base_engine import (
     BaseWorkflowEngine, WorkflowState, WorkflowNode, WorkflowPhase
 )
@@ -163,7 +164,7 @@ class MatchFindingEngine(BaseWorkflowEngine):
                 try:
                     sample_text = " ".join([m.get("content", "")[:100] for m in messages[-5:]])
                     response = await self.openai_client.chat.completions.create(
-                        model="gpt-4o-mini",
+                        model=OPENAI_MODEL,
                         messages=[{
                             "role": "user",
                             "content": f"Extract 3-5 main topics from this conversation as a JSON array: {sample_text}"
@@ -379,7 +380,7 @@ Provide a JSON response with:
 }}"""
 
                 response = await self.openai_client.chat.completions.create(
-                    model="gpt-4o-mini",
+                    model=OPENAI_MODEL,
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     max_tokens=300

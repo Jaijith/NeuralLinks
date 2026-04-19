@@ -79,9 +79,10 @@ async def main():
         print(f"❌ MongoDB connection failed: {e}")
         sys.exit(1)
     
-    # Initialize OpenAI client
+    # Initialize OpenAI client (uses SmartOpenAIClient for gpt-5 support)
     print("\n🤖 Initializing OpenAI...")
-    llm_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
+    from core.config import get_openai_client
+    llm_client = get_openai_client()
     print(f"✅ OpenAI initialized (model: {OPENAI_MODEL})")
     
     # Initialize agent manager

@@ -469,7 +469,8 @@ try:
                 logger.error("❌ OPENAI_API_KEY not set")
                 return {"processed": 0, "errors": 1, "error": "OPENAI_API_KEY not set"}
             
-            openai_client = AsyncOpenAI(api_key=openai_api_key)
+            from core.config import SmartOpenAIClient
+            openai_client = SmartOpenAIClient(AsyncOpenAI(api_key=openai_api_key))
             memory_service = VoiceMemoryService(db)
             
             processed = 0

@@ -165,30 +165,43 @@ class PerceptionEngine:
     
     async def _get_avatar_interests(self, avatar_id: str) -> List[str]:
         """
-        Get avatar's interests from knowledge graph
-        
-        Cached to avoid repeated database queries
+        Get avatar's interests from knowledge graph.
+
+        Dual-Memory Architecture: sorts by salience (temporal relevance),
+        falls back to strength, and excludes pending nodes.
         """
         try:
-            # Check cache
             if avatar_id in self._interests_cache:
                 interests, cached_time = self._interests_cache[avatar_id]
-                if (datetime.now(timezone.utc) - cached_time).total_seconds() < 600:  # 10 min cache
+                if (datetime.now(timezone.utc) - cached_time).total_seconds() < 600:
                     return interests
-            
-            # Get interests from graph nodes
+
             nodes = await self.db.graph_nodes.find(
-                {"user_id": avatar_id, "node_type": "interest"},
-                {"_id": 0, "label": 1, "properties": 1}
-            ).sort("properties.strength", -1).limit(20).to_list(20)
-            
+                {
+                    "user_id": avatar_id,
+                    "node_type": "interest",
+                    "status": {"$ne": "pending"},
+                },
+                {"_id": 0, "label": 1, "salience": 1, "strength": 1,
+                 "properties": 1}
+            ).sort("salience", -1).limit(20).to_list(20)
+
+            # Secondary sort: nodes without salience fall back to strength
+            def sort_key(n):
+                sal = n.get("salience")
+                if sal is not None:
+                    return sal
+                s = n.get("strength")
+                if s is not None:
+                    return s
+                return n.get("properties", {}).get("strength", 0.5)
+
+            nodes.sort(key=sort_key, reverse=True)
             interests = [node["label"].lower() for node in nodes]
-            
-            # Cache result
+
             self._interests_cache[avatar_id] = (interests, datetime.now(timezone.utc))
-            
             return interests
-            
+
         except Exception as e:
             logger.error(f"Error getting avatar interests: {e}")
             return []

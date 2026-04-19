@@ -90,9 +90,13 @@ async def rollback(backup_nodes_file: str, backup_edges_file: str):
         logger.info(f"  Deleted {del_edges.deleted_count} current edges")
 
         if backup_nodes:
+            for n in backup_nodes:
+                add_bayesian_defaults(n, prior="strong", source="verified_graph")
             await db.graph_nodes.insert_many(backup_nodes)
             logger.info(f"  Restored {len(backup_nodes)} nodes from backup")
         if backup_edges:
+            for e in backup_edges:
+                add_bayesian_edge_defaults(e)
             await db.graph_edges.insert_many(backup_edges)
             logger.info(f"  Restored {len(backup_edges)} edges from backup")
 
@@ -194,10 +198,14 @@ async def main(dry_run: bool):
         logger.info("Phase 3: Inserting verified graph...")
 
         if nodes:
+            for n in nodes:
+                add_bayesian_defaults(n, prior="strong", source="verified_graph")
             await db.graph_nodes.insert_many(nodes)
             logger.info(f"  Inserted {len(nodes)} verified nodes")
 
         if edges:
+            for e in edges:
+                add_bayesian_edge_defaults(e)
             await db.graph_edges.insert_many(edges)
             logger.info(f"  Inserted {len(edges)} verified edges")
 

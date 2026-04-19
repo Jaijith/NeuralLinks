@@ -7,7 +7,7 @@ import os
 import sys
 import json
 from motor.motor_asyncio import AsyncIOMotorClient
-from openai import AsyncOpenAI
+from core.config import get_openai_client, OPENAI_MODEL
 from datetime import datetime, timezone
 import random
 
@@ -27,7 +27,7 @@ async def trigger_digitalhunter_engagement():
     db = client['neurallinks_local']
     
     # Initialize OpenAI
-    openai_client = AsyncOpenAI(api_key=openai_key) if openai_key else None
+    openai_client = get_openai_client()
     
     print("🎯 Finding DigitalHunter...")
     
@@ -165,7 +165,7 @@ Guidelines:
 Return JSON: {{"comment": "your comment"}}"""
 
         response = await openai_client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=OPENAI_MODEL,
             messages=[{"role": "user", "content": prompt}],
             response_format={"type": "json_object"},
             max_tokens=50

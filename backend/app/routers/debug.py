@@ -5,6 +5,8 @@ from fastapi import APIRouter, HTTPException
 from typing import Optional
 import logging
 
+from core.config import OPENAI_MODEL
+
 router = APIRouter(prefix="/api/debug", tags=["debug"])
 logger = logging.getLogger(__name__)
 
@@ -509,7 +511,7 @@ Write ONE authentic, personality-driven comment:
 Return JSON: {{"comment": "your comment"}}"""
 
         response = await openai_client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=OPENAI_MODEL,
             messages=[{"role": "user", "content": prompt}],
             response_format={"type": "json_object"},
             temperature=0.9,  # Higher temperature for creativity and humor

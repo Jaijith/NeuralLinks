@@ -17,6 +17,8 @@ from typing import Dict, Any, Optional, List
 from datetime import datetime, timezone
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
+from core.config import OPENAI_MODEL
+
 logger = logging.getLogger(__name__)
 
 
@@ -309,7 +311,7 @@ ONLY the post text. Nothing else."""
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": (
                         f"You are writing as {name or avatar_name or 'a specific person'}. "
@@ -522,7 +524,7 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {
                         "role": "system",
@@ -588,7 +590,7 @@ ONLY the 2 sentences. Nothing else. No quotes around them."""
         try:
             interests = context.get("interests", [])[:5]
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": (
                         "You generate image search queries. Given a social media post, "
@@ -1219,7 +1221,7 @@ Return JSON:
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": (
                         "You simulate realistic life moments for a social media avatar. "
@@ -1305,7 +1307,7 @@ Return JSON:
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": (
                         "You shape life moments into compelling social media post ideas. "
@@ -1392,7 +1394,7 @@ Return ONLY the post text. Nothing else."""
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": (
                         "You write social media posts that are indistinguishable from real "
@@ -1454,7 +1456,7 @@ Return ONLY the rewritten post. Nothing else."""
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "You transfer writing style precisely. Output only the post."},
                     {"role": "user", "content": prompt}
@@ -1512,7 +1514,7 @@ Return JSON:
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "You verify authenticity of AI-generated content."},
                     {"role": "user", "content": prompt}
@@ -1565,7 +1567,7 @@ Return ONLY the revised post text. Nothing else."""
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "You revise posts to be more human. Output only the post."},
                     {"role": "user", "content": prompt}

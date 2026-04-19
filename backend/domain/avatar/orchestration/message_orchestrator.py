@@ -18,6 +18,8 @@ from typing import Dict, Any, Optional, List
 from datetime import datetime, timezone
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
+from core.config import OPENAI_MODEL
+
 logger = logging.getLogger(__name__)
 
 
@@ -219,7 +221,7 @@ Return JSON:
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "You analyze messaging relationships."},
                     {"role": "user", "content": prompt}
@@ -263,7 +265,7 @@ Return JSON:
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "You decide message intent. Be authentic."},
                     {"role": "user", "content": prompt}
@@ -312,7 +314,7 @@ Return ONLY the message text."""
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "Write messages in someone's voice. Be authentic."},
                     {"role": "user", "content": prompt}
@@ -353,7 +355,7 @@ Return ONLY the adjusted message."""
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "Calibrate messages for relationship depth."},
                     {"role": "user", "content": prompt}
@@ -387,7 +389,7 @@ Return JSON:
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "Verify message authenticity."},
                     {"role": "user", "content": prompt}
@@ -417,7 +419,7 @@ Return ONLY the revised message."""
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "Revise messages for authenticity."},
                     {"role": "user", "content": prompt}

@@ -10,6 +10,7 @@ import uuid
 from typing import Dict, List, Any
 from datetime import datetime, timezone
 
+from core.config import OPENAI_MODEL
 from .base_engine import (
     BaseWorkflowEngine, WorkflowState, WorkflowNode, WorkflowPhase
 )
@@ -210,7 +211,7 @@ Guidelines:
 Return JSON: {{"post_content": "the post text", "hashtags": ["tag1", "tag2"]}}"""
 
                 response = await self.openai_client.chat.completions.create(
-                    model="gpt-4o-mini",
+                    model=OPENAI_MODEL,
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     max_tokens=200
@@ -362,7 +363,7 @@ The message should:
 Return JSON: {{"message": "the message text"}}"""
 
                     response = await self.openai_client.chat.completions.create(
-                        model="gpt-4o-mini",
+                        model=OPENAI_MODEL,
                         messages=[{"role": "user", "content": prompt}],
                         response_format={"type": "json_object"},
                         max_tokens=100
@@ -559,7 +560,7 @@ Return JSON with:
 }}"""
 
                 response = await self.openai_client.chat.completions.create(
-                    model="gpt-4o-mini",
+                    model=OPENAI_MODEL,
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     max_tokens=250

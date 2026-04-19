@@ -24,6 +24,7 @@ import sys
 from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+from domain.memory.bayesian import add_bayesian_defaults, add_bayesian_edge_defaults
 
 logging.basicConfig(
     level=logging.INFO,
@@ -81,12 +82,16 @@ async def rollback(backup_nodes_file: str, backup_edges_file: str):
     try:
         await db.graph_nodes.delete_many({"user_id": USER_ID})
         if backup_nodes:
+            for n in backup_nodes:
+                add_bayesian_defaults(n, prior="strong", source="verified_graph")
             await db.graph_nodes.insert_many(backup_nodes)
         node_ids = [n["id"] for n in backup_nodes if n.get("id")]
         await db.graph_edges.delete_many({
             "$or": [{"user_id": USER_ID}, {"from_node_id": {"$in": node_ids}}, {"to_node_id": {"$in": node_ids}}]
         })
         if backup_edges:
+            for e in backup_edges:
+                add_bayesian_edge_defaults(e)
             await db.graph_edges.insert_many(backup_edges)
         await db.avatar_personality_prompts.delete_many({"user_id": USER_ID})
         logger.info("ROLLBACK COMPLETE")
@@ -165,9 +170,13 @@ async def main(dry_run: bool):
         logger.info("=" * 60)
         logger.info("PHASE 3: Inserting verified graph")
         if new_nodes:
+            for n in new_nodes:
+                add_bayesian_defaults(n, prior="strong", source="verified_graph")
             await db.graph_nodes.insert_many(new_nodes)
             logger.info(f"  Inserted {len(new_nodes)} nodes")
         if new_edges:
+            for e in new_edges:
+                add_bayesian_edge_defaults(e)
             await db.graph_edges.insert_many(new_edges)
             logger.info(f"  Inserted {len(new_edges)} edges")
 

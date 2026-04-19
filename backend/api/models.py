@@ -45,27 +45,68 @@ class UserSession(BaseModel):
 
 
 class GraphNode(BaseModel):
-    """Represents a node in the knowledge graph"""
+    """Represents a node in the knowledge graph (LTM)."""
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
-    node_type: str  # interest, trait, value, experience, preference
+    node_type: str  # interest, trait, value, experience, preference, connection, fact, demographic
     label: str
+    display_label: Optional[str] = None
+    strength: Optional[float] = None
+    mention_count: Optional[int] = None
     properties: Dict[str, Any] = Field(default_factory=dict)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+    # Bayesian Belief Parameters
+    belief_alpha: float = 1.0
+    belief_beta: float = 1.0
+    belief_strength: Optional[float] = None
+    belief_variance: Optional[float] = None
+    belief_confidence: Optional[float] = None
+
+    # Evidence Tracking (permanent, never deleted)
+    evidence_count: Optional[int] = None
+    evidence_log: List[Dict[str, Any]] = Field(default_factory=list)
+    evidence_sources: List[str] = Field(default_factory=list)
+    first_evidence_at: Optional[datetime] = None
+    last_evidence_at: Optional[datetime] = None
+
+    # Frequency Metrics
+    mention_frequency: Optional[float] = None
+    evidence_span_days: Optional[int] = None
+    evidence_pattern: Optional[str] = None
+    narrative_descriptor: Optional[str] = None
+
+    # Temporal Salience
+    salience: Optional[float] = None
+    salience_stability: Optional[float] = None
+    salience_last_computed: Optional[datetime] = None
+
+    # Status
+    status: Optional[str] = None  # "pending" | "active" | "fading"
+
 
 class GraphEdge(BaseModel):
-    """Represents a relationship between nodes"""
+    """Represents a relationship between nodes (LTM)."""
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     from_node_id: str
     to_node_id: str
-    relationship_type: str  # likes, dislikes, similar_to, part_of
+    relationship_type: str
     weight: float = 1.0
     properties: Dict[str, Any] = Field(default_factory=dict)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    # Bayesian Edge Parameters
+    belief_alpha: Optional[float] = None
+    belief_beta: Optional[float] = None
+    edge_strength: Optional[float] = None
+    valid_from: Optional[datetime] = None
+    valid_until: Optional[datetime] = None
+    last_evidence_at: Optional[datetime] = None
+    evidence_count: Optional[int] = None
+    user_id: Optional[str] = None
 
 
 class AIAgent(BaseModel):

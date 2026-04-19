@@ -28,6 +28,8 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone, timedelta
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
+from core.config import OPENAI_MODEL
+
 logger = logging.getLogger(__name__)
 
 # How old a post can be and still be eligible for proactive surfacing
@@ -355,7 +357,7 @@ RULES:
 
         try:
             response = await self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "Extract deep personal insights from posts with emotional intelligence."},
                     {"role": "user", "content": prompt.format(posts=json.dumps(post_texts, indent=2))}
@@ -479,8 +481,9 @@ RULES:
         })
 
         if not existing_node:
+            from domain.memory.bayesian import add_bayesian_defaults
             node_id = f"connection_{user_id}_{relationship.replace(' ', '_')}"
-            await self.db.graph_nodes.insert_one({
+            node = {
                 "id": node_id,
                 "user_id": user_id,
                 "node_type": "connection",
@@ -496,7 +499,9 @@ RULES:
                 "mention_count": 1,
                 "created_at": now,
                 "updated_at": now,
-            })
+            }
+            add_bayesian_defaults(node, prior="uninformative", source="post_analysis")
+            await self.db.graph_nodes.insert_one(node)
             return True
 
         return False
@@ -538,7 +543,7 @@ If the user avoided the topic, changed subject, or it wasn't brought up, return 
 Return JSON: {{"discussed": true/false, "summary": "brief summary of what user shared" or null}}"""
 
             response = await openai_client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": "Detect if a topic was discussed in conversation."},
                     {"role": "user", "content": prompt}

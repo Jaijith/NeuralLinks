@@ -15,6 +15,7 @@ import sys
 from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+from domain.memory.bayesian import add_bayesian_defaults, add_bayesian_edge_defaults
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%H:%M:%S")
 logger = logging.getLogger("apply_graph")
@@ -115,9 +116,13 @@ async def main(user_id, graph_dir, dry_run):
         logger.info("=" * 60)
         logger.info("PHASE 3: Inserting verified graph")
         if new_nodes:
+            for n in new_nodes:
+                add_bayesian_defaults(n, prior="strong", source="verified_graph")
             await db.graph_nodes.insert_many(new_nodes)
             logger.info(f"  Inserted {len(new_nodes)} nodes")
         if new_edges:
+            for e in new_edges:
+                add_bayesian_edge_defaults(e)
             await db.graph_edges.insert_many(new_edges)
             logger.info(f"  Inserted {len(new_edges)} edges")
 

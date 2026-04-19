@@ -17,6 +17,30 @@ import os
 
 logger = logging.getLogger(__name__)
 
+
+async def _stm_ingest_background(user_id: str, content: str, source: str):
+    """Fire-and-forget STM ingestion for avatar-generated content."""
+    try:
+        from core.config import get_openai_client
+        from core.database import get_database
+        from domain.memory.ingestion import classify_and_ingest
+
+        openai_client = get_openai_client()
+        if not openai_client or not content or not content.strip():
+            return
+        _db = get_database()
+        await classify_and_ingest(
+            openai_client=openai_client,
+            db=_db,
+            user_id=user_id,
+            avatar_id=user_id,
+            content=content,
+            source=source,
+        )
+    except Exception as e:
+        logger.warning(f"Background STM ingest ({source}) failed for {user_id[:8]}...: {e}")
+
+
 # Load environment
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -253,6 +277,12 @@ class CommentOnPostTool(AvatarMCPTool):
             {"id": post_id},
             {"$push": {"comments": comment}, "$inc": {"comment_count": 1}}
         )
+
+        # DMA: Ingest comment + original post context into STM (background)
+        post_text = post.get('text', post.get('content', ''))
+        if comment_text and post_text:
+            context = f"Commenting on: \"{post_text[:200]}\"\nComment: \"{comment_text}\""
+            asyncio.create_task(_stm_ingest_background(avatar_id, context, "avatar_comment"))
         
         # Log activity
         await self._log_activity(avatar_id, "post_comment", {
@@ -522,6 +552,10 @@ class CreatePostTool(AvatarMCPTool):
             "world_mode": "avatar",
             "has_image": bool(image_url),
         })
+
+        # DMA: Ingest avatar post content into STM (background, non-blocking)
+        if post_text:
+            asyncio.create_task(_stm_ingest_background(avatar_id, post_text, "avatar_post"))
         
         result_data = {
             "success": True,
@@ -836,6 +870,10 @@ class MessageFriendTool(AvatarMCPTool):
                 "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}
             }
         )
+
+        # DMA: Ingest message content into STM (background)
+        if message_text:
+            asyncio.create_task(_stm_ingest_background(avatar_id, message_text, "avatar_message"))
         
         return {
             "success": True,
@@ -1510,6 +1548,10 @@ class BrowseAndShareNewsTool(AvatarMCPTool):
                 post_data["has_image"] = True
 
             await db.posts.insert_one(post_data)
+
+            # DMA: Ingest news reaction content into STM (background)
+            if post_text:
+                asyncio.create_task(_stm_ingest_background(avatar_id, post_text, "avatar_news_post"))
 
             pipeline_name = result.get("metadata", {}).get("pipeline", "news_reaction")
             logger.info(
